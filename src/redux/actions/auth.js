@@ -2,13 +2,14 @@ import { types } from "../actionTypes";
 
 export const startLoginEmailPassword = (email, password) => {
   return (dispatch) => {
-    window.icAPI.callService("animalList", {}, function (error, response) {
-      console.log(response);
-      dispatch(login(123, "Pedro"));
-    });
-    // setTimeout(() => {
-    //   dispatch(login(123, "Pedro"));
-    // }, 3500);
+    window.icAPI.callService(
+      "userLogin",
+      { email, password },
+      function (error, response) {
+        const { key, firstName } = response.responseJSON;
+        dispatch(login(key, firstName));
+      }
+    );
   };
 };
 

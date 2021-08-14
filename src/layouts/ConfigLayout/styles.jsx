@@ -1,45 +1,55 @@
 import { makeStyles } from "@material-ui/core";
 
 export const useStyles = makeStyles((theme) => ({
-  baseContainer: {
-    minHeight: "100vh",
-    height: "100%",
-    backgroundColor: theme.palette.general.light,
-  },
   root: {
     minHeight: "100vh",
     height: "100%",
-    backgroundColor: theme.palette.general.light,
     display: "flex",
-    alignContent: "center",
+    /* Direction of the items, can be row or column */
+    flexDirection: "column",
+  },
+  contentContainer: {
+    flex: 1,
   },
   siderBackground: {
-    backgroundColor: theme.palette.general.light,
-    height: "5.5rem",
-    borderBottom: `2px solid ${theme.palette.primary.light}`,
-    paddingTop: ".8rem",
-  },
-  siderHeader: {
-    padding: "1rem",
+    backgroundColor: theme.palette.sider.dark,
+    height: "4.2rem",
+    zIndex: 1000,
+    position: "fixed",
   },
   logoContainer: {
-    paddingLeft: "4.5rem",
+    paddingLeft: "1.5rem",
     [theme.breakpoints.down("md")]: {
-      paddingLeft: "2rem",
+      paddingLeft: "1rem",
     },
     [theme.breakpoints.down("xs")]: {
       paddingLeft: "1rem",
     },
   },
-  footer: {
-    marginBottom: 0,
-    marginTop: "auto",
-    backgroundColor: theme.palette.secondary.dark,
-    padding: "4.5rem 3rem",
-  },
   content: {
-    paddingTop: "2.5rem",
-    paddingBottom: "4rem",
-    backgroundColor: theme.palette.general.light,
+    flex: 1,
+    padding: "6.5rem 2.5rem 2.5rem",
+    backgroundColor: theme.palette.sider.light,
+    [theme.breakpoints.down("xs")]: {
+      padding: "6.5rem 1.5rem 2.5rem",
+    },
+    minHeight: "100vh",
+  },
+  containerResponsive: {
+    [theme.breakpoints.down("xs")]: {
+      display: "none",
+    },
+  },
+  drawerIcon: {
+    display: "none",
+    [theme.breakpoints.down("xs")]: {
+      display: "inline",
+      position: "absolute",
+      top: 76,
+      left: 6,
+    },
+  },
+  allView: {
+    height: "100%",
   },
 }));

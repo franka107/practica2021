@@ -201,6 +201,14 @@ const mainTheme = createTheme({
         background: "transparent",
         fontSize: 15,
       },
+      underline: {
+        "&&&:before": {
+          borderBottom: "none",
+        },
+        "&&:after": {
+          borderBottom: "none",
+        },
+      },
     },
     MuiCheckbox: {
       root: {

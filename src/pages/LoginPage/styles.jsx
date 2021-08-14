@@ -2,8 +2,12 @@ import { makeStyles } from "@material-ui/core";
 
 export const useStyles = makeStyles((theme) => ({
   titleContainer: {
-    padding: "1rem 0",
+    paddingTop: "1rem",
     textAlign: "center",
+  },
+  form: {
+    paddingTop: "1rem",
+    paddingBottom: "1rem",
   },
   title: {
     color: theme.palette.general.contrastText,
@@ -51,8 +55,8 @@ export const useStyles = makeStyles((theme) => ({
     color: "white",
     width: "100%",
     "&:hover": {
-      backgroundColor: theme.palette.primary.main,
-      color: theme.palette.general.contrastText,
+      backgroundColor: theme.palette.button.primary,
+      color: "white",
     },
   },
   resetPassword: {
