@@ -1,13 +1,9 @@
-import { useDispatch } from "react-redux";
-import { startLoginEmailPassword } from "../../redux/actions/auth";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 
 const TestPage = () => {
-  const dispatch = useDispatch();
-
   const validationSchema = yup.object({
     email: yup
       .string("Enter your email")
@@ -27,7 +23,6 @@ const TestPage = () => {
     validationSchema: validationSchema,
     onSubmit: (values) => {
       // alert(JSON.stringify(values, null, 2));
-      dispatch(startLoginEmailPassword(values.email, values.password));
     },
   });
 

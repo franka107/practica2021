@@ -9,7 +9,7 @@ function TextFieldFormik(props) {
   return (
     <Grid item xs={12}>
       <TextField
-        error={meta.touched && meta.error}
+        error={meta.touched && Boolean(meta.error)}
         variant="filled"
         helperText={meta.touched && meta.error}
         {...field}
