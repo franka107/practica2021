@@ -1,3 +1,4 @@
+import UserService from "../../services/user.service";
 import { userConstants } from "../constants";
 import { alertActions } from "./alert.actions";
 
@@ -6,18 +7,15 @@ export const userActions = { login };
 function login(email, password) {
   return (dispatch) => {
     dispatch(request({ email }));
-
-    window.icAPI.callService(
-      "userLogin",
-      { email, password },
-      function (error, response) {
-        if (!error) {
-          const { key, firstName, email } = response.responseJSON;
-          dispatch(success({ key, firstName, email }));
-        } else {
-          dispatch(failure(error));
-          dispatch(alertActions.error(error));
-        }
+    return UserService.userLogin(email, password).then(
+      (response) => {
+        dispatch(success(response));
+        return Promise.resolve();
+      },
+      (error) => {
+        dispatch(failure(error));
+        dispatch(alertActions.error());
+        return Promise.reject();
       }
     );
   };

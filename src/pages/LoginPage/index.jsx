@@ -13,14 +13,16 @@ import RegisterCard from "../../components/RegisterCard";
 import { Formik } from "formik";
 import * as yup from "yup";
 import TextFieldFormik from "../../components/Inputs/TextFieldFormik";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import googleBtn from "../../assets/images/google.png";
 import { useDispatch } from "react-redux";
 import { userActions } from "../../redux/actions";
+import routesDictionary from "../../routers/routesDict";
 
 function LoginPage() {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const validationSchema = yup.object({
     email: yup
@@ -142,8 +144,16 @@ function LoginPage() {
             initialValues={{ email: "", password: "" }}
             onSubmit={(values, actions) => {
               const { email, password } = values;
-              dispatch(userActions.login(email, password));
-              actions.setSubmitting(false);
+              dispatch(userActions.login(email, password))
+                .then(() => {
+                  history.push(routesDictionary.dashboard);
+                })
+                .catch((error) => {
+                  console.log("error");
+                })
+                .finally(() => {
+                  actions.setSubmitting(false);
+                });
             }}
             validationSchema={validationSchema}
           >

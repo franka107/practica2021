@@ -16,12 +16,12 @@ export const AuthLayout = ({ children }) => {
         xs={12}
         className={classes.siderBackground}
         alignContent={"center"}
-        justify={"space-between"}
+        justifyContent="space-between"
       >
         <Grid item md={2} sm={4} xs={5} className={classes.logoContainer}>
-          <Logo />
+          <Logo footer={false} />
         </Grid>
-        <Grid item container justify={"flex-end"} xs={2}>
+        <Grid item container justifyContent="flex-end" xs={2}>
           <MenuDropdown />
         </Grid>
       </Grid>

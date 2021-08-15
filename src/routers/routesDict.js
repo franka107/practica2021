@@ -1,6 +1,6 @@
 const routesDictionary = {
   login: "/login",
-  test: "/test",
+  dashboard: "/dashboard",
   test1: "/test1",
 };
 
