@@ -18,8 +18,9 @@ import googleBtn from "../../assets/images/google.png";
 import { useDispatch } from "react-redux";
 import { userActions } from "../../redux/actions";
 import routesDictionary from "../../routers/routesDict";
+import { uiActions } from "../../redux/actions/ui.actions";
 
-function LoginPage() {
+function LoginPage(props) {
   const classes = useStyles();
   const dispatch = useDispatch();
   const history = useHistory();
@@ -149,7 +150,10 @@ function LoginPage() {
                   history.push(routesDictionary.dashboard);
                 })
                 .catch((error) => {
-                  console.log("error");
+                  //props.snackbarShowMessage("Credenciales inválidas", "error");
+                  dispatch(
+                    uiActions.showSnackbar("Credenciales inválidas", "error")
+                  );
                 })
                 .finally(() => {
                   actions.setSubmitting(false);

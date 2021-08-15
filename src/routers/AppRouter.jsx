@@ -7,11 +7,13 @@ import LoginPage from "../pages/LoginPage";
 import TestPage from "../pages/TestPage";
 import { PublicRoute } from "./PublicRoute";
 import routesDictionary from "./routesDict";
+import { GlobalSnackbar } from "../components/GlobalSnackbar";
 
 export const AppRouter = () => {
   return (
     <Router>
       <div>
+        <GlobalSnackbar></GlobalSnackbar>
         <Switch>
           <PublicRoute
             component={LoginPage}
