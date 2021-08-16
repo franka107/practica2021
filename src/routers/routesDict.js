@@ -4,6 +4,7 @@ const routesDictionary = {
   register: "/register",
   dashboard: "/dashboard",
   test1: "/test1",
+  animalControl: "/control-animal/",
 };
 
 export default routesDictionary;

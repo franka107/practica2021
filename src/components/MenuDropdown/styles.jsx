@@ -1,7 +1,6 @@
-import { makeStyles } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core'
 
-
-export const useStyles = makeStyles(theme => ({
+export const useStyles = makeStyles((theme) => ({
   menuContainer: {
     width: 'fit-content',
     paddingRight: '1.5rem',
@@ -52,4 +51,4 @@ export const useStyles = makeStyles(theme => ({
     marginRight: '.5rem',
     color: 'black',
   },
-}));
+}))

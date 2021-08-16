@@ -9,6 +9,7 @@ import { PublicRoute } from "./PublicRoute";
 import routesDictionary from "./routesDict";
 import { GlobalSnackbar } from "../components/GlobalSnackbar";
 import RegisterPage from "../pages/RegisterPage";
+import AnimalControlPage from "../pages/AnimalControlPage";
 
 export const AppRouter = () => {
   return (
@@ -30,14 +31,20 @@ export const AppRouter = () => {
           />
           <PublicRoute
             component={TestPage}
-            layout={DashboardLayout}
+            layout={ConfigLayout}
             path={routesDictionary.test}
             isAuthenticated={false}
           />
           <PublicRoute
             component={() => <p>Probando</p>}
-            layout={DashboardLayout}
+            layout={ConfigLayout}
             path={routesDictionary.test1}
+            isAuthenticated={false}
+          />
+          <PublicRoute
+            component={AnimalControlPage}
+            layout={DashboardLayout}
+            path={routesDictionary.animalControl}
             isAuthenticated={false}
           />
           <Redirect to="/login" />
