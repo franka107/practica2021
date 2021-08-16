@@ -1,56 +1,59 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react'
 import {
   Grid,
   ListItemIcon,
   Menu,
   MenuItem,
   Typography,
-} from "@material-ui/core";
-import { Menu as MenuIcon, Search } from "@material-ui/icons";
-import AccountCircleIcon from "@material-ui/icons/AccountCircle";
-import NotificationsNoneOutlinedIcon from "@material-ui/icons/NotificationsNoneOutlined";
-import { useStyles } from "./styles";
-import { menuItems } from "./constants";
+} from '@material-ui/core'
+import { Menu as MenuIcon, Search } from '@material-ui/icons'
+import { useHistory } from 'react-router-dom'
+import AccountCircleIcon from '@material-ui/icons/AccountCircle'
+import NotificationsNoneOutlinedIcon from '@material-ui/icons/NotificationsNoneOutlined'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { useStyles } from './styles'
+import { menuItems } from './constants'
 
 function MenuDropdown({ isLogin, setLoginState }) {
-  const classes = useStyles();
-  const [openMenu, setOpenMenu] = useState(false);
-  const [menuList, setMenuList] = useState([]);
+  const classes = useStyles()
+  const [openMenu, setOpenMenu] = useState(false)
+  const [menuList, setMenuList] = useState([])
+  const history = useHistory()
 
   useEffect(() => {
     if (!menuList.length) {
       if (isLogin) {
-        setMenuList(menuItems);
+        setMenuList(menuItems)
       } else {
         setMenuList([
           {
             id: 1,
-            title: "Inicio",
+            title: 'Inicio',
             onClick: (history) => {},
           },
           {
             id: 2,
-            title: "Iniciar Sesión",
+            title: 'Iniciar Sesión',
             onClick: (history) => {},
           },
           {
             id: 3,
-            title: "Registrarse",
+            title: 'Registrarse',
             onClick: (history) => {},
           },
-        ]);
+        ])
       }
     }
-  }, [menuList, isLogin]);
+  }, [menuList, isLogin])
 
   const handleClick = (event) => {
-    setOpenMenu(event.currentTarget);
-  };
+    setOpenMenu(event.currentTarget)
+  }
 
-  const handleClose = () => setOpenMenu(false);
+  const handleClose = () => setOpenMenu(false)
 
   return (
-    <Grid item container justify={"flex-end"} className={classes.menuContainer}>
+    <Grid item container justify={'flex-end'} className={classes.menuContainer}>
       {isLogin && (
         <React.Fragment>
           <Grid item>
@@ -78,16 +81,26 @@ function MenuDropdown({ isLogin, setLoginState }) {
         classes={{ paper: classes.menuList }}
       >
         {menuList.map((item) => (
-          <MenuItem key={item.id}>
+          <MenuItem
+            key={item.id}
+            onClick={() => {
+              handleClose()
+              if (item.link) {
+                history.push(item.link)
+              }
+            }}
+          >
             {item.img && (
-              <ListItemIcon className={classes.menuImg}></ListItemIcon>
+              <ListItemIcon className={classes.menuImg}>
+                <FontAwesomeIcon icon={item.img} size={'1x'} />
+              </ListItemIcon>
             )}
             {item.title}
           </MenuItem>
         ))}
       </Menu>
     </Grid>
-  );
+  )
 }
 
-export default MenuDropdown;
+export default MenuDropdown

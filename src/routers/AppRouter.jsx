@@ -1,13 +1,14 @@
-import React from "react";
-import { HashRouter as Router, Switch, Redirect } from "react-router-dom";
-import { AuthLayout } from "../layouts/AuthLayout";
-import { DashboardLayout } from "../layouts/DashboardLayout";
-import { ConfigLayout } from "../layouts/ConfigLayout";
-import LoginPage from "../pages/LoginPage";
-import TestPage from "../pages/TestPage";
-import { PublicRoute } from "./PublicRoute";
-import routesDictionary from "./routesDict";
-import { GlobalSnackbar } from "../components/GlobalSnackbar";
+import React from 'react'
+import { HashRouter as Router, Switch, Redirect } from 'react-router-dom'
+import { AuthLayout } from '../layouts/AuthLayout'
+import { DashboardLayout } from '../layouts/DashboardLayout'
+import { ConfigLayout } from '../layouts/ConfigLayout'
+import LoginPage from '../pages/LoginPage'
+import TestPage from '../pages/TestPage'
+import AnimalControlPage from '../pages/AnimalControlPage'
+import { PublicRoute } from './PublicRoute'
+import routesDictionary from './routesDict'
+import { GlobalSnackbar } from '../components/GlobalSnackbar'
 
 export const AppRouter = () => {
   return (
@@ -23,19 +24,25 @@ export const AppRouter = () => {
           />
           <PublicRoute
             component={TestPage}
-            layout={DashboardLayout}
+            layout={ConfigLayout}
             path={routesDictionary.test}
             isAuthenticated={false}
           />
           <PublicRoute
             component={() => <p>Probando</p>}
-            layout={DashboardLayout}
+            layout={ConfigLayout}
             path={routesDictionary.test1}
+            isAuthenticated={false}
+          />
+          <PublicRoute
+            component={AnimalControlPage}
+            layout={DashboardLayout}
+            path={routesDictionary.animalControl}
             isAuthenticated={false}
           />
           <Redirect to="/login" />
         </Switch>
       </div>
     </Router>
-  );
-};
+  )
+}

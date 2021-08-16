@@ -1,49 +1,43 @@
-import React from "react";
-import { Facebook } from "@material-ui/icons";
-import {
-  Button,
-  Container,
-  Grid,
-  TextField,
-  Typography,
-} from "@material-ui/core";
-import { useStyles } from "./styles";
-import Logo from "../../components/Logo";
-import RegisterCard from "../../components/RegisterCard";
-import { Formik } from "formik";
-import * as yup from "yup";
-import TextFieldFormik from "../../components/Inputs/TextFieldFormik";
-import { Link, useHistory } from "react-router-dom";
-import googleBtn from "../../assets/images/google.png";
-import { useDispatch } from "react-redux";
-import { userActions } from "../../redux/actions";
-import routesDictionary from "../../routers/routesDict";
-import { uiActions } from "../../redux/actions/ui.actions";
+import React from 'react'
+import { Facebook } from '@material-ui/icons'
+import { Button, Container, Grid, Typography } from '@material-ui/core'
+import { useStyles } from './styles'
+import Logo from '../../components/Logo'
+import RegisterCard from '../../components/RegisterCard'
+import { Formik } from 'formik'
+import * as yup from 'yup'
+import TextFieldFormik from '../../components/Inputs/TextFieldFormik'
+import { Link, useHistory } from 'react-router-dom'
+import googleBtn from '../../assets/images/google.png'
+import { useDispatch } from 'react-redux'
+import { userActions } from '../../redux/actions'
+import routesDictionary from '../../routers/routesDict'
+import { uiActions } from '../../redux/actions/ui.actions'
 
 function LoginPage(props) {
-  const classes = useStyles();
-  const dispatch = useDispatch();
-  const history = useHistory();
+  const classes = useStyles()
+  const dispatch = useDispatch()
+  const history = useHistory()
 
   const validationSchema = yup.object({
     email: yup
-      .string("Ingresa tu correo eletrónico.")
-      .email("Ingrese un correo válido.")
-      .required("El correo electrónico es requerido."),
+      .string('Ingresa tu correo eletrónico.')
+      .email('Ingrese un correo válido.')
+      .required('El correo electrónico es requerido.'),
     password: yup
-      .string("Ingresa tu contraseña")
-      .min(8, "La contraseña debe tener un mínimo de 8 caracteres.")
+      .string('Ingresa tu contraseña')
+      .min(8, 'La contraseña debe tener un mínimo de 8 caracteres.')
       .matches(
         /^(?=.*[`~!@#$%^&*()_°¬|+\-=?;:'",.<>{}[\]\\/]).*$/gm,
-        "La contraseña debe contener un caracter especial."
+        'La contraseña debe contener un caracter especial.'
       )
-      .matches(/.*[A-Z].*/gm, "La contraseña debe contener mayúsculas.")
+      .matches(/.*[A-Z].*/gm, 'La contraseña debe contener mayúsculas.')
       .matches(
         /.*[0-9].*/gm,
-        "La contraseña debe contener caracteres numéricos."
+        'La contraseña debe contener caracteres numéricos.'
       )
-      .required("La contraseña es requerida."),
-  });
+      .required('La contraseña es requerida.'),
+  })
 
   const LoginForm = ({
     handleChange,
@@ -81,23 +75,23 @@ function LoginPage(props) {
         </Grid>
         <Grid container>
           <Grid item className={classes.resetPassword}>
-            <Typography variant={"caption"} gutterBottom>
+            <Typography variant={'caption'} gutterBottom>
               <Link className={classes.link}>¿Olvidaste tu contraseña?</Link>
             </Typography>
           </Grid>
           <Grid item xs={12} className={classes.resetPassword}>
-            <Typography variant={"caption"} gutterBottom>
+            <Typography variant={'caption'} gutterBottom>
               <Link className={classes.link}>Regístrate</Link>
             </Typography>
           </Grid>
           <Grid item xs={12}>
             <Button
               className={classes.googleBtn}
-              startIcon={<img src={googleBtn} alt={"Google"} />}
+              startIcon={<img src={googleBtn} alt={'Google'} />}
             >
               <Typography
-                color={"secondary"}
-                align={"center"}
+                color={'secondary'}
+                align={'center'}
                 className={classes.googleBtnText}
               >
                 Iniciar sesión con Google
@@ -108,12 +102,12 @@ function LoginPage(props) {
             <Button
               className={classes.googleBtn}
               startIcon={
-                <Facebook color={"secondary"} className={classes.fbIcon} />
+                <Facebook color={'secondary'} className={classes.fbIcon} />
               }
             >
               <Typography
-                color={"secondary"}
-                align={"center"}
+                color={'secondary'}
+                align={'center'}
                 className={classes.googleBtnText}
               >
                 Iniciar sesión con Facebook
@@ -122,42 +116,42 @@ function LoginPage(props) {
           </Grid>
         </Grid>
       </form>
-    );
-  };
+    )
+  }
 
   return (
     <Container>
       <RegisterCard register>
         <Logo customClasses={classes.logo} />
         <Grid item className={classes.titleContainer}>
-          <Typography align={"center"} className={classes.title}>
+          <Typography align={'center'} className={classes.title}>
             Iniciar Sesión
           </Typography>
           <Typography
-            variant={"caption"}
+            variant={'caption'}
             gutterBottom
-            align={"center"}
+            align={'center'}
             className={classes.subtitle}
           >
             Gestiona tu finca desde el panel de usuario.
           </Typography>
           <Formik
-            initialValues={{ email: "", password: "" }}
+            initialValues={{ email: '', password: '' }}
             onSubmit={(values, actions) => {
-              const { email, password } = values;
+              const { email, password } = values
               dispatch(userActions.login(email, password))
                 .then(() => {
-                  history.push(routesDictionary.dashboard);
+                  history.push(routesDictionary.dashboard)
                 })
                 .catch((error) => {
                   //props.snackbarShowMessage("Credenciales inválidas", "error");
                   dispatch(
-                    uiActions.showSnackbar("Credenciales inválidas", "error")
-                  );
+                    uiActions.showSnackbar('Credenciales inválidas', 'error')
+                  )
                 })
                 .finally(() => {
-                  actions.setSubmitting(false);
-                });
+                  actions.setSubmitting(false)
+                })
             }}
             validationSchema={validationSchema}
           >
@@ -166,7 +160,7 @@ function LoginPage(props) {
         </Grid>
       </RegisterCard>
     </Container>
-  );
+  )
 }
 
-export default LoginPage;
+export default LoginPage

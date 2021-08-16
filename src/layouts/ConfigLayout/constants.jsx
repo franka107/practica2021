@@ -1,16 +1,19 @@
+import { faUsers, faUser, faSignal } from '@fortawesome/free-solid-svg-icons'
+// import routesDictionary from '../../routers/routesDict'
+
 export const menuList = [
   {
     id: 'usuarios',
     title: 'Usuarios',
-    // img: faUsers,
+    img: faUsers,
     submenu: [
       {
-        id: 'Inicio',
+        id: 'inicio',
         title: 'Inicio',
         // link: routesDictionary.userManagement,
       },
       {
-        id: 'Inicio',
+        id: 'agregar-nuevo-usuario',
         title: 'Agregar nuevo usuario',
         // link: routesDictionary.userManagement,
       },
@@ -19,15 +22,15 @@ export const menuList = [
   {
     id: 'perfiles',
     title: 'Perfiles',
-    // img: faSignal,
+    img: faSignal,
     submenu: [
       {
-        id: 'Inicio',
+        id: 'inicio',
         title: 'Inicio',
         // link: routesDictionary.profileManagement,
       },
       {
-        id: 'Inicio',
+        id: 'agregar-nuevo-perfil',
         title: 'Agregar nuevo perfil',
         // link: routesDictionary.profileManagement,
       },
@@ -36,7 +39,7 @@ export const menuList = [
   {
     id: 'account',
     title: 'Cuenta',
-    // img: faUser,
+    img: faUser,
     // link: routesDictionary.account,
   },
 ]

@@ -1,7 +1,9 @@
 const routesDictionary = {
-  login: "/login",
-  dashboard: "/dashboard",
-  test1: "/test1",
-};
+  login: '/login/',
+  dashboard: '/dashboard/',
+  animalControl: '/control-animal/',
+  test1: '/test1/',
+  test: '/test/',
+}
 
-export default routesDictionary;
+export default routesDictionary
