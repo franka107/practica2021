@@ -19,6 +19,7 @@ import { useDispatch } from "react-redux";
 import { userActions } from "../../redux/actions";
 import routesDictionary from "../../routers/routesDict";
 import { uiActions } from "../../redux/actions/ui.actions";
+import PasswordFieldFormik from "../../components/Inputs/PasswordFieldFormik";
 
 function LoginPage(props) {
   const classes = useStyles();
@@ -45,6 +46,21 @@ function LoginPage(props) {
       .required("La contraseña es requerida."),
   });
 
+  const onSubmitForm = (values, actions) => {
+    const { email, password } = values;
+    dispatch(userActions.login(email, password))
+      .then(() => {
+        history.push(routesDictionary.dashboard);
+      })
+      .catch((error) => {
+        //props.snackbarShowMessage("Credenciales inválidas", "error");
+        dispatch(uiActions.showSnackbar("Credenciales inválidas", "error"));
+      })
+      .finally(() => {
+        actions.setSubmitting(false);
+      });
+  };
+
   const LoginForm = ({
     handleChange,
     handleSubmit,
@@ -63,12 +79,11 @@ function LoginPage(props) {
             label="Correo"
             onChange={handleChange}
           ></TextFieldFormik>
-          <TextFieldFormik
+          <PasswordFieldFormik
             label="Contraseña"
-            type="password"
             name="password"
             onChange={handleChange}
-          ></TextFieldFormik>
+          ></PasswordFieldFormik>
           <Grid item xs={12}>
             <Button
               className={classes.loginBtn}
@@ -82,12 +97,19 @@ function LoginPage(props) {
         <Grid container>
           <Grid item className={classes.resetPassword}>
             <Typography variant={"caption"} gutterBottom>
-              <Link className={classes.link}>¿Olvidaste tu contraseña?</Link>
+              <Link
+                className={classes.link}
+                to={routesDictionary.recoverPassword}
+              >
+                ¿Olvidaste tu contraseña?
+              </Link>
             </Typography>
           </Grid>
           <Grid item xs={12} className={classes.resetPassword}>
             <Typography variant={"caption"} gutterBottom>
-              <Link className={classes.link}>Regístrate</Link>
+              <Link className={classes.link} to={routesDictionary.register}>
+                Regístrate
+              </Link>
             </Typography>
           </Grid>
           <Grid item xs={12}>
@@ -143,22 +165,7 @@ function LoginPage(props) {
           </Typography>
           <Formik
             initialValues={{ email: "", password: "" }}
-            onSubmit={(values, actions) => {
-              const { email, password } = values;
-              dispatch(userActions.login(email, password))
-                .then(() => {
-                  history.push(routesDictionary.dashboard);
-                })
-                .catch((error) => {
-                  //props.snackbarShowMessage("Credenciales inválidas", "error");
-                  dispatch(
-                    uiActions.showSnackbar("Credenciales inválidas", "error")
-                  );
-                })
-                .finally(() => {
-                  actions.setSubmitting(false);
-                });
-            }}
+            onSubmit={onSubmitForm}
             validationSchema={validationSchema}
           >
             {(props) => <LoginForm {...props} />}

@@ -3,11 +3,11 @@ import { useField } from "formik";
 import PropTypes from "prop-types";
 import { Grid, TextField } from "@material-ui/core";
 
-function TextFieldFormik(props) {
+function TextFieldFormik({ xs = 12, ...props }) {
   const [field, meta, helpers] = useField(props);
 
   return (
-    <Grid item xs={12}>
+    <Grid item xs={xs} {...props}>
       <TextField
         error={meta.touched && Boolean(meta.error)}
         variant="filled"

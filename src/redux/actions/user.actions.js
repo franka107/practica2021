@@ -1,8 +1,32 @@
 import UserService from "../../services/user.service";
 import { userConstants } from "../constants";
 import { alertActions } from "./alert.actions";
+import { uiActions } from "./ui.actions";
 
-export const userActions = { login };
+export const userActions = { login, register };
+
+function register(userData) {
+  return (dispatch) => {
+    return UserService.userRegister(userData).then(
+      (response) => {
+        dispatch(success(response));
+        return Promise.resolve();
+      },
+      (error) => {
+        dispatch(failure(error));
+        dispatch(alertActions.error());
+        dispatch(uiActions.showSnackbar(error.message, "error"));
+        return Promise.reject();
+      }
+    );
+  };
+  function success(user) {
+    return { type: userConstants.USER_REGISTER_SUCCESS, user };
+  }
+  function failure(error) {
+    return { type: userConstants.USER_REGISTER_FAILURE, error };
+  }
+}
 
 function login(email, password) {
   return (dispatch) => {

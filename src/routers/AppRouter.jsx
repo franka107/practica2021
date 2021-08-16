@@ -8,6 +8,7 @@ import TestPage from "../pages/TestPage";
 import { PublicRoute } from "./PublicRoute";
 import routesDictionary from "./routesDict";
 import { GlobalSnackbar } from "../components/GlobalSnackbar";
+import RegisterPage from "../pages/RegisterPage";
 
 export const AppRouter = () => {
   return (
@@ -19,6 +20,12 @@ export const AppRouter = () => {
             component={LoginPage}
             layout={AuthLayout}
             path={routesDictionary.login}
+            isAuthenticated={false}
+          />
+          <PublicRoute
+            component={RegisterPage}
+            layout={AuthLayout}
+            path={routesDictionary.register}
             isAuthenticated={false}
           />
           <PublicRoute
