@@ -1,12 +1,6 @@
 import React from "react";
 import { Facebook } from "@material-ui/icons";
-import {
-  Button,
-  Container,
-  Grid,
-  TextField,
-  Typography,
-} from "@material-ui/core";
+import { Button, Container, Grid, Typography } from "@material-ui/core";
 import { useStyles } from "./styles";
 import Logo from "../../components/Logo";
 import RegisterCard from "../../components/RegisterCard";

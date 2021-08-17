@@ -30,6 +30,12 @@ export const AppRouter = () => {
             isAuthenticated={false}
           />
           <PublicRoute
+            component={AnimalControlPage}
+            layout={DashboardLayout}
+            path={routesDictionary.animalControl}
+            isAuthenticated={false}
+          />
+          <PublicRoute
             component={TestPage}
             layout={ConfigLayout}
             path={routesDictionary.test}
@@ -39,12 +45,6 @@ export const AppRouter = () => {
             component={() => <p>Probando</p>}
             layout={ConfigLayout}
             path={routesDictionary.test1}
-            isAuthenticated={false}
-          />
-          <PublicRoute
-            component={AnimalControlPage}
-            layout={DashboardLayout}
-            path={routesDictionary.animalControl}
             isAuthenticated={false}
           />
           <Redirect to="/login" />
