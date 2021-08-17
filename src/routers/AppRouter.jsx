@@ -43,6 +43,12 @@ export const AppRouter = () => {
             isAuthenticated={false}
           />
 
+          <PublicRoute
+            component={() => <p>Probando</p>}
+            layout={ConfigLayout}
+            path={routesDictionary.test}
+            isAuthenticated={false}
+          />
           <Redirect to="/login" />
         </Switch>
       </div>

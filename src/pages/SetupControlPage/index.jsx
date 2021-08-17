@@ -1,3 +1,4 @@
+import { Typography } from "@material-ui/core";
 import { Dialog } from "@material-ui/core";
 import { useState } from "react";
 import { useHistory } from "react-router-dom";
@@ -18,6 +19,9 @@ export default function SetupControlPage() {
         classes={{ paperFullWidth: classes.modal }}
       >
         {registerStep === 0 && <RegisterFarm />}
+        <Typography variant={"caption"} className={classes.stepCounter}>
+          {`Paso ${registerStep + 1}/2`}
+        </Typography>
       </Dialog>
     </>
   );

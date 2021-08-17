@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from "react";
 import {
   Collapse,
   List,
@@ -8,68 +8,94 @@ import {
   ListSubheader,
   Typography,
   Drawer,
-} from '@material-ui/core'
-import { ExpandLess, ExpandMore } from '@material-ui/icons'
-import clsx from 'clsx'
-import { useStyles } from './styles'
-import { useHistory } from 'react-router-dom'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+} from "@material-ui/core";
+import { ExpandLess, ExpandMore } from "@material-ui/icons";
+import clsx from "clsx";
+import { useStyles } from "./styles";
+import { useHistory } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 function Sidebar({ openDrawer, setOpenDrawer, options }) {
-  const history = useHistory()
-  const { location = {} } = history
-  const classes = useStyles()
+  const history = useHistory();
+  const { location = {} } = history;
+  const classes = useStyles();
   const farm = {
-    id: 'control-ganadero',
-    title: 'Emerson Arriba',
+    id: "control-ganadero",
+    title: "Emerson Arriba",
     submenu: [
       {
-        id: 'Emerson',
-        title: 'Emerson',
+        id: "Emerson",
+        title: "Emerson",
       },
       {
-        id: 'Frank',
-        title: 'Frank',
+        id: "Frank",
+        title: "Frank",
       },
     ],
-  }
+  };
 
   useEffect(() => {
-    console.log(location)
-  }, [location])
+    console.log(location.pathname);
+    verifyLocation();
+  }, [location]);
+
+  const verifyLocation = () => {
+    options.map((option, oindex) => {
+      if (option.submenu) {
+        option.submenu.map((sub, sindex) => {
+          if (sub.submenu) {
+            sub.submenu.map((subsub, ssindex) => {
+              if (subsub.link === location.pathname) {
+                handleClick(option.id);
+                handleSubMenuClick(sub.id);
+                handleSubSubMenuClick(subsub.id);
+              }
+            });
+          } else {
+            if (sub.link === location.pathname) {
+              handleClick(option.id);
+              handleSubMenuClick(sub.id);
+            }
+          }
+        });
+      }
+      console.log(option);
+    });
+  };
 
   const [nestedList, setNestedList] = useState(() => {
-    const { state = {} } = {}
-    const { item = null } = state
+    const { state = {} } = {};
+    const { item = null } = state;
 
-    return item ? { [item]: true } : {}
-  })
+    return item ? { [item]: true } : {};
+  });
   const [subNestedList, setSubNestedList] = useState(() => {
-    const { state = {} } = {}
-    const { subItem = null } = state
+    const { state = {} } = {};
+    const { subItem = null } = state;
 
-    return subItem ? { [subItem]: true } : {}
-  })
+    return subItem ? { [subItem]: true } : {};
+  });
 
   const [subSubNestedList, setSubSubNestedList] = useState(() => {
-    const { state = {} } = {}
-    const { subSubItem = null } = state
+    const { state = {} } = {};
+    const { subSubItem = null } = state;
 
-    return subSubItem ? { [subSubItem]: true } : {}
-  })
-  const [barnActive, setBarnActive] = useState(farm.submenu[0])
+    return subSubItem ? { [subSubItem]: true } : {};
+  });
+  const [barnActive, setBarnActive] = useState(farm.submenu[0]);
 
   const handleClick = (e) => {
-    setNestedList({ [e]: !nestedList[e] })
-  }
+    setNestedList({ [e]: !nestedList[e] });
+  };
 
   const handleSubMenuClick = (e) => {
-    setSubNestedList({ [e]: !subNestedList[e] })
-  }
+    setSubNestedList({ [e]: !subNestedList[e] });
+  };
 
   const handleSubSubMenuClick = (e) => {
-    if (!subSubNestedList[e]) setSubSubNestedList({ [e]: !subSubNestedList[e] })
-  }
+    if (!subSubNestedList[e])
+      setSubSubNestedList({ [e]: !subSubNestedList[e] });
+  };
 
   const drawer = (
     <List
@@ -78,7 +104,7 @@ function Sidebar({ openDrawer, setOpenDrawer, options }) {
       subheader={
         <ListSubheader
           disableSticky
-          color={'primary'}
+          color={"primary"}
           component="div"
           id="nested-list-subheader"
           className={classes.subheader}
@@ -86,7 +112,7 @@ function Sidebar({ openDrawer, setOpenDrawer, options }) {
           <ListItem
             button
             onClick={() => {
-              handleClick(farm.title)
+              handleClick(farm.title);
             }}
             className={clsx(
               classes.farmItem,
@@ -95,10 +121,10 @@ function Sidebar({ openDrawer, setOpenDrawer, options }) {
           >
             <ListItemText className={classes.farmTextContainer}>
               <Typography className={classes.farmText}>
-                {`Hacienda ${farm.title || ''}`}
+                {`Hacienda ${farm.title || ""}`}
               </Typography>
               <Typography
-                variant={'subtitle2'}
+                variant={"subtitle2"}
                 className={classes.activeBarnText}
               >
                 {barnActive.title}
@@ -109,7 +135,7 @@ function Sidebar({ openDrawer, setOpenDrawer, options }) {
                 {nestedList[farm.title] ? (
                   <ExpandLess className={classes.farmItem} />
                 ) : (
-                  <ExpandMore color={'primary'} className={classes.farmItem} />
+                  <ExpandMore color={"primary"} className={classes.farmItem} />
                 )}
               </div>
             )}
@@ -123,8 +149,8 @@ function Sidebar({ openDrawer, setOpenDrawer, options }) {
                     component="div"
                     disablePadding
                     onClick={() => {
-                      setBarnActive(farmSubItem)
-                      handleClick(farm.title)
+                      setBarnActive(farmSubItem);
+                      handleClick(farm.title);
                     }}
                   >
                     <ListItem button className={classes.nested}>
@@ -134,25 +160,25 @@ function Sidebar({ openDrawer, setOpenDrawer, options }) {
                       />
                     </ListItem>
                   </List>
-                )
+                );
               })}
           </Collapse>
         </ListSubheader>
       }
     >
       {options.map((item) => {
-        const CustomIcon = item.img
+        const CustomIcon = item.img;
         return (
           <React.Fragment key={`list-item-${item.id}`}>
             <ListItem
               button
               onClick={() => {
-                handleClick(item.id)
+                handleClick(item.id);
                 if (item.link) {
-                  history.push(item.link)
+                  history.push(item.link);
                 }
                 if (openDrawer) {
-                  setOpenDrawer(false)
+                  setOpenDrawer(false);
                 }
               }}
               className={clsx(
@@ -171,9 +197,9 @@ function Sidebar({ openDrawer, setOpenDrawer, options }) {
               {item.submenu && (
                 <div>
                   {nestedList[item.id] ? (
-                    <ExpandLess color={'primary'} />
+                    <ExpandLess color={"primary"} />
                   ) : (
-                    <ExpandMore color={'primary'} />
+                    <ExpandMore color={"primary"} />
                   )}
                 </div>
               )}
@@ -181,7 +207,7 @@ function Sidebar({ openDrawer, setOpenDrawer, options }) {
             <Collapse in={nestedList[item.id]} timeout="auto" unmountOnExit>
               {item.submenu &&
                 item.submenu.map((subitem) => {
-                  const SubCustomIcon = subitem.img
+                  const SubCustomIcon = subitem.img;
 
                   return (
                     <List
@@ -190,10 +216,10 @@ function Sidebar({ openDrawer, setOpenDrawer, options }) {
                       disablePadding
                       onClick={() => {
                         if (subitem.link) {
-                          history.push(subitem.link)
+                          history.push(subitem.link);
                         }
                         if (openDrawer) {
-                          setOpenDrawer(false)
+                          setOpenDrawer(false);
                         }
                       }}
                     >
@@ -201,8 +227,8 @@ function Sidebar({ openDrawer, setOpenDrawer, options }) {
                         button
                         className={classes.nested}
                         onClick={() => {
-                          handleSubMenuClick(subitem.id)
-                          console.log(subNestedList)
+                          handleSubMenuClick(subitem.id);
+                          console.log(subNestedList);
                         }}
                       >
                         {subitem.img && (
@@ -230,9 +256,9 @@ function Sidebar({ openDrawer, setOpenDrawer, options }) {
                         {subitem.submenu && (
                           <div>
                             {nestedList[subitem.id] ? (
-                              <ExpandLess color={'primary'} />
+                              <ExpandLess color={"primary"} />
                             ) : (
-                              <ExpandMore color={'primary'} />
+                              <ExpandMore color={"primary"} />
                             )}
                           </div>
                         )}
@@ -244,7 +270,7 @@ function Sidebar({ openDrawer, setOpenDrawer, options }) {
                       >
                         {subitem.submenu &&
                           subitem.submenu.map((subsubitem) => {
-                            const SubSubCustomIcon = subsubitem.img
+                            const SubSubCustomIcon = subsubitem.img;
 
                             return (
                               <List
@@ -256,7 +282,7 @@ function Sidebar({ openDrawer, setOpenDrawer, options }) {
                                   button
                                   className={classes.nestedSub}
                                   onClick={() => {
-                                    handleSubSubMenuClick(subsubitem.id)
+                                    handleSubSubMenuClick(subsubitem.id);
                                   }}
                                 >
                                   {subsubitem.img && (
@@ -277,18 +303,18 @@ function Sidebar({ openDrawer, setOpenDrawer, options }) {
                                   />
                                 </ListItem>
                               </List>
-                            )
+                            );
                           })}
                       </Collapse>
                     </List>
-                  )
+                  );
                 })}
             </Collapse>
           </React.Fragment>
-        )
+        );
       })}
     </List>
-  )
+  );
   return (
     <React.Fragment>
       {!openDrawer && (
@@ -298,7 +324,7 @@ function Sidebar({ openDrawer, setOpenDrawer, options }) {
       )}
       <Drawer
         variant="temporary"
-        anchor={'left'}
+        anchor={"left"}
         open={openDrawer}
         onClose={() => setOpenDrawer(false)}
         classes={{
@@ -311,7 +337,7 @@ function Sidebar({ openDrawer, setOpenDrawer, options }) {
         {drawer}
       </Drawer>
     </React.Fragment>
-  )
+  );
 }
 
-export default Sidebar
+export default Sidebar;
