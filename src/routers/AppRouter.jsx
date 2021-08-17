@@ -10,6 +10,8 @@ import { GlobalSnackbar } from "../components/GlobalSnackbar";
 import RegisterPage from "../pages/RegisterPage";
 import AnimalControlPage from "../pages/AnimalControlPage";
 import SetupControlPage from "../pages/SetupControlPage";
+import PregnanciesPage from "../pages/PregnanciesPage";
+import PalpationPage from "../pages/PalpationPage";
 
 export const AppRouter = () => {
   return (
@@ -17,19 +19,24 @@ export const AppRouter = () => {
       <div>
         <GlobalSnackbar></GlobalSnackbar>
         <Switch>
+          {/* <PublicRoute
+            component={() => <p>Probando</p>}
+            layout={ConfigLayout}
+            path={routesDictionary.test}
+            isAuthenticated={false}
+          /> */}
           <PublicRoute
-            component={LoginPage}
-            layout={AuthLayout}
-            path={routesDictionary.login}
+            component={PalpationPage}
+            layout={DashboardLayout}
+            path={routesDictionary.palpations}
             isAuthenticated={false}
           />
           <PublicRoute
-            component={RegisterPage}
-            layout={AuthLayout}
-            path={routesDictionary.register}
+            component={PregnanciesPage}
+            layout={DashboardLayout}
+            path={routesDictionary.pregnancies}
             isAuthenticated={false}
           />
-
           <PublicRoute
             component={AnimalControlPage}
             layout={DashboardLayout}
@@ -44,9 +51,15 @@ export const AppRouter = () => {
           />
 
           <PublicRoute
-            component={() => <p>Probando</p>}
-            layout={ConfigLayout}
-            path={routesDictionary.test}
+            component={RegisterPage}
+            layout={AuthLayout}
+            path={routesDictionary.register}
+            isAuthenticated={false}
+          />
+          <PublicRoute
+            component={LoginPage}
+            layout={AuthLayout}
+            path={routesDictionary.login}
             isAuthenticated={false}
           />
           <Redirect to="/login" />

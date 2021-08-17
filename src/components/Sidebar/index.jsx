@@ -37,7 +37,7 @@ function Sidebar({ openDrawer, setOpenDrawer, options }) {
   useEffect(() => {
     console.log(location.pathname);
     verifyLocation();
-  }, [location]);
+  }, []);
 
   const verifyLocation = () => {
     options.map((option, oindex) => {
@@ -282,6 +282,9 @@ function Sidebar({ openDrawer, setOpenDrawer, options }) {
                                   button
                                   className={classes.nestedSub}
                                   onClick={() => {
+                                    if (subsubitem.link) {
+                                      history.push(subsubitem.link);
+                                    }
                                     handleSubSubMenuClick(subsubitem.id);
                                   }}
                                 >
