@@ -7,9 +7,12 @@ import * as yup from "yup";
 import { Typography } from "@material-ui/core";
 import { useStyles } from "./styles";
 import ButtonFormik from "../../Inputs/ButtonFormik";
+import { Button } from "@material-ui/core";
 
 export default function RegisterFarmForm() {
-  const handleSubmit = () => {};
+  const handleSubmit = (values, actions) => {
+    console.log(values);
+  };
   const validationSchema = yup.object({});
   const initValues = {
     name: "",
@@ -37,81 +40,86 @@ export default function RegisterFarmForm() {
           validationSchema={validationSchema}
         >
           {(props) => (
-            <>
-              <TextFieldFormik
-                label="Nombre de la hacienda"
-                name="name"
-                onChange={props.handleChange}
-              ></TextFieldFormik>
-              <TextFieldFormik
-                label="Nombre del propietario"
-                name="landLord"
-                onChange={props.handleChange}
-                lg={9}
-                sm={6}
-                xs={12}
-              ></TextFieldFormik>
-              <TextFieldFormik
-                label="RUC/DNI/NIT"
-                name="nit"
-                onChange={props.handleChange}
-                lg={3}
-                sm={6}
-                xs={12}
-              ></TextFieldFormik>
-              <SelectFieldFormik
-                xs={4}
-                label="Pais"
-                name="country"
-              ></SelectFieldFormik>
-              <SelectFieldFormik
-                xs={4}
-                label="Región"
-                name="region"
-              ></SelectFieldFormik>
-              <SelectFieldFormik
-                xs={4}
-                label="Distrito"
-                name="district"
-              ></SelectFieldFormik>
-              <TextFieldFormik
-                label="Dirección"
-                name="address"
-                onChange={props.handleChange}
-                xs={9}
-              ></TextFieldFormik>
-              <PhoneNumberFieldFormik
-                xs={3}
-                name="phoneNumber"
-                onChange={props.handleChange}
-              />
-              <Grid item xs={12}>
-                <Typography variant={"subtitle2"} className={classes.subtitle2}>
-                  Unidades de medida
-                </Typography>
+            <form onSubmit={props.handleSubmit}>
+              <Grid container spacing={1}>
+                <TextFieldFormik
+                  label="Nombre de la hacienda"
+                  name="name"
+                  onChange={props.handleChange}
+                ></TextFieldFormik>
+                <TextFieldFormik
+                  label="Nombre del propietario"
+                  name="landLord"
+                  onChange={props.handleChange}
+                  lg={9}
+                  sm={6}
+                  xs={12}
+                ></TextFieldFormik>
+                <TextFieldFormik
+                  label="RUC/DNI/NIT"
+                  name="nit"
+                  onChange={props.handleChange}
+                  lg={3}
+                  sm={6}
+                  xs={12}
+                ></TextFieldFormik>
+                <SelectFieldFormik
+                  xs={4}
+                  label="Pais"
+                  name="country"
+                ></SelectFieldFormik>
+                <SelectFieldFormik
+                  xs={4}
+                  label="Región"
+                  name="region"
+                ></SelectFieldFormik>
+                <SelectFieldFormik
+                  xs={4}
+                  label="Distrito"
+                  name="district"
+                ></SelectFieldFormik>
+                <TextFieldFormik
+                  label="Dirección"
+                  name="address"
+                  onChange={props.handleChange}
+                  xs={9}
+                ></TextFieldFormik>
+                <PhoneNumberFieldFormik
+                  xs={3}
+                  name="phoneNumber"
+                  onChange={props.handleChange}
+                />
+                <Grid item xs={12}>
+                  <Typography
+                    variant={"subtitle2"}
+                    className={classes.subtitle2}
+                  >
+                    Unidades de medida
+                  </Typography>
+                </Grid>
+                <SelectFieldFormik
+                  sm={3}
+                  label="Unidad de areá"
+                  name="areaUnit"
+                ></SelectFieldFormik>
+                <SelectFieldFormik
+                  sm={3}
+                  label="Unidad de peso"
+                  name="weightUnit"
+                ></SelectFieldFormik>
+                <SelectFieldFormik
+                  sm={3}
+                  label="Unidad de volumen"
+                  name="capacityUnit"
+                ></SelectFieldFormik>
+                <SelectFieldFormik
+                  sm={3}
+                  label="Moneda"
+                  name="currency"
+                ></SelectFieldFormik>
+                <ButtonFormik xs={3} label="Siguiente" />
               </Grid>
-              <SelectFieldFormik
-                sm={3}
-                label="Unidad de areá"
-                name="areaUnit"
-              ></SelectFieldFormik>
-              <SelectFieldFormik
-                sm={3}
-                label="Unidad de peso"
-                name="weightUnit"
-              ></SelectFieldFormik>
-              <SelectFieldFormik
-                sm={3}
-                label="Unidad de volumen"
-                name="capacityUnit"
-              ></SelectFieldFormik>
-              <SelectFieldFormik
-                sm={3}
-                label="Moneda"
-                name="currency"
-              ></SelectFieldFormik>
-              <ButtonFormik xs={3} label="Siguiente" />
-            </>
+            </form>
           )}
         </Formik>
       </Grid>

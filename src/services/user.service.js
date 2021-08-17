@@ -5,12 +5,8 @@ const userLogin = (email, password) => {
       { email, password },
       function (error, response) {
         if (!error) {
-          const { key, firstName, email } = response.responseJSON;
-          localStorage.setItem(
-            "user",
-            JSON.stringify({ key, firstName, email })
-          );
-          resolve({ key, firstName, email });
+          localStorage.setItem("user", JSON.stringify(response.responseJSON));
+          resolve(response.responseJSON);
         } else {
           reject(response);
         }

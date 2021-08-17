@@ -35,9 +35,9 @@ export default function ButtonFormik({ xs = 12, ...props }) {
           color={"primary"}
           classes={{ root: classes.root, label: classes.label }}
           className={classes.button}
-          type="submit"
           {...props}
           {...field}
+          type="submit"
         >
           {props.label}
         </MuiButton>
