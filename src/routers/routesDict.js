@@ -1,4 +1,6 @@
 const routesDictionary = {
+  service: "/dashboard/servicios",
+  birth: "/dashboard/nacimientos",
   palpations: "/dashboard/palpaciones",
   emailVerified: "/email-verified/:userId",
   pregnancies: "/dashboard/preñeces",

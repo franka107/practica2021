@@ -68,13 +68,4 @@ export const useStyles = makeStyles((theme) => ({
     top: 10,
     cursor: "pointer",
   },
-  formStyle: {
-    marginTop: "1rem",
-  },
-  formDivider: {
-    marginTop: "0.3rem",
-  },
-  paddingButton: {
-    marginRight: "1rem",
-  },
 }));

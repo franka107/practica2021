@@ -13,6 +13,8 @@ import SetupControlPage from "../pages/SetupControlPage";
 import PregnanciesPage from "../pages/PregnanciesPage";
 import PalpationPage from "../pages/PalpationPage";
 import EmailVerifiedPage from "../pages/EmailVerifiedPage";
+import BirthPage from "../pages/BirthPage";
+import ServicePage from "../pages/ServicePage";
 
 export const AppRouter = () => {
   return (
@@ -26,6 +28,18 @@ export const AppRouter = () => {
             path={routesDictionary.test}
             isAuthenticated={false}
           /> */}
+          <PublicRoute
+            component={ServicePage}
+            layout={DashboardLayout}
+            path={routesDictionary.service}
+            isAuthenticated={false}
+          />
+          <PublicRoute
+            component={BirthPage}
+            layout={DashboardLayout}
+            path={routesDictionary.birth}
+            isAuthenticated={false}
+          />
           <PublicRoute
             component={PalpationPage}
             layout={DashboardLayout}
