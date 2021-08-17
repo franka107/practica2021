@@ -1,51 +1,55 @@
 import React from "react";
 import MuiPhoneNumber from "material-ui-phone-number";
 
-import { useStyles } from "./styles";
+import { useStyles } from "../styles";
 import { FormControl, FormHelperText } from "@material-ui/core";
+import { useField } from "formik";
+import { Grid } from "@material-ui/core";
 
-export default function PhoneNumberFieldFormik(props) {
+export default function PhoneNumberFieldFormik({ xs = 12, ...props }) {
   const classes = useStyles();
-  const { name, value, onChange, error, customClasses } = props;
+  const [field, meta, helpers] = useField(props);
 
-  const handleOnChange = (value) => {
-    if (value !== "+") {
-      onChange(null, name, value);
-    } else {
-      onChange(null, name, "");
-    }
-  };
+  //const handleOnChange = (value) => {
+  //  if (value !== "+") {
+  //    onChange(null, name, value);
+  //  } else {
+  //    onChange(null, name, "");
+  //  }
+  //};
 
   return (
-    <FormControl
-      name={name}
-      value={value}
-      className={classes.margin}
-      error={Boolean(error)}
-    >
-      <MuiPhoneNumber
-        onlyCountries={["us", "pe", "cl", "ar", "co", "br"]}
-        regions={[
-          "north-america",
-          "south-america",
-          "central-america",
-          "carribean",
-          "european-union",
-          "middle-east",
-        ]}
-        defaultCountry={"pe"}
-        disableAreaCodes
-        autoFormat={false}
-        value={value === "" ? "+" : value}
-        onChange={handleOnChange}
-        inputClass={customClasses || classes.phoneInputDefault}
-        InputProps={{
-          className: classes.phoneInputDefaultText,
-        }}
-      />
-      {Boolean(error) && (
-        <FormHelperText className={classes.errorPhone}>{error}</FormHelperText>
-      )}
-    </FormControl>
+    <Grid item xs={xs} {...props}>
+      <FormControl
+        className={classes.margin}
+        error={meta.touched && Boolean(meta.error)}
+      >
+        <MuiPhoneNumber
+          onlyCountries={["us", "pe", "cl", "ar", "co", "br"]}
+          regions={[
+            "north-america",
+            "south-america",
+            "central-america",
+            "carribean",
+            "european-union",
+            "middle-east",
+          ]}
+          defaultCountry={"pe"}
+          disableAreaCodes
+          autoFormat={false}
+          {...field}
+          {...props}
+          inputClass={classes.phoneInputDefault}
+          InputProps={{
+            className: classes.phoneInputDefaultText,
+          }}
+        />
+        {meta.touched && Boolean(meta.error) && (
+          <FormHelperText className={classes.errorPhone}>
+            {meta.error}
+          </FormHelperText>
+        )}
+      </FormControl>
+    </Grid>
   );
 }

@@ -13,23 +13,20 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ButtonFormik(props) {
   const [field] = useField(props);
-  const { text, size, color, variant, onClick, ...other } = props;
+  //const { text, size, color, variant, onClick, ...other } = props;
   const classes = useStyles();
 
   return (
     <MuiButton
-      variant={variant || "contained"}
-      size={size || "large"}
-      color={color || "primary"}
-      onClick={onClick}
-      {...other}
+      variant={"contained"}
+      size={"large"}
+      color={"primary"}
       classes={{ root: classes.root, label: classes.label }}
       className={classes.button}
       {...props}
       {...field}
-      useState
     >
-      {text}
+      {props.label}
     </MuiButton>
   );
 }

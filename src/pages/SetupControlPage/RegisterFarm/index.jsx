@@ -59,13 +59,7 @@ function RegisterFarm({
     //});
   };
 
-  return (
-    <ConfigureFarm
-      sections={sections}
-      handleNext={(value) => handleSubmit(value, registerFarm)}
-      errors={errors}
-    />
-  );
+  return <ConfigureFarm />;
 }
 
 export default RegisterFarm;
