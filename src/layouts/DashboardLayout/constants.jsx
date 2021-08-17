@@ -25,7 +25,7 @@ export const menuList = [
       {
         id: "inicio",
         title: "Inicio",
-        // link: routesDictionary.animalControl,
+        link: routesDictionary.animalControl,
       },
       {
         id: "estadisticas",
@@ -60,7 +60,7 @@ export const menuList = [
         id: "preñeces",
         title: "Preñeces",
         img: Rec2,
-        // link: routesDictionary.animalControl,
+        link: routesDictionary.pregnancies,
       },
       {
         id: "palpaciones",
@@ -70,8 +70,7 @@ export const menuList = [
           {
             id: "inicio",
             title: "Inicio",
-            link: routesDictionary.animalControl,
-            // link: routesDictionary.palpation,
+            link: routesDictionary.palpations,
           },
           {
             id: "agregar",
