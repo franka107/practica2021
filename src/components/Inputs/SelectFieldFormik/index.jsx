@@ -45,7 +45,7 @@ export default function SelectFieldFormik(props) {
               <MenuItem key={item.id} value={item.id}>
                 <Grid
                   container
-                  justify={"space-between"}
+                  justifyContent={"space-between"}
                   className={classes.textField}
                 >
                   {!icon && item.name}

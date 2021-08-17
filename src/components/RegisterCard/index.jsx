@@ -21,7 +21,7 @@ function RegisterCard({ children, register }) {
     <Grid
       item
       container
-      justify={"center"}
+      justifyContent={"center"}
       alignContent={"center"}
       className={classes.root}
     >
@@ -32,7 +32,7 @@ function RegisterCard({ children, register }) {
         sm={5}
         container
         direction={"column"}
-        justify={"center"}
+        justifyContent={"center"}
         alignContent={"center"}
         className={classes.container}
       >
@@ -46,7 +46,7 @@ function RegisterCard({ children, register }) {
         md={5}
         sm={5}
         container
-        justify={"center"}
+        justifyContent={"center"}
         alignContent={"center"}
         className={classes.container}
       >

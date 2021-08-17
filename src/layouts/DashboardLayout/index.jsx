@@ -1,16 +1,16 @@
-import React, { useState } from 'react'
-import { Grid } from '@material-ui/core'
+import React, { useState } from "react";
+import { Grid } from "@material-ui/core";
 // import { useStyles } from "./styles";
-import Sidebar from '../../components/Sidebar'
-import MenuDropdown from '../../components/MenuDropdown'
-import MenuOpenIcon from '@material-ui/icons/MenuOpen'
-import { useStyles } from './styles'
-import Logo from '../../components/Logo'
-import { menuList } from './constants'
+import Sidebar from "../../components/Sidebar";
+import MenuDropdown from "../../components/MenuDropdown";
+import MenuOpenIcon from "@material-ui/icons/MenuOpen";
+import { useStyles } from "./styles";
+import Logo from "../../components/Logo";
+import { menuList } from "./constants";
 
 export const DashboardLayout = ({ children }) => {
-  const classes = useStyles()
-  const [openDrawer, setOpenDrawer] = useState(false)
+  const classes = useStyles();
+  const [openDrawer, setOpenDrawer] = useState(false);
 
   return (
     <div>
@@ -18,8 +18,8 @@ export const DashboardLayout = ({ children }) => {
         item
         container
         className={classes.siderBackground}
-        alignContent={'center'}
-        justify={'space-between'}
+        alignContent={"center"}
+        justifyContent={"space-between"}
       >
         <Grid item md={2} sm={4} xs={5} className={classes.logoContainer}>
           <Logo footer />
@@ -27,7 +27,13 @@ export const DashboardLayout = ({ children }) => {
         <Grid item className={classes.drawerIcon}>
           <MenuOpenIcon fontSize="large" onClick={() => setOpenDrawer(true)} />
         </Grid>
-        <Grid item container justify={'flex-end'} alignItems={'center'} xs={6}>
+        <Grid
+          item
+          container
+          justifyContent={"flex-end"}
+          alignItems={"center"}
+          xs={6}
+        >
           <MenuDropdown isLogin={true} />
         </Grid>
       </Grid>
@@ -44,5 +50,5 @@ export const DashboardLayout = ({ children }) => {
         </Grid>
       </Grid>
     </div>
-  )
-}
+  );
+};

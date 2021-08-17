@@ -35,7 +35,7 @@ function AddAnimals({
         item
         xs={12}
         className={classes.registerContainer}
-        justify={"space-between"}
+        justifyContent={"space-between"}
       >
         <Grid item md={4} sm={12} xs={12} container alignItems={"center"}>
           <Button
@@ -83,7 +83,7 @@ function AddAnimals({
           xs={12}
           container
           alignItems="center"
-          justify={"flex-end"}
+          justifyContent={"flex-end"}
         >
           <SearchAnimals
             setSearch={setSearch}

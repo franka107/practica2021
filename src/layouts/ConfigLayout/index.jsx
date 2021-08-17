@@ -18,7 +18,7 @@ export const ConfigLayout = ({ children }) => {
         container
         className={classes.siderBackground}
         alignContent={"center"}
-        justify={"space-between"}
+        justifyContent={"space-between"}
       >
         <Grid item md={2} sm={4} xs={5} className={classes.logoContainer}>
           <Logo footer />
@@ -26,7 +26,13 @@ export const ConfigLayout = ({ children }) => {
         <Grid item className={classes.drawerIcon}>
           <MenuOpenIcon fontSize="large" onClick={() => setOpenDrawer(true)} />
         </Grid>
-        <Grid item container justify={"flex-end"} alignItems={"center"} xs={6}>
+        <Grid
+          item
+          container
+          justifyContent={"flex-end"}
+          alignItems={"center"}
+          xs={6}
+        >
           <MenuDropdown isLogin={true} />
         </Grid>
       </Grid>
