@@ -110,7 +110,7 @@ export default function RegisterFarmForm() {
                 label="Moneda"
                 name="currency"
               ></SelectFieldFormik>
-              <ButtonFormik label="Siguiente" />
+              <ButtonFormik xs={3} label="Siguiente" />
             </>
           )}
         </Formik>
