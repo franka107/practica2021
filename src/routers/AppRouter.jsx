@@ -12,6 +12,7 @@ import AnimalControlPage from "../pages/AnimalControlPage";
 import SetupControlPage from "../pages/SetupControlPage";
 import PregnanciesPage from "../pages/PregnanciesPage";
 import PalpationPage from "../pages/PalpationPage";
+import EmailVerifiedPage from "../pages/EmailVerifiedPage";
 
 export const AppRouter = () => {
   return (
@@ -60,6 +61,12 @@ export const AppRouter = () => {
             component={LoginPage}
             layout={AuthLayout}
             path={routesDictionary.login}
+            isAuthenticated={false}
+          />
+          <PublicRoute
+            component={EmailVerifiedPage}
+            layout={AuthLayout}
+            path={routesDictionary.emailVerified}
             isAuthenticated={false}
           />
           <Redirect to="/login" />

@@ -8,23 +8,41 @@ import { Typography } from "@material-ui/core";
 import { useStyles } from "./styles";
 import ButtonFormik from "../../Inputs/ButtonFormik";
 import { Button } from "@material-ui/core";
+import { useEffect } from "react";
+import { countryActions } from "../../../redux/actions/country.actions";
+import { useDispatch, useSelector } from "react-redux";
+import { regionActions } from "../../../redux/actions/region.actions";
+import { districtReducer } from "../../../redux/reducers/district.reducer";
+import { districtActions } from "../../../redux/actions/district.actions";
 
 export default function RegisterFarmForm() {
-  const handleSubmit = (values, actions) => {
-    console.log(values);
-  };
   const validationSchema = yup.object({});
   const initValues = {
     name: "",
     landLord: "",
     nit: "",
-    country: "",
+    countryId: "",
     region: "",
     district: "",
     address: "",
     phoneNumber: "",
   };
   const classes = useStyles();
+  const dispatch = useDispatch();
+  const { countries } = useSelector((state) => state.country);
+  const { regions } = useSelector((state) => state.region);
+  const { districts } = useSelector((state) => state.district);
+
+  useEffect(() => {
+    dispatch(countryActions.listAll());
+    dispatch(regionActions.listAll());
+    dispatch(districtActions.listAll());
+  }, []);
+
+  const handleSubmit = (values, actions) => {
+    console.log(countries);
+    console.log(values);
+  };
   return (
     <>
       <Typography variant={"subtitle1"} gutterBottom>
@@ -66,17 +84,20 @@ export default function RegisterFarmForm() {
                 <SelectFieldFormik
                   xs={4}
                   label="Pais"
-                  name="country"
+                  name="countryId"
+                  options={countries}
                 ></SelectFieldFormik>
                 <SelectFieldFormik
                   xs={4}
                   label="Región"
-                  name="region"
+                  name="regionId"
+                  options={regions}
                 ></SelectFieldFormik>
                 <SelectFieldFormik
                   xs={4}
                   label="Distrito"
-                  name="district"
+                  name="districtId"
+                  options={districts}
                 ></SelectFieldFormik>
                 <TextFieldFormik
                   label="Dirección"

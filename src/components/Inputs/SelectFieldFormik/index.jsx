@@ -28,7 +28,7 @@ export default function SelectFieldFormik({ xs = 12, options, ...props }) {
             options.map((item) => {
               const Icon = item.icon;
               return (
-                <MenuItem key={item.id} value={item.id}>
+                <MenuItem key={item._id} value={item._id}>
                   <Grid
                     container
                     justifyContent={"space-between"}

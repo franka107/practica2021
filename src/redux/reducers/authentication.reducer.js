@@ -17,6 +17,12 @@ export function authenticationReducer(state = initialState, action) {
       };
     case userConstants.LOGIN_FAILURE:
       return {};
+    case userConstants.USER_REGISTER_SUCCESS:
+      return {
+        loggedIn: true,
+        user: action.user,
+      };
+
     case userConstants.LOGOUT:
       return {};
 

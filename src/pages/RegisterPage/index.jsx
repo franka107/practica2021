@@ -17,7 +17,7 @@ import * as yup from "yup";
 import TextFieldFormik from "../../components/Inputs/TextFieldFormik";
 import { Link, useHistory } from "react-router-dom";
 import googleBtn from "../../assets/images/google.png";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { userActions } from "../../redux/actions";
 import routesDictionary from "../../routers/routesDict";
 import { uiActions } from "../../redux/actions/ui.actions";
@@ -25,6 +25,7 @@ import { useState } from "react";
 import PasswordValidation from "../../components/PasswordValidation";
 import PasswordFieldFormik from "../../components/Inputs/PasswordFieldFormik";
 import UserType from "./UserType";
+import UserService from "../../services/user.service";
 
 function RegisterPage(props) {
   const classes = useStyles();
@@ -32,6 +33,16 @@ function RegisterPage(props) {
   const history = useHistory();
   const [view, setView] = useState("Register");
   const [openTerms, setOpenTerms] = useState(false);
+  const initValues = {
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    promotions: false,
+    rememberAccount: false,
+    terms: false,
+  };
+  const { user } = useSelector((state) => state.auth);
 
   const validationSchema = yup.object({
     email: yup
@@ -130,15 +141,7 @@ function RegisterPage(props) {
 
             <Grid item>
               <Formik
-                initialValues={{
-                  firstName: "",
-                  lastName: "",
-                  email: "",
-                  password: "",
-                  promotions: false,
-                  rememberAccount: false,
-                  terms: false,
-                }}
+                initialValues={initValues}
                 onSubmit={onSubmitForm}
                 validationSchema={validationSchema}
               >
@@ -148,7 +151,37 @@ function RegisterPage(props) {
           </>
         );
       case "UserType":
-        return <UserType />;
+        return (
+          <UserType
+            onClick={() => {
+              setView("UserVerification");
+              UserService.sendVerificationEmail(user);
+            }}
+          />
+        );
+      case "UserVerification":
+        return (
+          <>
+            <Grid item className={classes.titleContainer}>
+              <Typography align="center" className={classes.title}>
+                Verificación de correo
+              </Typography>
+              <Typography
+                variant={"caption"}
+                gutterBottom
+                align={"center"}
+                className={classes.subtitle}
+              >
+                Por favor verifica tu correo electrónico para continuar.
+              </Typography>
+              <Grid item xs={12}>
+                <Button className={classes.registerBtn} type="submit">
+                  Reenviar correo de verificación
+                </Button>
+              </Grid>
+            </Grid>
+          </>
+        );
 
       default:
         break;
@@ -259,7 +292,7 @@ function RegisterPage(props) {
               disabled={isSubmitting}
               type="submit"
             >
-              Iniciar Sesión
+              Registrarse
             </Button>
           </Grid>
           <Grid item xs={12}>

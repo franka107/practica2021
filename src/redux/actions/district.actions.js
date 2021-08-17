@@ -1,16 +1,17 @@
-import CountryService from "../../services/country.service";
+import DistrictService from "../../services/district.service";
+import RegionService from "../../services/region.service";
 import UserService from "../../services/user.service";
 import { userConstants } from "../constants";
-import { countryConstans } from "../constants/country.constants";
+import { districtConstants } from "../constants/district.constants";
 import { alertActions } from "./alert.actions";
 import { uiActions } from "./ui.actions";
 
-export const countryActions = { listAll };
+export const districtActions = { listAll };
 
 function listAll() {
   return (dispatch) => {
     dispatch(request());
-    return CountryService.countryList().then(
+    return DistrictService.districtList().then(
       (response) => {
         dispatch(success(response));
         return Promise.resolve();
@@ -24,12 +25,12 @@ function listAll() {
   };
 
   function request() {
-    return { type: countryConstans.GETALL_REQUEST };
+    return { type: districtConstants.GETALL_REQUEST };
   }
-  function success(countries) {
-    return { type: countryConstans.GETALL_SUCCESS, countries };
+  function success(districts) {
+    return { type: districtConstants.GETALL_SUCCESS, districts };
   }
   function failure(error) {
-    return { type: countryConstans.GETALL_FAILURE, error };
+    return { type: districtConstants.GETALL_FAILURE, error };
   }
 }

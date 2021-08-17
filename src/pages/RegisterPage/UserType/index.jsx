@@ -20,7 +20,7 @@ const propTypes = {
   password: PropTypes.string.isRequired,
 };
 
-function UserType({ setLoginState, hasFarm, hasAgribusiness }) {
+function UserType({ onClick, setLoginState, hasFarm, hasAgribusiness }) {
   const classes = useStyles();
   const history = useHistory();
   const [value, setValue] = useState(userTypes[0].key);
@@ -29,12 +29,12 @@ function UserType({ setLoginState, hasFarm, hasAgribusiness }) {
     setValue(event.target.value);
   };
 
-  const handleRegister = () => {
-    history.push(routesDictionary.registerModal, {
-      hasFarm: false,
-      hasAgribusiness: false,
-    });
-  };
+  //const handleRegister = () => {
+  //  history.push(routesDictionary.registerModal, {
+  //    hasFarm: false,
+  //    hasAgribusiness: false,
+  //  });
+  //};
 
   return (
     <Grid item className={classes.container}>
@@ -101,7 +101,7 @@ function UserType({ setLoginState, hasFarm, hasAgribusiness }) {
         </RadioGroup>
       </FormControl>
 
-      <Button className={classes.button} onClick={handleRegister}>
+      <Button className={classes.button} onClick={onClick}>
         Registrar
       </Button>
     </Grid>

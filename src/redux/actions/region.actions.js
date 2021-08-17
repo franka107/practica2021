@@ -1,16 +1,16 @@
-import CountryService from "../../services/country.service";
+import RegionService from "../../services/region.service";
 import UserService from "../../services/user.service";
 import { userConstants } from "../constants";
-import { countryConstans } from "../constants/country.constants";
+import { regionConstants } from "../constants/region.constants";
 import { alertActions } from "./alert.actions";
 import { uiActions } from "./ui.actions";
 
-export const countryActions = { listAll };
+export const regionActions = { listAll };
 
 function listAll() {
   return (dispatch) => {
     dispatch(request());
-    return CountryService.countryList().then(
+    return RegionService.regionList().then(
       (response) => {
         dispatch(success(response));
         return Promise.resolve();
@@ -24,12 +24,12 @@ function listAll() {
   };
 
   function request() {
-    return { type: countryConstans.GETALL_REQUEST };
+    return { type: regionConstants.GETALL_REQUEST };
   }
-  function success(countries) {
-    return { type: countryConstans.GETALL_SUCCESS, countries };
+  function success(regions) {
+    return { type: regionConstants.GETALL_SUCCESS, regions };
   }
   function failure(error) {
-    return { type: countryConstans.GETALL_FAILURE, error };
+    return { type: regionConstants.GETALL_FAILURE, error };
   }
 }
