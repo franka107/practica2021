@@ -7,7 +7,7 @@ import {
   FormHelperText,
   FormLabel,
 } from "@material-ui/core";
-import { useStyles } from "./styles";
+import { useStyles } from "../styles";
 import clsx from "clsx";
 import { useField } from "formik";
 

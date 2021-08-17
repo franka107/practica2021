@@ -88,7 +88,7 @@ export const menuList = [
           {
             id: "inicio",
             title: "Inicio",
-            // link: routesDictionary.birth,
+            link: routesDictionary.birth,
           },
           {
             id: "agregar",
@@ -117,7 +117,7 @@ export const menuList = [
           {
             id: "inicio",
             title: "Inicio",
-            // link: routesDictionary.service,
+            link: routesDictionary.service,
           },
           {
             id: "agregar",

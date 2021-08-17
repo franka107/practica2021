@@ -77,4 +77,7 @@ export const useStyles = makeStyles((theme) => ({
   paddingButton: {
     marginRight: "1rem",
   },
+  borderBirth: {
+    border: "1px solid #0073C8",
+  },
 }));
