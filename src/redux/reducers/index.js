@@ -13,11 +13,8 @@ const rootReducer = combineReducers({
   country: countryReducer,
   region: regionReducer,
   district: districtReducer,
-<<<<<<< HEAD
   farm: farmReducer,
-=======
   animal: animalReducer,
->>>>>>> origin/feature/control-animal
 });
 
 export default rootReducer;
