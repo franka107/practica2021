@@ -1,6 +1,7 @@
 import AnimalService from "../../services/animal.service";
 import { animalConstans } from "../constants/animal.constants";
 import { alertActions } from "./alert.actions";
+import { uiActions } from "./ui.actions";
 
 export const animalActions = { listAll, listById, deleteElement };
 
@@ -60,6 +61,7 @@ function deleteElement(data) {
       (response) => {
         dispatch(success(response));
         dispatch(listAll());
+        dispatch(uiActions.showSnackbar("Se eliminó el registro exitosamente"));
         return Promise.resolve();
       },
       (error) => {

@@ -52,7 +52,7 @@ export default function AnimalDetailPage() {
     const id = location.hash + "";
     console.log(id.replace(/#/gi, ""));
     dispatch(animalActions.listById({ _id: id.replace(/#/gi, "") }));
-  }, []);
+  }, [location]);
 
   return (
     <Grid container xs={12}>
@@ -153,7 +153,7 @@ export default function AnimalDetailPage() {
                       </Typography>
                     </Grid>
                     <Grid item xs={9}>
-                      <Typography></Typography>
+                      <Typography>{animals && animals.name}</Typography>
                     </Grid>
                   </Grid>
                   <Grid container className={classes.generalFeature} xs={12}>
