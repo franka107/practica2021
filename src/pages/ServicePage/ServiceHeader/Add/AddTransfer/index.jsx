@@ -7,14 +7,12 @@ import TextFieldFormik from "../../../../../components/Inputs/TextFieldFormik";
 import ButtonFormik from "../../../../../components/Inputs/ButtonFormik";
 import DatePickerFieldFormik from "../../../../../components/Inputs/DatePickerFieldFormik";
 import SelectFieldFormik from "../../../../../components/Inputs/SelectFieldFormik";
-import CheckboxFormik from "../../../../../components/Inputs/CheckboxFormik";
 import TimerPicker from "../../../../../components/Inputs/TimePickerFormik";
 
 const propTypes = {};
 
 function AddTransfer() {
   const classes = useStyles();
-  const categoryOptions = [{ id: "1", name: "Retuvo placenta" }];
 
   const validationSchema = yup.object({});
   const initValues = {

@@ -1,4 +1,5 @@
 import { combineReducers } from "redux";
+import { animalReducer } from "./animal.reducer";
 import { authenticationReducer } from "./authentication.reducer";
 import { countryReducer } from "./country.reducer";
 import { districtReducer } from "./district.reducer";
@@ -12,7 +13,11 @@ const rootReducer = combineReducers({
   country: countryReducer,
   region: regionReducer,
   district: districtReducer,
+<<<<<<< HEAD
   farm: farmReducer,
+=======
+  animal: animalReducer,
+>>>>>>> origin/feature/control-animal
 });
 
 export default rootReducer;
