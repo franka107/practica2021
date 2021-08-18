@@ -2,6 +2,8 @@ import { Typography } from "@material-ui/core";
 import { Dialog } from "@material-ui/core";
 import { useState } from "react";
 import { useHistory } from "react-router-dom";
+import RegisterAgribusinessForm from "../../components/Forms/RegisterAgribusinessForm";
+import RegisterFarmForm from "../../components/Forms/RegisterFarmForm";
 import RegisterFarm from "./RegisterFarm";
 import { useStyles } from "./styles";
 
@@ -18,7 +20,10 @@ export default function SetupControlPage() {
         aria-describedby="alert-dialog-description"
         classes={{ paperFullWidth: classes.modal }}
       >
-        {registerStep === 0 && <RegisterFarm />}
+        {registerStep === 0 && (
+          <RegisterFarmForm setRegisterStep={setRegisterStep} />
+        )}
+        {registerStep === 1 && <RegisterAgribusinessForm />}
         <Typography variant={"caption"} className={classes.stepCounter}>
           {`Paso ${registerStep + 1}/2`}
         </Typography>

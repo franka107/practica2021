@@ -21,8 +21,12 @@ import {
   unitWeightOptions,
 } from "./constants";
 import { farmActions } from "../../../redux/actions/farm.actions";
+import ConfigureAnimals from "../../ConfigureAnimals";
+import CheckboxFormik from "../../Inputs/CheckboxFormik";
+import { useHistory } from "react-router-dom";
+import routesDictionary from "../../../routers/routesDict";
 
-export default function RegisterFarmForm({ setRegisterStep }) {
+export default function RegisterAgribusinessForm({ setRegisterStep }) {
   const validationSchema = yup.object({});
   const initValues = {
     name: "",
@@ -37,13 +41,47 @@ export default function RegisterFarmForm({ setRegisterStep }) {
     weightUnit: "",
     areaUnit: "",
     capacityUnit: "",
+    finding: "",
+    milkingId: "",
+    numberId: "",
+    systemId: "",
+    productionId: "",
   };
   const classes = useStyles();
   const dispatch = useDispatch();
   const { countries } = useSelector((state) => state.country);
   const { regions } = useSelector((state) => state.region);
   const { districts } = useSelector((state) => state.district);
-  const { user } = useSelector((state) => state.auth);
+  const categoryOptions = [{ id: "1", name: "Objetivo farmero" }];
+  const milkingOptions = [
+    { _id: "MA", name: "Manual" },
+    { _id: "ME", name: "Mecánico" },
+    { _id: "AU", name: "Automático" },
+  ];
+
+  const numberOptions = [
+    { _id: "0", name: 0 },
+    { _id: "1", name: 1 },
+    { _id: "2", name: 2 },
+    { _id: "3", name: 3 },
+  ];
+
+  const targetSystemOptions = [
+    { _id: "EXT", name: "Extensivo" },
+    { _id: "SIT", name: "Intensivo" },
+    { _id: "INT", name: "Semi-intensivo" },
+  ];
+
+  const productionOptions = [
+    { _id: "RDI", name: "Monta Directa" },
+    { _id: "AIN", name: "Inseminación Artificial" },
+    { _id: "ROA", name: "Monta Directa/Inseminación Artificial" },
+    {
+      _id: "TRE",
+      name: "Inseminación Artificial, Monta Directa/Transferencia de embriones",
+    },
+  ];
+  const history = useHistory();
 
   useEffect(() => {
     dispatch(countryActions.listAll());
@@ -52,13 +90,12 @@ export default function RegisterFarmForm({ setRegisterStep }) {
   }, []);
 
   const handleSubmit = (values, actions) => {
-    dispatch(farmActions.create({ ownerId: user._id, ...values }));
-    setRegisterStep(1);
+    history.push(routesDictionary.dashboard);
   };
   return (
     <div className={classes.modal}>
       <Typography variant={"subtitle1"} gutterBottom>
-        Configure su hacienda
+        Configure su agronegocio o establo
       </Typography>
       <Grid container spacing={1}>
         <Typography variant={"subtitle2"} sm={3} xs={12}>
@@ -73,25 +110,9 @@ export default function RegisterFarmForm({ setRegisterStep }) {
             <form onSubmit={props.handleSubmit}>
               <Grid container spacing={1}>
                 <TextFieldFormik
-                  label="Nombre de la hacienda"
+                  label="Nombre del establo o agronegocio"
                   name="name"
                   onChange={props.handleChange}
-                ></TextFieldFormik>
-                <TextFieldFormik
-                  label="Nombre del propietario"
-                  name="landLord"
-                  onChange={props.handleChange}
-                  lg={9}
-                  sm={6}
-                  xs={12}
-                ></TextFieldFormik>
-                <TextFieldFormik
-                  label="RUC/DNI/NIT"
-                  name="nit"
-                  onChange={props.handleChange}
-                  lg={3}
-                  sm={6}
-                  xs={12}
                 ></TextFieldFormik>
                 <SelectFieldFormik
                   xs={4}
@@ -122,37 +143,69 @@ export default function RegisterFarmForm({ setRegisterStep }) {
                   name="phoneNumber"
                   onChange={props.handleChange}
                 />
-                <Grid item xs={12}>
-                  <Typography
-                    variant={"subtitle2"}
-                    className={classes.subtitle2}
-                  >
-                    Unidades de medida
+                <ConfigureAnimals
+                  coin={[]}
+                  handleNext={() => {}}
+                  customClasses={classes.customModal}
+                  saveAnimals={() => {}}
+                  saveValues={() => {}}
+                />
+                <Typography variant={"subtitle2"} sm={12} xs={12}>
+                  Objetivo
+                </Typography>
+                <Grid
+                  lg={12}
+                  sm={12}
+                  xs={12}
+                  container
+                  justifyContent="center"
+                  alignContent="center"
+                  alignItems="center"
+                >
+                  <CheckboxFormik
+                    name="finding"
+                    options={categoryOptions}
+                    onChange={props.handleChange}
+                  ></CheckboxFormik>
+                </Grid>
+                <Grid xs={12}>
+                  <Typography variant={"subtitle2"} sm={12} xs={12}>
+                    Lecheria
                   </Typography>
                 </Grid>
                 <SelectFieldFormik
-                  sm={3}
-                  label="Unidad de areá"
-                  name="areaUnit"
-                  options={unitAreaOptions}
+                  xs={6}
+                  label="Tipo de ordeño"
+                  name="milkingId"
+                  options={milkingOptions}
                 ></SelectFieldFormik>
                 <SelectFieldFormik
-                  sm={3}
-                  label="Unidad de peso"
-                  name="weightUnit"
-                  options={unitWeightOptions}
+                  xs={6}
+                  label="Numero de ordeño"
+                  name="numberId"
+                  options={numberOptions}
                 ></SelectFieldFormik>
+                <Grid xs={12}>
+                  <Typography variant={"subtitle2"} sm={12} xs={12}>
+                    Producción
+                  </Typography>
+                </Grid>
                 <SelectFieldFormik
-                  sm={3}
-                  label="Unidad de volumen"
-                  name="capacityUnit"
-                  options={unitCapacityOptions}
+                  xs={6}
+                  label="Sistema"
+                  name="systemId"
+                  options={targetSystemOptions}
                 ></SelectFieldFormik>
+                <Grid xs={12}>
+                  <Typography variant={"subtitle2"} sm={12} xs={12}>
+                    Reproducción
+                  </Typography>
+                </Grid>
                 <SelectFieldFormik
-                  sm={3}
-                  label="Moneda"
-                  name="currencyId"
-                  options={coinOptions}
+                  xs={6}
+                  label="Manejo reproductivo"
+                  name="productionId"
+                  options={productionOptions}
                 ></SelectFieldFormik>
                 <ButtonFormik type={"submit"} xs={3} label="Siguiente" />
               </Grid>

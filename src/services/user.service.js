@@ -19,6 +19,7 @@ const userRegister = (userData) => {
   return new Promise((resolve, reject) => {
     window.icAPI.callService("userRegister", userData, (error, response) => {
       if (!error) {
+        localStorage.setItem("user", JSON.stringify(response.responseJSON));
         resolve(response.responseJSON);
       } else {
         const rejectBody = {

@@ -2,6 +2,7 @@ import { combineReducers } from "redux";
 import { authenticationReducer } from "./authentication.reducer";
 import { countryReducer } from "./country.reducer";
 import { districtReducer } from "./district.reducer";
+import { farmReducer } from "./farm.reducer";
 import { regionReducer } from "./region.reducer";
 import { uiReducer } from "./ui.reducer";
 
@@ -11,6 +12,7 @@ const rootReducer = combineReducers({
   country: countryReducer,
   region: regionReducer,
   district: districtReducer,
+  farm: farmReducer,
 });
 
 export default rootReducer;
