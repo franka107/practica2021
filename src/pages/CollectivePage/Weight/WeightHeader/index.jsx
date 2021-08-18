@@ -1,41 +1,37 @@
-import React, { useEffect, useState } from 'react'
-import { Chip, Grid, Typography, Dialog } from '@material-ui/core'
-import { useHistory } from 'react-router-dom'
-import clsx from 'clsx'
-import { Close } from '@material-ui/icons'
-import { CustomForm } from '../../../../Components/CustomForm'
-import { dateForm } from './constants'
-import { useStyles } from './styles'
+import React, { useState } from "react";
+import { Chip, Grid, Typography, Dialog, Divider } from "@material-ui/core";
+import clsx from "clsx";
+import { Close } from "@material-ui/icons";
+import { useStyles } from "./styles";
+import * as yup from "yup";
+import { Formik } from "formik";
+import TextFieldFormik from "../../../../components/Inputs/TextFieldFormik";
+import ButtonFormik from "../../../../components/Inputs/ButtonFormik";
+import DatePickerFieldFormik from "../../../../components/Inputs/DatePickerFieldFormik";
+import SelectFieldFormik from "../../../../components/Inputs/SelectFieldFormik";
 
 function WeightHeader() {
-  const classes = useStyles()
-  const history = useHistory()
-  const { location = {} } = history
-  const [activeTab, setActiveTab] = useState('')
-  const [open, setOpen] = useState(0)
-  const [sections] = useState([
-    {
-      title: '',
-      form: dateForm(),
-    },
-  ])
-
-  useEffect(() => {
-    const { hash = {} } = location
-    const path = hash.replace('#', '')
-
-    setActiveTab(hash ? path : '')
-  }, [location])
+  const classes = useStyles();
+  const [open, setOpen] = useState(0);
+  const validationSchema = yup.object({});
+  const initValues = {
+    date: "",
+    iec: "",
+    observation: "",
+  };
+  const handleSubmit = (values, actions) => {
+    console.log(values);
+  };
 
   return (
     <Grid item container xs={12}>
-      <Typography variant={'h6'}>Colectiva / Peso</Typography>
+      <Typography variant={"h6"}>Colectiva / Peso</Typography>
       <Grid container spacing={2} className={classes.optionContainer}>
         <Grid item>
           <Chip
-            label={'Agregar ingreso peso'}
+            label={"Agregar ingreso peso"}
             onClick={() => {
-              setOpen(true)
+              setOpen(true);
             }}
             className={clsx(classes.option)}
           />
@@ -52,14 +48,58 @@ function WeightHeader() {
       >
         <Close className={classes.closeBtn} onClick={() => setOpen(false)} />
         <Grid className={classes.modal}>
-          <Typography variant={'subtitle1'} gutterBottom>
+          <Typography variant={"subtitle1"} gutterBottom>
             Agregar pesaje
           </Typography>
-          <CustomForm sections={sections} handlePrev={true}></CustomForm>
+          <Divider />
+          <Formik
+            initialValues={initValues}
+            onSubmit={handleSubmit}
+            validationSchema={validationSchema}
+          >
+            {(props) => (
+              <form onSubmit={props.handleSubmit} className={classes.formStyle}>
+                <Grid container spacing={1}>
+                  <DatePickerFieldFormik
+                    label="Fecha"
+                    name="date"
+                    onChange={props.handleChange}
+                    xs={12}
+                  ></DatePickerFieldFormik>
+                  <SelectFieldFormik
+                    label="Tipo de Control"
+                    name="controlType"
+                    onChange={props.handleChange}
+                    xs={12}
+                  ></SelectFieldFormik>
+                  <TextFieldFormik
+                    label="Peso"
+                    name="weight"
+                    onChange={props.handleChange}
+                    xs={12}
+                  ></TextFieldFormik>
+                  <SelectFieldFormik
+                    label="Responsable"
+                    name="responsable"
+                    onChange={props.handleChange}
+                    xs={12}
+                  ></SelectFieldFormik>
+                </Grid>
+                <Grid item container xs={12} justifyContent="space-between">
+                  <Grid item xs={5}>
+                    <ButtonFormik xs={12} label="Cancelar" type="cancel" />
+                  </Grid>
+                  <Grid item xs={5}>
+                    <ButtonFormik xs={12} label="Siguiente" type="submit" />
+                  </Grid>
+                </Grid>
+              </form>
+            )}
+          </Formik>
         </Grid>
       </Dialog>
     </Grid>
-  )
+  );
 }
 
-export default WeightHeader
+export default WeightHeader;

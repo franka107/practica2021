@@ -139,12 +139,12 @@ export const menuList = [
           {
             id: "registro-celos",
             title: "Registro celos",
-            link: routesDictionary.test1,
+            link: routesDictionary.zeal,
           },
           {
             id: "agregar-pesos",
             title: "Ingresos Pesos",
-            link: routesDictionary.test,
+            link: routesDictionary.weight,
           },
           {
             id: "ventas",

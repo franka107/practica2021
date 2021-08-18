@@ -15,6 +15,10 @@ import PalpationPage from "../pages/PalpationPage";
 import EmailVerifiedPage from "../pages/EmailVerifiedPage";
 import BirthPage from "../pages/BirthPage";
 import ServicePage from "../pages/ServicePage";
+import ZealPage from "../pages/CollectivePage/Zeal";
+import WeightPage from "../pages/CollectivePage/Weight";
+import SalePage from "../pages/CollectivePage/Sale";
+import AnimalDetailPage from "../pages/AnimalDetailPage";
 
 export const AppRouter = () => {
   return (
@@ -28,6 +32,30 @@ export const AppRouter = () => {
             path={routesDictionary.test}
             isAuthenticated={false}
           /> */}
+          <PublicRoute
+            component={AnimalDetailPage}
+            layout={DashboardLayout}
+            path={routesDictionary.animalDetail}
+            isAuthenticated={false}
+          />
+          <PublicRoute
+            component={SalePage}
+            layout={DashboardLayout}
+            path={routesDictionary.sale}
+            isAuthenticated={false}
+          />
+          <PublicRoute
+            component={WeightPage}
+            layout={DashboardLayout}
+            path={routesDictionary.weight}
+            isAuthenticated={false}
+          />
+          <PublicRoute
+            component={ZealPage}
+            layout={DashboardLayout}
+            path={routesDictionary.zeal}
+            isAuthenticated={false}
+          />
           <PublicRoute
             component={ServicePage}
             layout={DashboardLayout}

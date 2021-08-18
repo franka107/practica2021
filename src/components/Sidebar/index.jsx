@@ -35,7 +35,7 @@ function Sidebar({ openDrawer, setOpenDrawer, options }) {
   };
 
   useEffect(() => {
-    console.log(location.pathname);
+    console.log(location);
     verifyLocation();
   }, []);
 
