@@ -1,5 +1,4 @@
 import { faUsers, faUser, faSignal } from "@fortawesome/free-solid-svg-icons";
-import routesDictionary from "../../routers/routesDict";
 
 export const menuList = [
   {
@@ -27,7 +26,6 @@ export const menuList = [
       {
         id: "inicio",
         title: "Inicio",
-        link: routesDictionary.test1,
       },
       {
         id: "agregar-nuevo-perfil",

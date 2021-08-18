@@ -1,5 +1,5 @@
 import UserService from "../../services/user.service";
-import { userConstants } from "../constants";
+import { userConstants } from "../constants/user.constants";
 import { alertActions } from "./alert.actions";
 import { uiActions } from "./ui.actions";
 

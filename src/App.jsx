@@ -3,7 +3,7 @@ import "./App.css";
 import { store } from "./redux/store";
 import { CssBaseline, ThemeProvider } from "@material-ui/core";
 import mainTheme from "./themes/mainTheme";
-import { AppRouter } from "./routers/AppRouter";
+import { AppRouter } from "./routes/AppRouter";
 
 function App() {
   return (

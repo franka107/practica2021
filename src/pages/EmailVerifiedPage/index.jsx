@@ -10,12 +10,12 @@ import TextFieldFormik from "../../components/Inputs/TextFieldFormik";
 import { Link, useHistory, useParams } from "react-router-dom";
 import googleBtn from "../../assets/images/google.png";
 import { useDispatch } from "react-redux";
-import { userActions } from "../../redux/actions";
-import routesDictionary from "../../routers/routesDict";
 import { uiActions } from "../../redux/actions/ui.actions";
 import PasswordFieldFormik from "../../components/Inputs/PasswordFieldFormik";
 import { useEffect } from "react";
 import UserService from "../../services/user.service";
+import { ROUTES_DICT } from "../../routes/routesDict";
+import { userActions } from "../../redux/actions/user.actions";
 
 function EmailVerifiedPage(props) {
   const classes = useStyles();
@@ -46,7 +46,7 @@ function EmailVerifiedPage(props) {
             <Button
               className={classes.loginBtn}
               onClick={() => {
-                history.push(routesDictionary.setup);
+                history.push(ROUTES_DICT.setup);
               }}
             >
               Empezar

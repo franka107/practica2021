@@ -1,118 +1,99 @@
 import React from "react";
-import { HashRouter as Router, Switch, Redirect } from "react-router-dom";
-import { AuthLayout } from "../layouts/AuthLayout";
-import { DashboardLayout } from "../layouts/DashboardLayout";
-import { ConfigLayout } from "../layouts/ConfigLayout";
-import LoginPage from "../pages/LoginPage";
-import { PublicRoute } from "./PublicRoute";
-import routesDictionary from "./routesDict";
+import { HashRouter as Router } from "react-router-dom";
 import { GlobalSnackbar } from "../components/GlobalSnackbar";
-import RegisterPage from "../pages/RegisterPage";
-import AnimalControlPage from "../pages/AnimalControlPage";
-import SetupControlPage from "../pages/SetupControlPage";
-import PregnanciesPage from "../pages/PregnanciesPage";
-import PalpationPage from "../pages/PalpationPage";
-import EmailVerifiedPage from "../pages/EmailVerifiedPage";
-import BirthPage from "../pages/BirthPage";
-import ServicePage from "../pages/ServicePage";
-import ZealPage from "../pages/CollectivePage/Zeal";
-import WeightPage from "../pages/CollectivePage/Weight";
-import SalePage from "../pages/CollectivePage/Sale";
-import AnimalDetailPage from "../pages/AnimalDetailPage";
+import { ROUTES } from "./constants";
+import { RenderRoutes } from "./RenderRoutes";
 
 export const AppRouter = () => {
   return (
     <Router>
       <div>
-        <GlobalSnackbar></GlobalSnackbar>
+        <GlobalSnackbar />
+        <RenderRoutes routes={ROUTES} />
+        {/*
         <Switch>
-          {/* <PublicRoute
-            component={() => <p>Probando</p>}
-            layout={ConfigLayout}
-            path={routesDictionary.test}
-            isAuthenticated={false}
-          /> */}
           <PublicRoute
             component={AnimalDetailPage}
             layout={DashboardLayout}
-            path={routesDictionary.animalDetail}
+            path={ROUTES_DICT.animalDetail}
             isAuthenticated={false}
           />
           <PublicRoute
             component={SalePage}
             layout={DashboardLayout}
-            path={routesDictionary.sale}
+            path={ROUTES_DICT.sale}
             isAuthenticated={false}
           />
           <PublicRoute
             component={WeightPage}
             layout={DashboardLayout}
-            path={routesDictionary.weight}
+            path={ROUTES_DICT.weight}
             isAuthenticated={false}
           />
           <PublicRoute
             component={ZealPage}
             layout={DashboardLayout}
-            path={routesDictionary.zeal}
+            path={ROUTES_DICT.zeal}
             isAuthenticated={false}
           />
           <PublicRoute
             component={ServicePage}
             layout={DashboardLayout}
-            path={routesDictionary.service}
+            path={ROUTES_DICT.service}
             isAuthenticated={false}
           />
           <PublicRoute
             component={BirthPage}
             layout={DashboardLayout}
-            path={routesDictionary.birth}
+            path={ROUTES_DICT.birth}
             isAuthenticated={false}
           />
           <PublicRoute
             component={PalpationPage}
             layout={DashboardLayout}
-            path={routesDictionary.palpations}
+            path={ROUTES_DICT.palpations}
             isAuthenticated={false}
           />
           <PublicRoute
             component={PregnanciesPage}
             layout={DashboardLayout}
-            path={routesDictionary.pregnancies}
+            path={ROUTES_DICT.pregnancies}
             isAuthenticated={false}
           />
           <PublicRoute
             component={AnimalControlPage}
             layout={DashboardLayout}
-            path={routesDictionary.animalControl}
+            path={ROUTES_DICT.animalControl}
             isAuthenticated={false}
           />
           <PublicRoute
             component={SetupControlPage}
             layout={DashboardLayout}
-            path={routesDictionary.setup}
+            path={ROUTES_DICT.setup}
             isAuthenticated={false}
           />
 
           <PublicRoute
             component={RegisterPage}
             layout={AuthLayout}
-            path={routesDictionary.register}
+            path={ROUTES_DICT.register}
             isAuthenticated={false}
           />
           <PublicRoute
             component={LoginPage}
             layout={AuthLayout}
-            path={routesDictionary.login}
+            path={ROUTES_DICT.login}
             isAuthenticated={false}
           />
           <PublicRoute
             component={EmailVerifiedPage}
             layout={AuthLayout}
-            path={routesDictionary.emailVerified}
+            path={ROUTES_DICT.emailVerified}
             isAuthenticated={false}
           />
           <Redirect to="/login" />
         </Switch>
+          */}
       </div>
     </Router>
   );

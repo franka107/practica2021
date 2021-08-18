@@ -1,10 +1,6 @@
 import DistrictService from "../../services/district.service";
-import RegionService from "../../services/region.service";
-import UserService from "../../services/user.service";
-import { userConstants } from "../constants";
 import { districtConstants } from "../constants/district.constants";
 import { alertActions } from "./alert.actions";
-import { uiActions } from "./ui.actions";
 
 export const districtActions = { listAll };
 

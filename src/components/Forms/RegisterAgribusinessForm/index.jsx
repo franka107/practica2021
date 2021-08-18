@@ -24,7 +24,7 @@ import { farmActions } from "../../../redux/actions/farm.actions";
 import ConfigureAnimals from "../../ConfigureAnimals";
 import CheckboxFormik from "../../Inputs/CheckboxFormik";
 import { useHistory } from "react-router-dom";
-import routesDictionary from "../../../routers/routesDict";
+import { ROUTES_DICT } from "../../../routes/routesDict";
 
 export default function RegisterAgribusinessForm({ setRegisterStep }) {
   const validationSchema = yup.object({});
@@ -90,7 +90,7 @@ export default function RegisterAgribusinessForm({ setRegisterStep }) {
   }, []);
 
   const handleSubmit = (values, actions) => {
-    history.push(routesDictionary.dashboard);
+    history.push(ROUTES_DICT.dashboard);
   };
   return (
     <div className={classes.modal}>

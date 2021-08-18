@@ -31,9 +31,9 @@ import TimelineContent from "@material-ui/lab/TimelineContent";
 import TimelineDot from "@material-ui/lab/TimelineDot";
 import QRData from "./Dialog/QRData";
 import { useHistory } from "react-router-dom";
-import routesDictionary from "../../routers/routesDict";
 import { useDispatch, useSelector } from "react-redux";
 import { animalActions } from "../../redux/actions/animal.actions";
+import { ROUTES_DICT } from "../../routes/routesDict";
 
 export default function AnimalDetailPage() {
   const classes = useStyles();
@@ -72,7 +72,7 @@ export default function AnimalDetailPage() {
             <Chip
               className={clsx(classes.option)}
               onClick={() => {
-                history.push(routesDictionary.pedigree);
+                history.push(ROUTES_DICT.pedigree);
               }}
               label="Pedigree"
             ></Chip>

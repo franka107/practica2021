@@ -10,10 +10,10 @@ import TextFieldFormik from "../../components/Inputs/TextFieldFormik";
 import { Link, useHistory } from "react-router-dom";
 import googleBtn from "../../assets/images/google.png";
 import { useDispatch } from "react-redux";
-import { userActions } from "../../redux/actions";
-import routesDictionary from "../../routers/routesDict";
 import { uiActions } from "../../redux/actions/ui.actions";
 import PasswordFieldFormik from "../../components/Inputs/PasswordFieldFormik";
+import { userActions } from "../../redux/actions/user.actions";
+import { ROUTES_DICT } from "../../routes/routesDict";
 
 function LoginPage(props) {
   const classes = useStyles();
@@ -44,7 +44,7 @@ function LoginPage(props) {
     const { email, password } = values;
     dispatch(userActions.login(email, password))
       .then(() => {
-        history.push(routesDictionary.dashboard);
+        history.push(ROUTES_DICT.dashboard);
       })
       .catch((error) => {
         //props.snackbarShowMessage("Credenciales inválidas", "error");
@@ -91,17 +91,14 @@ function LoginPage(props) {
         <Grid container>
           <Grid item className={classes.resetPassword}>
             <Typography variant={"caption"} gutterBottom>
-              <Link
-                className={classes.link}
-                to={routesDictionary.recoverPassword}
-              >
+              <Link className={classes.link} to={ROUTES_DICT.recoverPassword}>
                 ¿Olvidaste tu contraseña?
               </Link>
             </Typography>
           </Grid>
           <Grid item xs={12} className={classes.resetPassword}>
             <Typography variant={"caption"} gutterBottom>
-              <Link className={classes.link} to={routesDictionary.register}>
+              <Link className={classes.link} to={ROUTES_DICT.register}>
                 Regístrate
               </Link>
             </Typography>

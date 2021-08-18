@@ -12,7 +12,7 @@ import {
 import { userTypes } from "./constants";
 import { Link, useHistory } from "react-router-dom";
 import { useStyles } from "./styles";
-import routesDictionary from "../../../routers/routesDict";
+import { ROUTES_DICT } from "../../../routes/routesDict";
 
 const propTypes = {
   setLoginState: PropTypes.func.isRequired,
@@ -68,7 +68,7 @@ function UserType({ onClick, setLoginState, hasFarm, hasAgribusiness }) {
         </div>
       ))}
 
-      <Link to={routesDictionary.livestockControl} className={classes.link}>
+      <Link to={ROUTES_DICT.livestockControl} className={classes.link}>
         <Typography variant={"caption"} gutterBottom>
           Más información aquí
         </Typography>

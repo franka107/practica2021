@@ -10,7 +10,7 @@ import { columnsToCustomMaterialTable } from "./constants";
 import { Delete, Edit, Visibility, Star, StarBorder } from "@material-ui/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { animalActions } from "../../redux/actions/animal.actions";
-import routesDictionary from "../../routers/routesDict";
+import { ROUTES_DICT } from "../../routes/routesDict";
 
 function AnimalControlPage() {
   const classes = useStyles();
@@ -44,8 +44,7 @@ function AnimalControlPage() {
                     aria-label="edit"
                     onClick={() => {
                       history.push({
-                        pathname:
-                          routesDictionary.animalDetail + "/#" + rowData._id,
+                        pathname: ROUTES_DICT.animalDetail + "/#" + rowData._id,
                         state: {
                           _id: rowData._id,
                         },

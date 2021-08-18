@@ -1,9 +1,6 @@
 import RegionService from "../../services/region.service";
-import UserService from "../../services/user.service";
-import { userConstants } from "../constants";
 import { regionConstants } from "../constants/region.constants";
 import { alertActions } from "./alert.actions";
-import { uiActions } from "./ui.actions";
 
 export const regionActions = { listAll };
 

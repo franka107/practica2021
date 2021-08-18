@@ -1,4 +1,7 @@
-const routesDictionary = {
+export const ROUTES_DICT = {
+  register: "/register",
+  login: "/login",
+  dashboard: "/dashboard",
   sale: "/dashboard/colectiva-ventas",
   weight: "/dashboard/colectiva-pesaje",
   zeal: "/dashboard/colectiva-celos",
@@ -9,11 +12,6 @@ const routesDictionary = {
   pregnancies: "/dashboard/preñeces",
   animalDetail: "/dashboard/animal-detail",
   animalControl: "/dashboard/control-animal",
-  dashboard: "/dashboard",
   recoverPassword: "/recover-password",
-  register: "/register",
-  login: "/login",
   setup: "/setup",
 };
-
-export default routesDictionary;

@@ -14,7 +14,7 @@ import {
   // faShoppingCart,
   faSyringe,
 } from "@fortawesome/free-solid-svg-icons";
-import routesDictionary from "../../routers/routesDict";
+import { ROUTES_DICT } from "../../routes/routesDict";
 
 export const menuList = [
   {
@@ -25,7 +25,7 @@ export const menuList = [
       {
         id: "inicio",
         title: "Inicio",
-        link: routesDictionary.animalControl,
+        link: ROUTES_DICT.animalControl,
       },
       {
         id: "estadisticas",
@@ -60,7 +60,7 @@ export const menuList = [
         id: "preñeces",
         title: "Preñeces",
         img: Rec2,
-        link: routesDictionary.pregnancies,
+        link: ROUTES_DICT.pregnancies,
       },
       {
         id: "palpaciones",
@@ -70,7 +70,7 @@ export const menuList = [
           {
             id: "inicio",
             title: "Inicio",
-            link: routesDictionary.palpations,
+            link: ROUTES_DICT.palpations,
           },
           {
             id: "agregar",
@@ -88,7 +88,7 @@ export const menuList = [
           {
             id: "inicio",
             title: "Inicio",
-            link: routesDictionary.birth,
+            link: ROUTES_DICT.birth,
           },
           {
             id: "agregar",
@@ -117,7 +117,7 @@ export const menuList = [
           {
             id: "inicio",
             title: "Inicio",
-            link: routesDictionary.service,
+            link: ROUTES_DICT.service,
           },
           {
             id: "agregar",
@@ -139,12 +139,12 @@ export const menuList = [
           {
             id: "registro-celos",
             title: "Registro celos",
-            link: routesDictionary.zeal,
+            link: ROUTES_DICT.zeal,
           },
           {
             id: "agregar-pesos",
             title: "Ingresos Pesos",
-            link: routesDictionary.weight,
+            link: ROUTES_DICT.weight,
           },
           {
             id: "ventas",

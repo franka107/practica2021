@@ -1,9 +1,6 @@
 import CountryService from "../../services/country.service";
-import UserService from "../../services/user.service";
-import { userConstants } from "../constants";
 import { countryConstans } from "../constants/country.constants";
 import { alertActions } from "./alert.actions";
-import { uiActions } from "./ui.actions";
 
 export const countryActions = { listAll };
 

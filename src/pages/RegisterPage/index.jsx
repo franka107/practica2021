@@ -18,14 +18,14 @@ import TextFieldFormik from "../../components/Inputs/TextFieldFormik";
 import { Link, useHistory } from "react-router-dom";
 import googleBtn from "../../assets/images/google.png";
 import { useDispatch, useSelector } from "react-redux";
-import { userActions } from "../../redux/actions";
-import routesDictionary from "../../routers/routesDict";
 import { uiActions } from "../../redux/actions/ui.actions";
 import { useState } from "react";
 import PasswordValidation from "../../components/PasswordValidation";
 import PasswordFieldFormik from "../../components/Inputs/PasswordFieldFormik";
 import UserType from "./UserType";
 import UserService from "../../services/user.service";
+import { ROUTES_DICT } from "../../routes/routesDict";
+import { userActions } from "../../redux/actions/user.actions";
 
 function RegisterPage(props) {
   const classes = useStyles();
@@ -249,7 +249,7 @@ function RegisterPage(props) {
                 <div className={classes.checkBoxLabel}>
                   Me gustaría recibir noticias sobre productos y servicios de
                   conTigo.
-                  <Link to={routesDictionary.home} className={classes.link}>
+                  <Link to={ROUTES_DICT.home} className={classes.link}>
                     ¿Qué significa esto?{" "}
                   </Link>
                 </div>
@@ -312,7 +312,7 @@ function RegisterPage(props) {
           </Grid>
           <Typography gutterBottom className={classes.footer}>
             ¿Ya tienes una cuenta?{" "}
-            <Link to={routesDictionary.login} className={classes.link}>
+            <Link to={ROUTES_DICT.login} className={classes.link}>
               Iniciar sesión{" "}
             </Link>
           </Typography>
