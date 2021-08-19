@@ -10,7 +10,7 @@ import TextFieldFormik from "../../components/Inputs/TextFieldFormik";
 import { Link, useHistory, useParams } from "react-router-dom";
 import googleBtn from "../../assets/images/google.png";
 import { useDispatch } from "react-redux";
-import { uiActions } from "../../redux/actions/ui.actions";
+import { UiActions } from "../../redux/actions/ui.actions";
 import PasswordFieldFormik from "../../components/Inputs/PasswordFieldFormik";
 import { useEffect } from "react";
 import UserService from "../../services/user.service";

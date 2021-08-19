@@ -1,4 +1,5 @@
 import { faCog, faHome, faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
+import AuthActions from "../../redux/actions/auth.actions";
 import { ROUTES_DICT } from "../../routes/routesDict";
 
 export const menuItems = [
@@ -18,7 +19,10 @@ export const menuItems = [
     id: 3,
     title: "Cerrar Sesión",
     img: faSignOutAlt,
-    link: ROUTES_DICT.test,
+    onClick: (history, dispatch) => {
+      dispatch(AuthActions.logout());
+      history.push(ROUTES_DICT.login);
+    },
   },
   {
     id: 4,

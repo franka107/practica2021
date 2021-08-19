@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Facebook } from "@material-ui/icons";
 import {
   Button,
@@ -6,7 +6,6 @@ import {
   Container,
   FormControlLabel,
   Grid,
-  TextField,
   Typography,
 } from "@material-ui/core";
 import { useStyles } from "./styles";
@@ -18,14 +17,13 @@ import TextFieldFormik from "../../components/Inputs/TextFieldFormik";
 import { Link, useHistory } from "react-router-dom";
 import googleBtn from "../../assets/images/google.png";
 import { useDispatch, useSelector } from "react-redux";
-import { uiActions } from "../../redux/actions/ui.actions";
 import { useState } from "react";
 import PasswordValidation from "../../components/PasswordValidation";
 import PasswordFieldFormik from "../../components/Inputs/PasswordFieldFormik";
 import UserType from "./UserType";
 import UserService from "../../services/user.service";
 import { ROUTES_DICT } from "../../routes/routesDict";
-import { userActions } from "../../redux/actions/user.actions";
+import AuthActions from "../../redux/actions/auth.actions";
 
 function RegisterPage(props) {
   const classes = useStyles();
@@ -42,7 +40,10 @@ function RegisterPage(props) {
     rememberAccount: false,
     terms: false,
   };
-  const { user } = useSelector((state) => state.auth);
+
+  useEffect(() => {
+    console.log("render agarin");
+  }, []);
 
   const validationSchema = yup.object({
     email: yup
@@ -71,7 +72,7 @@ function RegisterPage(props) {
   });
 
   const onSubmitForm = (values, actions) => {
-    dispatch(userActions.register(values))
+    dispatch(AuthActions.register(values))
       .then(() => {
         setView("UserType");
       })
@@ -155,7 +156,6 @@ function RegisterPage(props) {
           <UserType
             onClick={() => {
               setView("UserVerification");
-              UserService.sendVerificationEmail(user);
             }}
           />
         );

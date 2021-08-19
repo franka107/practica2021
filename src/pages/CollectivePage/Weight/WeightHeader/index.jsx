@@ -19,9 +19,7 @@ function WeightHeader() {
     iec: "",
     observation: "",
   };
-  const handleSubmit = (values, actions) => {
-    console.log(values);
-  };
+  const handleSubmit = (values, actions) => {};
 
   return (
     <Grid item container xs={12}>

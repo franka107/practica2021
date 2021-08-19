@@ -3,7 +3,7 @@ import Snackbar from "@material-ui/core/Snackbar";
 import Slide from "@material-ui/core/Slide";
 import Alert from "@material-ui/lab/Alert";
 import { useDispatch, useSelector } from "react-redux";
-import { uiActions } from "../../redux/actions/ui.actions";
+import UiActions from "../../redux/actions/ui.actions";
 
 export const GlobalSnackbar = () => {
   const [open, setOpen] = useState(false);
@@ -27,7 +27,7 @@ export const GlobalSnackbar = () => {
       showMessage(snackbarMessage, snackbarSeverity, snackbarDuration);
       setTimeout(() => {
         setOpen(false);
-        dispatch(uiActions.clearSnackbar());
+        dispatch(UiActions.clearSnackbar());
       }, duration);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -44,15 +44,15 @@ export const GlobalSnackbar = () => {
     <>
       <Snackbar
         anchorOrigin={{
-          vertical: "bottom",
-          horizontal: "center",
+          vertical: "top",
+          horizontal: "right",
         }}
         autoHideDuration={duration}
         open={open}
         onClose={handleClose}
         TransitionComponent={Slide}
       >
-        <Alert onClose={handleClose} severity={severity}>
+        <Alert onClose={handleClose} severity={severity} variant="filled">
           {message}
         </Alert>
       </Snackbar>

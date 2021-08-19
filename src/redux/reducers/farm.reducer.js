@@ -1,4 +1,4 @@
-import { farmConstants } from "../constants/farm.constants";
+import { farmConstants } from "../types/farm.constants";
 
 const farm = JSON.parse(localStorage.getItem("farm"));
 const initialState = farm ? { farm: farm } : {};

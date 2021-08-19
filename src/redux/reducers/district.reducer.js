@@ -1,4 +1,4 @@
-import { districtConstants } from "../constants/district.constants";
+import { districtConstants } from "../types/district.constants";
 
 export function districtReducer(state = {}, action) {
   switch (action.type) {

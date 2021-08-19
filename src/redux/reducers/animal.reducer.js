@@ -1,4 +1,4 @@
-import { animalConstans } from "../constants/animal.constants";
+import { animalConstans } from "../types/animal.constants";
 
 export function animalReducer(state = {}, action) {
   switch (action.type) {

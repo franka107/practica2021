@@ -1,5 +1,5 @@
 import CountryService from "../../services/country.service";
-import { countryConstans } from "../constants/country.constants";
+import { countryConstans } from "../types/country.constants";
 import { alertActions } from "./alert.actions";
 
 export const countryActions = { listAll };

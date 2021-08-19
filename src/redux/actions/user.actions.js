@@ -1,7 +1,7 @@
 import UserService from "../../services/user.service";
-import { userConstants } from "../constants/user.constants";
+import { userConstants } from "../types/user.constants";
 import { alertActions } from "./alert.actions";
-import { uiActions } from "./ui.actions";
+import UiActions from "./ui.actions";
 
 export const userActions = { login, register };
 
@@ -15,7 +15,7 @@ function register(userData) {
       (error) => {
         dispatch(failure(error));
         dispatch(alertActions.error());
-        dispatch(uiActions.showSnackbar(error.message, "error"));
+        dispatch(UiActions.showSnackbar(error.message, "error"));
         return Promise.reject();
       }
     );

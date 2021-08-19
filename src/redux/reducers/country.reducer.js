@@ -1,4 +1,4 @@
-import { countryConstans } from "../constants/country.constants";
+import { countryConstans } from "../types/country.constants";
 
 export function countryReducer(state = {}, action) {
   switch (action.type) {

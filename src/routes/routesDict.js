@@ -8,7 +8,7 @@ export const ROUTES_DICT = {
   service: "/dashboard/servicios",
   birth: "/dashboard/nacimientos",
   palpations: "/dashboard/palpaciones",
-  emailVerified: "/email-verified/:userId",
+  emailVerified: "/email-verified",
   pregnancies: "/dashboard/preñeces",
   animalDetail: "/dashboard/animal-detail",
   animalControl: "/dashboard/control-animal",

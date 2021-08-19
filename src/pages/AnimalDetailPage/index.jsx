@@ -50,7 +50,6 @@ export default function AnimalDetailPage() {
 
   useEffect(() => {
     const id = location.hash + "";
-    console.log(id.replace(/#/gi, ""));
     dispatch(animalActions.listById({ _id: id.replace(/#/gi, "") }));
   }, [location]);
 
@@ -101,8 +100,6 @@ export default function AnimalDetailPage() {
                     onClick={() => {
                       setOpen(true);
                       setDialog("GeneralData");
-                      console.log(location);
-                      console.log(animals);
                     }}
                   >
                     <Edit fontSize="small"></Edit>

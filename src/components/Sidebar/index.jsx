@@ -35,7 +35,6 @@ function Sidebar({ openDrawer, setOpenDrawer, options }) {
   };
 
   useEffect(() => {
-    console.log(location);
     verifyLocation();
   }, []);
 
@@ -59,7 +58,6 @@ function Sidebar({ openDrawer, setOpenDrawer, options }) {
           }
         });
       }
-      console.log(option);
     });
   };
 
@@ -228,7 +226,6 @@ function Sidebar({ openDrawer, setOpenDrawer, options }) {
                         className={classes.nested}
                         onClick={() => {
                           handleSubMenuClick(subitem.id);
-                          console.log(subNestedList);
                         }}
                       >
                         {subitem.img && (

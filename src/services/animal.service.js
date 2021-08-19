@@ -3,7 +3,6 @@ const animalList = () => {
     window.icAPI.callService("animalList", {}, function (error, response) {
       if (!error) {
         resolve(response.responseJSON);
-        console.log(response.responseJSON);
       } else {
         reject(response);
       }
@@ -16,7 +15,6 @@ const animalGetById = (data) => {
     window.icAPI.callService("animalGetById", data, function (error, response) {
       if (!error) {
         resolve(response.responseJSON);
-        console.log(response.responseJSON);
       } else {
         reject(response);
       }
@@ -29,7 +27,6 @@ const animalDelete = (data) => {
     window.icAPI.callService("animalDelete", data, function (error, response) {
       if (!error) {
         resolve(response.responseJSON);
-        console.log(response.responseJSON);
       } else {
         reject(response);
       }

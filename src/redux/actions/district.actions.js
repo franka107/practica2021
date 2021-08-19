@@ -1,5 +1,5 @@
 import DistrictService from "../../services/district.service";
-import { districtConstants } from "../constants/district.constants";
+import { districtConstants } from "../types/district.constants";
 import { alertActions } from "./alert.actions";
 
 export const districtActions = { listAll };

@@ -14,6 +14,7 @@ import { uiActions } from "../../redux/actions/ui.actions";
 import PasswordFieldFormik from "../../components/Inputs/PasswordFieldFormik";
 import { userActions } from "../../redux/actions/user.actions";
 import { ROUTES_DICT } from "../../routes/routesDict";
+import AuthActions from "../../redux/actions/auth.actions";
 
 function LoginPage(props) {
   const classes = useStyles();
@@ -41,16 +42,11 @@ function LoginPage(props) {
   });
 
   const onSubmitForm = (values, actions) => {
-    const { email, password } = values;
-    dispatch(userActions.login(email, password))
+    dispatch(AuthActions.login(values))
       .then(() => {
         history.push(ROUTES_DICT.dashboard);
       })
-      .catch((error) => {
-        //props.snackbarShowMessage("Credenciales inválidas", "error");
-        dispatch(uiActions.showSnackbar("Credenciales inválidas", "error"));
-      })
-      .finally(() => {
+      .catch(() => {
         actions.setSubmitting(false);
       });
   };

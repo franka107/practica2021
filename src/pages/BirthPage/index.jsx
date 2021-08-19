@@ -14,9 +14,7 @@ import SelectFieldFormik from "../../components/Inputs/SelectFieldFormik";
 import * as yup from "yup";
 
 function BirthPage() {
-  const handleSubmit = (values, actions) => {
-    console.log(values);
-  };
+  const handleSubmit = (values, actions) => {};
   const validationSchema = yup.object({});
   const initValues = {
     name: "",

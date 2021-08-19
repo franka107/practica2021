@@ -23,7 +23,9 @@ import {
 import { farmActions } from "../../../redux/actions/farm.actions";
 
 export default function RegisterFarmForm({ setRegisterStep }) {
-  const validationSchema = yup.object({});
+  const validationSchema = yup.object({
+    name: yup.string().required(),
+  });
   const initValues = {
     name: "",
     landLord: "",

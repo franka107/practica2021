@@ -14,13 +14,7 @@ import { Link, useHistory } from "react-router-dom";
 import { useStyles } from "./styles";
 import { ROUTES_DICT } from "../../../routes/routesDict";
 
-const propTypes = {
-  setLoginState: PropTypes.func.isRequired,
-  email: PropTypes.string.isRequired,
-  password: PropTypes.string.isRequired,
-};
-
-function UserType({ onClick, setLoginState, hasFarm, hasAgribusiness }) {
+function UserType({ onClick }) {
   const classes = useStyles();
   const history = useHistory();
   const [value, setValue] = useState(userTypes[0].key);
@@ -107,7 +101,5 @@ function UserType({ onClick, setLoginState, hasFarm, hasAgribusiness }) {
     </Grid>
   );
 }
-
-UserType.propTypes = propTypes;
 
 export default UserType;

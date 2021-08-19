@@ -1,6 +1,6 @@
 import CountryService from "../../services/country.service";
 import FarmService from "../../services/farm.service";
-import { farmConstants } from "../constants/farm.constants";
+import { farmConstants } from "../types/farm.constants";
 import { alertActions } from "./alert.actions";
 
 export const farmActions = { create };

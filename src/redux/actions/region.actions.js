@@ -1,5 +1,5 @@
 import RegionService from "../../services/region.service";
-import { regionConstants } from "../constants/region.constants";
+import { regionConstants } from "../types/region.constants";
 import { alertActions } from "./alert.actions";
 
 export const regionActions = { listAll };

@@ -13,8 +13,10 @@ import NotificationsNoneOutlinedIcon from "@material-ui/icons/NotificationsNoneO
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useStyles } from "./styles";
 import { menuItems } from "./constants";
+import { useDispatch } from "react-redux";
 
 function MenuDropdown({ isLogin, setLoginState }) {
+  const dispatch = useDispatch();
   const classes = useStyles();
   const [openMenu, setOpenMenu] = useState(false);
   const [menuList, setMenuList] = useState([]);
@@ -92,6 +94,8 @@ function MenuDropdown({ isLogin, setLoginState }) {
               handleClose();
               if (item.link) {
                 history.push(item.link);
+              } else {
+                item.onClick(history, dispatch);
               }
             }}
           >

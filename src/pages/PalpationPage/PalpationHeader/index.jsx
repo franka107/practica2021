@@ -34,13 +34,9 @@ function PalpationHeader({ handleChange }) {
     lot: "",
   };
 
-  useEffect(() => {
-    console.log(menuList);
-  }, []);
+  useEffect(() => {}, []);
 
-  const handleSubmit = (values, actions) => {
-    console.log(values);
-  };
+  const handleSubmit = (values, actions) => {};
 
   return (
     <Grid item container xs={12}>

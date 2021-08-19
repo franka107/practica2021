@@ -41,7 +41,7 @@ export const ROUTES = [
     exact: true,
     component: () => <Redirect to={ROUTES_DICT.animalControl} />,
     layout: DashboardLayout,
-    type: ROUTE_TYPES.public,
+    type: ROUTE_TYPES.private,
   },
   {
     path: ROUTES_DICT.animalControl,
@@ -49,7 +49,7 @@ export const ROUTES = [
     exact: true,
     component: AnimalControlPage,
     layout: DashboardLayout,
-    type: ROUTE_TYPES.public,
+    type: ROUTE_TYPES.private,
   },
   {
     path: ROUTES_DICT.animalDetail,
@@ -57,7 +57,7 @@ export const ROUTES = [
     exact: true,
     component: AnimalDetailPage,
     layout: DashboardLayout,
-    type: ROUTE_TYPES.public,
+    type: ROUTE_TYPES.private,
   },
 
   {
@@ -66,7 +66,7 @@ export const ROUTES = [
     exact: true,
     component: ServicePage,
     layout: DashboardLayout,
-    type: ROUTE_TYPES.public,
+    type: ROUTE_TYPES.private,
   },
   {
     path: ROUTES_DICT.birth,
@@ -74,7 +74,7 @@ export const ROUTES = [
     exact: true,
     component: BirthPage,
     layout: DashboardLayout,
-    type: ROUTE_TYPES.public,
+    type: ROUTE_TYPES.private,
   },
   {
     path: ROUTES_DICT.palpations,
@@ -82,7 +82,7 @@ export const ROUTES = [
     exact: true,
     component: PalpationPage,
     layout: DashboardLayout,
-    type: ROUTE_TYPES.public,
+    type: ROUTE_TYPES.private,
   },
   {
     path: ROUTES_DICT.pregnancies,
@@ -90,7 +90,7 @@ export const ROUTES = [
     exact: true,
     component: PregnanciesPage,
     layout: DashboardLayout,
-    type: ROUTE_TYPES.public,
+    type: ROUTE_TYPES.private,
   },
   {
     path: ROUTES_DICT.setup,
@@ -98,14 +98,14 @@ export const ROUTES = [
     exact: true,
     component: SetupControlPage,
     layout: DashboardLayout,
-    type: ROUTE_TYPES.public,
+    type: ROUTE_TYPES.private,
   },
   {
-    path: ROUTES_DICT.emailVerified,
-    key: "Celos",
+    path: ROUTES_DICT.emailVerified + "/:userId",
+    key: "Verificacion",
     exact: true,
     component: EmailVerifiedPage,
     layout: DashboardLayout,
-    type: ROUTE_TYPES.public,
+    type: ROUTE_TYPES.private,
   },
 ];

@@ -99,7 +99,6 @@ function AnimalControlPage() {
                     size="small"
                     aria-label="delete"
                     onClick={() => {
-                      // console.log(data);
                       // data.outstanding = !data.outstanding;
                       // setAnimalsList(data);
                     }}
