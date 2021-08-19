@@ -52,8 +52,8 @@ export const ROUTES = [
     type: ROUTE_TYPES.public,
   },
   {
-    path: ROUTES_DICT.animalDetail,
-    key: "Control Animal",
+    path: ROUTES_DICT.animalDetail + "/:animalId",
+    key: "Detalles de animal",
     exact: true,
     component: AnimalDetailPage,
     layout: DashboardLayout,

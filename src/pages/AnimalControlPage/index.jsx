@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import {
   Grid,
   Typography,
@@ -28,10 +28,16 @@ import { ROUTES_DICT } from "../../routes/routesDict";
 function AnimalControlPage() {
   const classes = useStyles();
   const history = useHistory();
+  const { location = {} } = history;
   const [open, setOpen] = useState(false);
   const [idDelete, setIdDelete] = useState("");
   const dispatch = useDispatch();
+  const params = useParams();
   const { animals } = useSelector((state) => state.animal);
+  // useEffect(() => {
+  //   dispatch(animalActions.listAll());
+  // }, []);
+
   useEffect(() => {
     dispatch(animalActions.listAll());
   }, []);
@@ -43,77 +49,74 @@ function AnimalControlPage() {
       <AnimalCharts />
       <AddAnimals />
       <Grid item xs={12} className={classes.registerContainer}>
-        <CustomMaterialTable
-          data={animals}
-          columns={[
-            ...columnsToCustomMaterialTable,
-            {
-              field: "actions",
-              title: "Acciones",
-              render: (rowData) => (
-                <>
-                  <IconButton
-                    style={{ color: "#C25560" }}
-                    size="small"
-                    aria-label="edit"
-                    onClick={() => {
-                      history.push({
-                        pathname: ROUTES_DICT.animalDetail + "/#" + rowData._id,
-                        state: {
-                          _id: rowData._id,
-                        },
-                      });
-                    }}
-                  >
-                    <Visibility fontSize="small" />
-                  </IconButton>
-                  {/* </Link> */}
-                  <IconButton
-                    style={{ color: "#C25560" }}
-                    size="small"
-                    aria-label="edit"
-                  >
-                    <Edit fontSize="small" />
-                  </IconButton>
-                  <IconButton
-                    style={{ color: "#C25560" }}
-                    size="small"
-                    aria-label="delete"
-                    onClick={() => {
-                      setOpen(true);
-                      setIdDelete(rowData._id);
-                    }}
-                  >
-                    <Delete fontSize="small" />
-                  </IconButton>
-                </>
-              ),
-            },
-            {
-              field: "outstanding",
-              title: "",
-              render: (data) => (
-                <>
-                  <IconButton
-                    style={{ color: "#C25560" }}
-                    size="small"
-                    aria-label="delete"
-                    onClick={() => {
-                      // console.log(data);
-                      // data.outstanding = !data.outstanding;
-                      // setAnimalsList(data);
-                    }}
-                  >
-                    {data.outstanding === false && <Star fontSize="small" />}
-                    {data.outstanding === true && (
-                      <StarBorder fontSize="small" />
-                    )}
-                  </IconButton>
-                </>
-              ),
-            },
-          ]}
-        />
+        {animals &&
+          <CustomMaterialTable
+            data={animals}
+            columns={[
+              ...columnsToCustomMaterialTable,
+              {
+                field: "actions",
+                title: "Acciones",
+                render: (rowData) => (
+                  <>
+                    <IconButton
+                      style={{ color: "#C25560" }}
+                      size="small"
+                      aria-label="edit"
+                      onClick={() => {
+                        history.push(`${ROUTES_DICT.animalDetail}/${rowData._id}`);
+                      }}
+                    >
+                      <Visibility fontSize="small" />
+                    </IconButton>
+                    {/* </Link> */}
+                    <IconButton
+                      style={{ color: "#C25560" }}
+                      size="small"
+                      aria-label="edit"
+                    >
+                      <Edit fontSize="small" />
+                    </IconButton>
+                    <IconButton
+                      style={{ color: "#C25560" }}
+                      size="small"
+                      aria-label="delete"
+                      onClick={() => {
+                        setOpen(true);
+                        setIdDelete(rowData._id);
+                      }}
+                    >
+                      <Delete fontSize="small" />
+                    </IconButton>
+                  </>
+                ),
+              },
+              {
+                field: "outstanding",
+                title: "",
+                render: (data) => (
+                  <>
+                    <IconButton
+                      style={{ color: "#C25560" }}
+                      size="small"
+                      aria-label="delete"
+                      onClick={() => {
+                        // console.log(data);
+                        // data.outstanding = !data.outstanding;
+                        // setAnimalsList(data);
+                      }}
+                    >
+                      {data.outstanding === false && <Star fontSize="small" />}
+                      {data.outstanding === true && (
+                        <StarBorder fontSize="small" />
+                      )}
+                    </IconButton>
+                  </>
+                ),
+              },
+            ]}
+          />
+        }
       </Grid>
       <Dialog
         open={Boolean(open)}

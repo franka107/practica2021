@@ -30,11 +30,13 @@ import TimelineConnector from "@material-ui/lab/TimelineConnector";
 import TimelineContent from "@material-ui/lab/TimelineContent";
 import TimelineDot from "@material-ui/lab/TimelineDot";
 import QRData from "./Dialog/QRData";
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { animalActions } from "../../redux/actions/animal.actions";
 import { ROUTES_DICT } from "../../routes/routesDict";
-
+import { format } from "date-fns";
+import esLocale from 'date-fns/locale/es'
+import { getAge, formatDate } from "../../helpers/convertDate";
 export default function AnimalDetailPage() {
   const classes = useStyles();
   const [dialog, setDialog] = useState("");
@@ -46,12 +48,10 @@ export default function AnimalDetailPage() {
   const history = useHistory();
   const { location = {} } = history;
   const dispatch = useDispatch();
+  const params = useParams();
   const { animals } = useSelector((state) => state.animal);
-
   useEffect(() => {
-    const id = location.hash + "";
-    console.log(id.replace(/#/gi, ""));
-    dispatch(animalActions.listById({ _id: id.replace(/#/gi, "") }));
+    dispatch(animalActions.listById({ _id: params.animalId }));
   }, [location]);
 
   return (
@@ -163,7 +163,7 @@ export default function AnimalDetailPage() {
                       </Typography>
                     </Grid>
                     <Grid item xs={9}>
-                      <Typography>Hembra</Typography>
+                      <Typography>{animals && animals.gender === "H" ? 'Hembra' : "Macho"}</Typography>
                     </Grid>
                   </Grid>
                   <Grid container className={classes.generalFeature} xs={12}>
@@ -173,7 +173,7 @@ export default function AnimalDetailPage() {
                       </Typography>
                     </Grid>
                     <Grid item xs={9}>
-                      <Typography>4 años, 2 meses, 15 dias</Typography>
+                      <Typography>{animals && getAge(new Date(animals.birthDate), new Date())}</Typography>
                     </Grid>
                   </Grid>
                   <Grid container className={classes.generalFeature} xs={12}>
@@ -183,7 +183,8 @@ export default function AnimalDetailPage() {
                       </Typography>
                     </Grid>
                     <Grid item xs={9}>
-                      <Typography>Vaca seca, 276 dias de preñez</Typography>
+                      <Typography>{animals && `${animals.reproductiveStatus}, ${animals.gestation} de preñez`}</Typography>
+                      {/* <Typography>Vaca seca, 276 dias de preñez</Typography> */}
                     </Grid>
                   </Grid>
                   <div className={classes.borderLinearProgress}>
@@ -206,7 +207,10 @@ export default function AnimalDetailPage() {
                       </Typography>
                     </Grid>
                     <Grid item xs={8}>
-                      <Typography>03 de Enero del 2016</Typography>
+                      <Typography>
+                        {/* {animals && formatDate(animals.birthDate)} */}
+                        {animals && animals.birthDate}
+                      </Typography>
                     </Grid>
                   </Grid>
                   <Grid container className={classes.generalFeature} xs={12}>
@@ -216,7 +220,10 @@ export default function AnimalDetailPage() {
                       </Typography>
                     </Grid>
                     <Grid item xs={8}>
-                      <Typography>04 de enero del 2017</Typography>
+                      <Typography>
+                        {/* {animals && formatDate(animals.herdDate)} */}
+                        {animals && animals.herdDate}
+                      </Typography>
                     </Grid>
                   </Grid>
                   <Grid container className={classes.generalFeature} xs={12}>
@@ -226,7 +233,7 @@ export default function AnimalDetailPage() {
                       </Typography>
                     </Grid>
                     <Grid item xs={8}>
-                      <Typography>005</Typography>
+                      <Typography>{animals && animals.offSpringNumber}</Typography>
                     </Grid>
                   </Grid>
                 </div>
@@ -269,7 +276,7 @@ export default function AnimalDetailPage() {
                           </Typography>
                         </Grid>
                         <Grid item xs={7}>
-                          <Typography>#0001</Typography>
+                          <Typography>{animals && animals.father !== "" ? animals.father : 'No especificado'}</Typography>
                         </Grid>
                       </Grid>
                       <Grid
@@ -283,7 +290,7 @@ export default function AnimalDetailPage() {
                           </Typography>
                         </Grid>
                         <Grid item xs={7}>
-                          <Typography>#0002</Typography>
+                          <Typography>{animals && animals.mother !== "" ? animals.mother : 'No especificado'}</Typography>
                         </Grid>
                       </Grid>
                       <Grid
@@ -293,13 +300,30 @@ export default function AnimalDetailPage() {
                       >
                         <Grid item xs={5}>
                           <Typography className={classes.cardFeature}>
-                            Raza
+                            Raza {animals && animals.percentageRacial1 !== 100 ? '1' : ''}
                           </Typography>
                         </Grid>
                         <Grid item xs={7}>
-                          <Typography>03 Holstein NEG-T 100%</Typography>
+                          <Typography>{animals && animals.racial1} - {animals && animals.percentageRacial1}%</Typography>
                         </Grid>
                       </Grid>
+                      {animals && animals.percentageRacial1 !== 100 ?
+                        (<Grid
+                          container
+                          className={classes.generalFeature}
+                          xs={12}
+                        >
+                          <Grid item xs={5}>
+                            <Typography className={classes.cardFeature}>
+                              Raza 2
+                            </Typography>
+                          </Grid>
+                          <Grid item xs={7}>
+                            <Typography>{animals && animals.racial2} - {animals && animals.percentageRacial2}%</Typography>
+                          </Grid>
+                        </Grid>)
+                        : (<div></div>)
+                      }
                       <Grid
                         container
                         className={classes.generalFeature}
@@ -311,7 +335,7 @@ export default function AnimalDetailPage() {
                           </Typography>
                         </Grid>
                         <Grid item xs={7}>
-                          <Typography>Rojo</Typography>
+                          <Typography>{animals && animals.color !== "" ? animals.color : 'No especificado'}</Typography>
                         </Grid>
                       </Grid>
                     </div>
@@ -355,7 +379,7 @@ export default function AnimalDetailPage() {
                           </Typography>
                         </Grid>
                         <Grid item xs={7}>
-                          <Typography>2</Typography>
+                          <Typography>{animals && animals.childBirthNumber}</Typography>
                         </Grid>
                       </Grid>
                       <Grid
@@ -369,7 +393,7 @@ export default function AnimalDetailPage() {
                           </Typography>
                         </Grid>
                         <Grid item xs={7}>
-                          <Typography>23 de Junio del 2018</Typography>
+                          <Typography>{animals && animals.lastChildBirthDate}</Typography>
                         </Grid>
                       </Grid>
                       <Grid
@@ -383,7 +407,7 @@ export default function AnimalDetailPage() {
                           </Typography>
                         </Grid>
                         <Grid item xs={7}>
-                          <Typography>0.00</Typography>
+                          <Typography>No especificado</Typography>
                         </Grid>
                       </Grid>
                       <Grid
@@ -397,7 +421,7 @@ export default function AnimalDetailPage() {
                           </Typography>
                         </Grid>
                         <Grid item xs={7}>
-                          <Typography>0</Typography>
+                          <Typography>No especificado</Typography>
                         </Grid>
                       </Grid>
                       <Grid
@@ -449,11 +473,11 @@ export default function AnimalDetailPage() {
                         >
                           <Grid item xs={5}>
                             <Typography className={classes.cardFeature}>
-                              Fecha de pesaje
+                              Peso
                             </Typography>
                           </Grid>
                           <Grid item xs={7}>
-                            <Typography>2</Typography>
+                            <Typography>{animals && animals.lastWeight}</Typography>
                           </Grid>
                         </Grid>
                         <Grid
@@ -463,11 +487,11 @@ export default function AnimalDetailPage() {
                         >
                           <Grid item xs={5}>
                             <Typography className={classes.cardFeature}>
-                              Peso
+                              Fecha de pesaje
                             </Typography>
                           </Grid>
                           <Grid item xs={7}>
-                            <Typography>23 de Junio del 2018</Typography>
+                            <Typography>{animals && animals.lastWeightDate}</Typography>
                           </Grid>
                         </Grid>
                         <Grid
@@ -481,7 +505,7 @@ export default function AnimalDetailPage() {
                             </Typography>
                           </Grid>
                           <Grid item xs={7}>
-                            <Typography>Lorem Ipsum</Typography>
+                            <Typography>No especificado</Typography>
                           </Grid>
                         </Grid>
                         <Grid
@@ -495,7 +519,7 @@ export default function AnimalDetailPage() {
                             </Typography>
                           </Grid>
                           <Grid item xs={7}>
-                            <Typography>Lorem Ipsum</Typography>
+                            <Typography>No especificado</Typography>
                           </Grid>
                         </Grid>
                         <Grid
@@ -509,7 +533,7 @@ export default function AnimalDetailPage() {
                             </Typography>
                           </Grid>
                           <Grid item xs={7}>
-                            <Typography>Lorem Ipsum</Typography>
+                            <Typography>No especificado</Typography>
                           </Grid>
                         </Grid>
                       </Grid>
@@ -627,7 +651,7 @@ export default function AnimalDetailPage() {
                       </Typography>
                     </Grid>
                     <Grid item xs={6}>
-                      <Typography>Lorem Ipsum</Typography>
+                      <Typography>No especificado</Typography>
                     </Grid>
                   </Grid>
                   <Grid container className={classes.generalFeature} xs={12}>
@@ -637,7 +661,7 @@ export default function AnimalDetailPage() {
                       </Typography>
                     </Grid>
                     <Grid item xs={6}>
-                      <Typography>Lorem Ipsum</Typography>
+                      <Typography>No especificado</Typography>
                     </Grid>
                   </Grid>
                   <Grid container className={classes.generalFeature} xs={12}>
@@ -647,7 +671,7 @@ export default function AnimalDetailPage() {
                       </Typography>
                     </Grid>
                     <Grid item xs={6}>
-                      <Typography>Lorem Ipsum</Typography>
+                      <Typography>No especificado</Typography>
                     </Grid>
                   </Grid>
                   <Grid container className={classes.generalFeature} xs={12}>
@@ -785,21 +809,21 @@ export default function AnimalDetailPage() {
                   <Grid container className={classes.generalFeature} xs={12}>
                     <Grid item xs={5}>
                       <Typography className={classes.cardFeature}>
-                        Fecha de pesaje
+                        Peso
                       </Typography>
                     </Grid>
                     <Grid item xs={7}>
-                      <Typography>2</Typography>
+                      <Typography>{animals && animals.lastWeight}</Typography>
                     </Grid>
                   </Grid>
                   <Grid container className={classes.generalFeature} xs={12}>
                     <Grid item xs={5}>
                       <Typography className={classes.cardFeature}>
-                        Peso
+                        Fecha de pesaje
                       </Typography>
                     </Grid>
                     <Grid item xs={7}>
-                      <Typography>23 de Junio del 2018</Typography>
+                      <Typography>{animals && animals.lastWeightDate}</Typography>
                     </Grid>
                   </Grid>
                   <Grid container className={classes.generalFeature} xs={12}>
@@ -809,7 +833,7 @@ export default function AnimalDetailPage() {
                       </Typography>
                     </Grid>
                     <Grid item xs={7}>
-                      <Typography>Lorem Ipsum</Typography>
+                      <Typography>No especificado</Typography>
                     </Grid>
                   </Grid>
                   <Grid container className={classes.generalFeature} xs={12}>
@@ -819,7 +843,7 @@ export default function AnimalDetailPage() {
                       </Typography>
                     </Grid>
                     <Grid item xs={7}>
-                      <Typography>Lorem Ipsum</Typography>
+                      <Typography>No especificado</Typography>
                     </Grid>
                   </Grid>
                   <Grid container className={classes.generalFeature} xs={12}>
@@ -829,7 +853,7 @@ export default function AnimalDetailPage() {
                       </Typography>
                     </Grid>
                     <Grid item xs={7}>
-                      <Typography>Lorem Ipsum</Typography>
+                      <Typography>No especificado</Typography>
                     </Grid>
                   </Grid>
                 </div>
@@ -967,6 +991,6 @@ export default function AnimalDetailPage() {
         {dialog === "WeighingData" && <WeighingData />}
         {dialog === "QRData" && <QRData />} */}
       </Dialog>
-    </Grid>
+    </Grid >
   );
 }
