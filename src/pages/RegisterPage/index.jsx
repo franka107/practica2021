@@ -41,10 +41,6 @@ function RegisterPage(props) {
     terms: false,
   };
 
-  useEffect(() => {
-    console.log("render agarin");
-  }, []);
-
   const validationSchema = yup.object({
     email: yup
       .string("Ingresa tu correo eletrónico.")

@@ -18,6 +18,16 @@ const ACTION_TYPES = {
   },
   CURRENCY: {
     RETRIEVE: "currency/RETRIEVE",
+    RETRIEVE_BY_ID: "currency/RETRIEVE_BY_ID",
+  },
+  AGRIBUSINESS: {
+    RETRIEVE: "agribusiness/RETRIEVE",
+    CREATE: "agribusiness/CREATE",
+    UPDATE: "agribusiness/UPDATE",
+    DELETE: "agribusiness/DELETE",
+  },
+  FARM: {
+    RETRIEVE_BY_OWNER_ID: "farm/RETRIEVE_BY_OWNER_ID",
   },
 };
 

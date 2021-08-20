@@ -2,12 +2,12 @@ import CountryService from "../../services/country.service";
 import { countryConstans } from "../types/country.constants";
 import { alertActions } from "./alert.actions";
 
-export const countryActions = { listAll };
+export const countryActions = { retrieveCountries };
 
-function listAll() {
+function retrieveCountries() {
   return (dispatch) => {
     dispatch(request());
-    return CountryService.countryList().then(
+    return CountryService.getAll().then(
       (response) => {
         dispatch(success(response));
         return Promise.resolve();
@@ -23,8 +23,8 @@ function listAll() {
   function request() {
     return { type: countryConstans.GETALL_REQUEST };
   }
-  function success(countries) {
-    return { type: countryConstans.GETALL_SUCCESS, countries };
+  function success(payload) {
+    return { type: countryConstans.GETALL_SUCCESS, payload };
   }
   function failure(error) {
     return { type: countryConstans.GETALL_FAILURE, error };

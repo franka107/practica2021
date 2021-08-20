@@ -2,12 +2,12 @@ import RegionService from "../../services/region.service";
 import { regionConstants } from "../types/region.constants";
 import { alertActions } from "./alert.actions";
 
-export const regionActions = { listAll };
+export const regionActions = { retrieveRegions };
 
-function listAll() {
+function retrieveRegions() {
   return (dispatch) => {
     dispatch(request());
-    return RegionService.regionList().then(
+    return RegionService.getAll().then(
       (response) => {
         dispatch(success(response));
         return Promise.resolve();
@@ -23,8 +23,8 @@ function listAll() {
   function request() {
     return { type: regionConstants.GETALL_REQUEST };
   }
-  function success(regions) {
-    return { type: regionConstants.GETALL_SUCCESS, regions };
+  function success(payload) {
+    return { type: regionConstants.GETALL_SUCCESS, payload };
   }
   function failure(error) {
     return { type: regionConstants.GETALL_FAILURE, error };

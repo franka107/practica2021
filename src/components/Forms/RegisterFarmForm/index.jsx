@@ -66,7 +66,7 @@ export default function RegisterFarmForm({ setRegisterStep }) {
     districtId: "",
     address: "",
     phoneNumber: "",
-    currency: "",
+    currencyId: "",
     weightUnit: "",
     areaUnit: "",
     capacityUnit: "",
@@ -74,8 +74,8 @@ export default function RegisterFarmForm({ setRegisterStep }) {
 
   const classes = useStyles();
   const dispatch = useDispatch();
-  const { countries } = useSelector((state) => state.country);
-  const { regions } = useSelector((state) => state.region);
+  const { list: countries } = useSelector((state) => state.country);
+  const { list: regionList } = useSelector((state) => state.region);
   const { list: districtList } = useSelector((state) => state.district);
   const { user } = useSelector((state) => state.auth);
   const { list: currencyList } = useSelector((state) => state.currency);
@@ -90,8 +90,8 @@ export default function RegisterFarmForm({ setRegisterStep }) {
   }, [currencyList]);
 
   useEffect(() => {
-    dispatch(countryActions.listAll());
-    dispatch(regionActions.listAll());
+    dispatch(countryActions.retrieveCountries());
+    dispatch(regionActions.retrieveRegions());
     dispatch(districtActions.retrieveDistricts());
     dispatch(currencyActions.retrieveCurrencies());
   }, []);
@@ -149,7 +149,7 @@ export default function RegisterFarmForm({ setRegisterStep }) {
                   xs={4}
                   label="Región"
                   name="regionId"
-                  options={regions}
+                  options={regionList}
                 ></SelectFieldFormik>
                 <SelectFieldFormik
                   xs={4}

@@ -1,4 +1,4 @@
-const regionList = () => {
+const getAll = () => {
   return new Promise((resolve, reject) => {
     window.icAPI.callService("regionList", {}, function (error, response) {
       if (!error) {
@@ -11,7 +11,7 @@ const regionList = () => {
 };
 
 const RegionService = {
-  regionList,
+  getAll,
 };
 
 export default RegionService;

@@ -14,9 +14,12 @@ import clsx from "clsx";
 import { useStyles } from "./styles";
 import { useHistory } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useDispatch, useSelector } from "react-redux";
+import agribusinessActions from "../../redux/actions/agribusiness.actions";
 
 function Sidebar({ openDrawer, setOpenDrawer, options }) {
   const history = useHistory();
+  const dispatch = useDispatch();
   const { location = {} } = history;
   const classes = useStyles();
   const farm = {
@@ -33,6 +36,11 @@ function Sidebar({ openDrawer, setOpenDrawer, options }) {
       },
     ],
   };
+
+  const { current: currentFarm } = useSelector((state) => state.farm);
+  const { current: currentAgribusiness, list: listAgribusiness } = useSelector(
+    (state) => state.agribusiness
+  );
 
   useEffect(() => {
     verifyLocation();
@@ -119,13 +127,13 @@ function Sidebar({ openDrawer, setOpenDrawer, options }) {
           >
             <ListItemText className={classes.farmTextContainer}>
               <Typography className={classes.farmText}>
-                {`Hacienda ${farm.title || ""}`}
+                {`${(currentFarm && currentFarm.name) || ""}`}
               </Typography>
               <Typography
                 variant={"subtitle2"}
                 className={classes.activeBarnText}
               >
-                {barnActive.title}
+                {currentAgribusiness && currentAgribusiness.name}
               </Typography>
             </ListItemText>
             {farm.submenu && (
@@ -139,21 +147,24 @@ function Sidebar({ openDrawer, setOpenDrawer, options }) {
             )}
           </ListItem>
           <Collapse in={nestedList[farm.title]} timeout="auto" unmountOnExit>
-            {farm.submenu &&
-              farm.submenu.map((farmSubItem) => {
+            {listAgribusiness &&
+              listAgribusiness.map((agribusiness) => {
                 return (
                   <List
-                    key={`list-sub-item-${farmSubItem.id}`}
+                    key={`list-sub-item-${agribusiness._id}`}
                     component="div"
                     disablePadding
                     onClick={() => {
-                      setBarnActive(farmSubItem);
+                      setBarnActive(agribusiness);
                       handleClick(farm.title);
+                      dispatch(
+                        agribusinessActions.setCurrentAgribusiness(agribusiness)
+                      );
                     }}
                   >
                     <ListItem button className={classes.nested}>
                       <ListItemText
-                        primary={farmSubItem.title}
+                        primary={agribusiness.name}
                         className={classes.text}
                       />
                     </ListItem>

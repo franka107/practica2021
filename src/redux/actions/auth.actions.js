@@ -1,5 +1,6 @@
 import AuthService from "../../services/auth.service";
 import ACTION_TYPES from "../types";
+import { farmActions } from "./farm.actions";
 import UiActions from "./ui.actions";
 
 class AuthActions {
@@ -11,6 +12,7 @@ class AuthActions {
             type: ACTION_TYPES.AUTH.REGISTER_SUCESS,
             payload: response,
           });
+
           return Promise.resolve();
         },
         (error) => {
@@ -27,11 +29,13 @@ class AuthActions {
       return AuthService.login(data).then(
         (response) => {
           localStorage.setItem("user", JSON.stringify(response));
+          dispatch(farmActions.findFarmByOwnerId(response._id));
           dispatch({ type: ACTION_TYPES.AUTH.LOGIN_SUCESS, payload: response });
           return Promise.resolve();
         },
         (error) => {
           dispatch({ type: ACTION_TYPES.AUTH.LOGIN_FAIL, error: error });
+          dispatch(UiActions.showSnackbar(error.message, "error"));
           return Promise.reject();
         }
       );

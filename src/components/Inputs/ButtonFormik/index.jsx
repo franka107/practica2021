@@ -1,6 +1,5 @@
 import React from "react";
 import { Button as MuiButton, makeStyles } from "@material-ui/core";
-import { useField } from "formik";
 import clsx from "clsx";
 
 const useStyles = makeStyles((theme) => ({
@@ -31,7 +30,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function ButtonFormik({ xs = 12, ...props }) {
-  const [field] = useField(props);
   //const { text, size, color, variant, onClick, ...other } = props;
   const classes = useStyles();
 
@@ -45,7 +43,6 @@ export default function ButtonFormik({ xs = 12, ...props }) {
         props.type === "submit" && classes.buttonSubmit
       )}
       {...props}
-      {...field}
     >
       {props.label}
     </MuiButton>

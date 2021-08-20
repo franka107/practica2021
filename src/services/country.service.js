@@ -1,4 +1,4 @@
-const countryList = () => {
+const getAll = () => {
   return new Promise((resolve, reject) => {
     window.icAPI.callService("countryList", {}, function (error, response) {
       if (!error) {
@@ -11,7 +11,7 @@ const countryList = () => {
 };
 
 const CountryService = {
-  countryList,
+  getAll,
 };
 
 export default CountryService;

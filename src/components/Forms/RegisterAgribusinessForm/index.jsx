@@ -19,78 +19,94 @@ import {
   unitAreaOptions,
   unitCapacityOptions,
   unitWeightOptions,
-} from "./constants";
+} from "../../../constants";
 import { farmActions } from "../../../redux/actions/farm.actions";
 import ConfigureAnimals from "../../ConfigureAnimals";
 import CheckboxFormik from "../../Inputs/CheckboxFormik";
 import { useHistory } from "react-router-dom";
 import { ROUTES_DICT } from "../../../routes/routesDict";
+import {
+  milkingOptions,
+  numberOptions,
+  objectiveFarmOptions,
+  productionOptions,
+  targetSystemOptions,
+} from "../../../constants";
+import AgribusinessActions from "../../../redux/actions/agribusiness.actions";
+import clsx from "clsx";
+import currencyActions from "../../../redux/actions/currency.actions";
 
 export default function RegisterAgribusinessForm({ setRegisterStep }) {
-  const validationSchema = yup.object({});
+  const validationSchema = yup.object({
+    countryId: yup.string("Ingrese el país").required("El país es requerido"),
+    regionId: yup
+      .string("Ingrese la región")
+      .required("La región es requerida"),
+    districtId: yup
+      .string("Ingrese el distrito")
+      .required("La distrito es requerido"),
+    phoneNumber: yup.string("Ingrese el número"),
+    address: yup.string("Ingrese la dirección"),
+  });
+
   const initValues = {
-    name: "",
-    landLord: "",
-    nit: "",
-    countryId: "",
-    regionId: "",
-    districtId: "",
-    address: "",
-    phoneNumber: "",
-    currency: "",
-    weightUnit: "",
-    areaUnit: "",
-    capacityUnit: "",
-    finding: "",
-    milkingId: "",
-    numberId: "",
-    systemId: "",
-    productionId: "",
+    countryId: "", // *
+    districtId: "", //*
+    regionId: "", //*
+    address: "", //*
+    averageRainfall: "", //String
+    //ConfigureAnimals ----
+    isBreeding: 7, //Number *
+    isHeifer: 15, //Number *
+    meatCost: 0, //Number *
+    meatPrice: 0, //Number *
+    meatUnit: "KILOGRAMS", //String *
+    milkCost: 0, //Number *
+    milkPrice: 0, //Number *
+    milkUnit: "LITERS", //String *
+    //------
+    milkingNumber: 0, //Number *
+    milkingType: "", //String *
+    name: "", //*
+    phoneNumber: "", //*
+    reproductiveManagement: "", //*
+    system: "", //*
+    objectiveFarmOptions: "",
   };
   const classes = useStyles();
   const dispatch = useDispatch();
-  const { countries } = useSelector((state) => state.country);
-  const { regions } = useSelector((state) => state.region);
-  const { districts } = useSelector((state) => state.district);
-  const categoryOptions = [{ id: "1", name: "Objetivo farmero" }];
-  const milkingOptions = [
-    { _id: "MA", name: "Manual" },
-    { _id: "ME", name: "Mecánico" },
-    { _id: "AU", name: "Automático" },
-  ];
+  const { list: countries } = useSelector((state) => state.country);
+  const { list: regions } = useSelector((state) => state.region);
+  const { list: districts } = useSelector((state) => state.district);
+  const { current: currentFarm } = useSelector((state) => state.farm);
+  const { current: currentCurrency } = useSelector((state) => state.currency);
 
-  const numberOptions = [
-    { _id: "0", name: 0 },
-    { _id: "1", name: 1 },
-    { _id: "2", name: 2 },
-    { _id: "3", name: 3 },
-  ];
-
-  const targetSystemOptions = [
-    { _id: "EXT", name: "Extensivo" },
-    { _id: "SIT", name: "Intensivo" },
-    { _id: "INT", name: "Semi-intensivo" },
-  ];
-
-  const productionOptions = [
-    { _id: "RDI", name: "Monta Directa" },
-    { _id: "AIN", name: "Inseminación Artificial" },
-    { _id: "ROA", name: "Monta Directa/Inseminación Artificial" },
-    {
-      _id: "TRE",
-      name: "Inseminación Artificial, Monta Directa/Transferencia de embriones",
-    },
-  ];
   const history = useHistory();
 
   useEffect(() => {
-    dispatch(countryActions.listAll());
-    dispatch(regionActions.listAll());
-    dispatch(districtActions.listAll());
+    dispatch(countryActions.retrieveCountries());
+    dispatch(regionActions.retrieveRegions());
+    dispatch(districtActions.retrieveDistricts());
   }, []);
 
+  useEffect(() => {
+    currentFarm &&
+      dispatch(currencyActions.findCurrencyById(currentFarm.currencyId));
+  }, [currentFarm]);
+
   const handleSubmit = (values, actions) => {
-    history.push(ROUTES_DICT.dashboard);
+    dispatch(
+      AgribusinessActions.createAgribusiness({
+        farmId: currentFarm._id,
+        ...values,
+      })
+    )
+      .then(() => {
+        history.push(ROUTES_DICT.dashboard);
+      })
+      .catch(() => {
+        actions.setSubmitting(false);
+      });
   };
   return (
     <div className={classes.modal}>
@@ -143,13 +159,297 @@ export default function RegisterAgribusinessForm({ setRegisterStep }) {
                   name="phoneNumber"
                   onChange={props.handleChange}
                 />
-                <ConfigureAnimals
-                  coin={[]}
-                  handleNext={() => {}}
-                  customClasses={classes.customModal}
-                  saveAnimals={() => {}}
-                  saveValues={() => {}}
-                />
+                <Grid container className={clsx(classes.submodal)}>
+                  <Grid item>
+                    <Typography variant={"subtitle1"} gutterBottom>
+                      Configure sus animales
+                    </Typography>
+                  </Grid>
+                  <Grid item container spacing={1}>
+                    <Grid item xs={12} container>
+                      <Grid item container>
+                        <Typography
+                          variant={"body2"}
+                          gutterBottom
+                          className={classes.subtitle}
+                        >
+                          Categorizar
+                        </Typography>
+                      </Grid>
+                      <Grid
+                        item
+                        container
+                        xs={12}
+                        className={classes.containerCategory}
+                        spacing={2}
+                      >
+                        <Grid
+                          container
+                          item
+                          sm={6}
+                          xs={12}
+                          alignItems={"flex-end"}
+                          className={classes.animalItem}
+                        >
+                          <Grid item sm={6} xs={12}>
+                            <Typography
+                              variant={"body2"}
+                              gutterBottom
+                              className={classes.animalTitleBold}
+                            >
+                              Definir cria:
+                            </Typography>
+                          </Grid>
+                          <Grid
+                            container
+                            item
+                            sm={6}
+                            xs={12}
+                            justify={"flex-end"}
+                            alignItems={"flex-end"}
+                          >
+                            <Typography
+                              variant={"body2"}
+                              gutterBottom
+                              className={classes.animalTitle}
+                            >
+                              Hasta
+                            </Typography>
+                            <div className={classes.numberInputText}>
+                              <TextFieldFormik
+                                name="isBreeding"
+                                label={null}
+                                type="number"
+                              />
+                            </div>
+                            <Typography
+                              variant={"body2"}
+                              gutterBottom
+                              className={classes.animalTitle}
+                            >
+                              meses
+                            </Typography>
+                          </Grid>
+                        </Grid>
+                        <Grid
+                          container
+                          item
+                          sm={6}
+                          xs={12}
+                          alignItems={"flex-end"}
+                          className={classes.animalItem}
+                        >
+                          <Grid item sm={6} xs={12}>
+                            <Typography
+                              variant={"body2"}
+                              gutterBottom
+                              className={classes.animalTitleBold}
+                            >
+                              Definir novilla:
+                            </Typography>
+                          </Grid>
+                          <Grid
+                            container
+                            item
+                            sm={6}
+                            xs={12}
+                            justify={"flex-end"}
+                            alignItems={"flex-end"}
+                          >
+                            <Typography
+                              variant={"body2"}
+                              gutterBottom
+                              className={classes.animalTitle}
+                            >
+                              Hasta
+                            </Typography>
+                            <div className={classes.numberInputText}>
+                              <TextFieldFormik
+                                name="isHeifer"
+                                label={null}
+                                type="number"
+                              />
+                            </div>
+                            <Typography
+                              variant={"body2"}
+                              gutterBottom
+                              className={classes.animalTitle}
+                            >
+                              meses
+                            </Typography>
+                          </Grid>
+                        </Grid>
+                      </Grid>
+                    </Grid>
+                    <Grid
+                      item
+                      xs={12}
+                      container
+                      className={classes.costContainer}
+                    >
+                      <Typography
+                        variant={"body2"}
+                        gutterBottom
+                        className={classes.subtitle}
+                      >
+                        Costos y precios
+                      </Typography>
+                      <Grid item container className={classes.container}>
+                        <Grid
+                          container
+                          item
+                          xs={12}
+                          alignItems={"flex-end"}
+                          justify={"space-between"}
+                          className={classes.animalItem}
+                        >
+                          <div className={classes.numberInput}>
+                            {/*
+                    <Controls.Select
+                      name={"unitType"}
+                      defaultValue={currentUnit[unit.id]}
+                      value={currentUnit[unit.id]}
+                      options={units[unit.id]}
+                      onChange={(e) => {
+                        setUnit({ ...currentUnit, [unit.id]: e.target.value });
+                        handleChange();
+                      }}
+                    />
+                    */}
+                            <SelectFieldFormik
+                              name="milkUnit"
+                              label="Unidad"
+                              options={unitCapacityOptions}
+                            />
+                          </div>
+                          <Typography
+                            variant={"body2"}
+                            gutterBottom
+                            className={classes.animalTitle}
+                          >
+                            de leche.
+                          </Typography>
+                          <div className={classes.input}>
+                            <TextFieldFormik
+                              name="milkCost"
+                              label="Precio de venta"
+                            />
+                            {/*
+                              <Controls.Input
+                                name={"priceEstimed"}
+                                label={"Precio estimado"}
+                                type={"input"}
+                                defaultValue={""}
+                                value={price[unit.id]}
+                                onBlur={() => {
+                                  setPrice({
+                                    ...price,
+                                    [unit.id]: parseFloat(
+                                      price[unit.id]
+                                    ).toFixed(2),
+                                  });
+                                }}
+                                onChange={({ target: { value } }) => {
+                                  const regex = /^\d+(.\d{0,2})?$/;
+
+                                  if (regex.test(value)) {
+                                    setPrice({ ...price, [unit.id]: value });
+                                    handleChange();
+                                  }
+                                }}
+                                customInputClasses={classes.rightText}
+                              />
+                              */}
+                          </div>
+                          <div className={classes.input}>
+                            <TextFieldFormik
+                              name="milkPrice"
+                              label="Precio de venta"
+                            />
+                            {/* 
+                              <Controls.Input
+                                name={"costEstimed"}
+                                label={"Costo estimado"}
+                                type={"input"}
+                                defaultValue={""}
+                                value={cost[unit.id]}
+                                onBlur={() => {
+                                  setCost({
+                                    ...cost,
+                                    [unit.id]: parseFloat(
+                                      cost[unit.id]
+                                    ).toFixed(2),
+                                  });
+                                }}
+                                onChange={({ target: { value } }) => {
+                                  const regex = /^\d+(.\d{0,2})?$/;
+
+                                  if (regex.test(value)) {
+                                    setCost({ ...cost, [unit.id]: value });
+                                    handleChange();
+                                  }
+                                }}
+                                customInputClasses={classes.rightText}
+                              />
+                          */}
+                          </div>
+                          <Typography
+                            variant={"body2"}
+                            gutterBottom
+                            className={classes.animalTitle}
+                          >
+                            {currentCurrency &&
+                              currentCurrency.currencyAbbreviation}
+                          </Typography>
+                        </Grid>
+                        <Grid
+                          container
+                          item
+                          xs={12}
+                          alignItems={"flex-end"}
+                          justify={"space-between"}
+                          className={classes.animalItem}
+                        >
+                          <div className={classes.numberInput}>
+                            <SelectFieldFormik
+                              name="meatUnit"
+                              label="Unidad"
+                              options={unitCapacityOptions}
+                            />
+                          </div>
+                          <Typography
+                            variant={"body2"}
+                            gutterBottom
+                            className={classes.animalTitle}
+                          >
+                            de carne.
+                          </Typography>
+                          <div className={classes.input}>
+                            <TextFieldFormik
+                              name="meatCost"
+                              label="Precio de venta"
+                            />
+                          </div>
+                          <div className={classes.input}>
+                            <TextFieldFormik
+                              name="meatPrice"
+                              label="Precio de venta"
+                            />
+                          </div>
+                          <Typography
+                            variant={"body2"}
+                            gutterBottom
+                            className={classes.animalTitle}
+                          >
+                            {currentCurrency &&
+                              currentCurrency.currencyAbbreviation}
+                          </Typography>
+                        </Grid>
+                      </Grid>
+                    </Grid>
+                  </Grid>
+                </Grid>
+
                 <Typography variant={"subtitle2"} sm={12} xs={12}>
                   Objetivo
                 </Typography>
@@ -163,8 +463,8 @@ export default function RegisterAgribusinessForm({ setRegisterStep }) {
                   alignItems="center"
                 >
                   <CheckboxFormik
-                    name="finding"
-                    options={categoryOptions}
+                    name="objectiveFarmOptions"
+                    options={objectiveFarmOptions}
                     onChange={props.handleChange}
                   ></CheckboxFormik>
                 </Grid>
@@ -176,13 +476,13 @@ export default function RegisterAgribusinessForm({ setRegisterStep }) {
                 <SelectFieldFormik
                   xs={6}
                   label="Tipo de ordeño"
-                  name="milkingId"
+                  name="milkingType"
                   options={milkingOptions}
                 ></SelectFieldFormik>
                 <SelectFieldFormik
                   xs={6}
                   label="Numero de ordeño"
-                  name="numberId"
+                  name="milkingNumber"
                   options={numberOptions}
                 ></SelectFieldFormik>
                 <Grid xs={12}>
@@ -193,7 +493,7 @@ export default function RegisterAgribusinessForm({ setRegisterStep }) {
                 <SelectFieldFormik
                   xs={6}
                   label="Sistema"
-                  name="systemId"
+                  name="system"
                   options={targetSystemOptions}
                 ></SelectFieldFormik>
                 <Grid xs={12}>
@@ -204,7 +504,7 @@ export default function RegisterAgribusinessForm({ setRegisterStep }) {
                 <SelectFieldFormik
                   xs={6}
                   label="Manejo reproductivo"
-                  name="productionId"
+                  name="reproductiveManagement"
                   options={productionOptions}
                 ></SelectFieldFormik>
                 <ButtonFormik type={"submit"} xs={3} label="Siguiente" />

@@ -1,4 +1,5 @@
 import { combineReducers } from "redux";
+import { agribusinessReducer } from "./agribusiness.reducer";
 import { animalReducer } from "./animal.reducer";
 import { authReducer } from "./auth.reducer";
 import { countryReducer } from "./country.reducer";
@@ -17,6 +18,7 @@ const rootReducer = combineReducers({
   farm: farmReducer,
   animal: animalReducer,
   currency: currencyReducer,
+  agribusiness: agribusinessReducer,
 });
 
 export default rootReducer;

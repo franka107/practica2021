@@ -11,77 +11,37 @@ import { useStyles } from "../styles";
 import clsx from "clsx";
 import { useField } from "formik";
 
-export default function CheckboxFormik(props) {
+export default function CheckboxFormik({ xs = 12, options, ...props }) {
   const [field, meta, helpers] = useField(props);
   const classes = useStyles();
-  const {
-    name,
-    label,
-    onChange,
-    error = null,
-    options,
-    customClasses,
-    value,
-  } = props;
-
-  const [state, setState] = React.useState(() => {
-    const stateTemp = {};
-    options.forEach((option, index) => {
-      return (stateTemp[option.id] = false);
-    });
-    return stateTemp;
-  });
-
-  useEffect(() => {
-    if (value) {
-      const newState = { ...state };
-
-      value.forEach((val) => {
-        newState[val] = true;
-      });
-      setState(newState);
-    }
-    // eslint-disable-next-line
-  }, [value]);
-
-  const handleChange = (event) => {
-    const newState = { ...state, [event.target.name]: event.target.checked };
-    const validate = Object.keys(newState).filter((option) => newState[option]);
-
-    setState(newState);
-    onChange(null, name, validate.length ? validate : false);
-  };
 
   return (
     <FormControl
-      name={name}
       required
-      error={Boolean(error)}
+      error={meta.touched && Boolean(meta.error)}
       component="fieldset"
-      className={clsx(classes.checkBoxFormControl, customClasses)}
+      className={clsx(classes.checkBoxFormControl)}
     >
-      {label && (
-        <FormLabel className={classes.checkBoxLabelForm}>{label}</FormLabel>
+      {props.label && (
+        <FormLabel className={classes.checkBoxLabelForm}>
+          {props.label}
+        </FormLabel>
       )}
       <FormGroup className={classes.formControlContainer}>
-        {options.map((option) => (
-          <FormControlLabel
-            key={`checkbox-${option.id}`}
-            control={
-              <MuiCheckbox
-                name={option.id}
-                error
-                color="secondary"
-                checked={state[option.id]}
-                onChange={handleChange}
-                className={classes.checkBox}
-              />
-            }
-            label={<div className={classes.checkBoxLabel}>{option.name}</div>}
-          />
-        ))}
+        {Boolean(options) &&
+          options.map((option) => (
+            <FormControlLabel
+              key={`checkbox-${option._id}`}
+              control={
+                <MuiCheckbox error color="secondary" {...field} {...props} />
+              }
+              label={<div className={classes.checkBoxLabel}>{option.name}</div>}
+            />
+          ))}
       </FormGroup>
-      {error && <FormHelperText>{error}</FormHelperText>}
+      {meta.touched && Boolean(meta.error) && (
+        <FormHelperText>{meta.error}</FormHelperText>
+      )}
     </FormControl>
   );
 }

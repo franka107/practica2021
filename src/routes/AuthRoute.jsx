@@ -5,6 +5,9 @@ import PropTypes from "prop-types";
 import { Route, Redirect, RouteProps } from "react-router-dom";
 import { ROUTE_TYPES } from "./constants";
 import { ROUTES_DICT } from "./routesDict";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { farmActions } from "../redux/actions/farm.actions";
 
 export const AuthRoute = ({
   isAuthenticated,
@@ -28,7 +31,9 @@ export const AuthRoute = ({
           <Redirect to={ROUTES_DICT.login} />
         ) : (
           <Layout {...props}>
-            <Component {...props} />
+            <Wrapper>
+              <Component {...props} />
+            </Wrapper>
           </Layout>
         );
 
@@ -43,4 +48,16 @@ AuthRoute.propTypes = {
   component: PropTypes.func.isRequired,
   layout: PropTypes.func.isRequired,
   type: PropTypes.string.isRequired,
+};
+
+const Wrapper = ({ children }) => {
+  const dispatch = useDispatch();
+  const { current: currentFarm } = useSelector((state) => state.farm);
+  const { user } = useSelector((state) => state.auth);
+  useEffect(() => {
+    if (!currentFarm) {
+      dispatch(farmActions.findFarmByOwnerId(user._id));
+    }
+  }, [dispatch, currentFarm, user]);
+  return <>{children}</>;
 };

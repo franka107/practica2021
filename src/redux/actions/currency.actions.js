@@ -12,6 +12,16 @@ class CurrencyActions {
   createCurrency() {}
   updateCurrency() {}
   deleteCurrency() {}
+  findCurrencyById(_id) {
+    return (dispatch) => {
+      return CurrencyService.get(_id).then((response) => {
+        dispatch({
+          type: ACTION_TYPES.CURRENCY.RETRIEVE_BY_ID,
+          payload: response,
+        });
+      });
+    };
+  }
   deleteAllCurrencies() {}
   findCurrencyByName() {}
 }

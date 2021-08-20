@@ -21,8 +21,6 @@ function LoginPage(props) {
   const dispatch = useDispatch();
   const history = useHistory();
 
-  
-
   const validationSchema = yup.object({
     email: yup
       .string("Ingresa tu correo eletrónico.")
@@ -30,16 +28,7 @@ function LoginPage(props) {
       .required("El correo electrónico es requerido."),
     password: yup
       .string("Ingresa tu contraseña")
-      .min(8, "La contraseña debe tener un mínimo de 8 caracteres.")
-      .matches(
-        /^(?=.*[`~!@#$%^&*()_°¬|+\-=?;:'",.<>{}[\]\\/]).*$/gm,
-        "La contraseña debe contener un caracter especial."
-      )
-      .matches(/.*[A-Z].*/gm, "La contraseña debe contener mayúsculas.")
-      .matches(
-        /.*[0-9].*/gm,
-        "La contraseña debe contener caracteres numéricos."
-      )
+
       .required("La contraseña es requerida."),
   });
 

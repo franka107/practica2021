@@ -1,13 +1,18 @@
+import ACTION_TYPES from "../types";
 import { farmConstants } from "../types/farm.constants";
 
-const farm = JSON.parse(localStorage.getItem("farm"));
-const initialState = farm ? { farm: farm } : {};
-
-export function farmReducer(state = initialState, action) {
+export function farmReducer(state = {}, action) {
   switch (action.type) {
     case farmConstants.CREATE_SUCCESS:
       return {
-        farm: action.farm,
+        ...state,
+        current: action.payload,
+      };
+
+    case ACTION_TYPES.FARM.RETRIEVE_BY_OWNER_ID:
+      return {
+        ...state,
+        current: action.payload,
       };
 
     default:

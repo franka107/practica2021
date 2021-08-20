@@ -1,15 +1,3 @@
-import { ReactComponent as ARS } from "./assets/flags/argentina.svg";
-import { ReactComponent as BRL } from "./assets/flags/brazil.svg";
-import { ReactComponent as CAD } from "./assets/flags/canada.svg";
-import { ReactComponent as CHF } from "./assets/flags/chile.svg";
-import { ReactComponent as COP } from "./assets/flags/colombia.svg";
-import { ReactComponent as CUP } from "./assets/flags/ecuador.svg";
-import { ReactComponent as EUR } from "./assets/flags/european-union.svg";
-import { ReactComponent as JPY } from "./assets/flags/japan.svg";
-import { ReactComponent as MXN } from "./assets/flags/mexico.svg";
-import { ReactComponent as PEN } from "./assets/flags/peru.svg";
-import { ReactComponent as UYU } from "./assets/flags/uruguay.svg";
-import { ReactComponent as USD } from "./assets/flags/united-states-of-america.svg";
 export const unitAreaOptions = [
   { _id: "HECTARES", name: "Hectáreas" },
   { _id: "ACRES", name: "Acres" },
@@ -37,6 +25,34 @@ export const targetSystemOptions = [
   { _id: "SEMI_INTENSIVE", name: "Semi-intensivo" },
 ];
 
+export const milkingOptions = [
+  { _id: "MANUAL", name: "Manual" },
+  { _id: "MECHANICAL", name: "Mecánico" },
+  { _id: "AUTOMATIC", name: "Automático" },
+];
+
+export const numberOptions = [
+  { _id: "0", name: 0 },
+  { _id: "1", name: 1 },
+  { _id: "2", name: 2 },
+  { _id: "3", name: 3 },
+];
+
+export const objectiveFarmOptions = [
+  { _id: "FARMER_OBJECTIVE", name: "Objetivo farmero" },
+];
+export const productionOptions = [
+  { _id: "DIRECT_MOUNT", name: "Monta Directa" },
+  { _id: "ARTIFICIAL_INSEMINATION", name: "Inseminación Artificial" },
+  {
+    _id: "DM_&_AI",
+    name: "Monta Directa/Inseminación Artificial",
+  },
+  {
+    _id: "DM_&_AI_&_ET",
+    name: "Inseminación Artificial, Monta Directa/Transferencia de embriones",
+  },
+];
 //export const coinOptions = [
 //  { _id: 1, name: "PEN", icon: PEN },
 //  { _id: 2, name: "COL", icon: COP },
