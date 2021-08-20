@@ -5,6 +5,9 @@ import { useStyles } from "./styles";
 import { Formik } from "formik";
 import * as yup from "yup";
 import TextFieldFormik from "../../../../components/Inputs/TextFieldFormik";
+import DatePickerFieldFormik from "../../../../components/Inputs/DatePickerFieldFormik";
+import SelectFieldFormik from "../../../../components/Inputs/SelectFieldFormik";
+import { categoryOptions, sexOptions } from "../../../../constants";
 
 function GeneralData({ setOpen, setAnimalsList, agribusinessId }) {
   const classes = useStyles();
@@ -54,19 +57,52 @@ function GeneralData({ setOpen, setAnimalsList, agribusinessId }) {
                 onChange={props.handleChange}
               />
             </Grid>
-            <Typography variant={"subtitle1"} gutterBottom>
-              Estado
-            </Typography>
+            <Grid container spacing={1} xs={12}>
+              <Grid item>
+                <Typography
+                  style={{ marginTop: "1rem" }}
+                  variant={"subtitle1"}
+                  gutterBottom
+                >
+                  Estado
+                </Typography>
+              </Grid>
+            </Grid>
             <Grid container spacing={1}>
-              <TextFieldFormik
-                label="Identificación del animal"
-                name="name"
+              <DatePickerFieldFormik
+                label="Fecha de nacimiento"
+                name="birthDate"
                 onChange={props.handleChange}
+                xs={6}
+              />
+              <DatePickerFieldFormik
+                label="Entrada hato"
+                name="herdDate"
+                onChange={props.handleChange}
+                xs={6}
               />
               <TextFieldFormik
-                label="Nombre"
-                name="name"
+                label="Número de registro"
+                name="registerNumber"
                 onChange={props.handleChange}
+                xs={6}
+              />
+            </Grid>
+
+            <Grid container spacing={1}>
+              <SelectFieldFormik
+                label="Sexo"
+                name="gender"
+                onChange={props.handleChange}
+                options={sexOptions}
+                xs={6}
+              />
+              <SelectFieldFormik
+                label="Categoría"
+                name="category"
+                onChange={props.handleChange}
+                options={categoryOptions}
+                xs={6}
               />
             </Grid>
           </form>

@@ -53,6 +53,18 @@ export const productionOptions = [
     name: "Inseminación Artificial, Monta Directa/Transferencia de embriones",
   },
 ];
+
+export const sexOptions = [
+  { _id: "MALE", name: "Macho" },
+  { _id: "FEMALE", name: "Hembra" },
+];
+
+export const stateOptions = [
+  { _id: "PRE", name: "Preñada" },
+  { _id: "VAC", name: "Vacía" },
+];
+
+export const categoryOptions = [{ _id: "1", name: "Reproductor" }];
 //export const coinOptions = [
 //  { _id: 1, name: "PEN", icon: PEN },
 //  { _id: 2, name: "COL", icon: COP },

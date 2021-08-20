@@ -1,12 +1,16 @@
 const animalList = (data) => {
   return new Promise((resolve, reject) => {
-    window.icAPI.callService("animalList", data, function (error, response) {
-      if (!error) {
-        resolve(response.responseJSON);
-      } else {
-        reject(response);
+    window.icAPI.callService(
+      "animalListByAgribusiness",
+      data,
+      function (error, response) {
+        if (!error) {
+          resolve(response.responseJSON);
+        } else {
+          reject(response);
+        }
       }
-    });
+    );
   });
 };
 
@@ -63,7 +67,7 @@ const AnimalService = {
   animalGetById,
   animalDelete,
   animalCreate,
-  animalUpdate
+  animalUpdate,
 };
 
 export default AnimalService;

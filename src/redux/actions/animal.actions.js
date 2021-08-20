@@ -3,7 +3,13 @@ import { animalConstans } from "../types/animal.constants";
 import { alertActions } from "./alert.actions";
 import UiActions from "./ui.actions";
 
-export const animalActions = { listAll, listById, deleteElement, createElement, updateElement };
+export const animalActions = {
+  listAll,
+  listById,
+  deleteElement,
+  createElement,
+  updateElement,
+};
 
 function listAll(agribusinessId) {
   return (dispatch) => {
@@ -60,7 +66,7 @@ function deleteElement(data) {
     return AnimalService.animalDelete(data).then(
       (response) => {
         dispatch(success(response));
-        dispatch(listAll());
+        dispatch(listAll(data.agribusinessId));
         dispatch(UiActions.showSnackbar("Se eliminó el registro exitosamente"));
         return Promise.resolve();
       },
@@ -85,7 +91,7 @@ function createElement(data) {
     return AnimalService.animalCreate(data).then(
       (response) => {
         dispatch(success(response));
-        dispatch(listAll());
+        dispatch(listAll(data.agribusinessId));
         dispatch(UiActions.showSnackbar("El registro de creo exitosamente"));
         return Promise.resolve();
       },
@@ -105,14 +111,15 @@ function createElement(data) {
   }
 }
 
-
 function updateElement(data) {
   return (dispatch) => {
     return AnimalService.animalUpdate(data).then(
       (response) => {
         dispatch(success(response));
-        dispatch(listAll());
-        dispatch(UiActions.showSnackbar("El registro se actualizo exitosamente"));
+        dispatch(listAll(data.agribusinessId));
+        dispatch(
+          UiActions.showSnackbar("El registro se actualizo exitosamente")
+        );
         return Promise.resolve();
       },
       (error) => {
