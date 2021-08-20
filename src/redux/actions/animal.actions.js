@@ -5,10 +5,10 @@ import UiActions from "./ui.actions";
 
 export const animalActions = { listAll, listById, deleteElement };
 
-function listAll() {
+function listAll(agribusinessId) {
   return (dispatch) => {
     dispatch(request());
-    return AnimalService.animalList().then(
+    return AnimalService.animalList({ agribusinessId }).then(
       (response) => {
         dispatch(success(response));
         return Promise.resolve();

@@ -13,7 +13,7 @@ import PlanCard from "../../components/PlanCard";
 import { useStyles } from "./styles";
 import Highcharts from "highcharts";
 // import BirthData from "./Dialog/BirthData";
-// import GeneralData from "./Dialog/GeneralData";
+import GeneralData from "./Dialog/GeneralData";
 // import RaceData from "./Dialog/RaceData";
 // import ServiceData from "./Dialog/ServiceData";
 // import WeighingData from "./Dialog/WeighingData";
@@ -37,6 +37,8 @@ import { ROUTES_DICT } from "../../routes/routesDict";
 import { format } from "date-fns";
 import esLocale from "date-fns/locale/es";
 import { getAge, formatDate } from "../../helpers/convertDate";
+import ChipsSection from "./ChipsSection";
+
 export default function AnimalDetailPage() {
   const classes = useStyles();
   const [dialog, setDialog] = useState("");
@@ -49,7 +51,7 @@ export default function AnimalDetailPage() {
   const { location = {} } = history;
   const dispatch = useDispatch();
   const params = useParams();
-  const { animals } = useSelector((state) => state.animal);
+  const { current: animals } = useSelector((state) => state.animal);
   useEffect(() => {
     dispatch(animalActions.listById({ _id: params.animalId }));
   }, [location]);
@@ -58,32 +60,7 @@ export default function AnimalDetailPage() {
     <Grid container xs={12}>
       <Grid item container xs={12}>
         <Typography variant="h6">Control Ganadero</Typography>
-        <Grid container spacing={2} className={classes.optionContainer}>
-          <Grid item>
-            <Chip className={clsx(classes.option)} label="Inicio"></Chip>
-          </Grid>
-          <Grid item>
-            <Chip
-              className={clsx(classes.option, classes.active)}
-              label="Información General"
-            ></Chip>
-          </Grid>
-          <Grid item>
-            <Chip
-              className={clsx(classes.option)}
-              onClick={() => {
-                history.push(ROUTES_DICT.pedigree);
-              }}
-              label="Pedigree"
-            ></Chip>
-          </Grid>
-          <Grid item>
-            <Chip
-              className={clsx(classes.option, classes.optionDelete)}
-              label="Eliminar animal"
-            ></Chip>
-          </Grid>
-        </Grid>
+        <ChipsSection />
       </Grid>
       <Grid item container xs={12}>
         <Grid item xs={12} lg={9}>
@@ -426,7 +403,8 @@ export default function AnimalDetailPage() {
                         </Grid>
                         <Grid item xs={7}>
                           <Typography>
-                            {animals && formatDate(new Date(animals.lastChildBirthDate))}
+                            {animals &&
+                              formatDate(new Date(animals.lastChildBirthDate))}
                           </Typography>
                         </Grid>
                       </Grid>
@@ -528,7 +506,8 @@ export default function AnimalDetailPage() {
                           </Grid>
                           <Grid item xs={7}>
                             <Typography>
-                              {animals && formatDate(new Date(animals.lastWeightDate))}
+                              {animals &&
+                                formatDate(new Date(animals.lastWeightDate))}
                             </Typography>
                           </Grid>
                         </Grid>
@@ -862,7 +841,8 @@ export default function AnimalDetailPage() {
                     </Grid>
                     <Grid item xs={7}>
                       <Typography>
-                        {animals && formatDate(new Date(animals.lastWeightDate))}
+                        {animals &&
+                          formatDate(new Date(animals.lastWeightDate))}
                       </Typography>
                     </Grid>
                   </Grid>
@@ -1020,16 +1000,18 @@ export default function AnimalDetailPage() {
         classes={{ paperFullWidth: classes.modal }}
       >
         <Close className={classes.closeBtn} onClick={() => setOpen(false)} />
-        {/* {dialog === "CalendarData" && <CalendarData />}
+        {dialog === "GeneralData" && <GeneralData />}
+        {/*
+        {dialog === "CalendarData" && <CalendarData />}
         {dialog === "BirthData" && <BirthData />}
         {dialog === "CommentaryData" && <CommentaryData />}
-        {dialog === "GeneralData" && <GeneralData />}
         {dialog === "MilkData" && <MilkData />}
         {dialog === "OtherData" && <OtherData />}
         {dialog === "RaceData" && <RaceData />}
         {dialog === "ServiceData" && <ServiceData />}
         {dialog === "WeighingData" && <WeighingData />}
-        {dialog === "QRData" && <QRData />} */}
+        */}
+        {dialog === "QRData" && <QRData />}
       </Dialog>
     </Grid>
   );

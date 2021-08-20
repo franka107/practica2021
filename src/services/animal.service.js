@@ -1,6 +1,6 @@
-const animalList = () => {
+const animalList = (data) => {
   return new Promise((resolve, reject) => {
-    window.icAPI.callService("animalList", {}, function (error, response) {
+    window.icAPI.callService("animalList", data, function (error, response) {
       if (!error) {
         resolve(response.responseJSON);
       } else {

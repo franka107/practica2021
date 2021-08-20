@@ -33,14 +33,19 @@ function AnimalControlPage() {
   const [idDelete, setIdDelete] = useState("");
   const dispatch = useDispatch();
   const params = useParams();
-  const { animals } = useSelector((state) => state.animal);
+  const { list: animals } = useSelector((state) => state.animal);
+  const { current: currentAgribusiness } = useSelector(
+    (state) => state.agribusiness
+  );
   // useEffect(() => {
   //   dispatch(animalActions.listAll());
   // }, []);
 
   useEffect(() => {
-    dispatch(animalActions.listAll());
-  }, []);
+    if (currentAgribusiness) {
+      dispatch(animalActions.listAll(currentAgribusiness._id));
+    }
+  }, [dispatch, currentAgribusiness]);
 
   return (
     <Grid item container xs={12}>
