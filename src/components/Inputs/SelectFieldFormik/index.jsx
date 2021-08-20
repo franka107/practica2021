@@ -26,7 +26,6 @@ export default function SelectFieldFormik({ xs = 12, options, ...props }) {
         <MuiSelect {...field} {...props}>
           {Boolean(options) &&
             options.map((item) => {
-              const Icon = item.icon;
               return (
                 <MenuItem key={item._id} value={item._id}>
                   <Grid
@@ -36,7 +35,12 @@ export default function SelectFieldFormik({ xs = 12, options, ...props }) {
                   >
                     {item.name}
                     {item.icon && (
-                      <Icon width={20} height={20} style={{ marginTop: -3 }} />
+                      <img
+                        width={20}
+                        height={20}
+                        src={item.icon}
+                        alt={item.icon}
+                      />
                     )}
                   </Grid>
                 </MenuItem>

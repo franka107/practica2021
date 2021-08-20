@@ -15,17 +15,48 @@ import { regionActions } from "../../../redux/actions/region.actions";
 import { districtReducer } from "../../../redux/reducers/district.reducer";
 import { districtActions } from "../../../redux/actions/district.actions";
 import {
-  coinOptions,
   unitAreaOptions,
   unitCapacityOptions,
   unitWeightOptions,
-} from "./constants";
+} from "../../../constants";
 import { farmActions } from "../../../redux/actions/farm.actions";
+import currencyActions from "../../../redux/actions/currency.actions";
+import { useState } from "react";
 
 export default function RegisterFarmForm({ setRegisterStep }) {
+  const [currencyListParsed, setCurrencyListParsed] = useState([]);
+
   const validationSchema = yup.object({
-    name: yup.string().required(),
+    name: yup
+      .string("Ingresa el nombre de la hacienda")
+      .required("El nombre de la hacienda es requerido"),
+    landLord: yup
+      .string("Ingresa el nombre del propietario")
+      .required("El nombre del propietario es requerido"),
+    nit: yup.string("Ingresa RUC/DNI/RUT"),
+    countryId: yup.string("Ingrese el país").required("El país es requerido"),
+    regionId: yup
+      .string("Ingrese la región")
+      .required("La región es requerida"),
+    districtId: yup
+      .string("Ingrese el distrito")
+      .required("La distrito es requerido"),
+    address: yup.string("Ingrese la dirección"),
+    phoneNumber: yup.string("Ingrese el número"),
+    areaUnit: yup
+      .string("Ingrese la unidad de área")
+      .required("La unidad de área es requerida"),
+    weightUnit: yup
+      .string("Ingrese la unidad de peso")
+      .required("La unidad de peso es requerida"),
+    capacityUnit: yup
+      .string("Ingrese la unidad de volumen")
+      .required("La unidad de volumen es requerida"),
+    currencyId: yup
+      .string("Ingrese el tipo de moneda")
+      .required("El tipo de moneda es requerido"),
   });
+
   const initValues = {
     name: "",
     landLord: "",
@@ -40,23 +71,36 @@ export default function RegisterFarmForm({ setRegisterStep }) {
     areaUnit: "",
     capacityUnit: "",
   };
+
   const classes = useStyles();
   const dispatch = useDispatch();
   const { countries } = useSelector((state) => state.country);
   const { regions } = useSelector((state) => state.region);
-  const { districts } = useSelector((state) => state.district);
+  const { list: districtList } = useSelector((state) => state.district);
   const { user } = useSelector((state) => state.auth);
+  const { list: currencyList } = useSelector((state) => state.currency);
+
+  useEffect(() => {
+    const parsedList = currencyList.map((e) => ({
+      _id: e._id,
+      name: e.currencyAbbreviation,
+      icon: e.icon || "",
+    }));
+    setCurrencyListParsed(parsedList);
+  }, [currencyList]);
 
   useEffect(() => {
     dispatch(countryActions.listAll());
     dispatch(regionActions.listAll());
-    dispatch(districtActions.listAll());
+    dispatch(districtActions.retrieveDistricts());
+    dispatch(currencyActions.retrieveCurrencies());
   }, []);
 
   const handleSubmit = (values, actions) => {
     dispatch(farmActions.create({ ownerId: user._id, ...values }));
     setRegisterStep(1);
   };
+
   return (
     <div className={classes.modal}>
       <Typography variant={"subtitle1"} gutterBottom>
@@ -111,7 +155,7 @@ export default function RegisterFarmForm({ setRegisterStep }) {
                   xs={4}
                   label="Distrito"
                   name="districtId"
-                  options={districts}
+                  options={districtList}
                 ></SelectFieldFormik>
                 <TextFieldFormik
                   label="Dirección"
@@ -154,7 +198,7 @@ export default function RegisterFarmForm({ setRegisterStep }) {
                   sm={3}
                   label="Moneda"
                   name="currencyId"
-                  options={coinOptions}
+                  options={currencyListParsed}
                 ></SelectFieldFormik>
                 <ButtonFormik type={"submit"} xs={3} label="Siguiente" />
               </Grid>

@@ -16,6 +16,9 @@ const ACTION_TYPES = {
     DENIED: "api/DENIED",
     ERROR: "api/ERROR",
   },
+  CURRENCY: {
+    RETRIEVE: "currency/RETRIEVE",
+  },
 };
 
 export default ACTION_TYPES;

@@ -2,12 +2,12 @@ import DistrictService from "../../services/district.service";
 import { districtConstants } from "../types/district.constants";
 import { alertActions } from "./alert.actions";
 
-export const districtActions = { listAll };
+export const districtActions = { retrieveDistricts };
 
-function listAll() {
+function retrieveDistricts() {
   return (dispatch) => {
     dispatch(request());
-    return DistrictService.districtList().then(
+    return DistrictService.getAll().then(
       (response) => {
         dispatch(success(response));
         return Promise.resolve();
@@ -23,8 +23,8 @@ function listAll() {
   function request() {
     return { type: districtConstants.GETALL_REQUEST };
   }
-  function success(districts) {
-    return { type: districtConstants.GETALL_SUCCESS, districts };
+  function success(payload) {
+    return { type: districtConstants.GETALL_SUCCESS, payload };
   }
   function failure(error) {
     return { type: districtConstants.GETALL_FAILURE, error };

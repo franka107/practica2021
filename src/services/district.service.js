@@ -1,4 +1,4 @@
-const districtList = () => {
+const getAll = () => {
   return new Promise((resolve, reject) => {
     window.icAPI.callService("districtList", {}, function (error, response) {
       if (!error) {
@@ -11,7 +11,7 @@ const districtList = () => {
 };
 
 const DistrictService = {
-  districtList,
+  getAll,
 };
 
 export default DistrictService;

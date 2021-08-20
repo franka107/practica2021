@@ -1,10 +1,11 @@
 import { districtConstants } from "../types/district.constants";
 
-export function districtReducer(state = {}, action) {
+export function districtReducer(state = { list: [] }, action) {
   switch (action.type) {
     case districtConstants.GETALL_SUCCESS:
       return {
-        districts: action.districts,
+        ...state,
+        list: action.payload,
       };
 
     default:

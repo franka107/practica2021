@@ -21,6 +21,8 @@ function LoginPage(props) {
   const dispatch = useDispatch();
   const history = useHistory();
 
+  
+
   const validationSchema = yup.object({
     email: yup
       .string("Ingresa tu correo eletrónico.")

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import {
   Grid,
   Typography,
@@ -28,10 +28,16 @@ import { ROUTES_DICT } from "../../routes/routesDict";
 function AnimalControlPage() {
   const classes = useStyles();
   const history = useHistory();
+  const { location = {} } = history;
   const [open, setOpen] = useState(false);
   const [idDelete, setIdDelete] = useState("");
   const dispatch = useDispatch();
+  const params = useParams();
   const { animals } = useSelector((state) => state.animal);
+  // useEffect(() => {
+  //   dispatch(animalActions.listAll());
+  // }, []);
+
   useEffect(() => {
     dispatch(animalActions.listAll());
   }, []);
@@ -57,12 +63,9 @@ function AnimalControlPage() {
                     size="small"
                     aria-label="edit"
                     onClick={() => {
-                      history.push({
-                        pathname: ROUTES_DICT.animalDetail + "/#" + rowData._id,
-                        state: {
-                          _id: rowData._id,
-                        },
-                      });
+                      history.push(
+                        `${ROUTES_DICT.animalDetail}/${rowData._id}`
+                      );
                     }}
                   >
                     <Visibility fontSize="small" />
