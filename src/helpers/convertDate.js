@@ -48,7 +48,8 @@ export const getAge = (date_1, date_2) => {
 }
 
 export const formatDate = (date) => {
-    let dateConvert = format(new Date(date), "d 'de' MMMM 'del' yyyy", {
+    var date1_UTC = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate() + 1));
+    let dateConvert = format(date1_UTC, "d 'de' MMMM 'del' yyyy", {
         locale: esLocale
     })
 
