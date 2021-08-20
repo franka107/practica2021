@@ -26,7 +26,11 @@ class AgribusinessActions {
 
   setCurrentAgribusiness(data) {
     return (dispatch) => {
-      dispatch({ type: ACTION_TYPES.AGRIBUSINESS.UPDATE, payload: data });
+      localStorage.setItem("agribusiness", JSON.stringify(data));
+      dispatch({
+        type: ACTION_TYPES.AGRIBUSINESS.UPDATE_CURRENT,
+        payload: data,
+      });
     };
   }
 }

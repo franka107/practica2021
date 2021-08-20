@@ -1,6 +1,11 @@
 import ACTION_TYPES from "../types";
 
-export function agribusinessReducer(state = { list: [] }, action) {
+const agribusiness = JSON.parse(localStorage.getItem("agribusiness"));
+const initialState = agribusiness
+  ? { list: [], current: agribusiness }
+  : { list: [], current: null };
+
+export function agribusinessReducer(state = initialState, action) {
   switch (action.type) {
     case ACTION_TYPES.AGRIBUSINESS.CREATE:
       return {
@@ -14,7 +19,7 @@ export function agribusinessReducer(state = { list: [] }, action) {
         list: action.payload,
       };
 
-    case ACTION_TYPES.AGRIBUSINESS.UPDATE:
+    case ACTION_TYPES.AGRIBUSINESS.UPDATE_CURRENT:
       return {
         ...state,
         current: action.payload,

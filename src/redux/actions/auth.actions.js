@@ -44,7 +44,7 @@ class AuthActions {
 
   logout() {
     return (dispatch) => {
-      localStorage.removeItem("user");
+      localStorage.clear();
       dispatch({ type: ACTION_TYPES.AUTH.LOGOUT });
     };
   }

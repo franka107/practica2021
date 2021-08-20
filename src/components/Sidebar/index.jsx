@@ -16,6 +16,7 @@ import { useHistory } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useDispatch, useSelector } from "react-redux";
 import agribusinessActions from "../../redux/actions/agribusiness.actions";
+import { ROUTES_DICT } from "../../routes/routesDict";
 
 function Sidebar({ openDrawer, setOpenDrawer, options }) {
   const history = useHistory();
@@ -160,6 +161,7 @@ function Sidebar({ openDrawer, setOpenDrawer, options }) {
                       dispatch(
                         agribusinessActions.setCurrentAgribusiness(agribusiness)
                       );
+                      history.push(ROUTES_DICT.dashboard);
                     }}
                   >
                     <ListItem button className={classes.nested}>

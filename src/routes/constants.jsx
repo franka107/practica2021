@@ -105,7 +105,7 @@ export const ROUTES = [
     key: "Verificacion",
     exact: true,
     component: EmailVerifiedPage,
-    layout: DashboardLayout,
-    type: ROUTE_TYPES.private,
+    layout: AuthLayout,
+    type: ROUTE_TYPES.public,
   },
 ];

@@ -10,6 +10,10 @@ function findFarmByOwnerId(ownerId) {
   return (dispatch) => {
     return FarmService.findByOwnerId(ownerId).then(
       ({ agribusiness, ...response }) => {
+        let localAgribusiness = JSON.parse(
+          localStorage.getItem("agribusiness")
+        );
+
         dispatch({
           type: ACTION_TYPES.FARM.RETRIEVE_BY_OWNER_ID,
           payload: response,
@@ -19,8 +23,8 @@ function findFarmByOwnerId(ownerId) {
           payload: agribusiness,
         });
         dispatch({
-          type: ACTION_TYPES.AGRIBUSINESS.UPDATE,
-          payload: agribusiness && agribusiness[0],
+          type: ACTION_TYPES.AGRIBUSINESS.UPDATE_CURRENT,
+          payload: localAgribusiness || (agribusiness && agribusiness[0]),
         });
       }
     );

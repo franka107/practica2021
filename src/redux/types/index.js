@@ -23,15 +23,15 @@ const ACTION_TYPES = {
   AGRIBUSINESS: {
     RETRIEVE: "agribusiness/RETRIEVE",
     CREATE: "agribusiness/CREATE",
-    UPDATE: "agribusiness/UPDATE",
+    UPDATE_CURRENT: "agribusiness/UPDATE_CURRENT",
     DELETE: "agribusiness/DELETE",
   },
   FARM: {
     RETRIEVE_BY_OWNER_ID: "farm/RETRIEVE_BY_OWNER_ID",
   },
   ANIMAL: {
-    UPDATE_CURRENT: "animal/UPDATE_CURRENT"
-  }
+    UPDATE_CURRENT: "animal/UPDATE_CURRENT",
+  },
 };
 
 export default ACTION_TYPES;
