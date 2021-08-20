@@ -25,6 +25,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { animalActions } from "../../redux/actions/animal.actions";
 import { ROUTES_DICT } from "../../routes/routesDict";
 import AddIndividual from "./AddAnimals/AddIndividual";
+import ACTION_TYPES from "../../redux/types";
 
 function AnimalControlPage() {
   const classes = useStyles();
@@ -133,13 +134,19 @@ function AnimalControlPage() {
       <Dialog
         open={Boolean(open)}
         fullWidth
-        onClose={() => setOpen(false)}
+        onClose={() => {
+          setOpen(false)
+          dispatch({ type: ACTION_TYPES.ANIMAL.UPDATE_CURRENT, payload: null })
+        }}
         aria-labelledby="alert-dialog-title"
         maxWidth={dialogOption === 'delete' ? "xs" : "sm"}
         aria-describedby="alert-dialog-description"
         classes={{ paperFullWidth: classes.modal }}
       >
-        <Close className={classes.closeBtn} onClick={() => setOpen(false)} />
+        <Close className={classes.closeBtn} onClick={() => {
+          setOpen(false)
+          dispatch({ type: ACTION_TYPES.ANIMAL.UPDATE_CURRENT, payload: null })
+        }} />
         {dialogOption === 'detele' &&
           <Grid className={classes.modal}>
             <Typography variant={"subtitle1"} gutterBottom>

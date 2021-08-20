@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Grid, Typography, Divider } from '@material-ui/core';
+import { Grid, Typography, Divider, CircularProgress } from '@material-ui/core';
 import { AddCircle } from '@material-ui/icons';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { useStyles } from './styles';
@@ -73,11 +73,13 @@ function AddIndividual({ setOpen, setAnimalsList, agribusinessId, typeAccion = "
 
 
     useEffect(() => {
-        if (!currentAnimal) {
-            dispatch(animalActions.listById({ _id: animalId }))
-            console.log("asd");
+        if (typeAccion === "update") {
+            if (!currentAnimal) {
+                dispatch(animalActions.listById({ _id: animalId }))
+                console.log("asd");
+            }
         }
-    }, [currentAnimal]);
+    }, []);
 
     const handleCheckPercentage = (list = []) => {
         let total = 0;
@@ -114,42 +116,6 @@ function AddIndividual({ setOpen, setAnimalsList, agribusinessId, typeAccion = "
     };
 
     const handleSubmit = (values, actions) => { };
-
-
-
-    // const handleSubmit = (values) => {
-    //     const races = [];
-    //     const percentages = [];
-    //     Object.keys(animalRace).forEach(race => {
-    //         races.push(parseInt(animalRace[race].type, 10));
-    //         percentages.push(parseFloat(animalRace[race].percentage.replace('%', '')));
-    //     });
-
-    //     const {
-    //         identifier, name, birthDate, herdDate, reproductiveStatus,
-    //         gender, isReproductive, father, mother
-    //     } = values;
-
-    //     const input = {
-    //         identifier,
-    //         name,
-    //         birthDate,
-    //         herdDate,
-    //         gender,
-    //         isReproductive: gender === 'MA' ? Boolean(isReproductive) : '',
-    //         father,
-    //         mother,
-    //         racialType: raceType.raceType,
-    //         percentages,
-    //         color,
-    //         race: races,
-    //         agribusiness: agribusinessId
-    //     };
-
-    //     if (gender === 'FE') {
-    //         input.reproductiveStatus = reproductiveStatus;
-    //     }
-    // };
 
     const AnimalForm = ({
         handleChange,
@@ -349,7 +315,7 @@ function AddIndividual({ setOpen, setAnimalsList, agribusinessId, typeAccion = "
                                 dispatch(animalActions.updateElement(values))
                                     .then((data) => {
                                         console.log(data);
-                                        dispatch({ type: ACTION_TYPES.ANIMAL.UPDATE_CURRENT, payload: data })
+                                        dispatch({ type: ACTION_TYPES.ANIMAL.UPDATE_CURRENT, payload: null })
                                     })
                                 setOpen(false)
                             }
@@ -366,15 +332,21 @@ function AddIndividual({ setOpen, setAnimalsList, agribusinessId, typeAccion = "
                 Registro de animal
             </Typography>
             {/* <Divider /> */}
-            {currentAnimal ?
+
+            {typeAccion === "update" && currentAnimal ?
                 <Formik
-                    initialValues={currentAnimal || initValues}
+                    initialValues={currentAnimal}
                     onSubmit={handleSubmit}
                     validationSchema={validationSchema}
                 >
                     {(props) => <AnimalForm {...props} />}
                 </Formik>
                 :
+                <Grid container justifyContent="center">
+                    <CircularProgress color="secondary" />
+                </Grid>
+            }
+            {typeAccion === "create" &&
                 <Formik
                     initialValues={initValues}
                     onSubmit={handleSubmit}
