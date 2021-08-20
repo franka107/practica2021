@@ -188,7 +188,7 @@ export default function AnimalDetailPage() {
                     <Grid item xs={9}>
                       <Typography>
                         {animals &&
-                          `${animals.reproductiveStatus}, ${animals.gestation} de preñez`}
+                          `${animals.reproductiveStatus}, ${animals.gestation} dias de preñez`}
                       </Typography>
                       {/* <Typography>Vaca seca, 276 dias de preñez</Typography> */}
                     </Grid>
@@ -214,8 +214,8 @@ export default function AnimalDetailPage() {
                     </Grid>
                     <Grid item xs={8}>
                       <Typography>
-                        {/* {animals && formatDate(animals.birthDate)} */}
-                        {animals && animals.birthDate}
+                        {animals && formatDate(new Date(animals.birthDate))}
+                        {/* {animals && animals.birthDate} */}
                       </Typography>
                     </Grid>
                   </Grid>
@@ -227,8 +227,8 @@ export default function AnimalDetailPage() {
                     </Grid>
                     <Grid item xs={8}>
                       <Typography>
-                        {/* {animals && formatDate(animals.herdDate)} */}
-                        {animals && animals.herdDate}
+                        {animals && formatDate(new Date(animals.herdDate))}
+                        {/* {animals && animals.herdDate} */}
                       </Typography>
                     </Grid>
                   </Grid>
@@ -240,7 +240,7 @@ export default function AnimalDetailPage() {
                     </Grid>
                     <Grid item xs={8}>
                       <Typography>
-                        {animals && animals.offSpringNumber}
+                        {animals && animals.registerNumber}
                       </Typography>
                     </Grid>
                   </Grid>
@@ -426,7 +426,7 @@ export default function AnimalDetailPage() {
                         </Grid>
                         <Grid item xs={7}>
                           <Typography>
-                            {animals && animals.lastChildBirthDate}
+                            {animals && formatDate(new Date(animals.lastChildBirthDate))}
                           </Typography>
                         </Grid>
                       </Grid>
@@ -528,7 +528,7 @@ export default function AnimalDetailPage() {
                           </Grid>
                           <Grid item xs={7}>
                             <Typography>
-                              {animals && animals.lastWeightDate}
+                              {animals && formatDate(new Date(animals.lastWeightDate))}
                             </Typography>
                           </Grid>
                         </Grid>
@@ -862,7 +862,7 @@ export default function AnimalDetailPage() {
                     </Grid>
                     <Grid item xs={7}>
                       <Typography>
-                        {animals && animals.lastWeightDate}
+                        {animals && formatDate(new Date(animals.lastWeightDate))}
                       </Typography>
                     </Grid>
                   </Grid>
