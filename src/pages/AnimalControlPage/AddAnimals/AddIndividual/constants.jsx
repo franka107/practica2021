@@ -1,6 +1,6 @@
 export const sexOptions = [
   { _id: 'MA', name: 'Macho' },
-  { _id: 'FE', name: 'Hembra' },
+  { _id: 'H', name: 'Hembra' },
 ];
 
 export const stateOptions = [

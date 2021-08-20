@@ -1,3 +1,4 @@
+import ACTION_TYPES from "../types";
 import { animalConstans } from "../types/animal.constants";
 
 export function animalReducer(state = {}, action) {
@@ -14,6 +15,15 @@ export function animalReducer(state = {}, action) {
       };
     case animalConstans.DELETE_SUCCESS:
       return state;
+    case animalConstans.CREATE_SUCCESS:
+      return state;
+    case animalConstans.UPDATE_SUCCESS:
+      return state;
+    case ACTION_TYPES.ANIMAL.UPDATE_CURRENT:
+      return {
+        ...state,
+        current: action.payload
+      }
     default:
       return state;
   }

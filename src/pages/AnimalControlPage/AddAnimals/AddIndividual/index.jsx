@@ -10,17 +10,29 @@ import ButtonFormik from "../../../../components/Inputs/ButtonFormik";
 import DatePickerFieldFormik from "../../../../components/Inputs/DatePickerFieldFormik";
 import SelectFieldFormik from "../../../../components/Inputs/SelectFieldFormik";
 import CheckboxFormik from "../../../../components/Inputs/CheckboxFormik";
-
-import { sexOptions, categoryOptions, raceOptions } from "./constants"
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
+import { ROUTES_DICT } from "../../../../routes/routesDict"
+import { animalActions } from "../../../../redux/actions/animal.actions";
+import { sexOptions, categoryOptions, raceOptions, stateOptions } from "./constants"
+import ACTION_TYPES from '../../../../redux/types';
 
 const propTypes = {};
 
-function AddIndividual({ setOpen, setAnimalsList, agribusinessId }) {
+function AddIndividual({ setOpen, setAnimalsList, agribusinessId, typeAccion = "create", animalId = "" }) {
+
     const classes = useStyles();
+    const history = useHistory();
+
     const letters = ['A', 'B', 'C', 'D'];
     const [animalRace, setAnimalRace] = useState({
         'A': { type: '1', percentage: '100%' },
     });
+    const dispatch = useDispatch();
+    const { current: currentAnimal } = useSelector((state) => state.animal);
+    const { current: currentAgribusiness } = useSelector(
+        (state) => state.agribusiness
+    );
 
     const [errors, setErrors] = useState([]);
     const [raceType, setRaceType] = useState({
@@ -35,21 +47,37 @@ function AddIndividual({ setOpen, setAnimalsList, agribusinessId }) {
     const [errorPercentage, setErrorPercentage] = useState('');
 
     const validationSchema = yup.object({});
-    const initValues = {
+    const [initValues, setInitValues] = useState({
         identifier: "",
         name: "",
         birthDate: "",
         herdDate: "",
         registerNumber: "",
-        gender: "",
+        gender: "MA",
+        isReproductive: "",
         category: "",
         father: "",
         mother: "",
         racial1: "",
         percentageRacial1: "",
+        racial2: "",
+        percentageRacial2: "",
+        racial3: "",
+        percentageRacial3: "",
+        racial4: "",
+        percentageRacial4: "",
         typeRacial: "",
         color: "",
-    };
+        repructiveStatus: ""
+    });
+
+
+    useEffect(() => {
+        if (!currentAnimal) {
+            dispatch(animalActions.listById({ _id: animalId }))
+            console.log("asd");
+        }
+    }, [currentAnimal]);
 
     const handleCheckPercentage = (list = []) => {
         let total = 0;
@@ -189,22 +217,34 @@ function AddIndividual({ setOpen, setAnimalsList, agribusinessId }) {
                         sm={6}
                         xs={12}
                     ></SelectFieldFormik>
-                    <Grid
-                        lg={6}
-                        sm={6}
-                        xs={12}
-                        container
-                        justifyContent="center"
-                        alignContent="center"
-                        alignItems="center"
-                    >
-                        <CheckboxFormik
-                            label="Categoria"
-                            name="category"
-                            options={categoryOptions}
+                    {values.gender === "MA" ?
+                        <Grid
+                            lg={6}
+                            sm={6}
+                            xs={12}
+                            container
+                            justifyContent="center"
+                            alignContent="center"
+                            alignItems="center"
+                        >
+                            <CheckboxFormik
+                                label="Categoria"
+                                name="isReproductive"
+                                options={categoryOptions}
+                                onChange={handleChange}
+                            ></CheckboxFormik>
+                        </Grid>
+                        :
+                        <SelectFieldFormik
                             onChange={handleChange}
-                        ></CheckboxFormik>
-                    </Grid>
+                            options={stateOptions}
+                            label="Estado"
+                            name="repructiveStatus"
+                            lg={6}
+                            sm={6}
+                            xs={12}
+                        ></SelectFieldFormik>
+                    }
                     <TextFieldFormik
                         label="Padre"
                         type="text"
@@ -240,7 +280,7 @@ function AddIndividual({ setOpen, setAnimalsList, agribusinessId }) {
                             </Grid>
                             <Grid item container sm={8} xs={12}>
                                 <SelectFieldFormik
-                                    name='race'
+                                    name={`racial${index + 1}`}
                                     label='Raza'
                                     options={raceOptions}
                                     onChange={handleChange}
@@ -249,25 +289,9 @@ function AddIndividual({ setOpen, setAnimalsList, agribusinessId }) {
                             <Grid item container sm={4} xs={12} alignItems={'center'} justify={'center'}>
                                 <Grid item xs={11}>
                                     <TextFieldFormik
-                                        name={'percentage'}
-                                        label={'Porcentaje'}
-                                        value={animalRace[raceItem].percentage}
-                                        onBlur={() => {
-                                            const temp = animalRace[raceItem].percentage.replace('%', '');
-                                            const formatPercentage = parseFloat(temp).toFixed(2);
-                                            const list = {
-                                                ...animalRace,
-                                                [raceItem]: {
-                                                    percentage: `${formatPercentage > 100 ? 100 : formatPercentage}%`,
-                                                    type: animalRace[raceItem].type
-                                                }
-                                            };
-
-                                            setAnimalRace(list);
-                                            handleCheckPercentage(list);
-                                        }}
+                                        name={`percentageRacial${index + 1}`}
+                                        label='Porcentaje'
                                         onChange={handleChange}
-                                        customInputClasses={classes.rightText}
                                     />
                                 </Grid>
                                 <Grid item xs={1}>
@@ -311,7 +335,24 @@ function AddIndividual({ setOpen, setAnimalsList, agribusinessId }) {
                             </Grid> */}
                     <Grid item xs={3}>
                         <ButtonFormik xs={3} label="Guardar" type="submit" onClick={() => {
-                            console.log('init', values);
+                            if (typeAccion === "create") {
+                                if (values.isReproductive) values.category = "REPROODUCTOR"
+                                values.agribusinessId = currentAgribusiness._id
+                                dispatch(animalActions.createElement(values));
+                                setOpen(false)
+                                console.log('init', values);
+                            }
+                            if (typeAccion === "update") {
+                                if (values.isReproductive) values.category = "REPROODUCTOR"
+                                else values.category = ""
+                                values.agribusinessId = currentAgribusiness._id
+                                dispatch(animalActions.updateElement(values))
+                                    .then((data) => {
+                                        console.log(data);
+                                        dispatch({ type: ACTION_TYPES.ANIMAL.UPDATE_CURRENT, payload: data })
+                                    })
+                                setOpen(false)
+                            }
                         }} />
                     </Grid>
                 </Grid>
@@ -325,13 +366,23 @@ function AddIndividual({ setOpen, setAnimalsList, agribusinessId }) {
                 Registro de animal
             </Typography>
             {/* <Divider /> */}
-            <Formik
-                initialValues={initValues}
-                onSubmit={handleSubmit}
-                validationSchema={validationSchema}
-            >
-                {(props) => <AnimalForm {...props} />}
-            </Formik>
+            {currentAnimal ?
+                <Formik
+                    initialValues={currentAnimal || initValues}
+                    onSubmit={handleSubmit}
+                    validationSchema={validationSchema}
+                >
+                    {(props) => <AnimalForm {...props} />}
+                </Formik>
+                :
+                <Formik
+                    initialValues={initValues}
+                    onSubmit={handleSubmit}
+                    validationSchema={validationSchema}
+                >
+                    {(props) => <AnimalForm {...props} />}
+                </Formik>
+            }
         </Grid>
     );
 };

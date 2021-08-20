@@ -24,13 +24,15 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { animalActions } from "../../redux/actions/animal.actions";
 import { ROUTES_DICT } from "../../routes/routesDict";
+import AddIndividual from "./AddAnimals/AddIndividual";
 
 function AnimalControlPage() {
   const classes = useStyles();
   const history = useHistory();
   const { location = {} } = history;
   const [open, setOpen] = useState(false);
-  const [idDelete, setIdDelete] = useState("");
+  const [dialogOption, setDialogOption] = useState("");
+  const [animalId, setAnimalId] = useState("");
   const dispatch = useDispatch();
   const params = useParams();
   const { list: animals } = useSelector((state) => state.animal);
@@ -80,6 +82,11 @@ function AnimalControlPage() {
                     style={{ color: "#C25560" }}
                     size="small"
                     aria-label="edit"
+                    onClick={() => {
+                      setOpen(true);
+                      setDialogOption("update");
+                      setAnimalId(rowData._id);
+                    }}
                   >
                     <Edit fontSize="small" />
                   </IconButton>
@@ -89,7 +96,8 @@ function AnimalControlPage() {
                     aria-label="delete"
                     onClick={() => {
                       setOpen(true);
-                      setIdDelete(rowData._id);
+                      setDialogOption("delete");
+                      setAnimalId(rowData._id);
                     }}
                   >
                     <Delete fontSize="small" />
@@ -127,42 +135,47 @@ function AnimalControlPage() {
         fullWidth
         onClose={() => setOpen(false)}
         aria-labelledby="alert-dialog-title"
-        maxWidth="xs"
+        maxWidth={dialogOption === 'delete' ? "xs" : "sm"}
         aria-describedby="alert-dialog-description"
         classes={{ paperFullWidth: classes.modal }}
       >
         <Close className={classes.closeBtn} onClick={() => setOpen(false)} />
-        <Grid className={classes.modal}>
-          <Typography variant={"subtitle1"} gutterBottom>
-            Eliminar Registro
-          </Typography>
-          <Typography variant={"body1"} gutterBottom>
-            ¿Estas seguro de eliminar este registro?
-          </Typography>
-          <br />
-          <Grid container justifyContent="flex-end">
-            <Button
-              variant="contained"
-              className={classes.btnCancel}
-              onClick={() => {
-                setOpen(false);
-              }}
-            >
-              Cancelar
-            </Button>
+        {dialogOption === 'detele' &&
+          <Grid className={classes.modal}>
+            <Typography variant={"subtitle1"} gutterBottom>
+              Eliminar Registro
+            </Typography>
+            <Typography variant={"body1"} gutterBottom>
+              ¿Estas seguro de eliminar este registro?
+            </Typography>
+            <br />
+            <Grid container justifyContent="flex-end">
+              <Button
+                variant="contained"
+                className={classes.btnCancel}
+                onClick={() => {
+                  setOpen(false);
+                }}
+              >
+                Cancelar
+              </Button>
 
-            <Button
-              variant="contained"
-              color="secondary"
-              onClick={() => {
-                dispatch(animalActions.deleteElement({ _id: idDelete }));
-                setOpen(false);
-              }}
-            >
-              Confirmar
-            </Button>
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={() => {
+                  dispatch(animalActions.deleteElement({ _id: animalId }));
+                  setOpen(false);
+                }}
+              >
+                Confirmar
+              </Button>
+            </Grid>
           </Grid>
-        </Grid>
+        }
+        {dialogOption === 'update' &&
+          < AddIndividual setOpen={setOpen} typeAccion="update" animalId={animalId} />
+        }
       </Dialog>
     </Grid>
   );

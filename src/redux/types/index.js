@@ -29,6 +29,9 @@ const ACTION_TYPES = {
   FARM: {
     RETRIEVE_BY_OWNER_ID: "farm/RETRIEVE_BY_OWNER_ID",
   },
+  ANIMAL: {
+    UPDATE_CURRENT: "animal/UPDATE_CURRENT"
+  }
 };
 
 export default ACTION_TYPES;

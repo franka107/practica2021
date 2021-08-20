@@ -7,6 +7,8 @@ import AddIndividual from "./AddIndividual";
 import { useStyles } from "./styles";
 import addAnimals from "../../../assets/icons/addAnimal.svg";
 import SearchAnimals from "../SearchAnimals";
+import { useHistory } from "react-router-dom";
+
 
 function AddAnimals({
   setAnimalsList,
@@ -19,6 +21,7 @@ function AddAnimals({
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [openMenu, setOpenMenu] = useState(false);
+  const history = useHistory();
 
   const handleClick = (event) => {
     setOpenMenu(event.currentTarget);
@@ -103,7 +106,7 @@ function AddAnimals({
       >
         <Close className={classes.closeBtn} onClick={() => setOpen(false)} />
         {open === 1 &&
-          <AddIndividual setOpen={setOpen} setAnimalsList={setAnimalsList} agribusinessId={agribusinessId} />}
+          <AddIndividual setOpen={setOpen} />}
         {/* {open === 2 &&
         <AddMassive setOpen={setOpen} handleAddMassive={handleAddMassive} agribusinessId={agribusinessId} />} */}
       </Dialog>
