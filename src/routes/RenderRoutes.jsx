@@ -1,5 +1,4 @@
-import { useSelector } from "react-redux";
-import { Switch, Route } from "react-router-dom";
+import { Switch } from "react-router-dom";
 import RouteWithSubRoutes from "./RouteWithSubRoutes";
 
 /**
@@ -11,7 +10,6 @@ export function RenderRoutes({ routes }) {
       {routes.map((route) => {
         return <RouteWithSubRoutes key={route.key} {...route} />;
       })}
-      <Route component={() => <h1>Not Found!</h1>} />
     </Switch>
   );
 }

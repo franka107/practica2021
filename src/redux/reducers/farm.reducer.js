@@ -15,6 +15,9 @@ export function farmReducer(state = {}, action) {
         current: action.payload,
       };
 
+    case ACTION_TYPES.FARM.CLEAR_ALL:
+      return {};
+
     default:
       return state;
   }

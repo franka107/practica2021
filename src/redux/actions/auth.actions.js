@@ -27,11 +27,16 @@ class AuthActions {
   login(data) {
     return (dispatch) => {
       return AuthService.login(data).then(
-        (response) => {
+        async (response) => {
           localStorage.setItem("user", JSON.stringify(response));
-          dispatch(farmActions.findFarmByOwnerId(response._id));
-          dispatch({ type: ACTION_TYPES.AUTH.LOGIN_SUCESS, payload: response });
-          return Promise.resolve();
+          const farm = await dispatch(
+            farmActions.findFarmByOwnerId(response._id)
+          );
+          dispatch({
+            type: ACTION_TYPES.AUTH.LOGIN_SUCESS,
+            payload: response,
+          });
+          return Promise.resolve(farm);
         },
         (error) => {
           dispatch({ type: ACTION_TYPES.AUTH.LOGIN_FAIL, error: error });
@@ -45,6 +50,7 @@ class AuthActions {
   logout() {
     return (dispatch) => {
       localStorage.clear();
+      dispatch(farmActions.clearAll());
       dispatch({ type: ACTION_TYPES.AUTH.LOGOUT });
     };
   }

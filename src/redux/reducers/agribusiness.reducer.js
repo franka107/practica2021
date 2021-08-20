@@ -10,6 +10,7 @@ export function agribusinessReducer(state = initialState, action) {
     case ACTION_TYPES.AGRIBUSINESS.CREATE:
       return {
         ...state,
+        list: [...state.list, action.payload],
         current: action.payload,
       };
 

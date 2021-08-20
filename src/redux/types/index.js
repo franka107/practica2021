@@ -28,6 +28,7 @@ const ACTION_TYPES = {
   },
   FARM: {
     RETRIEVE_BY_OWNER_ID: "farm/RETRIEVE_BY_OWNER_ID",
+    CLEAR_ALL: "farm/CLEAR_ALL",
   },
   ANIMAL: {
     UPDATE_CURRENT: "animal/UPDATE_CURRENT",

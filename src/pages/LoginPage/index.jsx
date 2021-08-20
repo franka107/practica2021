@@ -9,7 +9,7 @@ import * as yup from "yup";
 import TextFieldFormik from "../../components/Inputs/TextFieldFormik";
 import { Link, useHistory } from "react-router-dom";
 import googleBtn from "../../assets/images/google.png";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { uiActions } from "../../redux/actions/ui.actions";
 import PasswordFieldFormik from "../../components/Inputs/PasswordFieldFormik";
 import { userActions } from "../../redux/actions/user.actions";
@@ -20,6 +20,7 @@ function LoginPage(props) {
   const classes = useStyles();
   const dispatch = useDispatch();
   const history = useHistory();
+  const { current: currentFarm } = useSelector((state) => state.farm);
 
   const validationSchema = yup.object({
     email: yup
@@ -34,8 +35,12 @@ function LoginPage(props) {
 
   const onSubmitForm = (values, actions) => {
     dispatch(AuthActions.login(values))
-      .then(() => {
-        history.push(ROUTES_DICT.dashboard);
+      .then((farm) => {
+        if (farm) {
+          history.push(ROUTES_DICT.dashboard);
+        } else {
+          history.push(ROUTES_DICT.setup);
+        }
       })
       .catch(() => {
         actions.setSubmitting(false);

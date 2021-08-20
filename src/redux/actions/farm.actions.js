@@ -4,30 +4,35 @@ import ACTION_TYPES from "../types";
 import { farmConstants } from "../types/farm.constants";
 import { alertActions } from "./alert.actions";
 
-export const farmActions = { create, findFarmByOwnerId };
+export const farmActions = { create, findFarmByOwnerId, clearAll };
 
 function findFarmByOwnerId(ownerId) {
   return (dispatch) => {
-    return FarmService.findByOwnerId(ownerId).then(
-      ({ agribusiness, ...response }) => {
-        let localAgribusiness = JSON.parse(
-          localStorage.getItem("agribusiness")
-        );
+    return FarmService.findByOwnerId(ownerId).then((response) => {
+      let localAgribusiness = JSON.parse(localStorage.getItem("agribusiness"));
 
-        dispatch({
-          type: ACTION_TYPES.FARM.RETRIEVE_BY_OWNER_ID,
-          payload: response,
-        });
-        dispatch({
-          type: ACTION_TYPES.AGRIBUSINESS.RETRIEVE,
-          payload: agribusiness,
-        });
-        dispatch({
-          type: ACTION_TYPES.AGRIBUSINESS.UPDATE_CURRENT,
-          payload: localAgribusiness || (agribusiness && agribusiness[0]),
-        });
-      }
-    );
+      dispatch({
+        type: ACTION_TYPES.FARM.RETRIEVE_BY_OWNER_ID,
+        payload: response,
+      });
+      dispatch({
+        type: ACTION_TYPES.AGRIBUSINESS.RETRIEVE,
+        payload: response && response.agribusiness,
+      });
+      dispatch({
+        type: ACTION_TYPES.AGRIBUSINESS.UPDATE_CURRENT,
+        payload:
+          localAgribusiness ||
+          (response && response.agribusiness && response.agribusiness[0]),
+      });
+      return Promise.resolve(response);
+    });
+  };
+}
+
+function clearAll() {
+  return (dispatch) => {
+    dispatch({ type: ACTION_TYPES.FARM.CLEAR_ALL });
   };
 }
 function create(data) {

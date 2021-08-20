@@ -1,4 +1,5 @@
 export const ROUTES_DICT = {
+  root: "/",
   register: "/register",
   login: "/login",
   dashboard: "/dashboard",

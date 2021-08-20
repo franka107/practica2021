@@ -5,17 +5,10 @@ import { useStyles } from "./styles";
 import Logo from "../../components/Logo";
 import RegisterCard from "../../components/RegisterCard";
 import { Formik } from "formik";
-import * as yup from "yup";
-import TextFieldFormik from "../../components/Inputs/TextFieldFormik";
-import { Link, useHistory, useParams } from "react-router-dom";
-import googleBtn from "../../assets/images/google.png";
-import { useDispatch } from "react-redux";
-import { UiActions } from "../../redux/actions/ui.actions";
-import PasswordFieldFormik from "../../components/Inputs/PasswordFieldFormik";
+import { useHistory, useParams } from "react-router-dom";
 import { useEffect } from "react";
 import UserService from "../../services/user.service";
 import { ROUTES_DICT } from "../../routes/routesDict";
-import { userActions } from "../../redux/actions/user.actions";
 
 function EmailVerifiedPage(props) {
   const classes = useStyles();
@@ -46,10 +39,10 @@ function EmailVerifiedPage(props) {
             <Button
               className={classes.loginBtn}
               onClick={() => {
-                history.push(ROUTES_DICT.setup);
+                history.push(ROUTES_DICT.login);
               }}
             >
-              Empezar
+              Iniciar sesión
             </Button>
           </Grid>
         </Grid>

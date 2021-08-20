@@ -44,6 +44,14 @@ export const ROUTES = [
     type: ROUTE_TYPES.private,
   },
   {
+    path: ROUTES_DICT.root,
+    key: "Dashboard",
+    exact: true,
+    component: () => <Redirect to={ROUTES_DICT.login} />,
+    layout: DashboardLayout,
+    type: ROUTE_TYPES.public,
+  },
+  {
     path: ROUTES_DICT.animalControl,
     key: "Control Animal",
     exact: true,

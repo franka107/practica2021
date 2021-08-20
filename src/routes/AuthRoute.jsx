@@ -20,7 +20,7 @@ export const AuthRoute = ({
     switch (type) {
       case ROUTE_TYPES.public:
         return isAuthenticated ? (
-          <Redirect to="/" />
+          <Redirect to={ROUTES_DICT.dashboard} />
         ) : (
           <Layout {...props}>
             <Component {...props} />

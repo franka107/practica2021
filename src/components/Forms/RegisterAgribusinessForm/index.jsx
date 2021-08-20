@@ -102,6 +102,7 @@ export default function RegisterAgribusinessForm({ setRegisterStep }) {
       })
     )
       .then(() => {
+        console.log("para dashboard");
         history.push(ROUTES_DICT.dashboard);
       })
       .catch(() => {

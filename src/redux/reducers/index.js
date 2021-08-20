@@ -1,4 +1,5 @@
 import { combineReducers } from "redux";
+import ACTION_TYPES from "../types";
 import { agribusinessReducer } from "./agribusiness.reducer";
 import { animalReducer } from "./animal.reducer";
 import { authReducer } from "./auth.reducer";
@@ -9,7 +10,7 @@ import { farmReducer } from "./farm.reducer";
 import { regionReducer } from "./region.reducer";
 import { uiReducer } from "./ui.reducer";
 
-const rootReducer = combineReducers({
+const appReducer = combineReducers({
   auth: authReducer,
   ui: uiReducer,
   country: countryReducer,
@@ -20,5 +21,9 @@ const rootReducer = combineReducers({
   currency: currencyReducer,
   agribusiness: agribusinessReducer,
 });
+
+const rootReducer = (state, action) => {
+  return appReducer(state, action);
+};
 
 export default rootReducer;
