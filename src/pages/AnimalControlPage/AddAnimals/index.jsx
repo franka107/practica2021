@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Close } from "@material-ui/icons";
 import { Button, Dialog, Grid, Menu, MenuItem } from "@material-ui/core";
 import { menuList } from "./constants";
-// import AddIndividual from "./AddIndividual";
+import AddIndividual from "./AddIndividual";
 // import AddMassive from "./AddMassive";
 import { useStyles } from "./styles";
 import addAnimals from "../../../assets/icons/addAnimal.svg";
@@ -93,20 +93,20 @@ function AddAnimals({
           />
         </Grid>
       </Grid>
-      {/* <Dialog
+      <Dialog
         open={Boolean(open)}
         fullWidth
         onClose={() => setOpen(false)}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
-        classes={{paperFullWidth: classes.modal}}
+        classes={{ paperFullWidth: classes.modal }}
       >
         <Close className={classes.closeBtn} onClick={() => setOpen(false)} />
         {open === 1 &&
-        <AddIndividual setOpen={setOpen} setAnimalsList={setAnimalsList} agribusinessId={agribusinessId} />}
-        {open === 2 &&
-        <AddMassive setOpen={setOpen} handleAddMassive={handleAddMassive} agribusinessId={agribusinessId} />}
-      </Dialog> */}
+          <AddIndividual setOpen={setOpen} setAnimalsList={setAnimalsList} agribusinessId={agribusinessId} />}
+        {/* {open === 2 &&
+        <AddMassive setOpen={setOpen} handleAddMassive={handleAddMassive} agribusinessId={agribusinessId} />} */}
+      </Dialog>
     </Grid>
   );
 }
