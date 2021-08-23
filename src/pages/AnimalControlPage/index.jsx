@@ -135,19 +135,25 @@ function AnimalControlPage() {
         open={Boolean(open)}
         fullWidth
         onClose={() => {
-          setOpen(false)
-          dispatch({ type: ACTION_TYPES.ANIMAL.UPDATE_CURRENT, payload: null })
+          setOpen(false);
+          dispatch({ type: ACTION_TYPES.ANIMAL.UPDATE_CURRENT, payload: null });
         }}
         aria-labelledby="alert-dialog-title"
-        maxWidth={dialogOption === 'delete' ? "xs" : "sm"}
+        maxWidth={dialogOption === "delete" ? "xs" : "sm"}
         aria-describedby="alert-dialog-description"
         classes={{ paperFullWidth: classes.modal }}
       >
-        <Close className={classes.closeBtn} onClick={() => {
-          setOpen(false)
-          dispatch({ type: ACTION_TYPES.ANIMAL.UPDATE_CURRENT, payload: null })
-        }} />
-        {dialogOption === 'detele' &&
+        <Close
+          className={classes.closeBtn}
+          onClick={() => {
+            setOpen(false);
+            dispatch({
+              type: ACTION_TYPES.ANIMAL.UPDATE_CURRENT,
+              payload: null,
+            });
+          }}
+        />
+        {dialogOption === "delete" && (
           <Grid className={classes.modal}>
             <Typography variant={"subtitle1"} gutterBottom>
               Eliminar Registro
@@ -179,10 +185,14 @@ function AnimalControlPage() {
               </Button>
             </Grid>
           </Grid>
-        }
-        {dialogOption === 'update' &&
-          < AddIndividual setOpen={setOpen} typeAccion="update" animalId={animalId} />
-        }
+        )}
+        {dialogOption === "update" && (
+          <AddIndividual
+            setOpen={setOpen}
+            typeAccion="update"
+            animalId={animalId}
+          />
+        )}
       </Dialog>
     </Grid>
   );

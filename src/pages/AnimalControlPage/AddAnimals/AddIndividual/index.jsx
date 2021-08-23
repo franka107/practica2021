@@ -15,13 +15,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { ROUTES_DICT } from "../../../../routes/routesDict";
 import { animalActions } from "../../../../redux/actions/animal.actions";
-import {
-  sexOptions,
-  categoryOptions,
-  raceOptions,
-  stateOptions,
-} from "./constants";
+import { categoryOptions, raceOptions, stateOptions } from "./constants";
 import ACTION_TYPES from "../../../../redux/types";
+import { sexOptions } from "../../../../constants";
+import {
+  getFemaleAnimals,
+  getMaleAnimals,
+} from "../../../../redux/selectors/animal.selector";
 
 const propTypes = {};
 
@@ -46,6 +46,8 @@ function AddIndividual({
     (state) => state.agribusiness
   );
   const { list: animals } = useSelector((state) => state.animal);
+  const maleAnimals = useSelector(getMaleAnimals());
+  const femaleAnimals = useSelector(getFemaleAnimals());
 
   const [errors, setErrors] = useState([]);
   const [raceType, setRaceType] = useState({
@@ -66,7 +68,7 @@ function AddIndividual({
     birthDate: "",
     herdDate: "",
     registerNumber: "",
-    gender: "MA",
+    gender: "MALE",
     isReproductive: false,
     category: "",
     father: "",
@@ -198,7 +200,7 @@ function AddIndividual({
             sm={6}
             xs={12}
           ></SelectFieldFormik>
-          {values.gender === "MA" ? (
+          {values.gender === "MALE" ? (
             <Grid
               lg={6}
               sm={6}
@@ -228,7 +230,7 @@ function AddIndividual({
             ></SelectFieldFormik>
           )}
           <SearchFieldFormik
-            options={animals}
+            options={maleAnimals}
             label="Padre"
             type="text"
             name="father"
@@ -262,7 +264,7 @@ function AddIndividual({
             xs={12}
           ></TextFieldFormik> */}
           <SearchFieldFormik
-            options={animals}
+            options={femaleAnimals}
             label="Madre"
             type="text"
             name="mother"
@@ -383,9 +385,9 @@ function AddIndividual({
               onClick={() => {
                 if (typeAccion === "create") {
                   if (values.isReproductive) values.category = "REPROODUCTOR";
-                  //   values.agribusinessId = currentAgribusiness._id;
-                  //   dispatch(animalActions.createElement(values));
-                  //   setOpen(false);
+                  values.agribusinessId = currentAgribusiness._id;
+                  dispatch(animalActions.createElement(values));
+                  setOpen(false);
                   console.log("init", values);
                 }
                 if (typeAccion === "update") {
