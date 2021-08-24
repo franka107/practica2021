@@ -7,7 +7,6 @@ export default function DatePickerFieldFormik({ xs = 12, ...props }) {
   const classes = useStyles();
   const [field, meta, helpers] = useField(props);
 
-
   return (
     <Grid item xs={xs} {...props}>
       <TextField

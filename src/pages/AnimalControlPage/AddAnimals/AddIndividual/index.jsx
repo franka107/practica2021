@@ -17,7 +17,7 @@ import { ROUTES_DICT } from "../../../../routes/routesDict";
 import { animalActions } from "../../../../redux/actions/animal.actions";
 import { categoryOptions, raceOptions, stateOptions } from "./constants";
 import ACTION_TYPES from "../../../../redux/types";
-import { sexOptions } from "../../../../constants";
+import { racialTypeOptions, sexOptions } from "../../../../constants";
 import {
   getFemaleAnimals,
   getMaleAnimals,
@@ -69,13 +69,13 @@ function AddIndividual({ setOpen, typeAccion = "create", animalId = "" }) {
     fatherId: "",
     motherId: "",
     racial1: "",
-    percentageRacial1: "",
+    percentageRacial1: 0,
     racial2: "",
-    percentageRacial2: "",
+    percentageRacial2: 0,
     racial3: "",
-    percentageRacial3: "",
+    percentageRacial3: 0,
     racial4: "",
-    percentageRacial4: "",
+    percentageRacial4: 0,
     typeRacial: "",
     color: "",
     repructiveStatus: "",
@@ -129,7 +129,57 @@ function AddIndividual({ setOpen, typeAccion = "create", animalId = "" }) {
     handleCheckPercentage(races);
   };
 
-  const handleSubmit = (values, actions) => {};
+  const handleSubmit = (values, actions) => {
+    if (typeAccion === "create") {
+      if (values.isReproductive) {
+        values.category = "REPRODUCTOR";
+      } else {
+        values.category = "";
+      }
+
+      values.agribusinessId = currentAgribusiness._id;
+
+      dispatch(animalActions.createElement(values));
+      setOpen(false);
+      console.log("init", values);
+    }
+    if (typeAccion === "update") {
+      if (values.gender === "MALE") {
+        if (values.isReproductive) {
+          values.category = "REPRODUCTOR";
+        } else {
+          values.category = "";
+        }
+        values.reproductiveStatus = "";
+      }
+
+      if (values.gender === "FEMALE") {
+        values.category = "";
+      }
+
+      values.agribusinessId = currentAgribusiness._id;
+
+      if (values.father) {
+        if (contChangeF === 0) {
+          values.fatherId = values.father._id;
+          console.log("cont", contChangeF);
+        }
+        if (contChangeM === 0) {
+          values.motherId = values.mother._id;
+          console.log("cont", contChangeM);
+        }
+      }
+
+      dispatch(animalActions.updateElement(values)).then((data) => {
+        dispatch({
+          type: ACTION_TYPES.ANIMAL.UPDATE_CURRENT,
+          payload: null,
+        });
+      });
+      setOpen(false);
+      console.log(values);
+    }
+  };
 
   const AnimalForm = ({
     handleChange,
@@ -144,7 +194,7 @@ function AddIndividual({ setOpen, typeAccion = "create", animalId = "" }) {
     return (
       <form onSubmit={handleSubmit} className={classes.formStyle}>
         <Grid container spacing={1} className={classes.formStyle}>
-          <Grid item>
+          <Grid item xs={12}>
             <Typography variant={"subtitle2"}>Datos Generales</Typography>
           </Grid>
         </Grid>
@@ -210,6 +260,7 @@ function AddIndividual({ setOpen, typeAccion = "create", animalId = "" }) {
                 name="isReproductive"
                 options={categoryOptions}
                 onChange={handleChange}
+                checked={values.isReproductive}
               ></CheckboxFormik>
             </Grid>
           ) : (
@@ -297,7 +348,7 @@ function AddIndividual({ setOpen, typeAccion = "create", animalId = "" }) {
           )}
         </Grid>
         <Grid container spacing={1} className={classes.formStyle}>
-          <Grid item>
+          <Grid item xs={12}>
             <Typography variant={"subtitle2"}>Raza</Typography>
           </Grid>
         </Grid>
@@ -334,12 +385,13 @@ function AddIndividual({ setOpen, typeAccion = "create", animalId = "" }) {
                 sm={4}
                 xs={12}
                 alignItems={"center"}
-                justify={"center"}
+                justifyContent={"center"}
               >
                 <Grid item xs={11}>
                   <TextFieldFormik
                     name={`percentageRacial${index + 1}`}
                     label="Porcentaje"
+                    type="number"
                     onChange={handleChange}
                   />
                 </Grid>
@@ -367,16 +419,17 @@ function AddIndividual({ setOpen, typeAccion = "create", animalId = "" }) {
           />
         </Grid>
         <Grid container spacing={1}>
-          <TextFieldFormik
+          <SelectFieldFormik
+            options={animals}
+            onChange={handleChange}
+            options={racialTypeOptions}
             label="Tipo Racial"
             name="racialType"
-            type="text"
-            onChange={handleChange}
             lg={6}
             sm={6}
             xs={12}
-            disabled
-          ></TextFieldFormik>
+          ></SelectFieldFormik>
+
           <TextFieldFormik
             label="Color"
             type="text"
@@ -396,50 +449,7 @@ function AddIndividual({ setOpen, typeAccion = "create", animalId = "" }) {
               xs={3}
               label="Guardar"
               type="submit"
-              onClick={() => {
-                if (typeAccion === "create") {
-                  if (values.isReproductive) {
-                    values.category = "REPRODUCTOR";
-                  } else {
-                    values.category = "";
-                  }
-
-                  values.agribusinessId = currentAgribusiness._id;
-
-                  dispatch(animalActions.createElement(values));
-                  setOpen(false);
-                  console.log("init", values);
-                }
-                if (typeAccion === "update") {
-                  if (values.isReproductive) {
-                    values.category = "REPRODUCTOR";
-                  } else {
-                    values.category = "";
-                  }
-
-                  values.agribusinessId = currentAgribusiness._id;
-
-                  if (values.father) {
-                    if (contChangeF === 0) {
-                      values.fatherId = values.father._id;
-                      console.log("cont", contChangeF);
-                    }
-                    if (contChangeM === 0) {
-                      values.motherId = values.mother._id;
-                      console.log("cont", contChangeM);
-                    }
-                  }
-
-                  dispatch(animalActions.updateElement(values)).then((data) => {
-                    dispatch({
-                      type: ACTION_TYPES.ANIMAL.UPDATE_CURRENT,
-                      payload: null,
-                    });
-                  });
-                  setOpen(false);
-                  console.log(values);
-                }
-              }}
+              onClick={handleSubmit}
             />
           </Grid>
         </Grid>
