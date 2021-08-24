@@ -25,13 +25,7 @@ import {
 
 const propTypes = {};
 
-function AddIndividual({
-  setOpen,
-  setAnimalsList,
-  agribusinessId,
-  typeAccion = "create",
-  animalId = "",
-}) {
+function AddIndividual({ setOpen, typeAccion = "create", animalId = "" }) {
   const classes = useStyles();
   const history = useHistory();
 
@@ -40,7 +34,8 @@ function AddIndividual({
     A: { type: "1", percentage: "100%" },
   });
   const dispatch = useDispatch();
-  const [contChange, setContChange] = useState(0);
+  const [contChangeF, setContChangeF] = useState(0);
+  const [contChangeM, setContChangeM] = useState(0);
   const { current: currentAnimal } = useSelector((state) => state.animal);
   const { current: currentAgribusiness } = useSelector(
     (state) => state.agribusiness
@@ -71,8 +66,8 @@ function AddIndividual({
     gender: "MALE",
     isReproductive: false,
     category: "",
-    father: "",
-    mother: "",
+    fatherId: "",
+    motherId: "",
     racial1: "",
     percentageRacial1: "",
     racial2: "",
@@ -223,64 +218,83 @@ function AddIndividual({
               onChange={handleChange}
               options={stateOptions}
               label="Estado"
-              name="repructiveStatus"
+              name="reproductiveStatus"
               lg={6}
               sm={6}
               xs={12}
             ></SelectFieldFormik>
           )}
-          <SearchFieldFormik
-            options={maleAnimals}
-            label="Padre"
-            type="text"
-            name="father"
-            onChange={(e, value) => {
-              if (value) {
+
+          {typeAccion === "create" ? (
+            <SearchFieldFormik
+              options={animals}
+              label="Padre"
+              type="text"
+              name="fatherId"
+              onChange={(e, value) => {
                 console.log(value);
-                setFieldValue("father", value._id);
-              }
-            }}
-            // defaultValue={{ title: "3 Idiots", year: 2009 }}
-            lg={6}
-            sm={6}
-            xs={12}
-          ></SearchFieldFormik>
-          {/* <TextFieldFormik
-            label="Padre"
-            type="text"
-            name="father"
-            onChange={handleChange}
-            lg={6}
-            sm={6}
-            xs={12}
-          ></TextFieldFormik> */}
-          {/* <TextFieldFormik
-            label="Madre"
-            type="text"
-            name="mother"
-            onChange={handleChange}
-            lg={6}
-            sm={6}
-            xs={12}
-          ></TextFieldFormik> */}
-          <SearchFieldFormik
-            options={femaleAnimals}
-            label="Madre"
-            type="text"
-            name="mother"
-            onChange={(e, value) => {
-              if (value) {
-                console.log(value);
-                setFieldValue("mother", value._id);
-              }
-            }}
-            defaultValue={
-              typeAccion === "update" && { title: "3 Idiots", year: 2009 }
-            }
-            lg={6}
-            sm={6}
-            xs={12}
-          ></SearchFieldFormik>
+                setFieldValue("fatherId", value._id);
+              }}
+              lg={6}
+              sm={6}
+              xs={12}
+            ></SearchFieldFormik>
+          ) : (
+            <SearchFieldFormik
+              options={animals}
+              label="Padre"
+              type="text"
+              name="fatherId"
+              onChange={(e, value) => {
+                setContChangeF(setContChangeF + 1);
+                if (value) {
+                  console.log(value);
+                  setFieldValue("fatherId", value._id);
+                }
+              }}
+              defaultValue={typeAccion === "update" && values.father}
+              lg={6}
+              sm={6}
+              xs={12}
+            ></SearchFieldFormik>
+          )}
+
+          {typeAccion === "create" ? (
+            <SearchFieldFormik
+              options={animals}
+              label="Madre"
+              type="text"
+              name="motherId"
+              onChange={(e, value) => {
+                setContChangeM(setContChangeM + 1);
+                if (value) {
+                  console.log(value);
+                  setFieldValue("motherId", value._id);
+                }
+              }}
+              lg={6}
+              sm={6}
+              xs={12}
+            ></SearchFieldFormik>
+          ) : (
+            <SearchFieldFormik
+              options={animals}
+              label="Madre"
+              type="text"
+              name="motherId"
+              onChange={(e, value) => {
+                setContChangeM(setContChangeM + 1);
+                if (value) {
+                  console.log(value);
+                  setFieldValue("motherId", value._id);
+                }
+              }}
+              defaultValue={typeAccion === "update" && values.mother}
+              lg={6}
+              sm={6}
+              xs={12}
+            ></SearchFieldFormik>
+          )}
         </Grid>
         <Grid container spacing={1} className={classes.formStyle}>
           <Grid item>
@@ -384,29 +398,46 @@ function AddIndividual({
               type="submit"
               onClick={() => {
                 if (typeAccion === "create") {
-                  if (values.isReproductive) values.category = "REPROODUCTOR";
+                  if (values.isReproductive) {
+                    values.category = "REPRODUCTOR";
+                  } else {
+                    values.category = "";
+                  }
+
                   values.agribusinessId = currentAgribusiness._id;
+
                   dispatch(animalActions.createElement(values));
                   setOpen(false);
                   console.log("init", values);
                 }
                 if (typeAccion === "update") {
-                  if (values.isReproductive) values.category = "REPROODUCTOR";
-                  else values.category = "";
+                  if (values.isReproductive) {
+                    values.category = "REPRODUCTOR";
+                  } else {
+                    values.category = "";
+                  }
+
                   values.agribusinessId = currentAgribusiness._id;
 
-                  //   if (contChange === 0) {
-                  //     values.mother = values.mother;
-                  //   }
+                  if (values.father) {
+                    if (contChangeF === 0) {
+                      values.fatherId = values.father._id;
+                      console.log("cont", contChangeF);
+                    }
+                    if (contChangeM === 0) {
+                      values.motherId = values.mother._id;
+                      console.log("cont", contChangeM);
+                    }
+                  }
 
                   dispatch(animalActions.updateElement(values)).then((data) => {
-                    console.log(data);
                     dispatch({
                       type: ACTION_TYPES.ANIMAL.UPDATE_CURRENT,
                       payload: null,
                     });
                   });
                   setOpen(false);
+                  console.log(values);
                 }
               }}
             />

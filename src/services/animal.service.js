@@ -19,6 +19,7 @@ const animalGetById = (data) => {
     window.icAPI.callService("animalGetById", data, function (error, response) {
       if (!error) {
         resolve(response.responseJSON);
+        // console.log(response.responseJSON);
       } else {
         reject(response);
       }

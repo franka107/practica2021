@@ -23,7 +23,7 @@ function SearchFieldFormik({ xs = 12, options, ...props }) {
         helperText={meta.touched && meta.error}
         options={options || []}
         getOptionLabel={(option) => option.name}
-        // getOptionSelected={(option, value) => option._id === value._id}
+        getOptionSelected={(option, value) => option._id === value._id}
         // filterOptions={filterOptions}
         renderInput={(params) => (
           <TextField {...params} {...field} {...props} variant="filled" />
