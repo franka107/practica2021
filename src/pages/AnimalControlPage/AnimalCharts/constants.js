@@ -87,6 +87,9 @@ export const renderChartDetailOptions = (animalList) => ({
     text: "......................................",
   },
   xAxis: {
+    title: {
+      text: "Entrada hato",
+    },
     categories: [
       "Ene",
       "Feb",

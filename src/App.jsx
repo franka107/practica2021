@@ -4,14 +4,18 @@ import { store } from "./redux/store";
 import { CssBaseline, ThemeProvider } from "@material-ui/core";
 import mainTheme from "./themes/mainTheme";
 import { AppRouter } from "./routes/AppRouter";
+import { MuiPickersUtilsProvider } from "@material-ui/pickers";
+import DateFnsUtils from "@date-io/date-fns";
 
 function App() {
   return (
     <Provider store={store}>
-      <ThemeProvider theme={mainTheme}>
-        <CssBaseline />
-        <AppRouter />
-      </ThemeProvider>
+      <MuiPickersUtilsProvider utils={DateFnsUtils}>
+        <ThemeProvider theme={mainTheme}>
+          <CssBaseline />
+          <AppRouter />
+        </ThemeProvider>
+      </MuiPickersUtilsProvider>
     </Provider>
   );
 }
