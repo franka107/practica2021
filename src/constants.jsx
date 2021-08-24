@@ -65,6 +65,7 @@ export const stateOptions = [
 ];
 
 export const categoryOptions = [{ _id: "1", name: "Reproductor" }];
+
 //export const coinOptions = [
 //  { _id: 1, name: "PEN", icon: PEN },
 //  { _id: 2, name: "COL", icon: COP },
