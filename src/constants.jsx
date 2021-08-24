@@ -60,8 +60,8 @@ export const sexOptions = [
 ];
 
 export const stateOptions = [
-  { _id: "PRE", name: "Preñada" },
-  { _id: "VAC", name: "Vacía" },
+  { _id: "PREGNANT", name: "Preñada" },
+  { _id: "EMPTY", name: "Vacía" },
 ];
 
 export const categoryOptions = [{ _id: "1", name: "Reproductor" }];
@@ -79,4 +79,10 @@ export const categoryOptions = [{ _id: "1", name: "Reproductor" }];
 //  { _id: 10, name: "JPY", icon: JPY },
 //  { _id: 11, name: "MXN", icon: MXN },
 //  { _id: 12, name: "UYU", icon: UYU },
+//];
+
+//export const racialTypeOptions = [
+//{ _id: "BULLFIGHTING", name: "Toreo" },
+//{ _id: "ZEBU", name: "Zebu" },
+//{ _id: "HALF_BLOOD", name: "Media Sangre" },
 //];

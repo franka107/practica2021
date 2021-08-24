@@ -5,11 +5,14 @@ import Highcharts from "highcharts/highstock";
 import { Dialog, Grid, Paper, Typography } from "@material-ui/core";
 import clsx from "clsx";
 import TrendingUpIcon from "@material-ui/icons/TrendingUp";
-import { chartData, chartDetailOptions, chartOptions } from "./constants";
+import { chartData, renderChartDetailOptions, chartOptions } from "./constants";
+import { useSelector } from "react-redux";
+import { format, parseISO } from "date-fns";
 
 function AnimalCharts() {
   const classes = useStyles();
   const [openDetail, setOpenDetail] = useState(false);
+  const { list: animalList } = useSelector((state) => state.animal);
 
   return (
     <Grid container xs={12} className={classes.container}>
@@ -34,7 +37,7 @@ function AnimalCharts() {
                   align={"center"}
                   className={classes.userItemNumber}
                 >
-                  {chart.number}
+                  {chart.renderNumber && chart.renderNumber(animalList)}
                 </Typography>
                 <Typography
                   variant={"body2"}
@@ -89,7 +92,10 @@ function AnimalCharts() {
         aria-describedby="alert-dialog-description"
         classes={{ paperFullWidth: classes.modal }}
       >
-        <HighchartsReact highcharts={Highcharts} options={chartDetailOptions} />
+        <HighchartsReact
+          highcharts={Highcharts}
+          options={renderChartDetailOptions(animalList)}
+        />
       </Dialog>
     </Grid>
   );
