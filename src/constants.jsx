@@ -59,6 +59,12 @@ export const sexOptions = [
   { _id: "FEMALE", name: "Hembra" },
 ];
 
+export const racialTypeOptions = [
+  { _id: "BULLFIGHTING", name: "Toreo" },
+  { _id: "ZEBU", name: "Zebu" },
+  { _id: "HALF_BLOOD", name: "Media Sangre" },
+];
+
 export const stateOptions = [
   { _id: "PREGNANT", name: "Preñada" },
   { _id: "EMPTY", name: "Vacía" },

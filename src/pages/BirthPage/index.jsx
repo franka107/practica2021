@@ -122,7 +122,7 @@ function BirthPage() {
                   }}
                 />
               </Grid>
-              <Grid xs={12} sm={5}>
+              <Grid item xs={12} sm={5}>
                 <HighchartsReact
                   highcharts={Highcharts}
                   options={{

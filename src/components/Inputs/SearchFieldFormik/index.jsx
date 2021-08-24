@@ -19,14 +19,19 @@ function SearchFieldFormik({ xs = 12, options, ...props }) {
       <Autocomplete
         // onChange={(event, value) => console.log(props)}
         {...props}
-        error={meta.touched && Boolean(meta.error)}
-        helperText={meta.touched && meta.error}
         options={options || []}
         getOptionLabel={(option) => option.name}
         getOptionSelected={(option, value) => option._id === value._id}
         // filterOptions={filterOptions}
         renderInput={(params) => (
-          <TextField {...params} {...field} {...props} variant="filled" />
+          <TextField
+            {...params}
+            {...field}
+            {...props}
+            variant="filled"
+            error={meta.touched && Boolean(meta.error)}
+            helperText={meta.touched && meta.error}
+          />
         )}
       />
     </Grid>
