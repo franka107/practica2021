@@ -32,7 +32,7 @@ import {
   getFemaleAnimals,
   getMaleAnimals,
 } from "../../../../redux/selectors/animal.selector";
-import { format } from "date-fns";
+import { format, formatISO } from "date-fns";
 
 const propTypes = {};
 
@@ -80,8 +80,8 @@ function AddIndividual({ setOpen, typeAccion = "create", animalId = "" }) {
   const [initValues, setInitValues] = useState({
     identifier: "",
     name: "",
-    birthDate: "",
-    herdDate: "",
+    birthDate: new Date(),
+    herdDate: new Date(),
     registerNumber: "",
     gender: "MALE",
     isReproductive: false,
@@ -490,7 +490,10 @@ function AddIndividual({ setOpen, typeAccion = "create", animalId = "" }) {
         <Formik
           initialValues={{
             ...currentAnimal,
-            birthDate: format(new Date(currentAnimal.birthDate), "yyyy-MM-dd"),
+            birthDate: formatISO(
+              new Date(currentAnimal.birthDate),
+              "yyyy-MM-dd"
+            ),
             herdDate: format(new Date(currentAnimal.herdDate), "yyyy-MM-dd"),
           }}
           // initialValues={{

@@ -19,6 +19,7 @@
     "@testing-library/user-event": "^12.1.10",
     "clsx": "^1.1.1",
     "date-fns": "^2.23.0",
+    "date-fns-tz": "^1.1.6",
     "formik": "^2.2.9",
     "highcharts": "^9.0.1",
     "highcharts-react-official": "^3.0.0",

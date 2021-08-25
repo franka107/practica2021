@@ -145,13 +145,65 @@ const mainTheme = createTheme({
       },
     },
     /* Buttons */
+    //MuiButtonBase: {
+    //  root: {
+    //    color: "red",
+    //  },
+    //},
+    MuiPickersToolbar: {
+      toolbar: {
+        backgroundColor: "#0075c9",
+      },
+    },
+    MuiPickersToolbarText: {
+      toolbarTxt: {
+        color: "rgba(255, 255, 255, 0.54)",
+      },
+      toolbarBtnSelected: {
+        color: "#ffffff",
+      },
+    },
+
+    MuiPickersYear: {
+      root: {
+        "&:focus": {
+          color: "#0075C9",
+          opacity: 0.5,
+        },
+      },
+      yearSelected: {
+        color: "#0075C9",
+      },
+    },
+    MuiPickersDay: {
+      daySelected: {
+        backgroundColor: "#0075C9",
+        color: "#fff",
+        "&:hover": {
+          backgroundColor: "#0075C9",
+          opacity: 0.5,
+        },
+      },
+      current: {
+        color: "rgba(0, 0, 0, 0.87)",
+      },
+    },
     MuiButton: {
       root: {
         textTransform: "none",
         textAlign: "center",
         fontSize: 15,
         fontWeight: 600,
+        backgroundColor: "#0075C9",
         "&:hover": {
+          backgroundColor: "#0075C9",
+          webkitBoxShadow: "0 0 0 30px blue inset !important",
+          opacity: 0.5,
+        },
+      },
+      textPrimary: {
+        "&:hover": {
+          backgroundColor: "#0075C9",
           webkitBoxShadow: "0 0 0 30px blue inset !important",
           opacity: 0.5,
         },

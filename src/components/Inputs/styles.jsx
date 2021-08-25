@@ -20,6 +20,22 @@ export const useStyles = makeStyles((theme) => ({
     width: "100%",
     fontSize: "15px !important",
   },
+  dateInputDefault: {
+    padding: ".7rem",
+    lineHeight: 1.5,
+    borderColor: theme.palette.primary.light,
+    border: `1px solid`,
+    height: "100%",
+    "&:hover": {
+      borderColor: theme.palette.primary.light,
+      border: `1px solid`,
+    },
+  },
+  dateInputDefaultText: {
+    lineHeight: 1.5,
+    padding: 1.5,
+    height: "100%",
+  },
   phoneInputDefault: {
     padding: ".7rem",
     lineHeight: 1.5,

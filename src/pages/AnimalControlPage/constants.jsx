@@ -1,4 +1,13 @@
-import { format, isAfter, isBefore, parse, parseISO } from "date-fns";
+import {
+  format,
+  formatISO,
+  isAfter,
+  isBefore,
+  parse,
+  parseISO,
+} from "date-fns";
+import { format as formatFns, utcToZonedTime } from "date-fns-tz";
+
 import { sexDictionary, stateDictionary } from "../../constants";
 import { getAgeInYears } from "../../helpers/convertDate";
 import { DatePicker } from "@material-ui/pickers";
@@ -186,8 +195,22 @@ export const columnsToMuiTable = [
     name: "herdDate",
     options: {
       searchable: false,
-      customBodyRender: (value) =>
-        value ? format(new Date(value), "yyyy-MM-dd") : "-",
+      customBodyRender: (value) => {
+        console.log(`value ${value}`);
+        console.log(`format-value ${format(new Date(value), "yyyy-MM-dd")}`);
+        console.log(
+          `format-value with formatISO ${formatISO(new Date(value), {
+            representation: "date",
+          })}`
+        );
+        const peruDate = utcToZonedTime(value, "America/Lima");
+        console.log(
+          `date-fns-tz ${formatFns(new Date(value), "yyyy-MM-dd", {
+            timeZone: "America/Lima",
+          })}`
+        );
+        return value ? format(new Date(value), "yyyy-MM-dd") : "-";
+      },
       filterType: "custom",
       customFilterListOptions: {
         render: (v) => {
