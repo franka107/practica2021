@@ -26,6 +26,7 @@ import { animalActions } from "../../redux/actions/animal.actions";
 import { ROUTES_DICT } from "../../routes/routesDict";
 import AddIndividual from "./AddAnimals/AddIndividual";
 import ACTION_TYPES from "../../redux/types";
+import CustomMuiTable from "../../components/CustomMuiTable";
 
 function AnimalControlPage() {
   const classes = useStyles();
@@ -57,6 +58,7 @@ function AnimalControlPage() {
       <AnimalCharts />
       <AddAnimals />
       <Grid item xs={12} className={classes.registerContainer}>
+        <CustomMuiTable />
         <CustomMaterialTable
           data={animals}
           columns={[
