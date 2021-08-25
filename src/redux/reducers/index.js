@@ -10,7 +10,7 @@ import { farmReducer } from "./farm.reducer";
 import { regionReducer } from "./region.reducer";
 import { uiReducer } from "./ui.reducer";
 
-const appReducer = combineReducers({
+const rootReducer = combineReducers({
   auth: authReducer,
   ui: uiReducer,
   country: countryReducer,
@@ -22,8 +22,8 @@ const appReducer = combineReducers({
   agribusiness: agribusinessReducer,
 });
 
-const rootReducer = (state, action) => {
-  return appReducer(state, action);
-};
+//const rootReducer = (state, action) => {
+//  return appReducer(state, action);
+//};
 
 export default rootReducer;

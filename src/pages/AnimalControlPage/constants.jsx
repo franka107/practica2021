@@ -150,6 +150,9 @@ export const columnsToMuiTable = [
     name: "gender",
     options: {
       searchable: false,
+      filterOptions: {
+        names: ["Hembra", "Macho"],
+      },
       customBodyRender: (value) => sexDictionary[value],
     },
   },
@@ -157,6 +160,9 @@ export const columnsToMuiTable = [
     label: "Estado",
     name: "reproductiveStatus",
     options: {
+      filterOptions: {
+        names: ["Preñada", "Vacía"],
+      },
       searchable: false,
       customBodyRender: (value) => stateDictionary[value],
     },
@@ -167,8 +173,12 @@ export const columnsToMuiTable = [
     options: {
       filter: true,
       filterType: "checkbox",
+      filterOptions: {
+        names: ["Reproductor", "No Reproductor"],
+      },
       searchable: false,
-      customBodyRender: (value) => value,
+      customBodyRender: (value) =>
+        value ? "Reproductor" : typeof value === "boolean" && "No Reproductor",
     },
   },
   {

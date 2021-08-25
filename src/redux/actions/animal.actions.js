@@ -1,4 +1,5 @@
 import AnimalService from "../../services/animal.service";
+import ACTION_TYPES from "../types";
 import { animalConstans } from "../types/animal.constants";
 import { alertActions } from "./alert.actions";
 import UiActions from "./ui.actions";
@@ -42,7 +43,11 @@ function listById(data) {
   return (dispatch) => {
     return AnimalService.animalGetById(data).then(
       (response) => {
-        dispatch(success(response));
+        console.log(response);
+        dispatch({
+          type: ACTION_TYPES.ANIMAL.UPDATE_CURRENT,
+          payload: response,
+        });
         return Promise.resolve();
       },
       (error) => {
@@ -53,8 +58,8 @@ function listById(data) {
     );
   };
 
-  function success(animals) {
-    return { type: animalConstans.GETBYID_SUCCESS, animals };
+  function success(payload) {
+    return { type: ACTION_TYPES.ANIMAL.UPDATE_CURRENT, payload };
   }
   function failure(error) {
     return { type: animalConstans.GETBYID_FAILURE, error };

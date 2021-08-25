@@ -11,7 +11,7 @@ export function animalReducer(state = {}, action) {
     case animalConstans.GETBYID_SUCCESS:
       return {
         ...state,
-        current: action.animals,
+        current: action.payload,
       };
     case animalConstans.DELETE_SUCCESS:
       return state;
@@ -22,8 +22,8 @@ export function animalReducer(state = {}, action) {
     case ACTION_TYPES.ANIMAL.UPDATE_CURRENT:
       return {
         ...state,
-        current: action.payload
-      }
+        current: action.payload,
+      };
     default:
       return state;
   }

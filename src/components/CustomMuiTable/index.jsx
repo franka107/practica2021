@@ -46,8 +46,6 @@ function CustomMuiTable({ options, ...props }) {
     },
     typography: theme.typography,
   });
-  console.log(theme);
-  console.log(overrideTheme);
 
   const baseOptions = {
     textLabels: {

@@ -63,6 +63,59 @@ function AnimalControlPage() {
     search: false,
   };
 
+  const actionColumn = {
+    label: "Acciones",
+    name: "actions",
+    options: {
+      searchable: false,
+      filter: false,
+      sort: false,
+      customBodyRenderLite: (dataIndex, rowIndex) => {
+        return (
+          <>
+            <IconButton
+              style={{ color: "#C25560" }}
+              size="small"
+              aria-label="edit"
+              onClick={() => {
+                history.push(
+                  `${ROUTES_DICT.animalDetail}/${animals[rowIndex]._id}`
+                );
+              }}
+            >
+              <Visibility fontSize="small" />
+            </IconButton>
+            {/* </Link> */}
+            <IconButton
+              style={{ color: "#C25560" }}
+              size="small"
+              aria-label="edit"
+              onClick={() => {
+                setOpen(true);
+                setDialogOption("update");
+                setAnimalId(animals[rowIndex]._id);
+              }}
+            >
+              <Edit fontSize="small" />
+            </IconButton>
+            <IconButton
+              style={{ color: "#C25560" }}
+              size="small"
+              aria-label="delete"
+              onClick={() => {
+                setOpen(true);
+                setDialogOption("delete");
+                setAnimalId(animals[rowIndex]._id);
+              }}
+            >
+              <Delete fontSize="small" />
+            </IconButton>
+          </>
+        );
+      },
+    },
+  };
+
   return (
     <Grid item container xs={12}>
       <Typography variant={"h6"}>Control Ganadero</Typography>
@@ -72,61 +125,7 @@ function AnimalControlPage() {
       <Grid item xs={12} className={classes.registerContainer}>
         <CustomMuiTable
           data={animals}
-          columns={[
-            ...columnsToMuiTable,
-            {
-              label: "Acciones",
-              name: "actions",
-              options: {
-                searchable: false,
-                filter: false,
-                sort: false,
-                customBodyRenderLite: (dataIndex, rowIndex) => {
-                  return (
-                    <>
-                      <IconButton
-                        style={{ color: "#C25560" }}
-                        size="small"
-                        aria-label="edit"
-                        onClick={() => {
-                          history.push(
-                            `${ROUTES_DICT.animalDetail}/${animals[rowIndex]._id}`
-                          );
-                        }}
-                      >
-                        <Visibility fontSize="small" />
-                      </IconButton>
-                      {/* </Link> */}
-                      <IconButton
-                        style={{ color: "#C25560" }}
-                        size="small"
-                        aria-label="edit"
-                        onClick={() => {
-                          setOpen(true);
-                          setDialogOption("update");
-                          setAnimalId(animals[rowIndex]._id);
-                        }}
-                      >
-                        <Edit fontSize="small" />
-                      </IconButton>
-                      <IconButton
-                        style={{ color: "#C25560" }}
-                        size="small"
-                        aria-label="delete"
-                        onClick={() => {
-                          setOpen(true);
-                          setDialogOption("delete");
-                          setAnimalId(animals[rowIndex]._id);
-                        }}
-                      >
-                        <Delete fontSize="small" />
-                      </IconButton>
-                    </>
-                  );
-                },
-              },
-            },
-          ]}
+          columns={[...columnsToMuiTable, actionColumn]}
           options={options}
         />
         {/* 

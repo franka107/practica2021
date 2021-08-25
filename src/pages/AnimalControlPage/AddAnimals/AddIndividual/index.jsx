@@ -130,7 +130,6 @@ function AddIndividual({ setOpen, typeAccion = "create", animalId = "" }) {
 
   const handleAddRace = () => {
     const races = { ...animalRace };
-    console.log(races);
     if (letters[Object.keys(races).length]) {
       races[letters[Object.keys(races).length]] = {
         type: "1",
@@ -187,7 +186,6 @@ function AddIndividual({ setOpen, typeAccion = "create", animalId = "" }) {
         });
       });
       setOpen(false);
-      console.log(values);
     }
   };
 
@@ -293,7 +291,6 @@ function AddIndividual({ setOpen, typeAccion = "create", animalId = "" }) {
               type="text"
               name="fatherId"
               onChange={(e, value) => {
-                console.log(value);
                 setFieldValue("father", value);
               }}
               lg={6}
@@ -336,7 +333,6 @@ function AddIndividual({ setOpen, typeAccion = "create", animalId = "" }) {
               type="text"
               name="motherId"
               onChange={(e, value) => {
-                console.log(value);
                 setFieldValue("mother", value);
               }}
               defaultValue={values.mother || null}
@@ -424,7 +420,6 @@ function AddIndividual({ setOpen, typeAccion = "create", animalId = "" }) {
         </Grid>
         <Grid container spacing={1}>
           <SelectFieldFormik
-            options={animals}
             onChange={handleChange}
             options={racialTypeOptions}
             label="Tipo Racial"
