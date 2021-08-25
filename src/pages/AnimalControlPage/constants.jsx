@@ -187,7 +187,7 @@ export const columnsToMuiTable = [
     options: {
       searchable: false,
       customBodyRender: (value) =>
-        value ? format(parseISO(value), "yyyy-MM-dd") : "-",
+        value ? format(new Date(value), "yyyy-MM-dd") : "-",
       filterType: "custom",
       customFilterListOptions: {
         render: (v) => {
