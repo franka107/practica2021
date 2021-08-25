@@ -112,6 +112,25 @@ function AddIndividual({ setOpen, typeAccion = "create", animalId = "" }) {
     // console.log("hola", femaleAnimals);
   }, []);
 
+  useEffect(() => {
+    if (typeAccion === "update") {
+      if (currentAnimal) {
+        let total =
+          parseFloat(currentAnimal.percentageRacial1) +
+          parseFloat(currentAnimal.percentageRacial2) +
+          parseFloat(currentAnimal.percentageRacial3) +
+          parseFloat(currentAnimal.percentageRacial4);
+        if (total !== 100) {
+          setErrorPercentage(
+            "El porcentaje total debe ser 100%. Porfavor ajuste sus cantidades"
+          );
+        } else {
+          setErrorPercentage("");
+        }
+      }
+    }
+  }, [currentAnimal]);
+
   const handleCheckPercentage = (list = []) => {
     let total = 0;
 
@@ -138,7 +157,6 @@ function AddIndividual({ setOpen, typeAccion = "create", animalId = "" }) {
       };
 
       setAnimalRace(races);
-      handleCheckPercentage(races);
     }
   };
 
@@ -147,48 +165,49 @@ function AddIndividual({ setOpen, typeAccion = "create", animalId = "" }) {
     delete races[id];
 
     setAnimalRace(races);
-    handleCheckPercentage(races);
   };
 
   const handleSubmit = (values, actions) => {
-    values.agribusinessId = currentAgribusiness._id;
+    if (errorPercentage === "") {
+      values.agribusinessId = currentAgribusiness._id;
 
-    if (values.gender === "MALE") {
-      if (values.isReproductive) {
-        values.category = "REPRODUCTOR";
-      } else {
+      if (values.gender === "MALE") {
+        if (values.isReproductive) {
+          values.category = "REPRODUCTOR";
+        } else {
+          values.category = "";
+        }
+        values.reproductiveStatus = null;
+      }
+
+      if (values.gender === "FEMALE") {
+        values.isReproductive = null;
         values.category = "";
       }
-      values.reproductiveStatus = null;
-    }
 
-    if (values.gender === "FEMALE") {
-      values.isReproductive = null;
-      values.category = "";
-    }
+      if (values.father) {
+        values.fatherId = values.father._id;
+      }
+      if (values.mother) {
+        values.motherId = values.mother._id;
+      }
 
-    if (values.father) {
-      values.fatherId = values.father._id;
-    }
-    if (values.mother) {
-      values.motherId = values.mother._id;
-    }
-
-    if (typeAccion === "create") {
-      dispatch(animalActions.createElement(values));
-      setOpen(false);
-      console.log("init", values);
-    }
-    if (typeAccion === "update") {
-      dispatch(animalActions.updateElement(values)).then((data) => {
-        dispatch({
-          type: ACTION_TYPES.ANIMAL.UPDATE_CURRENT,
-          payload: null,
+      if (typeAccion === "create") {
+        dispatch(animalActions.createElement(values));
+        setOpen(false);
+        console.log("init", values);
+      }
+      if (typeAccion === "update") {
+        dispatch(animalActions.updateElement(values)).then((data) => {
+          dispatch({
+            type: ACTION_TYPES.ANIMAL.UPDATE_CURRENT,
+            payload: null,
+          });
         });
-      });
-      setOpen(false);
-      console.log(values.birthDate);
-      console.log(format(new Date(values.birthDate), "yyyy-MM-dd"));
+        setOpen(false);
+        console.log(values.birthDate);
+        console.log(format(new Date(values.birthDate), "yyyy-MM-dd"));
+      }
     }
   };
 
@@ -392,6 +411,7 @@ function AddIndividual({ setOpen, typeAccion = "create", animalId = "" }) {
                     endAdornment={
                       <InputAdornment position="start">%</InputAdornment>
                     }
+                    type="number"
                     label="Porcentaje"
                     style={{ textAlign: "end" }}
                     // type="number"
