@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Grid, Typography, Divider, CircularProgress } from "@material-ui/core";
+import {
+  Grid,
+  Typography,
+  Divider,
+  CircularProgress,
+  InputAdornment,
+} from "@material-ui/core";
 import { AddCircle } from "@material-ui/icons";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { useStyles } from "./styles";
@@ -17,6 +23,7 @@ import { ROUTES_DICT } from "../../../../routes/routesDict";
 import { animalActions } from "../../../../redux/actions/animal.actions";
 import { categoryOptions, raceOptions } from "./constants";
 import ACTION_TYPES from "../../../../redux/types";
+import { format } from "date-fns";
 import {
   racialTypeOptions,
   sexOptions,
@@ -38,8 +45,6 @@ function AddIndividual({ setOpen, typeAccion = "create", animalId = "" }) {
     A: { type: "1", percentage: "100%" },
   });
   const dispatch = useDispatch();
-  const [contChangeF, setContChangeF] = useState(0);
-  const [contChangeM, setContChangeM] = useState(0);
   const { current: currentAnimal } = useSelector((state) => state.animal);
   const { current: currentAgribusiness } = useSelector(
     (state) => state.agribusiness
@@ -47,16 +52,6 @@ function AddIndividual({ setOpen, typeAccion = "create", animalId = "" }) {
   const { list: animals } = useSelector((state) => state.animal);
   const maleAnimals = useSelector(getMaleAnimals());
   const femaleAnimals = useSelector(getFemaleAnimals());
-
-  const [errors, setErrors] = useState([]);
-  const [raceType, setRaceType] = useState({
-    A: "",
-    B: "",
-    C: "",
-    D: "",
-    raceType: "",
-    raceTypeText: "",
-  });
 
   const [errorPercentage, setErrorPercentage] = useState("");
 
@@ -68,12 +63,12 @@ function AddIndividual({ setOpen, typeAccion = "create", animalId = "" }) {
       .string("Ingresa el nombre del animal.")
       .required("Este campo es requerido."),
     birthDate: yup
-      .date("Ingresa la fecha de nacimiento del animal.")
+      .date("Ingresa una fecha correcta.")
       // .string("Ingresa la fecha de nacimiento del animal.")
       .max(new Date(), "No puedes poner una fecha futura")
       .required("Este campo es requerido."),
     herdDate: yup
-      .date("Ingresa la fecha de nacimiento del animal.")
+      .date("Ingresa una fecha correcta.")
       // .string("Ingresa la fecha de nacimiento del animal.")
       .max(new Date(), "No puedes poner una fecha futura")
       .required("Este campo es requerido."),
@@ -95,7 +90,7 @@ function AddIndividual({ setOpen, typeAccion = "create", animalId = "" }) {
     fatherId: "",
     motherId: "",
     racial1: "",
-    percentageRacial1: 0,
+    percentageRacial1: 100,
     racial2: "",
     percentageRacial2: 0,
     racial3: "",
@@ -113,6 +108,7 @@ function AddIndividual({ setOpen, typeAccion = "create", animalId = "" }) {
         dispatch(animalActions.listById({ _id: animalId }));
       }
     }
+    // console.log("hola", femaleAnimals);
   }, []);
 
   const handleCheckPercentage = (list = []) => {
@@ -292,7 +288,7 @@ function AddIndividual({ setOpen, typeAccion = "create", animalId = "" }) {
 
           {typeAccion === "create" ? (
             <SearchFieldFormik
-              options={animals}
+              options={maleAnimals}
               label="Padre"
               type="text"
               name="fatherId"
@@ -306,12 +302,11 @@ function AddIndividual({ setOpen, typeAccion = "create", animalId = "" }) {
             ></SearchFieldFormik>
           ) : (
             <SearchFieldFormik
-              options={animals}
+              options={maleAnimals}
               label="Padre"
               type="text"
               name="fatherId"
               onChange={(e, value) => {
-                console.log(value);
                 setFieldValue("father", value);
               }}
               defaultValue={values.father || null}
@@ -323,12 +318,11 @@ function AddIndividual({ setOpen, typeAccion = "create", animalId = "" }) {
 
           {typeAccion === "create" ? (
             <SearchFieldFormik
-              options={animals}
+              options={femaleAnimals}
               label="Madre"
               type="text"
               name="motherId"
               onChange={(e, value) => {
-                console.log(value);
                 setFieldValue("mother", value);
               }}
               lg={6}
@@ -337,7 +331,7 @@ function AddIndividual({ setOpen, typeAccion = "create", animalId = "" }) {
             ></SearchFieldFormik>
           ) : (
             <SearchFieldFormik
-              options={animals}
+              options={femaleAnimals}
               label="Madre"
               type="text"
               name="motherId"
@@ -394,9 +388,14 @@ function AddIndividual({ setOpen, typeAccion = "create", animalId = "" }) {
               >
                 <Grid item xs={11}>
                   <TextFieldFormik
+                    xs={12}
                     name={`percentageRacial${index + 1}`}
+                    endAdornment={
+                      <InputAdornment position="start">%</InputAdornment>
+                    }
                     label="Porcentaje"
-                    type="number"
+                    style={{ textAlign: "end" }}
+                    // type="number"
                     onChange={handleChange}
                   />
                 </Grid>
