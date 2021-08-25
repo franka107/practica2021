@@ -23,7 +23,6 @@ import { ROUTES_DICT } from "../../../../routes/routesDict";
 import { animalActions } from "../../../../redux/actions/animal.actions";
 import { categoryOptions, raceOptions } from "./constants";
 import ACTION_TYPES from "../../../../redux/types";
-import { format } from "date-fns";
 import {
   racialTypeOptions,
   sexOptions,
@@ -46,6 +45,7 @@ function AddIndividual({ setOpen, typeAccion = "create", animalId = "" }) {
   });
   const dispatch = useDispatch();
   const { current: currentAnimal } = useSelector((state) => state.animal);
+  const { list: races } = useSelector((state) => state.race);
   const { current: currentAgribusiness } = useSelector(
     (state) => state.agribusiness
   );
@@ -374,7 +374,7 @@ function AddIndividual({ setOpen, typeAccion = "create", animalId = "" }) {
                 <SelectFieldFormik
                   name={`racial${index + 1}`}
                   label="Raza"
-                  options={raceOptions}
+                  options={races}
                   onChange={handleChange}
                 />
               </Grid>

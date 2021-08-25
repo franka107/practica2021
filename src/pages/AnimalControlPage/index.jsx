@@ -32,6 +32,7 @@ import AddIndividual from "./AddAnimals/AddIndividual";
 import ACTION_TYPES from "../../redux/types";
 import CustomMuiTable from "../../components/CustomMuiTable";
 import MUIDataTable from "mui-datatables";
+import RaceActions from "../../redux/actions/race.actions";
 
 function AnimalControlPage() {
   const classes = useStyles();
@@ -52,6 +53,7 @@ function AnimalControlPage() {
   // }, []);
 
   useEffect(() => {
+    dispatch(RaceActions.listRace());
     if (currentAgribusiness) {
       dispatch(animalActions.listAll(currentAgribusiness._id));
     }
