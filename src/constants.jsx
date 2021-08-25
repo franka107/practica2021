@@ -54,6 +54,11 @@ export const productionOptions = [
   },
 ];
 
+export const sexDictionary = {
+  MALE: "Macho",
+  FEMALE: "Hembra",
+};
+
 export const sexOptions = [
   { _id: "MALE", name: "Macho" },
   { _id: "FEMALE", name: "Hembra" },
@@ -64,6 +69,11 @@ export const racialTypeOptions = [
   { _id: "ZEBU", name: "Zebu" },
   { _id: "HALF_BLOOD", name: "Media Sangre" },
 ];
+
+export const stateDictionary = {
+  PREGNANT: "Preñada",
+  EMPTY: "Vacía",
+};
 
 export const stateOptions = [
   { _id: "PREGNANT", name: "Preñada" },

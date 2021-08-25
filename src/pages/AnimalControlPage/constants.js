@@ -1,3 +1,7 @@
+import { format, parse, parseISO } from "date-fns";
+import { sexDictionary, stateDictionary } from "../../constants";
+import { getAgeInYears } from "../../helpers/convertDate";
+
 export const columns = [
   {
     id: 1,
@@ -110,5 +114,50 @@ export const columnsToCustomMaterialTable = [
     title: "Fecha registro",
     color: true,
     field: "herdDate",
+  },
+];
+
+export const columnsToMuiTable = [
+  {
+    label: "ID. del animal",
+    name: "identifier",
+  },
+  {
+    label: "Nombre",
+    name: "name",
+  },
+  {
+    label: "Edad",
+    name: "birthDate",
+    options: {
+      searchable: false,
+      customBodyRender: (value) =>
+        getAgeInYears(new Date(value), new Date()) + " años",
+    },
+  },
+  {
+    label: "Sexo",
+    name: "gender",
+    options: {
+      searchable: false,
+      customBodyRender: (value) => sexDictionary[value],
+    },
+  },
+  {
+    label: "Estado",
+    name: "reproductiveStatus",
+    options: {
+      searchable: false,
+      customBodyRender: (value) => stateDictionary[value] || "-",
+    },
+  },
+  {
+    label: "Fecha registro",
+    name: "herdDate",
+    options: {
+      searchable: false,
+      customBodyRender: (value) =>
+        value && format(parseISO(value), "yyyy-MM-dd"),
+    },
   },
 ];

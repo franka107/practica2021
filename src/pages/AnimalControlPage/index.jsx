@@ -12,7 +12,11 @@ import AnimalCharts from "./AnimalCharts";
 import AddAnimals from "./AddAnimals";
 import CustomMaterialTable from "../../components/CustomMaterialTable";
 import { useStyles } from "./styles";
-import { columnsToCustomMaterialTable } from "./constants";
+import {
+  columnsToCustomMaterialTable,
+  columnsToMuiTable,
+  options,
+} from "./constants";
 import {
   Delete,
   Edit,
@@ -27,6 +31,7 @@ import { ROUTES_DICT } from "../../routes/routesDict";
 import AddIndividual from "./AddAnimals/AddIndividual";
 import ACTION_TYPES from "../../redux/types";
 import CustomMuiTable from "../../components/CustomMuiTable";
+import MUIDataTable from "mui-datatables";
 
 function AnimalControlPage() {
   const classes = useStyles();
@@ -41,6 +46,7 @@ function AnimalControlPage() {
   const { current: currentAgribusiness } = useSelector(
     (state) => state.agribusiness
   );
+  const [searchText, setSearchText] = useState();
   // useEffect(() => {
   //   dispatch(animalActions.listAll());
   // }, []);
@@ -51,14 +57,78 @@ function AnimalControlPage() {
     }
   }, [dispatch, currentAgribusiness]);
 
+  const options = {
+    selectableRows: "none",
+    searchText,
+    search: false,
+  };
+
   return (
     <Grid item container xs={12}>
       <Typography variant={"h6"}>Control Ganadero</Typography>
       <AnimalDescription />
       <AnimalCharts />
-      <AddAnimals />
+      <AddAnimals searchText={searchText} setSearchText={setSearchText} />
       <Grid item xs={12} className={classes.registerContainer}>
-        <CustomMuiTable />
+        <CustomMuiTable
+          data={animals}
+          columns={[
+            ...columnsToMuiTable,
+            {
+              label: "Acciones",
+              name: "actions",
+              options: {
+                searchable: false,
+                filter: false,
+                sort: false,
+                customBodyRenderLite: (dataIndex, rowIndex) => {
+                  return (
+                    <>
+                      <IconButton
+                        style={{ color: "#C25560" }}
+                        size="small"
+                        aria-label="edit"
+                        onClick={() => {
+                          history.push(
+                            `${ROUTES_DICT.animalDetail}/${animals[rowIndex]._id}`
+                          );
+                        }}
+                      >
+                        <Visibility fontSize="small" />
+                      </IconButton>
+                      {/* </Link> */}
+                      <IconButton
+                        style={{ color: "#C25560" }}
+                        size="small"
+                        aria-label="edit"
+                        onClick={() => {
+                          setOpen(true);
+                          setDialogOption("update");
+                          setAnimalId(animals[rowIndex]._id);
+                        }}
+                      >
+                        <Edit fontSize="small" />
+                      </IconButton>
+                      <IconButton
+                        style={{ color: "#C25560" }}
+                        size="small"
+                        aria-label="delete"
+                        onClick={() => {
+                          setOpen(true);
+                          setDialogOption("delete");
+                          setAnimalId(animals[rowIndex]._id);
+                        }}
+                      >
+                        <Delete fontSize="small" />
+                      </IconButton>
+                    </>
+                  );
+                },
+              },
+            },
+          ]}
+          options={options}
+        />
         <CustomMaterialTable
           data={animals}
           columns={[

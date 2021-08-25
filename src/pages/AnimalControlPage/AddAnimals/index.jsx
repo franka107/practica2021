@@ -9,15 +9,7 @@ import addAnimals from "../../../assets/icons/addAnimal.svg";
 import SearchAnimals from "../SearchAnimals";
 import { useHistory } from "react-router-dom";
 
-
-function AddAnimals({
-  setAnimalsList,
-  agribusinessId,
-  setSearch,
-  handleAddMassive,
-  setFilter,
-  handleChangePage,
-}) {
+function AddAnimals({ searchText, setSearchText }) {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [openMenu, setOpenMenu] = useState(false);
@@ -89,10 +81,8 @@ function AddAnimals({
           justifyContent={"flex-end"}
         >
           <SearchAnimals
-            setSearch={setSearch}
-            setFilter={setFilter}
-            setAnimalsList={setAnimalsList}
-            handleChangePage={handleChangePage}
+            searchText={searchText}
+            setSearchText={setSearchText}
           />
         </Grid>
       </Grid>
@@ -105,8 +95,7 @@ function AddAnimals({
         classes={{ paperFullWidth: classes.modal }}
       >
         <Close className={classes.closeBtn} onClick={() => setOpen(false)} />
-        {open === 1 &&
-          <AddIndividual setOpen={setOpen} />}
+        {open === 1 && <AddIndividual setOpen={setOpen} />}
         {/* {open === 2 &&
         <AddMassive setOpen={setOpen} handleAddMassive={handleAddMassive} agribusinessId={agribusinessId} />} */}
       </Dialog>

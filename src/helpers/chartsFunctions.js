@@ -22,7 +22,7 @@ export const getGroupedByHerdDate = (animalList = []) => {
   const result = new Array(12)
     .fill(null)
     .map((element, index) =>
-      groupedAnimals[index] ? groupedAnimals[index].length : null
+      groupedAnimals[index] ? groupedAnimals[index].length : 0
     );
 
   return result;

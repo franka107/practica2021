@@ -4,46 +4,8 @@ import { Dialog, Grid, Typography, TextField } from "@material-ui/core";
 import { useStyles } from "./styles";
 import { dateForm, searchForm } from "./constants";
 
-function SearchAnimals({
-  setSearch,
-  setAnimalsList,
-  setFilter,
-  handleChangePage,
-}) {
+function SearchAnimals({ setSearchText, searchText }) {
   const classes = useStyles();
-  const [advancedSearch, setAdvancedSearch] = useState(false);
-  const [gender, setGender] = useState("");
-  const [valuesSubmit, setValuesSubmit] = useState({});
-
-  const handleSearch = (value) => {
-    setAdvancedSearch(false);
-    const temp = {};
-    const { startDate, endDate, reproductiveStatus, isReproductive } = value;
-
-    if (startDate && endDate) {
-      temp.startDate = startDate;
-      temp.endDate = endDate;
-    }
-
-    if (gender) {
-      temp.gender = gender;
-    }
-
-    if (reproductiveStatus) {
-      temp.reproductiveStauts = reproductiveStatus;
-    }
-
-    if (isReproductive && isReproductive !== "2") {
-      temp.isReproductive = isReproductive;
-    } else if (isReproductive === "2") {
-      temp.isReproductive = false;
-    }
-
-    setFilter(temp);
-    handleChangePage(null, 0);
-    setAnimalsList();
-    setValuesSubmit({});
-  };
 
   return (
     <React.Fragment>
@@ -54,13 +16,13 @@ function SearchAnimals({
         alignItems="flex-end"
         justifyContent={"space-between"}
       >
-        <Grid item sm={9} xs={11} className={classes.searchInputContainer}>
+        <Grid item sm={12} xs={12} className={classes.searchInputContainer}>
           <TextField
             variant="filled"
             name={"search"}
             label={"Buscar por identificador o nombre"}
             defaultValue={""}
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={(e) => setSearchText(e.target.value)}
             InputProps={{
               disableUnderline: true,
               className: classes.searchInput,
@@ -68,6 +30,7 @@ function SearchAnimals({
             }}
           />
         </Grid>
+        {/* 
         <Grid
           item
           md={3}
@@ -78,26 +41,16 @@ function SearchAnimals({
           justifyContent={"flex-end"}
           className={classes.extraFields}
         >
-          <div
-            className={classes.advancedSearch}
-            onClick={() => setAdvancedSearch(true)}
-          >
-            Búsqueda avanzada
-          </div>
+          <div className={classes.advancedSearch}>Búsqueda avanzada</div>
           <Typography
             className={classes.clearFields}
             align={"right"}
-            onClick={() => {
-              setAdvancedSearch(false);
-              setSearch("");
-              setFilter({});
-              setAnimalsList();
-              setValuesSubmit({});
-            }}
+            onClick={() => {}}
           >
             Limpiar
           </Typography>
         </Grid>
+        */}
       </Grid>
       {/* <Dialog
         open={Boolean(advancedSearch)}

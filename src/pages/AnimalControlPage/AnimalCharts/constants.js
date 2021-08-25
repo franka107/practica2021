@@ -83,9 +83,7 @@ export const renderChartDetailOptions = (animalList) => ({
   title: {
     text: "NÚMERO DE ANIMALES",
   },
-  subtitle: {
-    text: "......................................",
-  },
+
   xAxis: {
     title: {
       text: "Entrada hato",
