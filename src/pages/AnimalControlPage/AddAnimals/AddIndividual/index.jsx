@@ -56,7 +56,22 @@ function AddIndividual({ setOpen, typeAccion = "create", animalId = "" }) {
 
   const [errorPercentage, setErrorPercentage] = useState("");
 
-  const validationSchema = yup.object({});
+  const validationSchema = yup.object({
+    identifier: yup
+      .string("Ingresa la identificacion del animal.")
+      .required("Este campo es requerido."),
+    name: yup
+      .string("Ingresa el nombre del animal.")
+      .required("Este campo es requerido."),
+    birthDate: yup
+      .date("Ingresa la fecha de nacimiento del animal.")
+      // .string("Ingresa la fecha de nacimiento del animal.")
+      .max(new Date(), "No puedes poner una fecha futura")
+      .required("Este campo es requerido."),
+    gender: yup
+      .string("Ingresa el genero del animal")
+      .required("Este campo es requerido."),
+  });
   const [initValues, setInitValues] = useState({
     identifier: "",
     name: "",
@@ -85,7 +100,6 @@ function AddIndividual({ setOpen, typeAccion = "create", animalId = "" }) {
     if (typeAccion === "update") {
       if (!currentAnimal) {
         dispatch(animalActions.listById({ _id: animalId }));
-        console.log("asd");
       }
     }
   }, []);
