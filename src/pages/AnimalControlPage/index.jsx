@@ -129,55 +129,11 @@ function AnimalControlPage() {
           ]}
           options={options}
         />
+        {/* 
         <CustomMaterialTable
           data={animals}
           columns={[
             ...columnsToCustomMaterialTable,
-            {
-              field: "actions",
-              title: "Acciones",
-              render: (rowData) => (
-                <>
-                  <IconButton
-                    style={{ color: "#C25560" }}
-                    size="small"
-                    aria-label="edit"
-                    onClick={() => {
-                      history.push(
-                        `${ROUTES_DICT.animalDetail}/${rowData._id}`
-                      );
-                    }}
-                  >
-                    <Visibility fontSize="small" />
-                  </IconButton>
-                  {/* </Link> */}
-                  <IconButton
-                    style={{ color: "#C25560" }}
-                    size="small"
-                    aria-label="edit"
-                    onClick={() => {
-                      setOpen(true);
-                      setDialogOption("update");
-                      setAnimalId(rowData._id);
-                    }}
-                  >
-                    <Edit fontSize="small" />
-                  </IconButton>
-                  <IconButton
-                    style={{ color: "#C25560" }}
-                    size="small"
-                    aria-label="delete"
-                    onClick={() => {
-                      setOpen(true);
-                      setDialogOption("delete");
-                      setAnimalId(rowData._id);
-                    }}
-                  >
-                    <Delete fontSize="small" />
-                  </IconButton>
-                </>
-              ),
-            },
             {
               field: "outstanding",
               title: "",
@@ -202,6 +158,7 @@ function AnimalControlPage() {
             },
           ]}
         />
+        */}
       </Grid>
       <Dialog
         open={Boolean(open)}
