@@ -81,7 +81,7 @@ function AnimalControlPage() {
               aria-label="edit"
               onClick={() => {
                 history.push(
-                  `${ROUTES_DICT.animalDetail}/${animals[rowIndex]._id}`
+                  `${ROUTES_DICT.animalDetail}/${animals[dataIndex]._id}`
                 );
               }}
             >
@@ -95,7 +95,7 @@ function AnimalControlPage() {
               onClick={() => {
                 setOpen(true);
                 setDialogOption("update");
-                setAnimalId(animals[rowIndex]._id);
+                setAnimalId(animals[dataIndex]._id);
               }}
             >
               <Edit fontSize="small" />
@@ -107,7 +107,7 @@ function AnimalControlPage() {
               onClick={() => {
                 setOpen(true);
                 setDialogOption("delete");
-                setAnimalId(animals[rowIndex]._id);
+                setAnimalId(animals[dataIndex]._id);
               }}
             >
               <Delete fontSize="small" />
