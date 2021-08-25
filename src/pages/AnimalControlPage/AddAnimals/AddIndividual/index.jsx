@@ -32,6 +32,7 @@ import {
   getFemaleAnimals,
   getMaleAnimals,
 } from "../../../../redux/selectors/animal.selector";
+import { format } from "date-fns";
 
 const propTypes = {};
 
@@ -186,6 +187,8 @@ function AddIndividual({ setOpen, typeAccion = "create", animalId = "" }) {
         });
       });
       setOpen(false);
+      console.log(values.birthDate);
+      console.log(format(new Date(values.birthDate), "yyyy-MM-dd"));
     }
   };
 
@@ -465,7 +468,22 @@ function AddIndividual({ setOpen, typeAccion = "create", animalId = "" }) {
 
       {typeAccion === "update" && currentAnimal && (
         <Formik
-          initialValues={currentAnimal}
+          initialValues={{
+            ...currentAnimal,
+            birthDate: format(new Date(currentAnimal.birthDate), "yyyy-MM-dd"),
+            herdDate: format(new Date(currentAnimal.herdDate), "yyyy-MM-dd"),
+          }}
+          // initialValues={{
+          //   ...currentAnimal,
+          //   birthDate: format(
+          //     new Date(currentAnimal.birthDate),
+          //     "yyyy-MM-dd'T'HH:mm:ss.SSS"
+          //   ),
+          //   herdDate: format(
+          //     new Date(currentAnimal.herdDate),
+          //     "yyyy-MM-dd'T'HH:mm:ss.SSS"
+          //   ),
+          // }}
           onSubmit={handleSubmit}
           validationSchema={validationSchema}
         >

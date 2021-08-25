@@ -48,9 +48,10 @@ function AnimalControlPage() {
     (state) => state.agribusiness
   );
   const [searchText, setSearchText] = useState();
-  // useEffect(() => {
-  //   dispatch(animalActions.listAll());
-  // }, []);
+
+  useEffect(() => {
+    dispatch({ type: ACTION_TYPES.ANIMAL.UPDATE_CURRENT, payload: null });
+  }, []);
 
   useEffect(() => {
     dispatch(RaceActions.listRace());

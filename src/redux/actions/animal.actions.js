@@ -102,7 +102,10 @@ function createElement(data) {
       },
       (error) => {
         dispatch(failure(error));
-        dispatch(alertActions.error());
+        UiActions.showSnackbar(
+          "Ocurrio un error al crear el registro",
+          "error"
+        );
         return Promise.reject();
       }
     );
@@ -129,7 +132,12 @@ function updateElement(data) {
       },
       (error) => {
         dispatch(failure(error));
-        dispatch(alertActions.error());
+        dispatch(
+          UiActions.showSnackbar(
+            "Ocurrio un error al actualizar el registro",
+            "error"
+          )
+        );
         return Promise.reject();
       }
     );
