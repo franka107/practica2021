@@ -15,9 +15,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { ROUTES_DICT } from "../../../../routes/routesDict";
 import { animalActions } from "../../../../redux/actions/animal.actions";
-import { categoryOptions, raceOptions, stateOptions } from "./constants";
+import { categoryOptions, raceOptions } from "./constants";
 import ACTION_TYPES from "../../../../redux/types";
-import { racialTypeOptions, sexOptions } from "../../../../constants";
+import {
+  racialTypeOptions,
+  sexOptions,
+  stateOptions,
+} from "../../../../constants";
 import {
   getFemaleAnimals,
   getMaleAnimals,
@@ -68,6 +72,11 @@ function AddIndividual({ setOpen, typeAccion = "create", animalId = "" }) {
       // .string("Ingresa la fecha de nacimiento del animal.")
       .max(new Date(), "No puedes poner una fecha futura")
       .required("Este campo es requerido."),
+    herdDate: yup
+      .date("Ingresa la fecha de nacimiento del animal.")
+      // .string("Ingresa la fecha de nacimiento del animal.")
+      .max(new Date(), "No puedes poner una fecha futura")
+      .required("Este campo es requerido."),
     gender: yup
       .string("Ingresa el genero del animal")
       .required("Este campo es requerido."),
@@ -81,6 +90,8 @@ function AddIndividual({ setOpen, typeAccion = "create", animalId = "" }) {
     gender: "MALE",
     isReproductive: false,
     category: "",
+    father: null,
+    mother: null,
     fatherId: "",
     motherId: "",
     racial1: "",
@@ -91,9 +102,9 @@ function AddIndividual({ setOpen, typeAccion = "create", animalId = "" }) {
     percentageRacial3: 0,
     racial4: "",
     percentageRacial4: 0,
-    typeRacial: "",
+    racialType: null,
     color: "",
-    repructiveStatus: "",
+    reproductiveStatus: null,
   });
 
   useEffect(() => {
@@ -123,7 +134,7 @@ function AddIndividual({ setOpen, typeAccion = "create", animalId = "" }) {
 
   const handleAddRace = () => {
     const races = { ...animalRace };
-
+    console.log(races);
     if (letters[Object.keys(races).length]) {
       races[letters[Object.keys(races).length]] = {
         type: "1",
@@ -144,46 +155,35 @@ function AddIndividual({ setOpen, typeAccion = "create", animalId = "" }) {
   };
 
   const handleSubmit = (values, actions) => {
-    if (typeAccion === "create") {
+    values.agribusinessId = currentAgribusiness._id;
+
+    if (values.gender === "MALE") {
       if (values.isReproductive) {
         values.category = "REPRODUCTOR";
       } else {
         values.category = "";
       }
+      values.reproductiveStatus = null;
+    }
 
-      values.agribusinessId = currentAgribusiness._id;
+    if (values.gender === "FEMALE") {
+      values.isReproductive = null;
+      values.category = "";
+    }
 
+    if (values.father) {
+      values.fatherId = values.father._id;
+    }
+    if (values.mother) {
+      values.motherId = values.mother._id;
+    }
+
+    if (typeAccion === "create") {
       dispatch(animalActions.createElement(values));
       setOpen(false);
       console.log("init", values);
     }
     if (typeAccion === "update") {
-      if (values.gender === "MALE") {
-        if (values.isReproductive) {
-          values.category = "REPRODUCTOR";
-        } else {
-          values.category = "";
-        }
-        values.reproductiveStatus = "";
-      }
-
-      if (values.gender === "FEMALE") {
-        values.category = "";
-      }
-
-      values.agribusinessId = currentAgribusiness._id;
-
-      if (values.father) {
-        if (contChangeF === 0) {
-          values.fatherId = values.father._id;
-          console.log("cont", contChangeF);
-        }
-        if (contChangeM === 0) {
-          values.motherId = values.mother._id;
-          console.log("cont", contChangeM);
-        }
-      }
-
       dispatch(animalActions.updateElement(values)).then((data) => {
         dispatch({
           type: ACTION_TYPES.ANIMAL.UPDATE_CURRENT,
@@ -298,7 +298,7 @@ function AddIndividual({ setOpen, typeAccion = "create", animalId = "" }) {
               name="fatherId"
               onChange={(e, value) => {
                 console.log(value);
-                setFieldValue("fatherId", value._id);
+                setFieldValue("father", value);
               }}
               lg={6}
               sm={6}
@@ -311,13 +311,10 @@ function AddIndividual({ setOpen, typeAccion = "create", animalId = "" }) {
               type="text"
               name="fatherId"
               onChange={(e, value) => {
-                setContChangeF(setContChangeF + 1);
-                if (value) {
-                  console.log(value);
-                  setFieldValue("fatherId", value._id);
-                }
+                console.log(value);
+                setFieldValue("father", value);
               }}
-              defaultValue={typeAccion === "update" && values.father}
+              defaultValue={values.father || null}
               lg={6}
               sm={6}
               xs={12}
@@ -331,11 +328,8 @@ function AddIndividual({ setOpen, typeAccion = "create", animalId = "" }) {
               type="text"
               name="motherId"
               onChange={(e, value) => {
-                setContChangeM(setContChangeM + 1);
-                if (value) {
-                  console.log(value);
-                  setFieldValue("motherId", value._id);
-                }
+                console.log(value);
+                setFieldValue("mother", value);
               }}
               lg={6}
               sm={6}
@@ -348,13 +342,10 @@ function AddIndividual({ setOpen, typeAccion = "create", animalId = "" }) {
               type="text"
               name="motherId"
               onChange={(e, value) => {
-                setContChangeM(setContChangeM + 1);
-                if (value) {
-                  console.log(value);
-                  setFieldValue("motherId", value._id);
-                }
+                console.log(value);
+                setFieldValue("mother", value);
               }}
-              defaultValue={typeAccion === "update" && values.mother}
+              defaultValue={values.mother || null}
               lg={6}
               sm={6}
               xs={12}

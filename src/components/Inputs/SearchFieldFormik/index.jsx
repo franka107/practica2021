@@ -6,7 +6,13 @@ import Autocomplete, {
   createFilterOptions,
 } from "@material-ui/lab/Autocomplete";
 
-function SearchFieldFormik({ xs = 12, options, ...props }) {
+function SearchFieldFormik({
+  xs = 12,
+  options,
+  defaultValue = null,
+  onChange,
+  ...props
+}) {
   const [field, meta, helpers] = useField(props);
 
   // const filterOptions = createFilterOptions({
@@ -18,9 +24,11 @@ function SearchFieldFormik({ xs = 12, options, ...props }) {
     <Grid item xs={xs} {...props}>
       <Autocomplete
         // onChange={(event, value) => console.log(props)}
-        {...props}
+        onChange={onChange}
+        // {...props}
+        defaultValue={defaultValue}
         options={options || []}
-        getOptionLabel={(option) => option.name}
+        getOptionLabel={(option) => (option ? option.name : "")}
         getOptionSelected={(option, value) => option._id === value._id}
         // filterOptions={filterOptions}
         renderInput={(params) => (
