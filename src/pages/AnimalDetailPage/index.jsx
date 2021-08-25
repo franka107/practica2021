@@ -169,8 +169,9 @@ export default function AnimalDetailPage() {
                     </Grid>
                     <Grid item xs={9}>
                       <Typography>
-                        {currentAnimal &&
-                          `${currentAnimal.reproductiveStatus}, ${currentAnimal.gestation} dias de preñez`}
+                        {/* {currentAnimal &&
+                          `${currentAnimal.reproductiveStatus}, ${currentAnimal.gestation} dias de preñez`} */}
+                        {currentAnimal && currentAnimal.reproductiveStatus}
                       </Typography>
                       {/* <Typography>Vaca seca, 276 dias de preñez</Typography> */}
                     </Grid>
