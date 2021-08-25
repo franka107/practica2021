@@ -33,6 +33,9 @@ const ACTION_TYPES = {
   ANIMAL: {
     UPDATE_CURRENT: "animal/UPDATE_CURRENT",
   },
+  RACE: {
+    RETRIEVE: "race/RETRIEVE",
+  },
 };
 
 export default ACTION_TYPES;

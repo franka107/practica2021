@@ -1,9 +1,9 @@
 import React from "react";
 import { useField } from "formik";
 import PropTypes from "prop-types";
-import { Grid, TextField } from "@material-ui/core";
+import { Grid, TextField, InputAdornment } from "@material-ui/core";
 
-function TextFieldFormik({ xs = 12, ...props }) {
+function TextFieldFormik({ xs = 12, endAdornment, style, ...props }) {
   const [field, meta, helpers] = useField(props);
 
   return (
@@ -11,6 +11,10 @@ function TextFieldFormik({ xs = 12, ...props }) {
       <TextField
         error={meta.touched && Boolean(meta.error)}
         helperText={meta.touched && meta.error}
+        inputProps={{ style: style }}
+        InputProps={{
+          endAdornment: endAdornment,
+        }}
         variant="filled"
         {...field}
         {...props}
