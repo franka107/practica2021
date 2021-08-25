@@ -17,12 +17,13 @@ export default function DatePickerFieldFormik({ xs = 12, ...props }) {
         clearLabel="Limpiar"
         cancelLabel="Cancelar"
         okLabel="Ok"
-        error={meta.touched && Boolean(meta.error)}
         format="yyyy-MM-dd"
         clearable
         {...field}
         {...props}
         onChange={(date) => setValue(date)}
+        error={meta.touched && Boolean(meta.error)}
+        helperText={meta.touched && meta.error}
       />
       {/*
 
