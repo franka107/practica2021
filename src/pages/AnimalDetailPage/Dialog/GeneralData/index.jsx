@@ -49,6 +49,7 @@ function GeneralData({ setOpen }) {
     if (values.mother) {
       values.motherId = values.mother._id;
     }
+
     dispatch(animalActions.updateElement(values)).then((data) => {
       console.log("data", data);
       dispatch({
@@ -178,12 +179,7 @@ function GeneralData({ setOpen }) {
                   <ButtonFormik xs={3} label="Cancelar" type="cancel" />
                 </Grid>
                 <Grid item xs={3}>
-                  <ButtonFormik
-                    xs={3}
-                    label="Guardar"
-                    type="submit"
-                    onClick={handleSubmit}
-                  />
+                  <ButtonFormik xs={3} label="Guardar" type="submit" />
                 </Grid>
               </Grid>
             </form>
