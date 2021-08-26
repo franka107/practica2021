@@ -50,15 +50,19 @@ function GeneralData({ setOpen }) {
       values.motherId = values.mother._id;
     }
 
-    dispatch(animalActions.updateElement(values)).then((data) => {
-      console.log("data", data);
-      dispatch({
-        type: ACTION_TYPES.ANIMAL.UPDATE_CURRENT,
-        payload: values,
-      });
-    });
-    setOpen(false);
+    dispatch(animalActions.updateElement(values)).then(
+      (data) => {
+        console.log("data", data);
+        dispatch({
+          type: ACTION_TYPES.ANIMAL.UPDATE_CURRENT,
+          payload: values,
+        });
+        setOpen(false);
+      },
+      (error) => {}
+    );
   };
+
   const validationSchema = yup.object({
     identifier: yup
       .string("Ingresa la identificacion del animal.")
