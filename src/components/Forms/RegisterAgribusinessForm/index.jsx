@@ -7,21 +7,13 @@ import * as yup from "yup";
 import { Typography } from "@material-ui/core";
 import { useStyles } from "./styles";
 import ButtonFormik from "../../Inputs/ButtonFormik";
-import { Button } from "@material-ui/core";
 import { useEffect } from "react";
 import { countryActions } from "../../../redux/actions/country.actions";
 import { useDispatch, useSelector } from "react-redux";
 import { regionActions } from "../../../redux/actions/region.actions";
-import { districtReducer } from "../../../redux/reducers/district.reducer";
 import { districtActions } from "../../../redux/actions/district.actions";
-import {
-  coinOptions,
-  unitAreaOptions,
-  unitCapacityOptions,
-  unitWeightOptions,
-} from "../../../constants";
-import { farmActions } from "../../../redux/actions/farm.actions";
-import ConfigureAnimals from "../../ConfigureAnimals";
+import { unitCapacityOptions } from "../../../constants";
+
 import CheckboxFormik from "../../Inputs/CheckboxFormik";
 import { useHistory } from "react-router-dom";
 import { ROUTES_DICT } from "../../../routes/routesDict";

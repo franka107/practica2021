@@ -1,5 +1,4 @@
-import { Popover } from "@material-ui/core";
-import { Grid, Typography } from "@material-ui/core";
+import { Grid } from "@material-ui/core";
 import { useTheme, Paper } from "@material-ui/core";
 // eslint-disable-next-line no-unused-vars
 import MaterialTable, { MaterialTableProps } from "@material-table/core";
@@ -13,7 +12,7 @@ import { useStyles } from "./styles";
  * @param {Array} props.filters
  */
 function CustomMaterialTable({ setData, ...props }) {
-  const [filters, setFilters] = useState(props.filters || []);
+  const [filters] = useState(props.filters || []);
   const classes = useStyles();
   const theme = useTheme();
 

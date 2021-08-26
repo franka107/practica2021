@@ -185,7 +185,7 @@ const mainTheme = createTheme({
         },
       },
       current: {
-        color: "rgba(0, 0, 0, 0.87)",
+        color: "#0075C9",
       },
     },
     MuiButton: {

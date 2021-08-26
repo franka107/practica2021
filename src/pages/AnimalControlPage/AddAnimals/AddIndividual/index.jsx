@@ -66,11 +66,11 @@ function AddIndividual({ setOpen, typeAccion = "create", animalId = "" }) {
     birthDate: yup
       .date("Ingresa una fecha correcta.")
       .max(new Date(), "No puedes poner una fecha futura")
-      .required("Este campo es requerido.")
       .nullable(),
     herdDate: yup
       .date("Ingresa una fecha correcta.")
       // .string("Ingresa la fecha de nacimiento del animal.")
+      .required("Este campo es requerido.")
       .nullable(),
     gender: yup
       .string("Ingresa el genero del animal")

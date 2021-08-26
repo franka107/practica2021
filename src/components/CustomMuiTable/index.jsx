@@ -1,6 +1,6 @@
 import { createTheme, ThemeProvider } from "@material-ui/core";
 import { useTheme } from "@material-ui/styles";
-import MUIDataTable, { MUIDAtaTableProps } from "mui-datatables";
+import MUIDataTable from "mui-datatables";
 
 /**
  * @param {MaterialTableProps} props
