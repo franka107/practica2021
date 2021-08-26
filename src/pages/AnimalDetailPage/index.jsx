@@ -46,7 +46,14 @@ export default function AnimalDetailPage() {
   const dispatch = useDispatch();
   const params = useParams();
   const { current: currentAnimal } = useSelector((state) => state.animal);
+  const { current: currentAgribusiness } = useSelector(
+    (state) => state.agribusiness
+  );
+
   useEffect(() => {
+    if (currentAgribusiness) {
+      dispatch(animalActions.listAll(currentAgribusiness._id));
+    }
     if (!currentAnimal) {
       dispatch(animalActions.listById({ _id: params.animalId }));
     }
@@ -1128,7 +1135,7 @@ export default function AnimalDetailPage() {
               onClick={() => setOpen(false)}
             />
             {dialog === "GeneralData" && <GeneralData setOpen={setOpen} />}
-            {dialog === "RaceData" && <RaceData />}
+            {dialog === "RaceData" && <RaceData setOpen={setOpen} />}
             {dialog === "BirthData" && <BirthData />}
             {dialog === "ServiceData" && <ServiceData />}
             {dialog === "OtherData" && <OtherData />}

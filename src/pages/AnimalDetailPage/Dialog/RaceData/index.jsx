@@ -29,12 +29,12 @@ function RaceData({ setOpen }) {
   const { current: currentAgribusiness } = useSelector(
     (state) => state.agribusiness
   );
-  // const { list: animals } = useSelector((state) => state.animal);
-  // const maleAnimals = useSelector(getMaleAnimals());
-  // const femaleAnimals = useSelector(getFemaleAnimals());
+  const { list: animals } = useSelector((state) => state.animal);
+  const maleAnimals = useSelector(getMaleAnimals());
+  const femaleAnimals = useSelector(getFemaleAnimals());
 
   useEffect(() => {
-    if (!races) {
+    if (!races || races.length === 0) {
       dispatch(RaceActions.listRace());
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -102,37 +102,30 @@ function RaceData({ setOpen }) {
 
   const handleSubmit = (values, actions) => {
     // if (errorPercentage === "") {
-    values.agribusinessId = currentAgribusiness._id;
-
-    if (values.gender === "MALE") {
-      if (values.isReproductive) {
-        values.category = "REPRODUCTOR";
-      } else {
-        values.category = "";
-      }
-      values.reproductiveStatus = null;
-    }
-
-    if (values.gender === "FEMALE") {
-      values.isReproductive = null;
-      values.category = "";
-    }
+    // values.agribusinessId = currentAgribusiness._id;
 
     if (values.father) {
       values.fatherId = values.father._id;
-    }
-    if (values.mother) {
-      values.motherId = values.mother._id;
+    } else {
+      values.fatherId = "";
     }
 
-    dispatch(animalActions.updateElement(values)).then((data) => {
-      dispatch({
-        type: ACTION_TYPES.ANIMAL.UPDATE_CURRENT,
-        payload: null,
-      });
-    });
-    setOpen(false);
-    // }
+    if (values.mother) {
+      values.motherId = values.mother._id;
+    } else {
+      values.motherId = "";
+    }
+
+    dispatch(animalActions.updateElement(values)).then(
+      (data) => {
+        dispatch({
+          type: ACTION_TYPES.ANIMAL.UPDATE_CURRENT,
+          payload: values,
+        });
+        setOpen(false);
+      },
+      (error) => {}
+    );
   };
 
   return (
@@ -152,26 +145,27 @@ function RaceData({ setOpen }) {
               </Grid>
               <Grid container spacing={1} className={classes.formStyle}>
                 <SearchFieldFormik
-                  options={[]}
+                  options={maleAnimals}
                   label="Padre"
                   type="text"
                   name="motherId"
-                  // onChange={(e, value) => {
-                  //   setFieldValue("mother", value);
-                  // }}
+                  onChange={(e, value) => {
+                    props.setFieldValue("father", value);
+                  }}
+                  defaultValue={props.values.father || null}
                   lg={6}
                   sm={6}
                   xs={12}
                 ></SearchFieldFormik>
                 <SearchFieldFormik
-                  options={[]}
+                  options={femaleAnimals}
                   label="Madre"
                   type="text"
                   name="motherId"
-                  // onChange={(e, value) => {
-                  //   setFieldValue("mother", value);
-                  // }}
-                  // defaultValue={values.mother || null}
+                  onChange={(e, value) => {
+                    props.setFieldValue("mother", value);
+                  }}
+                  defaultValue={props.values.mother || null}
                   lg={6}
                   sm={6}
                   xs={12}
@@ -271,16 +265,11 @@ function RaceData({ setOpen }) {
                 ></TextFieldFormik>
               </Grid>
               <Grid item container justifyContent={"flex-end"} xs={12}>
-                {/* <Grid item xs={3} className={classes.paddingButton}>
-                                <ButtonFormik xs={3} label="Cancelar" type="cancel" />
-                            </Grid> */}
+                <Grid item xs={3} className={classes.paddingButton}>
+                  <ButtonFormik xs={3} label="Cancelar" type="cancel" />
+                </Grid>
                 <Grid item xs={3}>
-                  <ButtonFormik
-                    xs={3}
-                    label="Guardar"
-                    type="submit"
-                    onClick={handleSubmit}
-                  />
+                  <ButtonFormik xs={3} label="Guardar" type="submit" />
                 </Grid>
               </Grid>
             </form>

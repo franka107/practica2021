@@ -176,9 +176,14 @@ function AddIndividual({ setOpen, typeAccion = "create", animalId = "" }) {
 
     if (values.father) {
       values.fatherId = values.father._id;
+    } else {
+      values.fatherId = "";
     }
+
     if (values.mother) {
       values.motherId = values.mother._id;
+    } else {
+      values.motherId = "";
     }
 
     if (typeAccion === "create") {
