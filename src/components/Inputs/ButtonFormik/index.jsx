@@ -21,8 +21,8 @@ const useStyles = makeStyles((theme) => ({
   buttonCancel: {
     marginTop: "2rem",
     width: "100%",
-    backgroundColor: theme.palette.primary.contrastText,
-    color: theme.palette.primary.main,
+    backgroundColor: theme.palette.button.primary.secondary,
+    color: "black",
     "&:hover": {
       backgroundColor: theme.palette.primary.contrastText,
     },
@@ -42,6 +42,7 @@ export default function ButtonFormik({ xs = 12, ...props }) {
         props.type === "cancel" && classes.buttonCancel,
         props.type === "submit" && classes.buttonSubmit
       )}
+      style={{ boxShadow: "none" }}
       {...props}
     >
       {props.label}

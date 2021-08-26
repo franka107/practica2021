@@ -21,7 +21,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { ROUTES_DICT } from "../../../../routes/routesDict";
 import { animalActions } from "../../../../redux/actions/animal.actions";
-import { categoryOptions, raceOptions } from "./constants";
+import { categoryOptions } from "./constants";
 import ACTION_TYPES from "../../../../redux/types";
 import {
   racialTypeOptions,
