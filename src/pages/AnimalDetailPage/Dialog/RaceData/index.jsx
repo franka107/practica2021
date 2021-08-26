@@ -15,6 +15,10 @@ import { animalActions } from "../../../../redux/actions/animal.actions";
 import ACTION_TYPES from "../../../../redux/types";
 import { racialTypeOptions } from "../../../../constants";
 import RaceActions from "../../../../redux/actions/race.actions";
+import {
+  getMaleAnimals,
+  getFemaleAnimals,
+} from "../../../../redux/selectors/animal.selector";
 
 function RaceData({ setOpen }) {
   const classes = useStyles();
@@ -26,10 +30,7 @@ function RaceData({ setOpen }) {
   const dispatch = useDispatch();
   const { current: currentAnimal } = useSelector((state) => state.animal);
   const { list: races } = useSelector((state) => state.race);
-  const { current: currentAgribusiness } = useSelector(
-    (state) => state.agribusiness
-  );
-  const { list: animals } = useSelector((state) => state.animal);
+
   const maleAnimals = useSelector(getMaleAnimals());
   const femaleAnimals = useSelector(getFemaleAnimals());
 
