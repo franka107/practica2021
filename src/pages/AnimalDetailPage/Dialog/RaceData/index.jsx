@@ -10,50 +10,61 @@ import TextFieldFormik from "../../../../components/Inputs/TextFieldFormik";
 import SelectFieldFormik from "../../../../components/Inputs/SelectFieldFormik";
 import ButtonFormik from "../../../../components/Inputs/ButtonFormik";
 import SearchFieldFormik from "../../../../components/Inputs/SearchFieldFormik";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { animalActions } from "../../../../redux/actions/animal.actions";
+import {
+  getFemaleAnimals,
+  getMaleAnimals,
+} from "../../../../redux/selectors/animal.selector";
+import ACTION_TYPES from "../../../../redux/types";
+import { racialTypeOptions } from "../../../../constants";
+import RaceActions from "../../../../redux/actions/race.actions";
 
 function RaceData({ setOpen }) {
   const classes = useStyles();
-  const { current: currentAnimal } = useSelector((state) => state.animal);
+
   const letters = ["A", "B", "C", "D"];
-
-  const [errorPercentage, setErrorPercentage] = useState("");
-
   const [animalRace, setAnimalRace] = useState({
     A: { type: "1", percentage: "100%" },
   });
-  const [raceType, setRaceType] = useState({
-    A: "",
-    B: "",
-    C: "",
-    D: "",
-    raceType: "",
-    raceTypeText: "",
-  });
+  const dispatch = useDispatch();
+  const { current: currentAnimal } = useSelector((state) => state.animal);
+  const { list: races } = useSelector((state) => state.race);
+  const { current: currentAgribusiness } = useSelector(
+    (state) => state.agribusiness
+  );
+  // const { list: animals } = useSelector((state) => state.animal);
+  // const maleAnimals = useSelector(getMaleAnimals());
+  // const femaleAnimals = useSelector(getFemaleAnimals());
 
-  const handleCheckRaceType = (item, id) => {
-    const calculateRaceType = raceType.getRace.filter((race) => race.id === id);
-    const raceTypeTemp = calculateRaceType[0].racialType;
-    const race = { ...raceType };
-    race[item] = raceTypeTemp;
-
-    const taurus = Object.keys(race).filter((rc) => race[rc] === "BU");
-    const indicus = Object.keys(race).filter((rc) => race[rc] === "ZE");
-
-    if (taurus.length > 0 && indicus.length) {
-      race.raceType = "HB";
-      race.raceTypeText = "Media Sangre";
-    } else if (taurus.length > 0) {
-      race.raceType = "BU";
-      race.raceTypeText = "Taurino";
-    } else {
-      race.raceType = "ZE";
-      race.raceTypeText = "Cebuino";
+  useEffect(() => {
+    if (!races) {
+      dispatch(RaceActions.listRace());
     }
+  }, []);
 
-    setRaceType(race);
-  };
+  const [errorPercentage, setErrorPercentage] = useState("");
+
+  const validationSchema = yup.object({
+    identifier: yup
+      .string("Ingresa la identificacion del animal.")
+      .required("Este campo es requerido."),
+    name: yup
+      .string("Ingresa el nombre del animal.")
+      .required("Este campo es requerido."),
+    birthDate: yup
+      .date("Ingresa una fecha correcta.")
+      .max(new Date(), "No puedes poner una fecha futura")
+      .required("Este campo es requerido.")
+      .nullable(),
+    herdDate: yup
+      .date("Ingresa una fecha correcta.")
+      // .string("Ingresa la fecha de nacimiento del animal.")
+      .nullable(),
+    gender: yup
+      .string("Ingresa el genero del animal")
+      .required("Este campo es requerido."),
+  });
 
   const handleCheckPercentage = (list = []) => {
     let total = 0;
@@ -72,16 +83,8 @@ function RaceData({ setOpen }) {
     }
   };
 
-  const handleRemoveRace = (id) => {
-    const races = { ...animalRace };
-    delete races[id];
-
-    setAnimalRace(races);
-    handleCheckPercentage(races);
-  };
   const handleAddRace = () => {
     const races = { ...animalRace };
-
     if (letters[Object.keys(races).length]) {
       races[letters[Object.keys(races).length]] = {
         type: "1",
@@ -89,13 +92,50 @@ function RaceData({ setOpen }) {
       };
 
       setAnimalRace(races);
-      handleCheckPercentage(races);
     }
   };
-  const handleSubmit = (values) => {
-    console.log(values);
+
+  const handleRemoveRace = (id) => {
+    const races = { ...animalRace };
+    delete races[id];
+
+    setAnimalRace(races);
   };
-  const validationSchema = yup.object({});
+
+  const handleSubmit = (values, actions) => {
+    // if (errorPercentage === "") {
+    values.agribusinessId = currentAgribusiness._id;
+
+    if (values.gender === "MALE") {
+      if (values.isReproductive) {
+        values.category = "REPRODUCTOR";
+      } else {
+        values.category = "";
+      }
+      values.reproductiveStatus = null;
+    }
+
+    if (values.gender === "FEMALE") {
+      values.isReproductive = null;
+      values.category = "";
+    }
+
+    if (values.father) {
+      values.fatherId = values.father._id;
+    }
+    if (values.mother) {
+      values.motherId = values.mother._id;
+    }
+
+    dispatch(animalActions.updateElement(values)).then((data) => {
+      dispatch({
+        type: ACTION_TYPES.ANIMAL.UPDATE_CURRENT,
+        payload: null,
+      });
+    });
+    setOpen(false);
+    // }
+  };
 
   return (
     <Grid className={classes.modal}>
@@ -115,7 +155,7 @@ function RaceData({ setOpen }) {
               <Grid container spacing={1} className={classes.formStyle}>
                 <SearchFieldFormik
                   options={[]}
-                  label="Madre"
+                  label="Padre"
                   type="text"
                   name="motherId"
                   // onChange={(e, value) => {
@@ -162,7 +202,7 @@ function RaceData({ setOpen }) {
                       <SelectFieldFormik
                         name={`racial${index + 1}`}
                         label="Raza"
-                        options={[]}
+                        options={races}
                         onChange={props.handleChange}
                       />
                     </Grid>
@@ -214,7 +254,7 @@ function RaceData({ setOpen }) {
               <Grid container spacing={1}>
                 <SelectFieldFormik
                   onChange={props.handleChange}
-                  options={[]}
+                  options={racialTypeOptions}
                   label="Tipo Racial"
                   name="racialType"
                   lg={6}
