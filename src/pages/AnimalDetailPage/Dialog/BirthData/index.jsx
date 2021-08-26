@@ -1,26 +1,103 @@
-import React, { useEffect, useState } from 'react'
-import { Grid, Typography } from '@material-ui/core'
-import { CustomForm } from '../../../../Components/CustomForm'
-import { birthForm } from './constants'
-import { useStyles } from './styles'
+import React, { useEffect, useState } from "react";
+import { Grid, Typography } from "@material-ui/core";
+import { useStyles } from "./styles";
+import { Formik } from "formik";
+import * as yup from "yup";
+import TextFieldFormik from "../../../../components/Inputs/TextFieldFormik";
+import DatePickerFieldFormik from "../../../../components/Inputs/DatePickerFieldFormik";
+import SelectFieldFormik from "../../../../components/Inputs/SelectFieldFormik";
+import ButtonFormik from "../../../../components/Inputs/ButtonFormik";
+import CheckboxFormik from "../../../../components/Inputs/CheckboxFormik";
+import { useDispatch, useSelector } from "react-redux";
 
-function BirthData({ setOpen, setAnimalsList, agribusinessId }) {
-  const classes = useStyles()
-  const [sections] = useState([
-    {
-      title: '',
-      form: birthForm(),
-    },
-  ])
+function BirthData({ setOpen }) {
+  const classes = useStyles();
+  const handleSubmit = (values) => {
+    console.log(values);
+  };
+  const validationSchema = yup.object({});
 
   return (
     <Grid className={classes.modal}>
-      <Typography variant={'subtitle1'} gutterBottom>
-        Partos
-      </Typography>
-      <CustomForm sections={sections} showButton={false}></CustomForm>
+      <Formik
+        initialValues={{}}
+        onSubmit={handleSubmit}
+        validationSchema={validationSchema}
+      >
+        {(props) => (
+          <form onSubmit={props.handleSubmit}>
+            <Typography variant={"subtitle1"} gutterBottom>
+              Partos
+            </Typography>
+            <Grid container spacing={1}>
+              <TextFieldFormik
+                label="Nro. de partos"
+                name="nroBirth"
+                onChange={props.handleChange}
+                xs={12}
+                sm={6}
+              />
+              <TextFieldFormik
+                label="Crias"
+                name="crias"
+                onChange={props.handleChange}
+                xs={12}
+                sm={6}
+              />
+              <DatePickerFieldFormik
+                label="Último parto"
+                name="lastparto"
+                onChange={props.handleChange}
+                xs={12}
+                sm={3}
+              />
+              <TextFieldFormik
+                label="I.E.P.T"
+                name="iept"
+                onChange={props.handleChange}
+                xs={12}
+                sm={3}
+              />
+              <TextFieldFormik
+                label="I.E.P.u"
+                name="iepu"
+                onChange={props.handleChange}
+                xs={12}
+                sm={3}
+              />
+              <DatePickerFieldFormik
+                label="Último aborto"
+                name="herdDate"
+                onChange={props.handleChange}
+                xs={12}
+                sm={3}
+              />
+              <TextFieldFormik
+                label="I.E.P.T"
+                name="iept"
+                onChange={props.handleChange}
+                multiline
+                rows={3}
+              />
+            </Grid>
+            <Grid item container justifyContent={"flex-end"} xs={12}>
+              <Grid item xs={3} className={classes.paddingButton}>
+                <ButtonFormik xs={3} label="Cancelar" type="cancel" />
+              </Grid>
+              <Grid item xs={3}>
+                <ButtonFormik
+                  xs={3}
+                  label="Guardar"
+                  type="submit"
+                  onClick={handleSubmit}
+                />
+              </Grid>
+            </Grid>
+          </form>
+        )}
+      </Formik>
     </Grid>
-  )
+  );
 }
 
-export default BirthData
+export default BirthData;
