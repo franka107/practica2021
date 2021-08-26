@@ -7,12 +7,10 @@ import * as yup from "yup";
 import { Typography } from "@material-ui/core";
 import { useStyles } from "./styles";
 import ButtonFormik from "../../Inputs/ButtonFormik";
-import { Button } from "@material-ui/core";
 import { useEffect } from "react";
 import { countryActions } from "../../../redux/actions/country.actions";
 import { useDispatch, useSelector } from "react-redux";
 import { regionActions } from "../../../redux/actions/region.actions";
-import { districtReducer } from "../../../redux/reducers/district.reducer";
 import { districtActions } from "../../../redux/actions/district.actions";
 import {
   unitAreaOptions,
@@ -94,7 +92,7 @@ export default function RegisterFarmForm({ setRegisterStep }) {
     dispatch(regionActions.retrieveRegions());
     dispatch(districtActions.retrieveDistricts());
     dispatch(currencyActions.retrieveCurrencies());
-  }, []);
+  }, [dispatch]);
 
   const handleSubmit = (values, actions) => {
     dispatch(farmActions.create({ ownerId: user._id, ...values }));

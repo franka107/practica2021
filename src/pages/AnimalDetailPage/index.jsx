@@ -1,5 +1,5 @@
 import { Paper } from "@material-ui/core";
-import { Chip, Typography } from "@material-ui/core";
+import { Typography } from "@material-ui/core";
 import { Checkbox } from "@material-ui/core";
 import { Divider } from "@material-ui/core";
 import { IconButton } from "@material-ui/core";
@@ -9,7 +9,6 @@ import clsx from "clsx";
 import HighchartsReact from "highcharts-react-official";
 import { useState, useEffect } from "react";
 import { BorderLinearProgress } from "../../components/BorderLinearProgress";
-import PlanCard from "../../components/PlanCard";
 import { useStyles } from "./styles";
 import Highcharts from "highcharts";
 import GeneralData from "./Dialog/GeneralData";
@@ -30,12 +29,9 @@ import TimelineConnector from "@material-ui/lab/TimelineConnector";
 import TimelineContent from "@material-ui/lab/TimelineContent";
 import TimelineDot from "@material-ui/lab/TimelineDot";
 import QRData from "./Dialog/QRData";
-import { useHistory, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { animalActions } from "../../redux/actions/animal.actions";
-import { ROUTES_DICT } from "../../routes/routesDict";
-import { format } from "date-fns";
-import esLocale from "date-fns/locale/es";
 import { getAge, formatDate } from "../../helpers/convertDate";
 import ChipsSection from "./ChipsSection";
 
@@ -43,12 +39,10 @@ export default function AnimalDetailPage() {
   const classes = useStyles();
   const [dialog, setDialog] = useState("");
   const [open, setOpen] = useState(false);
-  const [cow, setCow] = useState({
+  const [cow] = useState({
     imageSrc:
       "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Cow_female_black_white.jpg/782px-Cow_female_black_white.jpg",
   });
-  const history = useHistory();
-  const { location = {} } = history;
   const dispatch = useDispatch();
   const params = useParams();
   const { current: currentAnimal } = useSelector((state) => state.animal);
@@ -56,7 +50,8 @@ export default function AnimalDetailPage() {
     if (!currentAnimal) {
       dispatch(animalActions.listById({ _id: params.animalId }));
     }
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch]);
 
   return (
     <Grid container xs={12}>

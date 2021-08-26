@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
+import React, { useState } from "react";
 import { Grid } from "@material-ui/core";
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 // import { faSignal } from '@fortawesome/free-solid-svg-icons';
@@ -10,20 +9,18 @@ import CustomMaterialTable from "../../components/CustomMaterialTable";
 import ServiceHeader from "./ServiceHeader";
 
 function ServicePage() {
-  const history = useHistory();
   // const client = useApolloClient();
   const [animalsList, setAnimalsList] = useState(exampleTable);
   // const [agribusinessId, setAgribusinessId] = useState(null);
   // const [addAnimal, setAddAnimal] = useState(0);
-  const [hasNext, setHasNext] = useState(false);
-  const [hasPrev, setHasPrev] = useState(false);
-  const [currentPage, setPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
+  //const [hasNext, setHasNext] = useState(false);
+  //const [hasPrev, setHasPrev] = useState(false);
+  //const [currentPage, setPage] = useState(1);
+  //const [totalPages, setTotalPages] = useState(1);
   // const [search, setSearch] = useState('');
   // const [uploadFile, setUploadFile] = useState(0);
   // const [filterValues, setFilter] = useState({});
 
-  const { state = {} } = history.location;
   const classes = useStyles();
 
   return (

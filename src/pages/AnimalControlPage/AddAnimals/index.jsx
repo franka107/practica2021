@@ -7,13 +7,11 @@ import AddIndividual from "./AddIndividual";
 import { useStyles } from "./styles";
 import addAnimals from "../../../assets/icons/addAnimal.svg";
 import SearchAnimals from "../SearchAnimals";
-import { useHistory } from "react-router-dom";
 
 function AddAnimals({ searchText, setSearchText }) {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [openMenu, setOpenMenu] = useState(false);
-  const history = useHistory();
 
   const handleClick = (event) => {
     setOpenMenu(event.currentTarget);

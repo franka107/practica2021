@@ -1,10 +1,8 @@
 import React from "react";
-import { Facebook } from "@material-ui/icons";
 import { Button, Container, Grid, Typography } from "@material-ui/core";
 import { useStyles } from "./styles";
 import Logo from "../../components/Logo";
 import RegisterCard from "../../components/RegisterCard";
-import { Formik } from "formik";
 import { useHistory, useParams } from "react-router-dom";
 import { useEffect } from "react";
 import UserService from "../../services/user.service";
@@ -17,7 +15,7 @@ function EmailVerifiedPage(props) {
 
   useEffect(() => {
     UserService.userUpdate({ _id: params.userId, isVerified: true });
-  }, []);
+  }, [params]);
 
   return (
     <Container>

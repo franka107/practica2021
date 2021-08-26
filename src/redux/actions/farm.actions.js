@@ -1,4 +1,3 @@
-import CountryService from "../../services/country.service";
 import FarmService from "../../services/farm.service";
 import ACTION_TYPES from "../types";
 import { farmConstants } from "../types/farm.constants";

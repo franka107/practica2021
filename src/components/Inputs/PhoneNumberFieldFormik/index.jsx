@@ -8,7 +8,7 @@ import { Grid } from "@material-ui/core";
 
 export default function PhoneNumberFieldFormik({ xs = 12, ...props }) {
   const classes = useStyles();
-  const [field, meta, helpers] = useField(props);
+  const [field, meta] = useField(props);
 
   //const handleOnChange = (value) => {
   //  if (value !== "+") {

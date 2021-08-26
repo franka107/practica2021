@@ -45,13 +45,17 @@ function Sidebar({ openDrawer, setOpenDrawer, options }) {
 
   useEffect(() => {
     verifyLocation();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const verifyLocation = () => {
+    // eslint-disable-next-line array-callback-return
     options.map((option, oindex) => {
       if (option.submenu) {
+        // eslint-disable-next-line array-callback-return
         option.submenu.map((sub, sindex) => {
           if (sub.submenu) {
+            // eslint-disable-next-line array-callback-return
             sub.submenu.map((subsub, ssindex) => {
               if (subsub.link === location.pathname) {
                 handleClick(option.id);
@@ -89,7 +93,6 @@ function Sidebar({ openDrawer, setOpenDrawer, options }) {
 
     return subSubItem ? { [subSubItem]: true } : {};
   });
-  const [barnActive, setBarnActive] = useState(farm.submenu[0]);
 
   const handleClick = (e) => {
     setNestedList({ [e]: !nestedList[e] });
@@ -156,7 +159,6 @@ function Sidebar({ openDrawer, setOpenDrawer, options }) {
                     component="div"
                     disablePadding
                     onClick={() => {
-                      setBarnActive(agribusiness);
                       handleClick(farm.title);
                       dispatch(
                         agribusinessActions.setCurrentAgribusiness(agribusiness)

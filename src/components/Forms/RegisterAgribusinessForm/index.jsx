@@ -79,12 +79,12 @@ export default function RegisterAgribusinessForm({ setRegisterStep }) {
     dispatch(countryActions.retrieveCountries());
     dispatch(regionActions.retrieveRegions());
     dispatch(districtActions.retrieveDistricts());
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     currentFarm &&
       dispatch(currencyActions.findCurrencyById(currentFarm.currencyId));
-  }, [currentFarm]);
+  }, [currentFarm, dispatch]);
 
   const handleSubmit = (values, actions) => {
     dispatch(

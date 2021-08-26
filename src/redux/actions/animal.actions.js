@@ -61,9 +61,9 @@ function listById(data) {
     );
   };
 
-  function success(payload) {
-    return { type: ACTION_TYPES.ANIMAL.UPDATE_CURRENT, payload };
-  }
+  //function success(payload) {
+  //  return { type: ACTION_TYPES.ANIMAL.UPDATE_CURRENT, payload };
+  //}
   function failure(error) {
     return { type: animalConstans.GETBYID_FAILURE, error };
   }

@@ -1,8 +1,7 @@
-import React, { useState } from "react";
-import { Close, SearchRounded } from "@material-ui/icons";
-import { Dialog, Grid, Typography, TextField } from "@material-ui/core";
+import React from "react";
+import { SearchRounded } from "@material-ui/icons";
+import { Grid, TextField } from "@material-ui/core";
 import { useStyles } from "./styles";
-import { dateForm, searchForm } from "./constants";
 
 function SearchAnimals({ setSearchText, searchText }) {
   const classes = useStyles();

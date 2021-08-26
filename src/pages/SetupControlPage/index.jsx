@@ -1,15 +1,12 @@
 import { Typography } from "@material-ui/core";
 import { Dialog } from "@material-ui/core";
 import { useState } from "react";
-import { useHistory } from "react-router-dom";
 import RegisterAgribusinessForm from "../../components/Forms/RegisterAgribusinessForm";
 import RegisterFarmForm from "../../components/Forms/RegisterFarmForm";
-import RegisterFarm from "./RegisterFarm";
 import { useStyles } from "./styles";
 
 export default function SetupControlPage() {
   const classes = useStyles();
-  const history = useHistory();
   const [registerStep, setRegisterStep] = useState(0);
   return (
     <>

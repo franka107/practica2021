@@ -9,10 +9,8 @@ import * as yup from "yup";
 import TextFieldFormik from "../../components/Inputs/TextFieldFormik";
 import { Link, useHistory } from "react-router-dom";
 import googleBtn from "../../assets/images/google.png";
-import { useDispatch, useSelector } from "react-redux";
-import { uiActions } from "../../redux/actions/ui.actions";
+import { useDispatch } from "react-redux";
 import PasswordFieldFormik from "../../components/Inputs/PasswordFieldFormik";
-import { userActions } from "../../redux/actions/user.actions";
 import { ROUTES_DICT } from "../../routes/routesDict";
 import AuthActions from "../../redux/actions/auth.actions";
 
@@ -20,7 +18,6 @@ function LoginPage(props) {
   const classes = useStyles();
   const dispatch = useDispatch();
   const history = useHistory();
-  const { current: currentFarm } = useSelector((state) => state.farm);
 
   const validationSchema = yup.object({
     email: yup

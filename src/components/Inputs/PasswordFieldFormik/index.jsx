@@ -6,7 +6,6 @@ import {
   InputLabel,
   FilledInput,
   Grid,
-  TextField,
   InputAdornment,
   IconButton,
   FormHelperText,
@@ -16,7 +15,7 @@ import { Visibility, VisibilityOff } from "@material-ui/icons";
 import { useStyles } from "../styles";
 
 function PasswordFieldFormik({ xs = 12, ...props }) {
-  const [field, meta, helpers] = useField(props);
+  const [field, meta] = useField(props);
   const [showPassword, handleShowPassword] = useState(false);
   const classes = useStyles();
 

@@ -1,14 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Grid, Typography } from "@material-ui/core";
 import { useStyles } from "./styles";
 import { Formik } from "formik";
 import * as yup from "yup";
 import TextFieldFormik from "../../../../components/Inputs/TextFieldFormik";
 import DatePickerFieldFormik from "../../../../components/Inputs/DatePickerFieldFormik";
-import SelectFieldFormik from "../../../../components/Inputs/SelectFieldFormik";
 import ButtonFormik from "../../../../components/Inputs/ButtonFormik";
-import CheckboxFormik from "../../../../components/Inputs/CheckboxFormik";
-import { useDispatch, useSelector } from "react-redux";
 
 function BirthData({ setOpen }) {
   const classes = useStyles();

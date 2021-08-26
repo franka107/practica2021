@@ -1,4 +1,4 @@
-import { Grid, Typography, Chip } from "@material-ui/core";
+import { Grid, Chip } from "@material-ui/core";
 import clsx from "clsx";
 import { useHistory, useParams } from "react-router-dom";
 import { ROUTES_DICT } from "../../../routes/routesDict";

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Chip, Grid, Typography, Dialog, Divider } from "@material-ui/core";
-import { useHistory } from "react-router-dom";
 import clsx from "clsx";
 import { Close } from "@material-ui/icons";
 import { menuList } from "../../../layouts/DashboardLayout/constants";
@@ -14,9 +13,7 @@ import SelectFieldFormik from "../../../components/Inputs/SelectFieldFormik";
 
 function PalpationHeader({ handleChange }) {
   const classes = useStyles();
-  const history = useHistory();
-  const { location = {} } = history;
-  const [activeTab, setActiveTab] = useState("inicio");
+  const [activeTab] = useState("inicio");
   const [open, setOpen] = useState(0);
   const validationSchema = yup.object({});
   const initValues = {

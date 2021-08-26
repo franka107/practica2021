@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Grid, Typography, Paper, Divider } from "@material-ui/core";
 import { useStyles } from "./styles";
 import HighchartsReact from "highcharts-react-official";
@@ -10,22 +10,23 @@ import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import SelectFieldFormik from "../../components/Inputs/SelectFieldFormik";
 import * as yup from "yup";
 
 function BirthPage() {
-  const handleSubmit = (values, actions) => {};
+  //const handleSubmit = (values, actions) => {};
+
+  // eslint-disable-next-line no-unused-vars
   const validationSchema = yup.object({});
-  const initValues = {
-    name: "",
-    landLord: "",
-    nit: "",
-    country: "",
-    region: "",
-    district: "",
-    address: "",
-    phoneNumber: "",
-  };
+  //const initValues = {
+  //  name: "",
+  //  landLord: "",
+  //  nit: "",
+  //  country: "",
+  //  region: "",
+  //  district: "",
+  //  address: "",
+  //  phoneNumber: "",
+  //};
   const classes = useStyles();
 
   return (

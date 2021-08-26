@@ -4,7 +4,7 @@ import { useStyles } from "../styles";
 
 export default function TimerPicker({ xs = 12, ...props }) {
   const classes = useStyles();
-  const { name, label, value, error, onChange } = props;
+  const { error } = props;
 
   return (
     <Grid item xs={xs} {...props}>

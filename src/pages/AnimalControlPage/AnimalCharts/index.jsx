@@ -7,7 +7,6 @@ import clsx from "clsx";
 import TrendingUpIcon from "@material-ui/icons/TrendingUp";
 import { chartData, renderChartDetailOptions, chartOptions } from "./constants";
 import { useSelector } from "react-redux";
-import { format, parseISO } from "date-fns";
 
 function AnimalCharts() {
   const classes = useStyles();

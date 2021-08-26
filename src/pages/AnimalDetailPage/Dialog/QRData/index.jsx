@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react'
-import { Grid, Typography, CardMedia, Button } from '@material-ui/core'
-import { useStyles } from './styles'
+import React from "react";
+import { Grid, Typography, CardMedia } from "@material-ui/core";
+import { useStyles } from "./styles";
 
 function QRData({ setOpen, setAnimalsList, agribusinessId }) {
-  const classes = useStyles()
+  const classes = useStyles();
 
   return (
     <Grid className={classes.modal}>
-      <Typography variant={'h6'} gutterBottom>
+      <Typography variant={"h6"} gutterBottom>
         Actualizar Foto
       </Typography>
       <Grid
@@ -15,7 +15,7 @@ function QRData({ setOpen, setAnimalsList, agribusinessId }) {
         justifyContent="center"
         alignItems="center"
         xs={5}
-        style={{ margin: 'auto' }}
+        style={{ margin: "auto" }}
       >
         <CardMedia
           component="img"
@@ -26,7 +26,7 @@ function QRData({ setOpen, setAnimalsList, agribusinessId }) {
         />
       </Grid>
     </Grid>
-  )
+  );
 }
 
-export default QRData
+export default QRData;

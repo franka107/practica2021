@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useHistory, useParams } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import {
   Grid,
   Typography,
@@ -10,39 +10,24 @@ import {
 import AnimalDescription from "./AnimalDescription";
 import AnimalCharts from "./AnimalCharts";
 import AddAnimals from "./AddAnimals";
-import CustomMaterialTable from "../../components/CustomMaterialTable";
 import { useStyles } from "./styles";
-import {
-  columnsToCustomMaterialTable,
-  columnsToMuiTable,
-  options,
-} from "./constants";
-import {
-  Delete,
-  Edit,
-  Visibility,
-  Star,
-  StarBorder,
-  Close,
-} from "@material-ui/icons";
+import { columnsToMuiTable } from "./constants";
+import { Delete, Edit, Visibility, Close } from "@material-ui/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { animalActions } from "../../redux/actions/animal.actions";
 import { ROUTES_DICT } from "../../routes/routesDict";
 import AddIndividual from "./AddAnimals/AddIndividual";
 import ACTION_TYPES from "../../redux/types";
 import CustomMuiTable from "../../components/CustomMuiTable";
-import MUIDataTable from "mui-datatables";
 import RaceActions from "../../redux/actions/race.actions";
 
 function AnimalControlPage() {
   const classes = useStyles();
   const history = useHistory();
-  const { location = {} } = history;
   const [open, setOpen] = useState(false);
   const [dialogOption, setDialogOption] = useState("");
   const [animalId, setAnimalId] = useState("");
   const dispatch = useDispatch();
-  const params = useParams();
   const { list: animals } = useSelector((state) => state.animal);
   const { current: currentAgribusiness } = useSelector(
     (state) => state.agribusiness
@@ -51,7 +36,7 @@ function AnimalControlPage() {
 
   useEffect(() => {
     dispatch({ type: ACTION_TYPES.ANIMAL.UPDATE_CURRENT, payload: null });
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     dispatch(RaceActions.listRace());

@@ -1,12 +1,9 @@
 import React from "react";
-import { TextField, Grid } from "@material-ui/core";
-import { useStyles } from "../styles";
+import { Grid } from "@material-ui/core";
 import { useField } from "formik";
 import { DatePicker } from "@material-ui/pickers";
-import clsx from "clsx";
 
 export default function DatePickerFieldFormik({ xs = 12, ...props }) {
-  const classes = useStyles();
   const [field, meta, helpers] = useField(props);
   const { setValue } = helpers;
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Grid, Typography } from "@material-ui/core";
 import { useStyles } from "./styles";
 import { Formik } from "formik";
@@ -22,13 +22,8 @@ function GeneralData({ setOpen }) {
   const classes = useStyles();
   const dispatch = useDispatch();
 
-  const { current: currentAgribusiness } = useSelector(
-    (state) => state.agribusiness
-  );
   const { current: currentAnimal } = useSelector((state) => state.animal);
   const handleSubmit = (values, actions) => {
-    console.log("values", values);
-
     if (values.gender === "MALE") {
       if (values.isReproductive) {
         values.category = "REPRODUCTOR";

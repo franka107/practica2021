@@ -1,8 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { Route } from "react-router-dom";
 import { AuthRoute } from "./AuthRoute";
-import { ROUTE_TYPES } from "./constants";
 
 function RouteWithSubRoutes({
   path,

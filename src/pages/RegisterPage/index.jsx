@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Facebook } from "@material-ui/icons";
 import {
   Button,
@@ -14,22 +14,21 @@ import RegisterCard from "../../components/RegisterCard";
 import { Formik } from "formik";
 import * as yup from "yup";
 import TextFieldFormik from "../../components/Inputs/TextFieldFormik";
-import { Link, useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 import googleBtn from "../../assets/images/google.png";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useState } from "react";
 import PasswordValidation from "../../components/PasswordValidation";
 import PasswordFieldFormik from "../../components/Inputs/PasswordFieldFormik";
 import UserType from "./UserType";
-import UserService from "../../services/user.service";
 import { ROUTES_DICT } from "../../routes/routesDict";
 import AuthActions from "../../redux/actions/auth.actions";
 
 function RegisterPage(props) {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const history = useHistory();
   const [view, setView] = useState("Register");
+  // eslint-disable-next-line no-unused-vars
   const [openTerms, setOpenTerms] = useState(false);
   const initValues = {
     firstName: "",

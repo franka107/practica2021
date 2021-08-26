@@ -1,10 +1,10 @@
 import React from "react";
 import { useField } from "formik";
 import PropTypes from "prop-types";
-import { Grid, TextField, InputAdornment } from "@material-ui/core";
+import { Grid, TextField } from "@material-ui/core";
 
 function TextFieldFormik({ xs = 12, endAdornment, style, ...props }) {
-  const [field, meta, helpers] = useField(props);
+  const [field, meta] = useField(props);
 
   return (
     <Grid item xs={xs} {...props}>

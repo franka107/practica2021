@@ -2,9 +2,7 @@ import React from "react";
 import { useField } from "formik";
 import PropTypes from "prop-types";
 import { Grid, TextField } from "@material-ui/core";
-import Autocomplete, {
-  createFilterOptions,
-} from "@material-ui/lab/Autocomplete";
+import Autocomplete from "@material-ui/lab/Autocomplete";
 
 function SearchFieldFormik({
   xs = 12,
@@ -13,7 +11,7 @@ function SearchFieldFormik({
   onChange,
   ...props
 }) {
-  const [field, meta, helpers] = useField(props);
+  const [field, meta] = useField(props);
 
   // const filterOptions = createFilterOptions({
   //   matchFrom: "start",

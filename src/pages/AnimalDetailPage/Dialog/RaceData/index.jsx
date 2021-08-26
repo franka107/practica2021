@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Grid, Typography, InputAdornment } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { AddCircle } from "@material-ui/icons";
-import { generalForm } from "./constants";
 import { useStyles } from "./styles";
 import { Formik } from "formik";
 import * as yup from "yup";
@@ -12,10 +11,7 @@ import ButtonFormik from "../../../../components/Inputs/ButtonFormik";
 import SearchFieldFormik from "../../../../components/Inputs/SearchFieldFormik";
 import { useDispatch, useSelector } from "react-redux";
 import { animalActions } from "../../../../redux/actions/animal.actions";
-import {
-  getFemaleAnimals,
-  getMaleAnimals,
-} from "../../../../redux/selectors/animal.selector";
+
 import ACTION_TYPES from "../../../../redux/types";
 import { racialTypeOptions } from "../../../../constants";
 import RaceActions from "../../../../redux/actions/race.actions";
@@ -41,6 +37,7 @@ function RaceData({ setOpen }) {
     if (!races) {
       dispatch(RaceActions.listRace());
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const [errorPercentage, setErrorPercentage] = useState("");
@@ -66,6 +63,7 @@ function RaceData({ setOpen }) {
       .required("Este campo es requerido."),
   });
 
+  // eslint-disable-next-line no-unused-vars
   const handleCheckPercentage = (list = []) => {
     let total = 0;
 

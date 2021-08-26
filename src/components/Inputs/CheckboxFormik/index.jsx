@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import {
   Checkbox as MuiCheckbox,
   FormControl,
@@ -12,7 +12,7 @@ import clsx from "clsx";
 import { useField } from "formik";
 
 export default function CheckboxFormik({ xs = 12, options, ...props }) {
-  const [field, meta, helpers] = useField(props);
+  const [field, meta] = useField(props);
   const classes = useStyles();
 
   return (

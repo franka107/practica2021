@@ -14,7 +14,7 @@ import CheckboxFormik from "../../../components/Inputs/CheckboxFormik";
 
 function BirthHeader() {
   const classes = useStyles();
-  const [activeTab, setActiveTab] = useState("inicio");
+  const [activeTab] = useState("inicio");
   const [open, setOpen] = useState(0);
   const validationSchema = yup.object({});
   const categoryOptions = [{ id: "1", name: "Retuvo placenta" }];

@@ -13,7 +13,7 @@ import { useField } from "formik";
 
 export default function SelectFieldFormik({ xs = 12, options, ...props }) {
   const classes = useStyles();
-  const [field, meta, helpers] = useField(props);
+  const [field, meta] = useField(props);
 
   return (
     <Grid item xs={xs} {...props}>

@@ -1,11 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  Grid,
-  Typography,
-  Divider,
-  CircularProgress,
-  InputAdornment,
-} from "@material-ui/core";
+import { Grid, Typography, InputAdornment } from "@material-ui/core";
 import { AddCircle } from "@material-ui/icons";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { useStyles } from "./styles";
@@ -18,8 +12,6 @@ import SelectFieldFormik from "../../../../components/Inputs/SelectFieldFormik";
 import SearchFieldFormik from "../../../../components/Inputs/SearchFieldFormik";
 import CheckboxFormik from "../../../../components/Inputs/CheckboxFormik";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
-import { ROUTES_DICT } from "../../../../routes/routesDict";
 import { animalActions } from "../../../../redux/actions/animal.actions";
 import { categoryOptions } from "./constants";
 import ACTION_TYPES from "../../../../redux/types";
@@ -32,13 +24,12 @@ import {
   getFemaleAnimals,
   getMaleAnimals,
 } from "../../../../redux/selectors/animal.selector";
-import { format, formatISO } from "date-fns";
+import { format } from "date-fns";
 
 const propTypes = {};
 
 function AddIndividual({ setOpen, typeAccion = "create", animalId = "" }) {
   const classes = useStyles();
-  const history = useHistory();
 
   const letters = ["A", "B", "C", "D"];
   const [animalRace, setAnimalRace] = useState({
@@ -50,11 +41,10 @@ function AddIndividual({ setOpen, typeAccion = "create", animalId = "" }) {
   const { current: currentAgribusiness } = useSelector(
     (state) => state.agribusiness
   );
-  const { list: animals } = useSelector((state) => state.animal);
   const maleAnimals = useSelector(getMaleAnimals());
   const femaleAnimals = useSelector(getFemaleAnimals());
 
-  const [errorPercentage, setErrorPercentage] = useState("");
+  const [errorPercentage] = useState("");
 
   const validationSchema = yup.object({
     identifier: yup
@@ -76,7 +66,7 @@ function AddIndividual({ setOpen, typeAccion = "create", animalId = "" }) {
       .string("Ingresa el genero del animal")
       .required("Este campo es requerido."),
   });
-  const [initValues, setInitValues] = useState({
+  const [initValues] = useState({
     identifier: "",
     name: "",
     birthDate: null,
@@ -108,8 +98,8 @@ function AddIndividual({ setOpen, typeAccion = "create", animalId = "" }) {
         dispatch(animalActions.listById({ _id: animalId }));
       }
     }
-    // console.log("hola", femaleAnimals);
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch]);
 
   useEffect(() => {
     // if (typeAccion === "update") {
@@ -130,22 +120,22 @@ function AddIndividual({ setOpen, typeAccion = "create", animalId = "" }) {
     // }
   }, [currentAnimal]);
 
-  const handleCheckPercentage = (list = []) => {
-    let total = 0;
+  //const handleCheckPercentage = (list = []) => {
+  //  let total = 0;
 
-    Object.keys(list).forEach((animal) => {
-      const percentage = list[animal].percentage.replace("%", "");
-      total = total + parseFloat(percentage);
-    });
+  //  Object.keys(list).forEach((animal) => {
+  //    const percentage = list[animal].percentage.replace("%", "");
+  //    total = total + parseFloat(percentage);
+  //  });
 
-    if (total !== 100) {
-      setErrorPercentage(
-        "El porcentaje total debe ser 100%. Porfavor ajuste sus cantidades"
-      );
-    } else {
-      setErrorPercentage("");
-    }
-  };
+  //  if (total !== 100) {
+  //    setErrorPercentage(
+  //      "El porcentaje total debe ser 100%. Porfavor ajuste sus cantidades"
+  //    );
+  //  } else {
+  //    setErrorPercentage("");
+  //  }
+  //};
 
   const handleAddRace = () => {
     const races = { ...animalRace };
@@ -294,7 +284,6 @@ function AddIndividual({ setOpen, typeAccion = "create", animalId = "" }) {
             </Grid>
           ) : (
             <SelectFieldFormik
-              options={animals}
               onChange={handleChange}
               options={stateOptions}
               label="Estado"

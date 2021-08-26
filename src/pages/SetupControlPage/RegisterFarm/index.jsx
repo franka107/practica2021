@@ -1,17 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import ConfigureFarm from "../../../components/ConfigureFarm";
-import { coinOptions } from "../constants";
 
-function RegisterFarm({
-  sections,
-  handleSubmit,
-  setRegisterStep,
-  farmId,
-  setCurrency,
-  setFarmId,
-}) {
-  const [errors, setErrors] = useState([]);
-
+function RegisterFarm({ farmId }) {
+  // eslint-disable-next-line no-unused-vars
   const registerFarm = (values) => {
     const phoneFormat =
       values.phoneNumber === "+"

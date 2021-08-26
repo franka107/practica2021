@@ -1,5 +1,4 @@
 import { combineReducers } from "redux";
-import ACTION_TYPES from "../types";
 import { agribusinessReducer } from "./agribusiness.reducer";
 import { animalReducer } from "./animal.reducer";
 import { authReducer } from "./auth.reducer";

@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import PropTypes from "prop-types";
 import {
   Button,
   FormControl,
@@ -10,13 +9,12 @@ import {
   Typography,
 } from "@material-ui/core";
 import { userTypes } from "./constants";
-import { Link, useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useStyles } from "./styles";
 import { ROUTES_DICT } from "../../../routes/routesDict";
 
 function UserType({ onClick }) {
   const classes = useStyles();
-  const history = useHistory();
   const [value, setValue] = useState(userTypes[0].key);
 
   const handleChange = (event) => {

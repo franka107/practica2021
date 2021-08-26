@@ -1,6 +1,5 @@
 import AgribusinessService from "../../services/race.service";
 import ACTION_TYPES from "../types";
-import uiActions from "./ui.actions";
 
 class RaceActions {
   listRace() {
