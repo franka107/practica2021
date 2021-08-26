@@ -67,11 +67,12 @@ function AddIndividual({ setOpen, typeAccion = "create", animalId = "" }) {
       .date("Ingresa una fecha correcta.")
       // .string("Ingresa la fecha de nacimiento del animal.")
       .max(new Date(), "No puedes poner una fecha futura")
-      .required("Este campo es requerido."),
+      .required("Este campo es requerido.")
+      .nullable(),
     herdDate: yup
       .date("Ingresa una fecha correcta.")
       // .string("Ingresa la fecha de nacimiento del animal.")
-      .required("Este campo es requerido."),
+      .nullable(),
     gender: yup
       .string("Ingresa el genero del animal")
       .required("Este campo es requerido."),
@@ -79,7 +80,7 @@ function AddIndividual({ setOpen, typeAccion = "create", animalId = "" }) {
   const [initValues, setInitValues] = useState({
     identifier: "",
     name: "",
-    birthDate: new Date(),
+    birthDate: null,
     herdDate: new Date(),
     registerNumber: "",
     gender: "MALE",
@@ -167,6 +168,7 @@ function AddIndividual({ setOpen, typeAccion = "create", animalId = "" }) {
   };
 
   const handleSubmit = (values, actions) => {
+    console.log(values);
     if (errorPercentage === "") {
       values.agribusinessId = currentAgribusiness._id;
 

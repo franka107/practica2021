@@ -57,7 +57,12 @@ const animalUpdate = (data) => {
       if (!error) {
         resolve(response.responseJSON);
       } else {
-        reject(response);
+        const rejectBody = {
+          message:
+            (error.responseJSON && error.responseJSON.body) ||
+            "Error desconocido",
+        };
+        reject(rejectBody);
       }
     });
   });

@@ -12,10 +12,13 @@ export const animalActions = {
   updateElement,
 };
 
-function listAll(agribusinessId) {
-  return (dispatch) => {
+function listAll() {
+  return (dispatch, getState) => {
+    const { agribusiness } = getState();
     dispatch(request());
-    return AnimalService.animalList({ agribusinessId }).then(
+    return AnimalService.animalList({
+      agribusinessId: agribusiness.current._id,
+    }).then(
       (response) => {
         dispatch(success(response));
         return Promise.resolve();
@@ -71,7 +74,7 @@ function deleteElement(data) {
     return AnimalService.animalDelete(data).then(
       (response) => {
         dispatch(success(response));
-        dispatch(listAll(data.agribusinessId));
+        dispatch(listAll());
         dispatch(UiActions.showSnackbar("Se eliminó el registro exitosamente"));
         return Promise.resolve();
       },
@@ -96,7 +99,7 @@ function createElement(data) {
     return AnimalService.animalCreate(data).then(
       (response) => {
         dispatch(success(response));
-        dispatch(listAll(data.agribusinessId));
+        dispatch(listAll());
         dispatch(UiActions.showSnackbar("El registro de creo exitosamente"));
         return Promise.resolve();
       },
@@ -124,7 +127,7 @@ function updateElement(data) {
     return AnimalService.animalUpdate(data).then(
       (response) => {
         dispatch(success(response));
-        dispatch(listAll(data.agribusinessId));
+        dispatch(listAll());
         dispatch(
           UiActions.showSnackbar("El registro se actualizo exitosamente")
         );
@@ -132,12 +135,7 @@ function updateElement(data) {
       },
       (error) => {
         dispatch(failure(error));
-        dispatch(
-          UiActions.showSnackbar(
-            "Ocurrio un error al actualizar el registro",
-            "error"
-          )
-        );
+        dispatch(UiActions.showSnackbar(error.message, "error"));
         return Promise.reject();
       }
     );
