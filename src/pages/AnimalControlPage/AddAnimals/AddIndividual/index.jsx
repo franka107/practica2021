@@ -65,7 +65,6 @@ function AddIndividual({ setOpen, typeAccion = "create", animalId = "" }) {
       .required("Este campo es requerido."),
     birthDate: yup
       .date("Ingresa una fecha correcta.")
-      // .string("Ingresa la fecha de nacimiento del animal.")
       .max(new Date(), "No puedes poner una fecha futura")
       .required("Este campo es requerido.")
       .nullable(),
@@ -113,22 +112,22 @@ function AddIndividual({ setOpen, typeAccion = "create", animalId = "" }) {
   }, []);
 
   useEffect(() => {
-    if (typeAccion === "update") {
-      if (currentAnimal) {
-        let total =
-          parseFloat(currentAnimal.percentageRacial1) +
-          parseFloat(currentAnimal.percentageRacial2) +
-          parseFloat(currentAnimal.percentageRacial3) +
-          parseFloat(currentAnimal.percentageRacial4);
-        if (total !== 100) {
-          setErrorPercentage(
-            "El porcentaje total debe ser 100%. Porfavor ajuste sus cantidades"
-          );
-        } else {
-          setErrorPercentage("");
-        }
-      }
-    }
+    // if (typeAccion === "update") {
+    //   if (currentAnimal) {
+    //     let total =
+    //       parseFloat(currentAnimal.percentageRacial1) +
+    //       parseFloat(currentAnimal.percentageRacial2) +
+    //       parseFloat(currentAnimal.percentageRacial3) +
+    //       parseFloat(currentAnimal.percentageRacial4);
+    //     if (total !== 100) {
+    //       setErrorPercentage(
+    //         "El porcentaje total debe ser 100%. Porfavor ajuste sus cantidades"
+    //       );
+    //     } else {
+    //       setErrorPercentage("");
+    //     }
+    //   }
+    // }
   }, [currentAnimal]);
 
   const handleCheckPercentage = (list = []) => {
@@ -168,48 +167,47 @@ function AddIndividual({ setOpen, typeAccion = "create", animalId = "" }) {
   };
 
   const handleSubmit = (values, actions) => {
-    console.log(values);
-    if (errorPercentage === "") {
-      values.agribusinessId = currentAgribusiness._id;
+    // if (errorPercentage === "") {
+    values.agribusinessId = currentAgribusiness._id;
 
-      if (values.gender === "MALE") {
-        if (values.isReproductive) {
-          values.category = "REPRODUCTOR";
-        } else {
-          values.category = "";
-        }
-        values.reproductiveStatus = null;
-      }
-
-      if (values.gender === "FEMALE") {
-        values.isReproductive = null;
+    if (values.gender === "MALE") {
+      if (values.isReproductive) {
+        values.category = "REPRODUCTOR";
+      } else {
         values.category = "";
       }
-
-      if (values.father) {
-        values.fatherId = values.father._id;
-      }
-      if (values.mother) {
-        values.motherId = values.mother._id;
-      }
-
-      if (typeAccion === "create") {
-        dispatch(animalActions.createElement(values));
-        setOpen(false);
-        console.log("init", values);
-      }
-      if (typeAccion === "update") {
-        dispatch(animalActions.updateElement(values)).then((data) => {
-          dispatch({
-            type: ACTION_TYPES.ANIMAL.UPDATE_CURRENT,
-            payload: null,
-          });
-        });
-        setOpen(false);
-        console.log(values.birthDate);
-        console.log(format(new Date(values.birthDate), "yyyy-MM-dd"));
-      }
+      values.reproductiveStatus = null;
     }
+
+    if (values.gender === "FEMALE") {
+      values.isReproductive = null;
+      values.category = "";
+    }
+
+    if (values.father) {
+      values.fatherId = values.father._id;
+    }
+    if (values.mother) {
+      values.motherId = values.mother._id;
+    }
+
+    if (typeAccion === "create") {
+      dispatch(animalActions.createElement(values));
+      setOpen(false);
+      console.log("init", values);
+    }
+    if (typeAccion === "update") {
+      dispatch(animalActions.updateElement(values)).then((data) => {
+        dispatch({
+          type: ACTION_TYPES.ANIMAL.UPDATE_CURRENT,
+          payload: null,
+        });
+      });
+      setOpen(false);
+      console.log(values.birthDate);
+      console.log(format(new Date(values.birthDate), "yyyy-MM-dd"));
+    }
+    // }
   };
 
   const AnimalForm = ({
@@ -489,14 +487,15 @@ function AddIndividual({ setOpen, typeAccion = "create", animalId = "" }) {
 
       {typeAccion === "update" && currentAnimal && (
         <Formik
-          initialValues={{
-            ...currentAnimal,
-            birthDate: formatISO(
-              new Date(currentAnimal.birthDate),
-              "yyyy-MM-dd"
-            ),
-            herdDate: format(new Date(currentAnimal.herdDate), "yyyy-MM-dd"),
-          }}
+          initialValues={currentAnimal}
+          // initialValues={{
+          //   ...currentAnimal,
+          //   birthDate: formatISO(
+          //     new Date(currentAnimal.birthDate),
+          //     "yyyy-MM-dd"
+          //   ),
+          //   herdDate: format(new Date(currentAnimal.herdDate), "yyyy-MM-dd"),
+          // }}
           // initialValues={{
           //   ...currentAnimal,
           //   birthDate: format(

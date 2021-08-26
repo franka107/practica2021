@@ -1,40 +1,52 @@
-import { makeStyles } from '@material-ui/core'
+import { makeStyles } from "@material-ui/core";
 
 export const useStyles = makeStyles((theme) => ({
   raceInput: {
-    minWidth: '100%',
+    minWidth: "100%",
   },
   raceContainer: {
-    padding: '1rem 0',
+    padding: "1rem 0",
   },
   border: {
     border: `1px solid ${theme.palette.secondary.main}`,
-    padding: '0 1rem',
-    marginBottom: '1rem',
-    position: 'relative',
+    padding: "0 1rem",
+    marginBottom: "1rem",
+    position: "relative",
   },
   addBtn: {
-    position: 'absolute',
+    position: "absolute",
     right: -12,
     bottom: 7,
-    backgroundColor: 'white',
-    cursor: 'pointer',
+    backgroundColor: "white",
+    cursor: "pointer",
   },
   hidden: {
-    display: 'none !important',
+    display: "none !important",
   },
   deleteIcon: {
-    cursor: 'pointer',
+    cursor: "pointer",
     marginLeft: theme.spacing(1),
   },
   errorMessage: {
-    color: 'red',
-    textAlign: 'center',
+    color: "red",
+    textAlign: "center",
   },
   categoryForm: {
-    padding: '.5rem',
+    padding: ".5rem",
   },
   rightText: {
-    textAlign: 'end',
+    textAlign: "end",
   },
-}))
+  formStyle: {
+    marginBottom: "1rem",
+  },
+  formDivider: {
+    marginTop: "0.3rem",
+  },
+  paddingButton: {
+    marginRight: "1rem",
+  },
+  borderBirth: {
+    border: "1px solid #0073C8",
+  },
+}));

@@ -12,13 +12,13 @@ import { BorderLinearProgress } from "../../components/BorderLinearProgress";
 import PlanCard from "../../components/PlanCard";
 import { useStyles } from "./styles";
 import Highcharts from "highcharts";
-// import BirthData from "./Dialog/BirthData";
 import GeneralData from "./Dialog/GeneralData";
-// import RaceData from "./Dialog/RaceData";
-// import ServiceData from "./Dialog/ServiceData";
+import RaceData from "./Dialog/RaceData";
+import BirthData from "./Dialog/BirthData";
+import ServiceData from "./Dialog/ServiceData";
+import OtherData from "./Dialog/OtherData";
+import MilkData from "./Dialog/MilkData";
 // import WeighingData from "./Dialog/WeighingData";
-// import OtherData from "./Dialog/OtherData";
-// import MilkData from "./Dialog/MilkData";
 // import CommentaryData from "./Dialog/CommentaryData";
 // import CalendarData from "./Dialog/Calendar";
 import Calendar from "react-calendar";
@@ -1012,20 +1012,20 @@ export default function AnimalDetailPage() {
         fullWidth
         onClose={() => setOpen(false)}
         aria-labelledby="alert-dialog-title"
-        maxWidth="md"
+        maxWidth="sm"
         aria-describedby="alert-dialog-description"
         classes={{ paperFullWidth: classes.modal }}
       >
         <Close className={classes.closeBtn} onClick={() => setOpen(false)} />
         {dialog === "GeneralData" && <GeneralData />}
+        {dialog === "RaceData" && <RaceData />}
+        {dialog === "BirthData" && <BirthData />}
+        {dialog === "ServiceData" && <ServiceData />}
+        {dialog === "OtherData" && <OtherData />}
+        {dialog === "MilkData" && <MilkData />}
         {/*
         {dialog === "CalendarData" && <CalendarData />}
-        {dialog === "BirthData" && <BirthData />}
         {dialog === "CommentaryData" && <CommentaryData />}
-        {dialog === "MilkData" && <MilkData />}
-        {dialog === "OtherData" && <OtherData />}
-        {dialog === "RaceData" && <RaceData />}
-        {dialog === "ServiceData" && <ServiceData />}
         {dialog === "WeighingData" && <WeighingData />}
         */}
         {dialog === "QRData" && <QRData />}

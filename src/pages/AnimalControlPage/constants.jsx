@@ -196,19 +196,19 @@ export const columnsToMuiTable = [
     options: {
       searchable: false,
       customBodyRender: (value) => {
-        console.log(`value ${value}`);
-        console.log(`format-value ${format(new Date(value), "yyyy-MM-dd")}`);
-        console.log(
-          `format-value with formatISO ${formatISO(new Date(value), {
-            representation: "date",
-          })}`
-        );
-        const peruDate = utcToZonedTime(value, "America/Lima");
-        console.log(
-          `date-fns-tz ${formatFns(new Date(value), "yyyy-MM-dd", {
-            timeZone: "America/Lima",
-          })}`
-        );
+        // console.log(`value ${value}`);
+        // console.log(`format-value ${format(new Date(value), "yyyy-MM-dd")}`);
+        // console.log(
+        //   `format-value with formatISO ${formatISO(new Date(value), {
+        //     representation: "date",
+        //   })}`
+        // );
+        // const peruDate = utcToZonedTime(value, "America/Lima");
+        // console.log(
+        //   `date-fns-tz ${formatFns(new Date(value), "yyyy-MM-dd", {
+        //     timeZone: "America/Lima",
+        //   })}`
+        // );
         return value ? format(new Date(value), "yyyy-MM-dd") : "-";
       },
       filterType: "custom",
