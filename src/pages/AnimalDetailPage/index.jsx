@@ -18,8 +18,8 @@ import ServiceData from "./Dialog/ServiceData";
 import OtherData from "./Dialog/OtherData";
 import MilkData from "./Dialog/MilkData";
 import WeighingData from "./Dialog/WeighingData";
+import CalendarData from "./Dialog/Calendar";
 // import CommentaryData from "./Dialog/CommentaryData";
-// import CalendarData from "./Dialog/Calendar";
 import Calendar from "react-calendar";
 import { Dialog } from "@material-ui/core";
 import Timeline from "@material-ui/lab/Timeline";
@@ -34,6 +34,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { animalActions } from "../../redux/actions/animal.actions";
 import { getAge, formatDate } from "../../helpers/convertDate";
 import ChipsSection from "./ChipsSection";
+import QRCode from "qrcode.react";
+import "react-calendar/dist/Calendar.css";
 
 export default function AnimalDetailPage() {
   const classes = useStyles();
@@ -110,7 +112,7 @@ export default function AnimalDetailPage() {
                           srcset=""
                         />
                         <div className={clsx(classes.cowImageQrButton)}>
-                          <img
+                          {/* <img
                             src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Codigo_QR.svg/1200px-Codigo_QR.svg.png"
                             alt=""
                             className={classes.qrImage}
@@ -118,6 +120,12 @@ export default function AnimalDetailPage() {
                               setOpen(true);
                               setDialog("QRData");
                             }}
+                          /> */}
+                          <QRCode
+                            renderAs="svg"
+                            value={window.location.href}
+                            className={classes.qrImage}
+                            includeMargin={true}
                           />
                         </div>
                       </div>
@@ -135,12 +143,12 @@ export default function AnimalDetailPage() {
                         className={classes.generalFeature}
                         xs={12}
                       >
-                        <Grid item xs={3}>
+                        <Grid item xs={4}>
                           <Typography className={classes.cardFeature}>
                             Nombre
                           </Typography>
                         </Grid>
-                        <Grid item xs={9}>
+                        <Grid item xs={8}>
                           <Typography>
                             {currentAnimal && currentAnimal.name}
                           </Typography>
@@ -151,12 +159,12 @@ export default function AnimalDetailPage() {
                         className={classes.generalFeature}
                         xs={12}
                       >
-                        <Grid item xs={3}>
+                        <Grid item xs={4}>
                           <Typography className={classes.cardFeature}>
                             Sexo
                           </Typography>
                         </Grid>
-                        <Grid item xs={9}>
+                        <Grid item xs={8}>
                           <Typography>
                             {currentAnimal && currentAnimal.gender === "FEMALE"
                               ? "Hembra"
@@ -169,12 +177,12 @@ export default function AnimalDetailPage() {
                         className={classes.generalFeature}
                         xs={12}
                       >
-                        <Grid item xs={3}>
+                        <Grid item xs={4}>
                           <Typography className={classes.cardFeature}>
                             Edad
                           </Typography>
                         </Grid>
-                        <Grid item xs={9}>
+                        <Grid item xs={8}>
                           <Typography>
                             {currentAnimal &&
                               getAge(
@@ -189,14 +197,14 @@ export default function AnimalDetailPage() {
                         className={classes.generalFeature}
                         xs={12}
                       >
-                        <Grid item xs={3}>
+                        <Grid item xs={4}>
                           <Typography className={classes.cardFeature}>
                             {currentAnimal && currentAnimal.gender === "FEMALE"
                               ? "Estado"
                               : "Categoria"}
                           </Typography>
                         </Grid>
-                        <Grid item xs={9}>
+                        <Grid item xs={8}>
                           <Typography>
                             {currentAnimal &&
                               currentAnimal.gender === "FEMALE" &&
@@ -1154,8 +1162,8 @@ export default function AnimalDetailPage() {
             {dialog === "OtherData" && <OtherData />}
             {dialog === "MilkData" && <MilkData />}
             {dialog === "WeighingData" && <WeighingData />}
+            {dialog === "CalendarData" && <CalendarData />}
             {/*
-        {dialog === "CalendarData" && <CalendarData />}
         {dialog === "CommentaryData" && <CommentaryData />}
         */}
             {dialog === "QRData" && <QRData />}

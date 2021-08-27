@@ -1,12 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
-import {
-  Grid,
-  Typography,
-  IconButton,
-  Dialog,
-  Button,
-} from "@material-ui/core";
+import { Grid, Typography, IconButton, Dialog } from "@material-ui/core";
 import AnimalDescription from "./AnimalDescription";
 import AnimalCharts from "./AnimalCharts";
 import AddAnimals from "./AddAnimals";
@@ -16,10 +10,16 @@ import { Delete, Edit, Visibility, Close } from "@material-ui/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { animalActions } from "../../redux/actions/animal.actions";
 import { ROUTES_DICT } from "../../routes/routesDict";
+import { Formik } from "formik";
+import * as yup from "yup";
+import SelectFieldFormik from "../../components/Inputs/SelectFieldFormik";
+import DatePickerFieldFormik from "../../components/Inputs/DatePickerFieldFormik";
+import ButtonFormik from "../../components/Inputs/ButtonFormik";
 import AddIndividual from "./AddAnimals/AddIndividual";
 import ACTION_TYPES from "../../redux/types";
 import CustomMuiTable from "../../components/CustomMuiTable";
 import RaceActions from "../../redux/actions/race.actions";
+import { deleteOptions } from "../../constants";
 
 function AnimalControlPage() {
   const classes = useStyles();
@@ -44,6 +44,23 @@ function AnimalControlPage() {
       dispatch(animalActions.listAll(currentAgribusiness._id));
     }
   }, [dispatch, currentAgribusiness]);
+
+  const [initValues] = useState({
+    motive: "",
+    activeUpdatedOn: new Date(),
+  });
+
+  const handleSubmit = (values) => {
+    values._id = animalId;
+    console.log(values);
+    dispatch(animalActions.deleteElement(values)).then(
+      (data) => {
+        history.push(ROUTES_DICT.animalControl);
+      },
+      (error) => {}
+    );
+  };
+  const validationSchema = yup.object({});
 
   const options = {
     selectableRows: "none",
@@ -174,32 +191,39 @@ function AnimalControlPage() {
             <Typography variant={"subtitle1"} gutterBottom>
               Eliminar Registro
             </Typography>
-            <Typography variant={"body1"} gutterBottom>
-              ¿Estas seguro de eliminar este registro?
-            </Typography>
-            <br />
-            <Grid container justifyContent="flex-end">
-              <Button
-                variant="contained"
-                className={classes.btnCancel}
-                onClick={() => {
-                  setOpen(false);
-                }}
-              >
-                Cancelar
-              </Button>
-
-              <Button
-                variant="contained"
-                color="secondary"
-                onClick={() => {
-                  dispatch(animalActions.deleteElement({ _id: animalId }));
-                  setOpen(false);
-                }}
-              >
-                Confirmar
-              </Button>
-            </Grid>
+            <Formik
+              initialValues={initValues}
+              onSubmit={handleSubmit}
+              validationSchema={validationSchema}
+            >
+              {(props) => (
+                <form onSubmit={props.handleSubmit}>
+                  <Grid container spacing={1}>
+                    <SelectFieldFormik
+                      label="Motivo"
+                      name="motive"
+                      onChange={props.handleChange}
+                      options={deleteOptions}
+                      xs={6}
+                    />
+                    <DatePickerFieldFormik
+                      label="Fecha"
+                      name="activeUpdatedOn"
+                      onChange={props.handleChange}
+                      xs={6}
+                    />
+                  </Grid>
+                  <Grid item container justifyContent={"flex-end"} xs={12}>
+                    <Grid item xs={4} className={classes.paddingButton}>
+                      <ButtonFormik xs={4} label="Cancelar" type="cancel" />
+                    </Grid>
+                    <Grid item xs={4}>
+                      <ButtonFormik xs={4} label="Confirmar" type="submit" />
+                    </Grid>
+                  </Grid>
+                </form>
+              )}
+            </Formik>
           </Grid>
         )}
         {dialogOption === "update" && (
