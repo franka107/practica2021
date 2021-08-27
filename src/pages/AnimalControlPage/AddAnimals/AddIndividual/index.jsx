@@ -44,7 +44,7 @@ function AddIndividual({ setOpen, typeAccion = "create", animalId = "" }) {
   const maleAnimals = useSelector(getMaleAnimals());
   const femaleAnimals = useSelector(getFemaleAnimals());
 
-  const [errorPercentage] = useState("");
+  const [errorPercentage, setErrorPercentage] = useState("");
 
   const validationSchema = yup.object({
     identifier: yup
@@ -111,6 +111,28 @@ function AddIndividual({ setOpen, typeAccion = "create", animalId = "" }) {
     }
   };
 
+  const handleCheckPercentage = (list = {}) => {
+    let total = 0;
+
+    Object.keys(list).forEach((animal) => {
+      const percentage = list[animal];
+      total = total + parseFloat(percentage);
+    });
+
+    console.log("total");
+    console.log(total);
+
+    if (total !== 100) {
+      setErrorPercentage(
+        "El porcentaje total debe ser 100%. Porfavor ajuste sus cantidades"
+      );
+      return false;
+    } else {
+      setErrorPercentage("");
+      return true;
+    }
+  };
+
   const handleRemoveRace = (id) => {
     const races = { ...animalRace };
     delete races[id];
@@ -120,6 +142,16 @@ function AddIndividual({ setOpen, typeAccion = "create", animalId = "" }) {
 
   const handleSubmit = (values, actions) => {
     // if (errorPercentage === "") {
+
+    const validPercentages = handleCheckPercentage({
+      percentageRace1: values.percentageRace1,
+      percentageRace2: values.percentageRace2,
+      percentageRace3: values.percentageRace3,
+      percentageRace4: values.percentageRace4,
+    });
+
+    if (!validPercentages) return;
+
     values.agribusinessId = currentAgribusiness._id;
 
     if (values.gender === "MALE") {
@@ -422,12 +454,7 @@ function AddIndividual({ setOpen, typeAccion = "create", animalId = "" }) {
                                 <ButtonFormik xs={3} label="Cancelar" type="cancel" />
                             </Grid> */}
           <Grid item xs={3}>
-            <ButtonFormik
-              xs={3}
-              label="Guardar"
-              type="submit"
-              onClick={handleSubmit}
-            />
+            <ButtonFormik xs={3} label="Guardar" type="submit" />
           </Grid>
         </Grid>
       </form>

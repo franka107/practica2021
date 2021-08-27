@@ -143,7 +143,7 @@ export const columnsToMuiTable = [
       searchable: false,
       filter: false,
       customBodyRender: (value) =>
-        getAgeInYears(new Date(value), new Date()) + " años",
+        value ? getAgeInYears(new Date(value), new Date()) + " años" : null,
     },
   },
   {
