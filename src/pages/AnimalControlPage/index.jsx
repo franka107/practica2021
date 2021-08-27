@@ -14,6 +14,7 @@ import { Formik } from "formik";
 import * as yup from "yup";
 import SelectFieldFormik from "../../components/Inputs/SelectFieldFormik";
 import DatePickerFieldFormik from "../../components/Inputs/DatePickerFieldFormik";
+import TextFieldFormik from "../../components/Inputs/TextFieldFormik";
 import ButtonFormik from "../../components/Inputs/ButtonFormik";
 import AddIndividual from "./AddAnimals/AddIndividual";
 import ACTION_TYPES from "../../redux/types";
@@ -48,6 +49,7 @@ function AnimalControlPage() {
   const [initValues] = useState({
     motive: "",
     activeUpdatedOn: new Date(),
+    motiveDetail: "",
   });
 
   const handleSubmit = (values) => {
@@ -212,6 +214,15 @@ function AnimalControlPage() {
                       onChange={props.handleChange}
                       xs={6}
                     />
+                    <TextFieldFormik
+                      label="Detalles"
+                      name="motiveDetail"
+                      type="text"
+                      multiline
+                      rows={3}
+                      onChange={props.handleChange}
+                      xs={12}
+                    ></TextFieldFormik>
                   </Grid>
                   <Grid item container justifyContent={"flex-end"} xs={12}>
                     <Grid item xs={4} className={classes.paddingButton}>

@@ -9,6 +9,7 @@ import { Formik } from "formik";
 import * as yup from "yup";
 import SelectFieldFormik from "../../../components/Inputs/SelectFieldFormik";
 import DatePickerFieldFormik from "../../../components/Inputs/DatePickerFieldFormik";
+import TextFieldFormik from "../../../components/Inputs/TextFieldFormik";
 import ButtonFormik from "../../../components/Inputs/ButtonFormik";
 import { animalActions } from "../../../redux/actions/animal.actions";
 import { deleteOptions } from "../../../constants";
@@ -24,6 +25,7 @@ export default function ChipsSection() {
     _id: params.animalId,
     motive: "",
     activeUpdatedOn: new Date(),
+    motiveDetail: "",
   });
   const handleSubmit = (values) => {
     console.log(values);
@@ -120,6 +122,15 @@ export default function ChipsSection() {
                     onChange={props.handleChange}
                     xs={6}
                   />
+                  <TextFieldFormik
+                    label="Detalles"
+                    name="motiveDetail"
+                    type="text"
+                    multiline
+                    rows={3}
+                    onChange={props.handleChange}
+                    xs={12}
+                  ></TextFieldFormik>
                 </Grid>
                 <Grid item container justifyContent={"flex-end"} xs={12}>
                   <Grid item xs={4} className={classes.paddingButton}>
