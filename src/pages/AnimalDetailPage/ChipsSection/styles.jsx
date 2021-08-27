@@ -172,4 +172,16 @@ export const useStyles = makeStyles((theme) => ({
       margin: 0,
     },
   },
+  formStyle: {
+    marginTop: "1rem",
+  },
+  formDivider: {
+    marginTop: "0.3rem",
+  },
+  paddingButton: {
+    marginRight: "1rem",
+  },
+  borderBirth: {
+    border: "1px solid #0073C8",
+  },
 }));

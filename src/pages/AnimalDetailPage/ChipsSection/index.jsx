@@ -1,16 +1,40 @@
 import { useState } from "react";
-import { Grid, Chip, Dialog, Typography, Button } from "@material-ui/core";
+import { Grid, Chip, Dialog, Typography } from "@material-ui/core";
 import clsx from "clsx";
 import { useHistory, useParams } from "react-router-dom";
 import { ROUTES_DICT } from "../../../routes/routesDict";
 import { useStyles } from "./styles";
 import { Close } from "@material-ui/icons";
+import { Formik } from "formik";
+import * as yup from "yup";
+import SelectFieldFormik from "../../../components/Inputs/SelectFieldFormik";
+import DatePickerFieldFormik from "../../../components/Inputs/DatePickerFieldFormik";
+import ButtonFormik from "../../../components/Inputs/ButtonFormik";
+import { animalActions } from "../../../redux/actions/animal.actions";
+import { deleteOptions } from "../../../constants";
+import { useDispatch } from "react-redux";
 
 export default function ChipsSection() {
   const classes = useStyles();
   const history = useHistory();
   const params = useParams();
+  const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
+  const [initValues] = useState({
+    _id: params.animalId,
+    motive: "",
+    activeUpdatedOn: new Date(),
+  });
+  const handleSubmit = (values) => {
+    console.log(values);
+    dispatch(animalActions.deleteElement(values)).then(
+      (data) => {
+        history.push(ROUTES_DICT.animalControl);
+      },
+      (error) => {}
+    );
+  };
+  const validationSchema = yup.object({});
 
   return (
     <Grid container spacing={2} className={classes.optionContainer}>
@@ -72,10 +96,43 @@ export default function ChipsSection() {
           <Typography variant={"subtitle1"} gutterBottom>
             Eliminar Registro
           </Typography>
-          <Typography variant={"body1"} gutterBottom>
+          {/* <Typography variant={"body1"} gutterBottom>
             ¿Estas seguro de eliminar este registro?
-          </Typography>
-          <br />
+          </Typography> */}
+          <Formik
+            initialValues={initValues}
+            onSubmit={handleSubmit}
+            validationSchema={validationSchema}
+          >
+            {(props) => (
+              <form onSubmit={props.handleSubmit}>
+                <Grid container spacing={1}>
+                  <SelectFieldFormik
+                    label="Motivo"
+                    name="motive"
+                    onChange={props.handleChange}
+                    options={deleteOptions}
+                    xs={6}
+                  />
+                  <DatePickerFieldFormik
+                    label="Fecha"
+                    name="activeUpdatedOn"
+                    onChange={props.handleChange}
+                    xs={6}
+                  />
+                </Grid>
+                <Grid item container justifyContent={"flex-end"} xs={12}>
+                  <Grid item xs={4} className={classes.paddingButton}>
+                    <ButtonFormik xs={4} label="Cancelar" type="cancel" />
+                  </Grid>
+                  <Grid item xs={4}>
+                    <ButtonFormik xs={4} label="Confirmar" type="submit" />
+                  </Grid>
+                </Grid>
+              </form>
+            )}
+          </Formik>
+          {/* <br />
           <Grid container justifyContent="flex-end">
             <Button
               variant="contained"
@@ -98,7 +155,7 @@ export default function ChipsSection() {
             >
               Confirmar
             </Button>
-          </Grid>
+          </Grid> */}
         </Grid>
       </Dialog>
     </Grid>

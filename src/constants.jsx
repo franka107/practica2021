@@ -80,6 +80,13 @@ export const stateOptions = [
   { _id: "EMPTY", name: "Vacía" },
 ];
 
+export const deleteOptions = [
+  { _id: "DEATH", name: "Muerte" },
+  { _id: "SELF_CONSUMPTION", name: "Autoconsumo" },
+  { _id: "SALE", name: "Venta" },
+  { _id: "OTHERS", name: "Otros" },
+];
+
 export const categoryOptions = [{ _id: "1", name: "Reproductor" }];
 
 //export const coinOptions = [

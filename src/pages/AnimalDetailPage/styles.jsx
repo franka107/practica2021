@@ -69,7 +69,7 @@ export const useStyles = makeStyles((theme) => ({
     right: "-2.5rem",
     bottom: "0.5rem",
     backgroundColor: "#E8EDF1",
-    padding: "10px",
+    padding: "15px",
     borderRadius: "100%",
   },
   cowImage: {
@@ -91,6 +91,7 @@ export const useStyles = makeStyles((theme) => ({
   cardFeature: {
     color: "#979797",
     fontWeight: "bold",
+    paddingRight: "0.1rem",
   },
   cowCodeTitle: {
     paddingBottom: "1rem",
@@ -105,6 +106,7 @@ export const useStyles = makeStyles((theme) => ({
 
   qrImage: {
     width: "60px",
+    height: "60px",
   },
   cardEditIcon: {
     backgroundColor: "#BBD1D7",
