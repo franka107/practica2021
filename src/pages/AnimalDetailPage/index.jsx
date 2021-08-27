@@ -397,9 +397,13 @@ export default function AnimalDetailPage() {
                               </Grid>
                               <Grid item xs={7}>
                                 <Typography>
-                                  {currentAnimal && currentAnimal.racial2} -{" "}
                                   {currentAnimal &&
-                                    currentAnimal.percentageRacial2}
+                                    currentAnimal.race2 &&
+                                    currentAnimal.race2.name}{" "}
+                                  -{" "}
+                                  {currentAnimal &&
+                                    currentAnimal.percentageRace2 &&
+                                    currentAnimal.percentageRace2}
                                   %
                                 </Typography>
                               </Grid>
