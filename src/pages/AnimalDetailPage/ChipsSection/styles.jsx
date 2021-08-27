@@ -1,6 +1,12 @@
 import { makeStyles } from "@material-ui/core";
 
 export const useStyles = makeStyles((theme) => ({
+  modal: {
+    padding: "1.2rem",
+  },
+  btnCancel: {
+    marginRight: "1.2rem",
+  },
   registerContainer: {
     paddingTop: "1rem",
   },
@@ -25,7 +31,6 @@ export const useStyles = makeStyles((theme) => ({
     top: 10,
     cursor: "pointer",
   },
-  modal: { padding: "2.5rem" },
   option: {
     padding: "1.2rem .5rem",
     backgroundColor: theme.palette.button.tertiary,

@@ -79,14 +79,14 @@ function AddIndividual({ setOpen, typeAccion = "create", animalId = "" }) {
     mother: null,
     fatherId: "",
     motherId: "",
-    racial1: "",
-    percentageRacial1: 100,
-    racial2: "",
-    percentageRacial2: 0,
-    racial3: "",
-    percentageRacial3: 0,
-    racial4: "",
-    percentageRacial4: 0,
+    race1Id: races ? races[0]._id : "",
+    percentageRace1: 100,
+    race2Id: "",
+    percentageRace2: 0,
+    race3Id: "",
+    percentageRace3: 0,
+    race4Id: "",
+    percentageRace4: 0,
     racialType: null,
     color: "",
     reproductiveStatus: null,
@@ -100,42 +100,6 @@ function AddIndividual({ setOpen, typeAccion = "create", animalId = "" }) {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch]);
-
-  useEffect(() => {
-    // if (typeAccion === "update") {
-    //   if (currentAnimal) {
-    //     let total =
-    //       parseFloat(currentAnimal.percentageRacial1) +
-    //       parseFloat(currentAnimal.percentageRacial2) +
-    //       parseFloat(currentAnimal.percentageRacial3) +
-    //       parseFloat(currentAnimal.percentageRacial4);
-    //     if (total !== 100) {
-    //       setErrorPercentage(
-    //         "El porcentaje total debe ser 100%. Porfavor ajuste sus cantidades"
-    //       );
-    //     } else {
-    //       setErrorPercentage("");
-    //     }
-    //   }
-    // }
-  }, [currentAnimal]);
-
-  //const handleCheckPercentage = (list = []) => {
-  //  let total = 0;
-
-  //  Object.keys(list).forEach((animal) => {
-  //    const percentage = list[animal].percentage.replace("%", "");
-  //    total = total + parseFloat(percentage);
-  //  });
-
-  //  if (total !== 100) {
-  //    setErrorPercentage(
-  //      "El porcentaje total debe ser 100%. Porfavor ajuste sus cantidades"
-  //    );
-  //  } else {
-  //    setErrorPercentage("");
-  //  }
-  //};
 
   const handleAddRace = () => {
     const races = { ...animalRace };
@@ -383,7 +347,7 @@ function AddIndividual({ setOpen, typeAccion = "create", animalId = "" }) {
               </Grid>
               <Grid item container sm={8} xs={12}>
                 <SelectFieldFormik
-                  name={`racial${index + 1}`}
+                  name={`race${index + 1}Id`}
                   label="Raza"
                   options={races}
                   onChange={handleChange}
@@ -400,7 +364,7 @@ function AddIndividual({ setOpen, typeAccion = "create", animalId = "" }) {
                 <Grid item xs={11}>
                   <TextFieldFormik
                     xs={12}
-                    name={`percentageRacial${index + 1}`}
+                    name={`percentageRace${index + 1}`}
                     endAdornment={
                       <InputAdornment position="start">%</InputAdornment>
                     }
