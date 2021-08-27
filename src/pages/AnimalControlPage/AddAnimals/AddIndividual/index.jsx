@@ -99,6 +99,17 @@ function AddIndividual({ setOpen, typeAccion = "create", animalId = "" }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch]);
 
+  useEffect(() => {
+    if (typeAccion === "update") {
+      if (currentAnimal) {
+        if (currentAnimal.percentageRace2 !== 0) handleAddRace();
+        if (currentAnimal.percentageRace3 !== 0) handleAddRace();
+        if (currentAnimal.percentageRace4 !== 0) handleAddRace();
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentAnimal]);
+
   const handleAddRace = () => {
     const races = { ...animalRace };
     if (letters[Object.keys(races).length]) {
@@ -136,7 +147,8 @@ function AddIndividual({ setOpen, typeAccion = "create", animalId = "" }) {
   const handleRemoveRace = (id, index, values) => {
     const races = { ...animalRace };
     delete races[id];
-    //values[`percentageRage${index + 1}`] = 0;
+    values[`percentageRace${index + 1}`] = 0;
+    values[`race${index + 1}Id`] = "";
 
     setAnimalRace(races);
   };

@@ -60,7 +60,7 @@ export default function AnimalDetailPage() {
       dispatch(animalActions.listById({ _id: params.animalId }));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch]);
+  }, [dispatch, currentAnimal]);
 
   return (
     <Grid container xs={12}>
@@ -371,16 +371,18 @@ export default function AnimalDetailPage() {
                               </Typography>
                             </Grid>
                             <Grid item xs={7}>
-                              <Typography>
-                                {currentAnimal &&
-                                  currentAnimal.race1 &&
-                                  currentAnimal.race1.name}{" "}
-                                -{" "}
-                                {currentAnimal &&
-                                  currentAnimal.percentageRace1 &&
-                                  currentAnimal.percentageRace1}
-                                %
-                              </Typography>
+                              {currentAnimal && (
+                                <Typography>
+                                  {currentAnimal &&
+                                    currentAnimal.race1 &&
+                                    currentAnimal.race1.name}{" "}
+                                  -{" "}
+                                  {currentAnimal &&
+                                    currentAnimal.percentageRace1 &&
+                                    currentAnimal.percentageRace1}
+                                  %
+                                </Typography>
+                              )}
                             </Grid>
                           </Grid>
                           {currentAnimal &&

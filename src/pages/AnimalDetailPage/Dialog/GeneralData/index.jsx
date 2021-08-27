@@ -47,7 +47,6 @@ function GeneralData({ setOpen }) {
 
     dispatch(animalActions.updateElement(values)).then(
       (data) => {
-        console.log("data", data);
         dispatch({
           type: ACTION_TYPES.ANIMAL.UPDATE_CURRENT,
           payload: values,

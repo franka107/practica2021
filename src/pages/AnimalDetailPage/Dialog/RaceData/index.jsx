@@ -34,51 +34,42 @@ function RaceData({ setOpen }) {
   const maleAnimals = useSelector(getMaleAnimals());
   const femaleAnimals = useSelector(getFemaleAnimals());
 
+  const [errorPercentage, setErrorPercentage] = useState("");
+
   useEffect(() => {
     if (!races || races.length === 0) {
       dispatch(RaceActions.listRace());
     }
+
+    if (currentAnimal.percentageRace2 !== 0) handleAddRace();
+    if (currentAnimal.percentageRace3 !== 0) handleAddRace();
+    if (currentAnimal.percentageRace4 !== 0) handleAddRace();
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const [errorPercentage, setErrorPercentage] = useState("");
-
-  const validationSchema = yup.object({
-    identifier: yup
-      .string("Ingresa la identificacion del animal.")
-      .required("Este campo es requerido."),
-    name: yup
-      .string("Ingresa el nombre del animal.")
-      .required("Este campo es requerido."),
-    birthDate: yup
-      .date("Ingresa una fecha correcta.")
-      .max(new Date(), "No puedes poner una fecha futura")
-      .required("Este campo es requerido.")
-      .nullable(),
-    herdDate: yup
-      .date("Ingresa una fecha correcta.")
-      // .string("Ingresa la fecha de nacimiento del animal.")
-      .nullable(),
-    gender: yup
-      .string("Ingresa el genero del animal")
-      .required("Este campo es requerido."),
-  });
+  const validationSchema = yup.object({});
 
   // eslint-disable-next-line no-unused-vars
-  const handleCheckPercentage = (list = []) => {
+  const handleCheckPercentage = (list = {}) => {
     let total = 0;
 
     Object.keys(list).forEach((animal) => {
-      const percentage = list[animal].percentage.replace("%", "");
+      const percentage = list[animal];
       total = total + parseFloat(percentage);
     });
+
+    console.log("total");
+    console.log(total);
 
     if (total !== 100) {
       setErrorPercentage(
         "El porcentaje total debe ser 100%. Porfavor ajuste sus cantidades"
       );
+      return false;
     } else {
       setErrorPercentage("");
+      return true;
     }
   };
 
@@ -94,14 +85,23 @@ function RaceData({ setOpen }) {
     }
   };
 
-  const handleRemoveRace = (id) => {
+  const handleRemoveRace = (id, index, values) => {
     const races = { ...animalRace };
     delete races[id];
-
+    values[`percentageRace${index + 1}`] = 0;
+    values[`race${index + 1}Id`] = "";
     setAnimalRace(races);
   };
 
   const handleSubmit = (values, actions) => {
+    const validPercentages = handleCheckPercentage({
+      percentageRace1: values.percentageRace1,
+      percentageRace2: values.percentageRace2,
+      percentageRace3: values.percentageRace3,
+      percentageRace4: values.percentageRace4,
+    });
+
+    if (!validPercentages) return;
     // if (errorPercentage === "") {
     // values.agribusinessId = currentAgribusiness._id;
 
@@ -121,7 +121,7 @@ function RaceData({ setOpen }) {
       (data) => {
         dispatch({
           type: ACTION_TYPES.ANIMAL.UPDATE_CURRENT,
-          payload: values,
+          payload: null,
         });
         setOpen(false);
       },
@@ -193,7 +193,7 @@ function RaceData({ setOpen }) {
                     </Grid>
                     <Grid item container sm={8} xs={12}>
                       <SelectFieldFormik
-                        name={`racial${index + 1}`}
+                        name={`race${index + 1}Id`}
                         label="Raza"
                         options={races}
                         onChange={props.handleChange}
@@ -210,7 +210,7 @@ function RaceData({ setOpen }) {
                       <Grid item xs={11}>
                         <TextFieldFormik
                           xs={12}
-                          name={`percentageRacial${index + 1}`}
+                          name={`percentageRace${index + 1}`}
                           endAdornment={
                             <InputAdornment position="start">%</InputAdornment>
                           }
@@ -226,7 +226,9 @@ function RaceData({ setOpen }) {
                           <DeleteIcon
                             color={"secondary"}
                             className={classes.deleteIcon}
-                            onClick={() => handleRemoveRace(raceItem)}
+                            onClick={() =>
+                              handleRemoveRace(raceItem, index, props.values)
+                            }
                           />
                         )}
                       </Grid>
