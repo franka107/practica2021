@@ -10,7 +10,7 @@ export function authReducer(state = initialState, action) {
 
   switch (type) {
     case ACTION_TYPES.AUTH.REGISTER_SUCESS:
-      return state;
+      return { ...state, current: payload };
     case ACTION_TYPES.AUTH.REGISTER_FAIL:
       return {
         ...state,

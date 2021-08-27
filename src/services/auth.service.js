@@ -34,11 +34,12 @@ class AuthService {
     });
   }
 
-  sendVerificationEmail({ email }) {
+  sendVerificationEmail({ email }, fullUrl) {
+    const baseUrl = fullUrl.split("#")[0] + "#/email-verified/";
     return new Promise((resolve, reject) => {
       window.icAPI.callService(
         "sendVerificationEmail",
-        { email },
+        { email, baseUrl },
         (error, response) => {
           if (!error) {
             resolve(response);

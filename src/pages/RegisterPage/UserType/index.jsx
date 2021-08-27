@@ -12,13 +12,25 @@ import { userTypes } from "./constants";
 import { Link } from "react-router-dom";
 import { useStyles } from "./styles";
 import { ROUTES_DICT } from "../../../routes/routesDict";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { userActions } from "../../../redux/actions/user.actions";
+import authService from "../../../services/auth.service";
 
 function UserType({ onClick }) {
   const classes = useStyles();
   const [value, setValue] = useState(userTypes[0].key);
+  const { current: currentUser } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
 
   const handleChange = (event) => {
     setValue(event.target.value);
+  };
+
+  const handleSubmit = () => {
+    dispatch(userActions.setType({ type: value, ...currentUser }));
+    authService.sendVerificationEmail(currentUser, window.location.href);
+    onClick();
   };
 
   //const handleRegister = () => {
@@ -76,9 +88,9 @@ function UserType({ onClick }) {
           onChange={handleChange}
         >
           {userTypes.map((userType) => (
-            <Grid key={`radio-btn-${userType.id}`} item md={6} xs={12}>
+            <Grid key={`radio-btn-${userType._id}`} item md={6} xs={12}>
               <FormControlLabel
-                value={userType.key}
+                value={userType._id}
                 control={<Radio />}
                 label={
                   <Typography className={classes.label}>
@@ -93,7 +105,7 @@ function UserType({ onClick }) {
         </RadioGroup>
       </FormControl>
 
-      <Button className={classes.button} onClick={onClick}>
+      <Button className={classes.button} onClick={handleSubmit}>
         Registrar
       </Button>
     </Grid>

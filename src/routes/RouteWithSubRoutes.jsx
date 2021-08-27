@@ -10,7 +10,7 @@ function RouteWithSubRoutes({
   layout: Layout,
   type,
 }) {
-  const { isLoggedIn } = useSelector((state) => state.auth);
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
 
   return (
     <AuthRoute

@@ -14,7 +14,7 @@ function EmailVerifiedPage(props) {
   const params = useParams();
 
   useEffect(() => {
-    UserService.userUpdate({ _id: params.userId, isVerified: true });
+    UserService.userUpdate({ _id: params.userId, verified: true });
   }, [params]);
 
   return (

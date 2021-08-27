@@ -3,7 +3,7 @@ import { userConstants } from "../types/user.constants";
 import { alertActions } from "./alert.actions";
 import UiActions from "./ui.actions";
 
-export const userActions = { login, register };
+export const userActions = { login, register, setType };
 
 function register(userData) {
   return (dispatch) => {
@@ -26,6 +26,19 @@ function register(userData) {
   function failure(error) {
     return { type: userConstants.USER_REGISTER_FAILURE, error };
   }
+}
+function setType(data) {
+  return (dispatch) => {
+    return UserService.userUpdate(data).then(
+      (response) => {
+        return Promise.resolve();
+      },
+      (error) => {
+        dispatch(UiActions.showSnackbar(error.message, "error"));
+        return Promise.reject();
+      }
+    );
+  };
 }
 
 function login(email, password) {

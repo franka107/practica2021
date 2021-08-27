@@ -23,6 +23,10 @@ import PasswordFieldFormik from "../../components/Inputs/PasswordFieldFormik";
 import UserType from "./UserType";
 import { ROUTES_DICT } from "../../routes/routesDict";
 import AuthActions from "../../redux/actions/auth.actions";
+import TermsAndConditions from "./TermsAndConditions";
+import authService from "../../services/auth.service";
+import { useSelector } from "react-redux";
+import uiActions from "../../redux/actions/ui.actions";
 
 function RegisterPage(props) {
   const classes = useStyles();
@@ -35,9 +39,8 @@ function RegisterPage(props) {
     lastName: "",
     email: "",
     password: "",
-    promotions: false,
-    rememberAccount: false,
-    terms: false,
+    sendInformation: false,
+    termsAndConditions: false,
   };
 
   const validationSchema = yup.object({
@@ -64,10 +67,22 @@ function RegisterPage(props) {
     lastName: yup
       .string("Ingresa tu apellido")
       .required("El apellido es requerido"),
+    sendInformation: yup.boolean("Evalua el envio de noticias y productos"),
+    termsAndConditions: yup
+      .boolean("Evalua los terminos y condiciones")
+      .required("Este campo es obligatorio"),
   });
 
+  const currentUser = useSelector((state) => state.auth.current);
+
   const onSubmitForm = (values, actions) => {
-    dispatch(AuthActions.register(values))
+    dispatch(
+      AuthActions.register({
+        ...values,
+        termsAndConditionsAcceptedOn: new Date(),
+        sendInformationAcceptedOn: new Date(),
+      })
+    )
       .then(() => {
         setView("UserType");
       })
@@ -131,7 +146,7 @@ function RegisterPage(props) {
                 align={"center"}
                 className={classes.subtitle}
               >
-                O usar correo electrónico o número de teléfono
+                O usar correo electrónico {/* o número de teléfono */}
               </Typography>
             </Grid>
 
@@ -170,7 +185,21 @@ function RegisterPage(props) {
                 Por favor verifica tu correo electrónico para continuar.
               </Typography>
               <Grid item xs={12}>
-                <Button className={classes.registerBtn} type="submit">
+                <Button
+                  className={classes.registerBtn}
+                  type="submit"
+                  onClick={() => {
+                    authService.sendVerificationEmail(
+                      currentUser,
+                      window.location.href
+                    );
+                    dispatch(
+                      uiActions.showSnackbar(
+                        "Se envió el correo nuevamente, revisa tu buzón de entrada"
+                      )
+                    );
+                  }}
+                >
                   Reenviar correo de verificación
                 </Button>
               </Grid>
@@ -209,6 +238,7 @@ function RegisterPage(props) {
             onChange={handleChange}
             xs={6}
           ></TextFieldFormik>
+          {/* 
           <Grid item className={classes.resetPassword}>
             <Typography variant={"caption"} gutterBottom>
               <Link className={classes.link}>
@@ -216,6 +246,7 @@ function RegisterPage(props) {
               </Link>
             </Typography>
           </Grid>
+          */}
           <TextFieldFormik
             name="email"
             type="text"
@@ -234,9 +265,9 @@ function RegisterPage(props) {
             <FormControlLabel
               control={
                 <Checkbox
-                  checked={values.promotions}
+                  checked={values.sendInformation}
                   onChange={handleChange}
-                  name="promotions"
+                  name="sendInformation"
                   color={"secondary"}
                 />
               }
@@ -255,10 +286,10 @@ function RegisterPage(props) {
             <FormControlLabel
               control={
                 <Checkbox
-                  checked={values.terms}
+                  checked={values.termsAndConditions}
                   required
                   onChange={handleChange}
-                  name="terms"
+                  name="termsAndConditions"
                   className={classes.checkBox}
                 />
               }
@@ -290,6 +321,8 @@ function RegisterPage(props) {
               Registrarse
             </Button>
           </Grid>
+          {/*
+
           <Grid item xs={12}>
             <FormControlLabel
               control={
@@ -305,6 +338,7 @@ function RegisterPage(props) {
               }
             />
           </Grid>
+          */}
           <Typography gutterBottom className={classes.footer}>
             ¿Ya tienes una cuenta?{" "}
             <Link to={ROUTES_DICT.login} className={classes.link}>
@@ -322,6 +356,7 @@ function RegisterPage(props) {
         <Logo customClasses={classes.logo} />
         {switchView(view)}
       </RegisterCard>
+      <TermsAndConditions setOpen={setOpenTerms} open={openTerms} />
     </Container>
   );
 }
