@@ -50,9 +50,7 @@ function AddIndividual({ setOpen, typeAccion = "create", animalId = "" }) {
     identifier: yup
       .string("Ingresa la identificacion del animal.")
       .required("Este campo es requerido."),
-    name: yup
-      .string("Ingresa el nombre del animal.")
-      .required("Este campo es requerido."),
+    name: yup.string("Ingresa el nombre del animal."),
     birthDate: yup
       .date("Ingresa una fecha correcta.")
       .max(new Date(), "No puedes poner una fecha futura")
