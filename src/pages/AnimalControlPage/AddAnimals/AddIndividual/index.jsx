@@ -133,9 +133,10 @@ function AddIndividual({ setOpen, typeAccion = "create", animalId = "" }) {
     }
   };
 
-  const handleRemoveRace = (id) => {
+  const handleRemoveRace = (id, index, values) => {
     const races = { ...animalRace };
     delete races[id];
+    //values[`percentageRage${index + 1}`] = 0;
 
     setAnimalRace(races);
   };
@@ -410,7 +411,7 @@ function AddIndividual({ setOpen, typeAccion = "create", animalId = "" }) {
                     <DeleteIcon
                       color={"secondary"}
                       className={classes.deleteIcon}
-                      onClick={() => handleRemoveRace(raceItem)}
+                      onClick={() => handleRemoveRace(raceItem, index, values)}
                     />
                   )}
                 </Grid>
