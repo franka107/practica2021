@@ -128,7 +128,7 @@ export default function AnimalDetailPage() {
                           classes.cowCodeTitle
                         )}
                       >
-                        00123
+                        {currentAnimal && currentAnimal.identifier}
                       </Typography>
                       <Grid
                         container
@@ -191,24 +191,33 @@ export default function AnimalDetailPage() {
                       >
                         <Grid item xs={3}>
                           <Typography className={classes.cardFeature}>
-                            Estado
+                            {currentAnimal && currentAnimal.gender === "FEMALE"
+                              ? "Estado"
+                              : "Categoria"}
                           </Typography>
                         </Grid>
                         <Grid item xs={9}>
                           <Typography>
-                            {/* {currentAnimal &&
-                          `${currentAnimal.reproductiveStatus}, ${currentAnimal.gestation} dias de preñez`} */}
-                            {currentAnimal && currentAnimal.reproductiveStatus}
+                            {currentAnimal &&
+                              currentAnimal.gender === "FEMALE" &&
+                              currentAnimal.reproductiveStatus}
+                            {currentAnimal &&
+                            currentAnimal.gender === "MALE" &&
+                            currentAnimal.isReproductive
+                              ? "REPRODUCTOR"
+                              : "NO REPRODUCTOR"}
                           </Typography>
                           {/* <Typography>Vaca seca, 276 dias de preñez</Typography> */}
                         </Grid>
                       </Grid>
                       <div className={classes.borderLinearProgress}>
-                        <BorderLinearProgress
-                          variant="determinate"
-                          value="50"
-                          about="asd"
-                        ></BorderLinearProgress>
+                        {currentAnimal && currentAnimal.gender === "FEMALE" && (
+                          <BorderLinearProgress
+                            variant="determinate"
+                            value="50"
+                            about="asd"
+                          ></BorderLinearProgress>
+                        )}
                       </div>
                       <div className={classes.cardHeader}>
                         <Typography
@@ -262,7 +271,7 @@ export default function AnimalDetailPage() {
                       >
                         <Grid item xs={4}>
                           <Typography className={classes.cardFeature}>
-                            Nro. Registros
+                            Nro. Registro
                           </Typography>
                         </Grid>
                         <Grid item xs={8}>
@@ -348,22 +357,26 @@ export default function AnimalDetailPage() {
                               <Typography className={classes.cardFeature}>
                                 Raza{" "}
                                 {currentAnimal &&
-                                currentAnimal.percentageRacial1 !== 100
+                                currentAnimal.percentageRace1 !== 100
                                   ? "1"
                                   : ""}
                               </Typography>
                             </Grid>
                             <Grid item xs={7}>
                               <Typography>
-                                {currentAnimal && currentAnimal.racial1} -{" "}
                                 {currentAnimal &&
-                                  currentAnimal.percentageRacial1}
+                                  currentAnimal.race1 &&
+                                  currentAnimal.race1.name}{" "}
+                                -{" "}
+                                {currentAnimal &&
+                                  currentAnimal.percentageRace1 &&
+                                  currentAnimal.percentageRace1}
                                 %
                               </Typography>
                             </Grid>
                           </Grid>
                           {currentAnimal &&
-                          currentAnimal.percentageRacial1 !== 100 ? (
+                          currentAnimal.percentageRace1 !== 100 ? (
                             <Grid
                               container
                               className={classes.generalFeature}
