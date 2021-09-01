@@ -176,12 +176,12 @@ export const menuList = [
           {
             id: "semen",
             title: "Semen",
-            // link: routesDictionary.semen,
+            link: ROUTES_DICT.semen,
           },
           {
             id: "embriones",
             title: "Embriones",
-            // link: routesDictionary.embryo,
+            link: ROUTES_DICT.embryo,
           },
         ],
       },

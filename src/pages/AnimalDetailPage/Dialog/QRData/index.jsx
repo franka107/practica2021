@@ -8,7 +8,7 @@ function QRData({ setOpen, setAnimalsList, agribusinessId }) {
   return (
     <Grid className={classes.modal}>
       <Typography variant={"h6"} gutterBottom>
-        Actualizar Foto
+        Codigo QR
       </Typography>
       <Grid
         container

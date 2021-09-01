@@ -3,6 +3,8 @@ export const ROUTES_DICT = {
   register: "/register",
   login: "/login",
   dashboard: "/dashboard",
+  semen: "/semen",
+  embryo: "/embryo",
   sale: "/dashboard/colectiva-ventas",
   weight: "/dashboard/colectiva-pesaje",
   zeal: "/dashboard/colectiva-celos",

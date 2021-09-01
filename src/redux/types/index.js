@@ -36,6 +36,10 @@ const ACTION_TYPES = {
   RACE: {
     RETRIEVE: "race/RETRIEVE",
   },
+  GENETICSTOCK: {
+    RETRIEVE: "geneticStock/RETRIEVE",
+    CREATE: "geneticStock/CREATE",
+  },
 };
 
 export default ACTION_TYPES;
