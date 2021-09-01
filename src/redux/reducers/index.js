@@ -9,6 +9,7 @@ import { farmReducer } from "./farm.reducer";
 import { regionReducer } from "./region.reducer";
 import { uiReducer } from "./ui.reducer";
 import { raceReducer } from "./race.reducer";
+import { geneticStockReducer } from "./geneticStock.reducer";
 
 const rootReducer = combineReducers({
   auth: authReducer,
@@ -21,6 +22,7 @@ const rootReducer = combineReducers({
   currency: currencyReducer,
   agribusiness: agribusinessReducer,
   race: raceReducer,
+  geneticStock: geneticStockReducer,
 });
 
 //const rootReducer = (state, action) => {

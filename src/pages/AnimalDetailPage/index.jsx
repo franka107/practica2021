@@ -19,6 +19,7 @@ import OtherData from "./Dialog/OtherData";
 import MilkData from "./Dialog/MilkData";
 import WeighingData from "./Dialog/WeighingData";
 import CalendarData from "./Dialog/Calendar";
+import ImageData from "./Dialog/ImageData";
 // import CommentaryData from "./Dialog/CommentaryData";
 import Calendar from "react-calendar";
 import { Dialog } from "@material-ui/core";
@@ -100,6 +101,10 @@ export default function AnimalDetailPage() {
                               classes.cardEditIcon,
                               classes.cardEditButtonCow
                             )}
+                            onClick={() => {
+                              setOpen(true);
+                              setDialog("ImageData");
+                            }}
                             size="small"
                           >
                             <Edit fontSize="small"></Edit>
@@ -126,6 +131,10 @@ export default function AnimalDetailPage() {
                             value={window.location.href}
                             className={classes.qrImage}
                             includeMargin={true}
+                            onClick={() => {
+                              setOpen(true);
+                              setDialog("QRData");
+                            }}
                           />
                         </div>
                       </div>
@@ -1173,6 +1182,7 @@ export default function AnimalDetailPage() {
         {dialog === "CommentaryData" && <CommentaryData />}
         */}
             {dialog === "QRData" && <QRData />}
+            {dialog === "ImageData" && <ImageData />}
           </Dialog>
         </Grid>
       )}

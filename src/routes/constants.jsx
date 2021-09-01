@@ -8,6 +8,8 @@ import PalpationPage from "../pages/PalpationPage";
 import BirthPage from "../pages/BirthPage";
 import PregnanciesPage from "../pages/PregnanciesPage";
 import PedigreePage from "../pages/PedigreePage";
+import SemenPage from "../pages/GeneticStockPage/Semen";
+import EmbryoPage from "../pages/GeneticStockPage/Embryo";
 import SetupControlPage from "../pages/SetupControlPage";
 import EmailVerifiedPage from "../pages/EmailVerifiedPage";
 import LoginPage from "../pages/LoginPage";
@@ -76,7 +78,22 @@ export const ROUTES = [
     layout: DashboardLayout,
     type: ROUTE_TYPES.private,
   },
-
+  {
+    path: ROUTES_DICT.semen,
+    key: "Semen",
+    exact: true,
+    component: SemenPage,
+    layout: DashboardLayout,
+    type: ROUTE_TYPES.private,
+  },
+  {
+    path: ROUTES_DICT.embryo,
+    key: "Embriones",
+    exact: true,
+    component: EmbryoPage,
+    layout: DashboardLayout,
+    type: ROUTE_TYPES.private,
+  },
   {
     path: ROUTES_DICT.service,
     key: "Celos",
