@@ -7,6 +7,7 @@ import ServicePage from "../pages/ServicePage";
 import PalpationPage from "../pages/PalpationPage";
 import BirthPage from "../pages/BirthPage";
 import PregnanciesPage from "../pages/PregnanciesPage";
+import PedigreePage from "../pages/PedigreePage";
 import SetupControlPage from "../pages/SetupControlPage";
 import EmailVerifiedPage from "../pages/EmailVerifiedPage";
 import LoginPage from "../pages/LoginPage";
@@ -56,6 +57,14 @@ export const ROUTES = [
     key: "Control Animal",
     exact: true,
     component: AnimalControlPage,
+    layout: DashboardLayout,
+    type: ROUTE_TYPES.private,
+  },
+  {
+    path: ROUTES_DICT.pedigree,
+    key: "Control Animal",
+    exact: true,
+    component: PedigreePage,
     layout: DashboardLayout,
     type: ROUTE_TYPES.private,
   },

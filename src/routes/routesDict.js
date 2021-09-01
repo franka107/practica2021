@@ -12,6 +12,7 @@ export const ROUTES_DICT = {
   emailVerified: "/email-verified",
   pregnancies: "/dashboard/preñeces",
   animalDetail: "/dashboard/animal-detail",
+  pedigree: "/dashboard/animal-detail/:animalId/pedigree",
   animalControl: "/dashboard/control-animal",
   recoverPassword: "/recover-password",
   setup: "/setup",
