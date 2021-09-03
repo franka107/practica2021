@@ -6,6 +6,8 @@ import {
   Dialog,
   IconButton,
   Button,
+  Paper,
+  Divider,
 } from "@material-ui/core";
 import { Delete, Edit, Close, Star, StarBorder } from "@material-ui/icons";
 import { columns, columns2 } from "./constants";
@@ -193,13 +195,23 @@ function Embryo() {
         </Grid>
       </Grid>
       {ind === "1" && (
-        <Grid item xs={12} className={classes.registerContainer}>
-          <CustomMuiTable
-            data={geneticStockList}
-            columns={[...columns, actionColumn]}
-            options={options}
-          />
-        </Grid>
+        <>
+          <Grid item xs={12} className={classes.charts}>
+            <Paper className={classes.paper}>
+              <Typography variant={"overline"}>
+                Registro de nacimiento
+              </Typography>
+              <Divider className={classes.divider} />
+            </Paper>
+          </Grid>
+          <Grid item xs={12} className={classes.registerContainer}>
+            <CustomMuiTable
+              data={geneticStockList}
+              columns={[...columns, actionColumn]}
+              options={options}
+            />
+          </Grid>
+        </>
       )}
       {ind === "2" && (
         <Grid item xs={12} className={classes.registerContainer}>
