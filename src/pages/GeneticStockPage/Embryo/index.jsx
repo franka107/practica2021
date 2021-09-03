@@ -7,7 +7,7 @@ import {
   IconButton,
   Button,
 } from "@material-ui/core";
-import { Delete, Edit, Close } from "@material-ui/icons";
+import { Delete, Edit, Close, Star, StarBorder } from "@material-ui/icons";
 import { columns, columns2 } from "./constants";
 import { useStyles } from "./styles";
 import clsx from "clsx";
@@ -17,6 +17,8 @@ import CustomMuiTable from "../../../components/CustomMuiTable";
 import { useDispatch, useSelector } from "react-redux";
 import GeneticStockActions from "../../../redux/actions/geneticStock.actions";
 import { animalActions } from "../../../redux/actions/animal.actions";
+import ACTION_TYPES from "../../../redux/types";
+import geneticStockActions from "../../../redux/actions/geneticStock.actions";
 
 function Embryo() {
   const [open, setOpen] = useState(false);
@@ -84,6 +86,42 @@ function Embryo() {
               }}
             >
               <Delete fontSize="small" />
+            </IconButton>
+
+            <IconButton
+              style={{ color: "#C25560" }}
+              size="small"
+              aria-label="delete"
+              onClick={() => {
+                // data.outstanding = !data.outstanding;
+                // setAnimalsList(data);
+                dispatch(
+                  geneticStockActions.updateGeneticStock({
+                    ...geneticStockList[dataIndex],
+                    isFeatured: !Boolean(
+                      geneticStockList[dataIndex].isFeatured
+                    ),
+                  })
+                ).then((data) => {
+                  dispatch({
+                    type: ACTION_TYPES.GENETICSTOCK.UPDATE_CURRENT,
+                    payload: null,
+                  });
+                  dispatch(
+                    geneticStockActions.listGeneticStockByAgribusiness({
+                      geneticType: "EMBRYO",
+                    })
+                  );
+                });
+              }}
+            >
+              {Boolean(geneticStockList[dataIndex].isFeatured) === true && (
+                <Star fontSize="small" />
+              )}
+
+              {Boolean(geneticStockList[dataIndex].isFeatured) === false && (
+                <StarBorder fontSize="small" />
+              )}
             </IconButton>
           </>
         );

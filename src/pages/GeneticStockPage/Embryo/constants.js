@@ -4,10 +4,11 @@ import { Edit, Star, StarBorder } from "@material-ui/icons";
 
 export const columns = [
   {
-    label: "Cód Animal",
-    name: "animalId",
+    label: "Cód.",
+    name: "animal",
     options: {
       filter: false,
+      customBodyRender: (value) => value.identifier,
     },
   },
   {

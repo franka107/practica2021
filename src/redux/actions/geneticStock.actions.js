@@ -3,8 +3,13 @@ import ACTION_TYPES from "../types";
 
 class GeneticStockActions {
   listGeneticStockByAgribusiness(data) {
-    return (dispatch) => {
-      return GeneticStockService.geneticStockListByAgribusiness(data).then(
+    return (dispatch, getState) => {
+      const { agribusiness } = getState();
+
+      return GeneticStockService.geneticStockListByAgribusiness({
+        ...data,
+        agribusinessId: agribusiness.current._id,
+      }).then(
         (response) => {
           dispatch({
             type: ACTION_TYPES.GENETICSTOCK.RETRIEVE_BY_CURRENCY,
