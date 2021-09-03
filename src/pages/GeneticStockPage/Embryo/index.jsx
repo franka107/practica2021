@@ -43,7 +43,6 @@ function Embryo() {
     console.log("Current", currentAgribusiness._id);
     dispatch(
       GeneticStockActions.listGeneticStockByAgribusiness({
-        agribusinessId: currentAgribusiness._id,
         geneticType: "EMBRYO",
       })
     );
@@ -139,7 +138,6 @@ function Embryo() {
       (data) => {
         dispatch(
           GeneticStockActions.listGeneticStockByAgribusiness({
-            agribusinessId: currentAgribusiness._id,
             geneticType: "EMBRYO",
           })
         );
