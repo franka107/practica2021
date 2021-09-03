@@ -7,14 +7,17 @@ import { Formik } from "formik";
 import * as yup from "yup";
 import TextFieldFormik from "../../../../../components/Inputs/TextFieldFormik";
 import SelectFieldFormik from "../../../../../components/Inputs/SelectFieldFormik";
+import SearchFieldFormik from "../../../../../components/Inputs/SearchFieldFormik";
 import ButtonFormik from "../../../../../components/Inputs/ButtonFormik";
-import MultipleCheckboxFormik from "../../../../../components/Inputs/MultipleCheckboxFormik";
 import { useDispatch, useSelector } from "react-redux";
 import GeneticStockActions from "../../../../../redux/actions/geneticStock.actions";
+import RaceActions from "../../../../../redux/actions/race.actions";
+import { getFemaleAnimals } from "../../../../../redux/selectors/animal.selector";
+import MultipleCheckboxFormik from "../../../../../components/Inputs/MultipleCheckboxFormik";
 
 const propTypes = {};
 
-function FormSemen({ setOpen }) {
+function FormSemen({ setOpen, type = "create", geneticStockId = "" }) {
   const classes = useStyles();
 
   const letters = ["A", "B", "C", "D"];
@@ -22,12 +25,29 @@ function FormSemen({ setOpen }) {
     A: { type: "1", percentage: "100%" },
   });
   const dispatch = useDispatch();
-  // const { current: currentAnimal } = useSelector((state) => state.animal);
+  const { current: currentAgribusiness } = useSelector(
+    (state) => state.agribusiness
+  );
   const { list: races } = useSelector((state) => state.race);
+  const { current: currentGeneticStock } = useSelector(
+    (state) => state.geneticStock
+  );
+
+  const femaleAnimals = useSelector(getFemaleAnimals());
 
   const [errorPercentage, setErrorPercentage] = useState("");
 
   useEffect(() => {
+    if (!races || races.length === 0) {
+      dispatch(RaceActions.listRace());
+    }
+    if (type === "update") {
+      if (!currentGeneticStock) {
+        dispatch(
+          GeneticStockActions.listGeneticStockById({ _id: geneticStockId })
+        );
+      }
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -66,20 +86,6 @@ function FormSemen({ setOpen }) {
     }
   };
 
-  const [initValues] = useState({
-    agribusinessId: "",
-    identifier: "",
-    father: "",
-    mother: "",
-    active: false,
-    value: 0,
-    stock: 0,
-    lastMove: "",
-    totalValue: 0,
-    geneticType: "EMBRYO",
-    observation: "",
-  });
-
   const handleRemoveRace = (id, index, values) => {
     const races = { ...animalRace };
     delete races[id];
@@ -87,198 +93,264 @@ function FormSemen({ setOpen }) {
     // values[`race${index + 1}Id`] = "";
     setAnimalRace(races);
   };
+
+  const [initValues] = useState({
+    agribusinessId: "",
+    animalId: "",
+    animal: {},
+    name: "",
+    active: false,
+    value: 0,
+    stock: 0,
+    totalValue: 0,
+    geneticType: "EMBRYO",
+    observation: "",
+    race1Id: "",
+    percentageRace1: 0,
+    race2Id: "",
+    percentageRace2: 0,
+    race3Id: "",
+    percentageRace3: 0,
+    race4Id: "",
+    percentageRace4: 0,
+  });
+
   const validationSchema = yup.object({});
 
   const handleSubmit = (values, actions) => {
-    dispatch(GeneticStockActions.createGenticStock(values));
+    values.animalId = values.animal._id;
+    values.agribusinessId = currentAgribusiness._id;
+    if (type === "create") {
+      dispatch(GeneticStockActions.createGenticStock(values)).then(
+        (data) => {
+          dispatch(
+            GeneticStockActions.listGeneticStockByAgribusiness({
+              agribusinessId: currentAgribusiness._id,
+              geneticType: "EMBRYO",
+            })
+          );
+          dispatch(GeneticStockActions.clearCurrentGenticStock());
+          setOpen(false);
+        },
+        (err) => {}
+      );
+    }
+    if (type === "update") {
+      dispatch(GeneticStockActions.updateGeneticStock(values)).then(
+        (data) => {
+          dispatch(
+            GeneticStockActions.listGeneticStockByAgribusiness({
+              agribusinessId: currentAgribusiness._id,
+              geneticType: "EMBRYO",
+            })
+          );
+          setOpen(false);
+        },
+        (err) => {}
+      );
+    }
+  };
+
+  const GeneticStockForm = ({
+    handleChange,
+    handleSubmit,
+    setFieldValue,
+    isSubmitting,
+    resetForm,
+    values,
+    errors,
+    touched,
+  }) => {
+    return (
+      <form onSubmit={handleSubmit}>
+        <Grid container spacing={1} className={classes.formStyle}>
+          <SearchFieldFormik
+            options={femaleAnimals}
+            label="Cod. animal"
+            type="text"
+            name="animalId"
+            onChange={(e, value) => {
+              setFieldValue("animal", value);
+              // setFieldValue("animalId", value._id);
+            }}
+            defaultValue={values.animal || null}
+            lg={4}
+            sm={4}
+            xs={12}
+          />
+          <TextFieldFormik
+            label="Nombre"
+            name="name"
+            onChange={handleChange}
+            xs={12}
+            sm={4}
+          />
+          <Grid
+            lg={4}
+            sm={4}
+            xs={12}
+            container
+            justifyContent="center"
+            alignContent="center"
+            alignItems="center"
+          >
+            <MultipleCheckboxFormik
+              label="Activo"
+              name="active"
+              options={[{ _id: 1, name: "Si" }]}
+              onChange={handleChange}
+              checked={values.active}
+            ></MultipleCheckboxFormik>
+          </Grid>
+        </Grid>
+        <Grid item xs={12} container className={classes.border}>
+          {Object.keys(animalRace).map((raceItem, index) => (
+            <Grid
+              item
+              xs={12}
+              container
+              key={`race-option-${raceItem}`}
+              spacing={1}
+              className={classes.raceContainer}
+            >
+              <Grid item xs={12}>
+                <Typography
+                  variant={"body2"}
+                  gutterBottom
+                  className={classes.subtitle}
+                >
+                  {`Raza ${raceItem}`}
+                </Typography>
+              </Grid>
+              <Grid item container sm={8} xs={12}>
+                <SelectFieldFormik
+                  name={`race${index + 1}Id`}
+                  label="Raza"
+                  options={races}
+                  onChange={handleChange}
+                />
+              </Grid>
+              <Grid
+                item
+                container
+                sm={4}
+                xs={12}
+                alignItems={"center"}
+                justifyContent={"center"}
+              >
+                <Grid item xs={11}>
+                  <TextFieldFormik
+                    xs={12}
+                    name={`percentageRace${index + 1}`}
+                    endAdornment={
+                      <InputAdornment position="start">%</InputAdornment>
+                    }
+                    type="number"
+                    label="Porcentaje"
+                    style={{ textAlign: "end" }}
+                    // type="number"
+                    onChange={handleChange}
+                  />
+                </Grid>
+                <Grid item xs={1}>
+                  {Boolean(index) && (
+                    <DeleteIcon
+                      color={"secondary"}
+                      className={classes.deleteIcon}
+                      onClick={() => handleRemoveRace(raceItem, index, values)}
+                    />
+                  )}
+                </Grid>
+              </Grid>
+            </Grid>
+          ))}
+          <Grid item xs={12} className={classes.errorMessage}>
+            <Typography variant={"caption"} gutterBottom>
+              {errorPercentage}
+            </Typography>
+          </Grid>
+          <AddCircle
+            color={"secondary"}
+            className={classes.addBtn}
+            onClick={handleAddRace}
+          />
+        </Grid>
+        <Grid container spacing={1}>
+          <TextFieldFormik
+            label="Costo unidad"
+            type="number"
+            name="value"
+            onChange={handleChange}
+            lg={4}
+            sm={4}
+            xs={12}
+          ></TextFieldFormik>
+          <TextFieldFormik
+            label="Existencia"
+            type="number"
+            name="stock"
+            onChange={handleChange}
+            lg={4}
+            sm={4}
+            xs={12}
+          ></TextFieldFormik>
+          <TextFieldFormik
+            label="Valor Total"
+            type="number"
+            name="totalValue"
+            onChange={handleChange}
+            lg={4}
+            sm={4}
+            xs={12}
+          ></TextFieldFormik>
+          <TextFieldFormik
+            label="Observación"
+            type="text"
+            name="observation"
+            onChange={handleChange}
+            multiline
+            rows={3}
+            xs={12}
+          ></TextFieldFormik>
+        </Grid>
+        <Grid item container justifyContent={"flex-end"} xs={12}>
+          {/* <Grid item xs={3} className={classes.paddingButton}>
+                <ButtonFormik
+                  xs={3}
+                  label="Cancelar"
+                  type="cancel"
+                  onClick={() => setOpen(false)}
+                />
+              </Grid> */}
+          <Grid item xs={3}>
+            <ButtonFormik xs={3} label="Guardar" type="submit" />
+          </Grid>
+        </Grid>
+      </form>
+    );
   };
 
   return (
     <Grid className={classes.modal}>
-      <Formik
-        initialValues={initValues}
-        onSubmit={handleSubmit}
-        validationSchema={validationSchema}
-      >
-        {(props) => (
-          <form onSubmit={props.handleSubmit}>
-            <Grid container spacing={1}>
-              <Grid item xs={12}>
-                <Typography variant={"subtitle1"}>Nuevo Semen</Typography>
-              </Grid>
-            </Grid>
-            <Grid container spacing={1} className={classes.formStyle}>
-              <TextFieldFormik
-                label="Cód. semen"
-                name="identifier"
-                onChange={props.handleChange}
-                xs={12}
-                sm={4}
-              />
-              <TextFieldFormik
-                label="Padre"
-                name="father"
-                onChange={props.handleChange}
-                xs={12}
-                sm={4}
-              />
-              <TextFieldFormik
-                label="Madre"
-                name="mother"
-                onChange={props.handleChange}
-                xs={12}
-                sm={4}
-              />
-              <Grid
-                lg={6}
-                sm={6}
-                xs={12}
-                container
-                justifyContent="center"
-                alignContent="center"
-                alignItems="center"
-              >
-                <MultipleCheckboxFormik
-                  label="Activo"
-                  name="active"
-                  options={[{ _id: 1, name: "Si" }]}
-                  onChange={props.handleChange}
-                  checked={props.values.active}
-                ></MultipleCheckboxFormik>
-              </Grid>
-            </Grid>
-            <Grid item xs={12} container className={classes.border}>
-              {Object.keys(animalRace).map((raceItem, index) => (
-                <Grid
-                  item
-                  xs={12}
-                  container
-                  key={`race-option-${raceItem}`}
-                  spacing={1}
-                  className={classes.raceContainer}
-                >
-                  <Grid item xs={12}>
-                    <Typography
-                      variant={"body2"}
-                      gutterBottom
-                      className={classes.subtitle}
-                    >
-                      {`Raza ${raceItem}`}
-                    </Typography>
-                  </Grid>
-                  <Grid item container sm={8} xs={12}>
-                    <SelectFieldFormik
-                      name={`race${index + 1}Id`}
-                      label="Raza"
-                      options={races}
-                      onChange={props.handleChange}
-                    />
-                  </Grid>
-                  <Grid
-                    item
-                    container
-                    sm={4}
-                    xs={12}
-                    alignItems={"center"}
-                    justifyContent={"center"}
-                  >
-                    <Grid item xs={11}>
-                      <TextFieldFormik
-                        xs={12}
-                        name={`percentageRace${index + 1}`}
-                        endAdornment={
-                          <InputAdornment position="start">%</InputAdornment>
-                        }
-                        type="number"
-                        label="Porcentaje"
-                        style={{ textAlign: "end" }}
-                        // type="number"
-                        onChange={props.handleChange}
-                      />
-                    </Grid>
-                    <Grid item xs={1}>
-                      {Boolean(index) && (
-                        <DeleteIcon
-                          color={"secondary"}
-                          className={classes.deleteIcon}
-                          onClick={() =>
-                            handleRemoveRace(raceItem, index, props.values)
-                          }
-                        />
-                      )}
-                    </Grid>
-                  </Grid>
-                </Grid>
-              ))}
-              <Grid item xs={12} className={classes.errorMessage}>
-                <Typography variant={"caption"} gutterBottom>
-                  {errorPercentage}
-                </Typography>
-              </Grid>
-              <AddCircle
-                color={"secondary"}
-                className={classes.addBtn}
-                onClick={handleAddRace}
-              />
-            </Grid>
-            <Grid container spacing={1}>
-              <TextFieldFormik
-                label="Costo unidad"
-                type="number"
-                name="value"
-                onChange={props.handleChange}
-                lg={3}
-                sm={3}
-                xs={12}
-              ></TextFieldFormik>
-              <TextFieldFormik
-                label="Existencia"
-                type="number"
-                name="stock"
-                onChange={props.handleChange}
-                lg={3}
-                sm={3}
-                xs={12}
-              ></TextFieldFormik>
-              <TextFieldFormik
-                label="Últ. movimiento"
-                type="text"
-                name="lastMove"
-                onChange={props.handleChange}
-                lg={3}
-                sm={3}
-                xs={12}
-              ></TextFieldFormik>
-              <TextFieldFormik
-                label="Valor Total"
-                type="text"
-                name="totalValue"
-                onChange={props.handleChange}
-                lg={3}
-                sm={3}
-                xs={12}
-              ></TextFieldFormik>
-              <TextFieldFormik
-                label="Observación"
-                type="text"
-                name="observation"
-                onChange={props.handleChange}
-                multiline
-                rows={3}
-                xs={12}
-              ></TextFieldFormik>
-            </Grid>
-            <Grid item container justifyContent={"flex-end"} xs={12}>
-              <Grid item xs={3} className={classes.paddingButton}>
-                <ButtonFormik xs={3} label="Cancelar" type="cancel" />
-              </Grid>
-              <Grid item xs={3}>
-                <ButtonFormik xs={3} label="Guardar" type="submit" />
-              </Grid>
-            </Grid>
-          </form>
-        )}
-      </Formik>
+      <Typography variant={"subtitle1"}>Nuevo Embrion</Typography>
+      {type === "update" && currentGeneticStock && (
+        <Formik
+          initialValues={currentGeneticStock || {}}
+          onSubmit={handleSubmit}
+          validationSchema={validationSchema}
+        >
+          {(props) => <GeneticStockForm {...props} />}
+        </Formik>
+      )}
+      {type === "create" && (
+        <Formik
+          initialValues={initValues}
+          onSubmit={handleSubmit}
+          validationSchema={validationSchema}
+        >
+          {(props) => <GeneticStockForm {...props} />}
+        </Formik>
+      )}
     </Grid>
   );
 }

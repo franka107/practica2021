@@ -118,22 +118,37 @@ function FormEmbryo({ setOpen, type = "create", geneticStockId = "" }) {
   const validationSchema = yup.object({});
 
   const handleSubmit = (values, actions) => {
-    console.log(currentAgribusiness);
     values.animalId = values.animal._id;
     values.agribusinessId = currentAgribusiness._id;
-    dispatch(GeneticStockActions.createGenticStock(values)).then(
-      (data) => {
-        dispatch(
-          GeneticStockActions.listGeneticStockByAgribusiness({
-            agribusinessId: currentAgribusiness._id,
-            geneticType: "EMBRYO",
-          })
-        );
-        dispatch(GeneticStockActions.clearCurrentGenticStock());
-        setOpen(false);
-      },
-      (err) => {}
-    );
+    if (type === "create") {
+      dispatch(GeneticStockActions.createGenticStock(values)).then(
+        (data) => {
+          dispatch(
+            GeneticStockActions.listGeneticStockByAgribusiness({
+              agribusinessId: currentAgribusiness._id,
+              geneticType: "EMBRYO",
+            })
+          );
+          dispatch(GeneticStockActions.clearCurrentGenticStock());
+          setOpen(false);
+        },
+        (err) => {}
+      );
+    }
+    if (type === "update") {
+      dispatch(GeneticStockActions.updateGeneticStock(values)).then(
+        (data) => {
+          dispatch(
+            GeneticStockActions.listGeneticStockByAgribusiness({
+              agribusinessId: currentAgribusiness._id,
+              geneticType: "EMBRYO",
+            })
+          );
+          setOpen(false);
+        },
+        (err) => {}
+      );
+    }
   };
 
   const GeneticStockForm = ({

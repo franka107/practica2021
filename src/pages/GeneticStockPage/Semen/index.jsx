@@ -16,25 +16,31 @@ import FormMove from "./Forms/FormMove";
 import CustomMuiTable from "../../../components/CustomMuiTable";
 import { useDispatch, useSelector } from "react-redux";
 import GeneticStockActions from "../../../redux/actions/geneticStock.actions";
+import { animalActions } from "../../../redux/actions/animal.actions";
 
 function Semen() {
   const [open, setOpen] = useState(false);
   const [dialog, setDialog] = useState("");
   const [ind, setInd] = useState("1");
-  const [searchText] = useState();
   const [geneticStockId, setGeneticStockId] = useState("");
+  const [searchText] = useState();
   const classes = useStyles();
   const dispatch = useDispatch();
   const { list: geneticStockList } = useSelector((state) => state.geneticStock);
+  const { list: animalList } = useSelector((state) => state.animal);
   const { current: currentAgribusiness } = useSelector(
     (state) => state.agribusiness
   );
 
   useEffect(() => {
+    if (!animalList) {
+      dispatch(animalActions.listAll(currentAgribusiness._id));
+    }
+    console.log("Current", currentAgribusiness._id);
     dispatch(
       GeneticStockActions.listGeneticStockByAgribusiness({
         agribusinessId: currentAgribusiness._id,
-        geneticType: "SEMEN",
+        geneticType: "EMBRYO",
       })
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -59,11 +65,11 @@ function Semen() {
               style={{ color: "#C25560" }}
               size="small"
               aria-label="edit"
-              // onClick={() => {
-              //   setOpen(true);
-              //   setDialogOption("update");
-              //   setAnimalId(animals[dataIndex]._id);
-              // }}
+              onClick={() => {
+                setOpen(true);
+                setDialog("update");
+                setGeneticStockId(geneticStockList[dataIndex]._id);
+              }}
             >
               <Edit fontSize="small" />
             </IconButton>
@@ -94,7 +100,7 @@ function Semen() {
         dispatch(
           GeneticStockActions.listGeneticStockByAgribusiness({
             agribusinessId: currentAgribusiness._id,
-            geneticType: "SEMEN",
+            geneticType: "EMBRYO",
           })
         );
         setOpen(false);
@@ -106,7 +112,7 @@ function Semen() {
   return (
     <Grid container xs={12}>
       <Grid item container xs={12}>
-        <Typography variant={"h6"}>Semen</Typography>
+        <Typography variant={"h6"}>Embriones</Typography>
         <Grid container spacing={2} className={classes.optionContainer}>
           <Grid item>
             <Chip
@@ -119,7 +125,7 @@ function Semen() {
           </Grid>
           <Grid item>
             <Chip
-              label={"Nuevo semen"}
+              label={"Nuevo embrión"}
               onClick={() => {
                 setOpen(true);
                 setDialog("Embryo");
@@ -169,15 +175,31 @@ function Semen() {
       <Dialog
         open={Boolean(open)}
         fullWidth
-        onClose={() => setOpen(false)}
+        onClose={() => {
+          setOpen(false);
+          dispatch(GeneticStockActions.clearCurrentGenticStock());
+        }}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
         maxWidth={dialog === "delete" ? "xs" : "md"}
         classes={{ paperFullWidth: classes.modal }}
       >
-        <Close className={classes.closeBtn} onClick={() => setOpen(false)} />
-        {dialog === "Embryo" && <FormEmbryo />}
-        {dialog === "Move" && <FormMove />}
+        <Close
+          className={classes.closeBtn}
+          onClick={() => {
+            setOpen(false);
+            dispatch(GeneticStockActions.clearCurrentGenticStock());
+          }}
+        />
+        {dialog === "Embryo" && <FormEmbryo setOpen={setOpen} />}
+        {dialog === "Move" && <FormMove setOpen={setOpen} />}
+        {dialog === "update" && (
+          <FormEmbryo
+            setOpen={setOpen}
+            type="update"
+            geneticStockId={geneticStockId}
+          />
+        )}
         {dialog === "delete" && (
           <Grid className={classes.modal}>
             <Typography variant={"subtitle1"} gutterBottom>

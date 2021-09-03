@@ -17,14 +17,14 @@ export const useStyles = makeStyles((theme) => ({
       backgroundColor: theme.palette.button.primary,
       color: "white",
     },
-    "&:focus": {
-      backgroundColor: theme.palette.button.primary,
-      color: "white",
-    },
   },
   active: {
     backgroundColor: theme.palette.button.primary,
     color: "white",
+    "&:focus": {
+      backgroundColor: theme.palette.button.primary,
+      color: "white",
+    },
   },
   closeBtn: {
     position: "absolute",

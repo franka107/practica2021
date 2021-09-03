@@ -62,7 +62,7 @@ class GeneticStockActions {
       return GeneticStockService.geneticStockUpdate(data).then(
         (response) => {
           dispatch({
-            type: ACTION_TYPES.GENETICSTOCK.RETRIEVE_BY_ID,
+            type: ACTION_TYPES.GENETICSTOCK.UPDATE,
             payload: response,
           });
           return Promise.resolve();

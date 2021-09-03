@@ -4,8 +4,8 @@ import { Edit, Star, StarBorder } from "@material-ui/icons";
 
 export const columns = [
   {
-    label: "Cód.",
-    name: "identifier",
+    label: "Cód Animal",
+    name: "animalId",
     options: {
       filter: false,
     },
@@ -34,20 +34,6 @@ export const columns = [
   {
     label: "Valor total",
     name: "totalValue",
-    options: {
-      filter: false,
-    },
-  },
-  {
-    label: "Padre",
-    name: "father",
-    options: {
-      filter: false,
-    },
-  },
-  {
-    label: "Madre",
-    name: "mother",
     options: {
       filter: false,
     },
