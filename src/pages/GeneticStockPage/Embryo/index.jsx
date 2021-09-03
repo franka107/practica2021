@@ -175,13 +175,22 @@ function Embryo() {
       <Dialog
         open={Boolean(open)}
         fullWidth
-        onClose={() => setOpen(false)}
+        onClose={() => {
+          setOpen(false);
+          dispatch(GeneticStockActions.clearCurrentGenticStock());
+        }}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
         maxWidth={dialog === "delete" ? "xs" : "md"}
         classes={{ paperFullWidth: classes.modal }}
       >
-        <Close className={classes.closeBtn} onClick={() => setOpen(false)} />
+        <Close
+          className={classes.closeBtn}
+          onClick={() => {
+            setOpen(false);
+            dispatch(GeneticStockActions.clearCurrentGenticStock());
+          }}
+        />
         {dialog === "Embryo" && <FormEmbryo setOpen={setOpen} />}
         {dialog === "Move" && <FormMove setOpen={setOpen} />}
         {dialog === "update" && (
