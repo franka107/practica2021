@@ -14,11 +14,59 @@ const geneticStockCreate = (data) => {
   });
 };
 
-const geneticStockList = () => {
+const geneticStockListByAgribusiness = (data) => {
   return new Promise((resolve, reject) => {
     window.icAPI.callService(
-      "geneticStockList",
-      {},
+      "geneticStockListByAgribusiness",
+      data,
+      function (error, response) {
+        if (!error) {
+          resolve(response.responseJSON);
+        } else {
+          reject(response);
+        }
+      }
+    );
+  });
+};
+
+const geneticStockGetById = (data) => {
+  return new Promise((resolve, reject) => {
+    window.icAPI.callService(
+      "geneticStockGetById",
+      data,
+      function (error, response) {
+        if (!error) {
+          resolve(response.responseJSON);
+        } else {
+          reject(response);
+        }
+      }
+    );
+  });
+};
+
+const geneticStockUpdate = (data) => {
+  return new Promise((resolve, reject) => {
+    window.icAPI.callService(
+      "geneticStockUpdate",
+      data,
+      function (error, response) {
+        if (!error) {
+          resolve(response.responseJSON);
+        } else {
+          reject(response);
+        }
+      }
+    );
+  });
+};
+
+const geneticStockDelete = (data) => {
+  return new Promise((resolve, reject) => {
+    window.icAPI.callService(
+      "geneticStockDelete",
+      data,
       function (error, response) {
         if (!error) {
           resolve(response.responseJSON);
@@ -32,7 +80,10 @@ const geneticStockList = () => {
 
 const GeneticStockService = {
   geneticStockCreate,
-  geneticStockList,
+  geneticStockListByAgribusiness,
+  geneticStockGetById,
+  geneticStockDelete,
+  geneticStockUpdate,
 };
 
 export default GeneticStockService;

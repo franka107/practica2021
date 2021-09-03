@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Grid, Typography, Chip, Dialog, IconButton } from "@material-ui/core";
+import {
+  Grid,
+  Typography,
+  Chip,
+  Dialog,
+  IconButton,
+  Button,
+} from "@material-ui/core";
 import { Delete, Edit, Close } from "@material-ui/icons";
 import { columns, columns2 } from "./constants";
 import { useStyles } from "./styles";
@@ -15,12 +22,21 @@ function Semen() {
   const [dialog, setDialog] = useState("");
   const [ind, setInd] = useState("1");
   const [searchText] = useState();
+  const [geneticStockId, setGeneticStockId] = useState("");
   const classes = useStyles();
   const dispatch = useDispatch();
   const { list: geneticStockList } = useSelector((state) => state.geneticStock);
+  const { current: currentAgribusiness } = useSelector(
+    (state) => state.agribusiness
+  );
 
   useEffect(() => {
-    dispatch(GeneticStockActions.listGeneticStock());
+    dispatch(
+      GeneticStockActions.listGeneticStockByAgribusiness({
+        agribusinessId: currentAgribusiness._id,
+        geneticType: "SEMEN",
+      })
+    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -55,11 +71,11 @@ function Semen() {
               style={{ color: "#C25560" }}
               size="small"
               aria-label="delete"
-              // onClick={() => {
-              //   setOpen(true);
-              //   setDialogOption("delete");
-              //   setAnimalId(animals[dataIndex]._id);
-              // }}
+              onClick={() => {
+                setOpen(true);
+                setDialog("delete");
+                setGeneticStockId(geneticStockList[dataIndex]._id);
+              }}
             >
               <Delete fontSize="small" />
             </IconButton>
@@ -67,6 +83,24 @@ function Semen() {
         );
       },
     },
+  };
+  const deleteItem = () => {
+    dispatch(
+      GeneticStockActions.deleteGenticStock({
+        _id: geneticStockId,
+      })
+    ).then(
+      (data) => {
+        dispatch(
+          GeneticStockActions.listGeneticStockByAgribusiness({
+            agribusinessId: currentAgribusiness._id,
+            geneticType: "SEMEN",
+          })
+        );
+        setOpen(false);
+      },
+      (err) => {}
+    );
   };
 
   return (
@@ -138,12 +172,47 @@ function Semen() {
         onClose={() => setOpen(false)}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
-        maxWidth={"md"}
+        maxWidth={dialog === "delete" ? "xs" : "md"}
         classes={{ paperFullWidth: classes.modal }}
       >
         <Close className={classes.closeBtn} onClick={() => setOpen(false)} />
         {dialog === "Embryo" && <FormEmbryo />}
         {dialog === "Move" && <FormMove />}
+        {dialog === "delete" && (
+          <Grid className={classes.modal}>
+            <Typography variant={"subtitle1"} gutterBottom>
+              Eliminar Registro
+            </Typography>
+            <Typography variant={"subtitle2"} gutterBottom>
+              ¿Desea eliminar el registro?
+            </Typography>
+            <Grid item container justifyContent={"flex-end"} xs={12}>
+              <Grid item xs={4} className={classes.paddingButton}>
+                <Button
+                  variant={"contained"}
+                  label="Cancelar"
+                  onClick={() => setOpen(false)}
+                  className={classes.buttonCancel}
+                  style={{ boxShadow: "none" }}
+                >
+                  Cancelar
+                </Button>
+              </Grid>
+              <Grid item xs={4}>
+                <Button
+                  variant={"contained"}
+                  label="Confirmar"
+                  color="primary"
+                  onClick={deleteItem}
+                  className={classes.buttonSubmit}
+                  style={{ boxShadow: "none" }}
+                >
+                  Confirmar
+                </Button>
+              </Grid>
+            </Grid>
+          </Grid>
+        )}
       </Dialog>
     </Grid>
   );

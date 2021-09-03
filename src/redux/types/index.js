@@ -38,6 +38,11 @@ const ACTION_TYPES = {
   },
   GENETICSTOCK: {
     RETRIEVE: "geneticStock/RETRIEVE",
+    RETRIEVE_BY_CURRENCY: "geneticStock/RETRIEVE_BY_CURRENCY",
+    RETRIEVE_BY_ID: "geneticStock/RETRIEVE_BY_ID",
+    UPDATE: "geneticStock/UPDATE",
+    UPDATE_CURRENT: "geneticStock/UPDATE_CURRENT",
+    DELETE: "geneticStock/DELETE",
     CREATE: "geneticStock/CREATE",
   },
 };
