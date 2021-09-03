@@ -22,7 +22,7 @@ function FormSemen({ setOpen }) {
     A: { type: "1", percentage: "100%" },
   });
   const dispatch = useDispatch();
-  const { current: currentAnimal } = useSelector((state) => state.animal);
+  // const { current: currentAnimal } = useSelector((state) => state.animal);
   const { list: races } = useSelector((state) => state.race);
 
   const [errorPercentage, setErrorPercentage] = useState("");
