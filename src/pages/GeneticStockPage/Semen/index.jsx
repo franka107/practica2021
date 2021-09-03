@@ -16,6 +16,7 @@ import FormMove from "./Forms/FormMove";
 import CustomMuiTable from "../../../components/CustomMuiTable";
 import { useDispatch, useSelector } from "react-redux";
 import GeneticStockActions from "../../../redux/actions/geneticStock.actions";
+import RaceActions from "../../../redux/actions/race.actions";
 import { animalActions } from "../../../redux/actions/animal.actions";
 
 function Semen() {
@@ -31,12 +32,15 @@ function Semen() {
   const { current: currentAgribusiness } = useSelector(
     (state) => state.agribusiness
   );
+  const { list: races } = useSelector((state) => state.race);
 
   useEffect(() => {
+    if (!races || races.length === 0) {
+      dispatch(RaceActions.listRace());
+    }
     if (!animalList) {
       dispatch(animalActions.listAll(currentAgribusiness._id));
     }
-    console.log("Current", currentAgribusiness._id);
     dispatch(
       GeneticStockActions.listGeneticStockByAgribusiness({
         geneticType: "SEMEN",

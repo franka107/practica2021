@@ -11,7 +11,6 @@ import SearchFieldFormik from "../../../../../components/Inputs/SearchFieldFormi
 import ButtonFormik from "../../../../../components/Inputs/ButtonFormik";
 import { useDispatch, useSelector } from "react-redux";
 import GeneticStockActions from "../../../../../redux/actions/geneticStock.actions";
-import RaceActions from "../../../../../redux/actions/race.actions";
 import { getMaleAnimals } from "../../../../../redux/selectors/animal.selector";
 import MultipleCheckboxFormik from "../../../../../components/Inputs/MultipleCheckboxFormik";
 
@@ -38,9 +37,6 @@ function FormSemen({ setOpen, type = "create", geneticStockId = "" }) {
   const [errorPercentage, setErrorPercentage] = useState("");
 
   useEffect(() => {
-    if (!races || races.length === 0) {
-      dispatch(RaceActions.listRace());
-    }
     if (type === "update") {
       if (!currentGeneticStock) {
         dispatch(

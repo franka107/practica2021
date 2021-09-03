@@ -21,6 +21,7 @@ import GeneticStockActions from "../../../redux/actions/geneticStock.actions";
 import { animalActions } from "../../../redux/actions/animal.actions";
 import ACTION_TYPES from "../../../redux/types";
 import geneticStockActions from "../../../redux/actions/geneticStock.actions";
+import RaceActions from "../../../redux/actions/race.actions";
 
 function Embryo() {
   const [open, setOpen] = useState(false);
@@ -35,12 +36,15 @@ function Embryo() {
   const { current: currentAgribusiness } = useSelector(
     (state) => state.agribusiness
   );
+  const { list: races } = useSelector((state) => state.race);
 
   useEffect(() => {
+    if (!races || races.length === 0) {
+      dispatch(RaceActions.listRace());
+    }
     if (!animalList) {
       dispatch(animalActions.listAll(currentAgribusiness._id));
     }
-    console.log("Current", currentAgribusiness._id);
     dispatch(
       GeneticStockActions.listGeneticStockByAgribusiness({
         geneticType: "EMBRYO",
