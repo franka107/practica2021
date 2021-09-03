@@ -6,7 +6,14 @@ import AnimalCharts from "./AnimalCharts";
 import AddAnimals from "./AddAnimals";
 import { useStyles } from "./styles";
 import { columnsToMuiTable } from "./constants";
-import { Delete, Edit, Visibility, Close } from "@material-ui/icons";
+import {
+  Delete,
+  Edit,
+  Visibility,
+  Close,
+  StarBorder,
+  Star,
+} from "@material-ui/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { animalActions } from "../../redux/actions/animal.actions";
 import { ROUTES_DICT } from "../../routes/routesDict";
@@ -116,6 +123,34 @@ function AnimalControlPage() {
               }}
             >
               <Delete fontSize="small" />
+            </IconButton>
+            <IconButton
+              style={{ color: "#C25560" }}
+              size="small"
+              aria-label="delete"
+              onClick={() => {
+                // data.outstanding = !data.outstanding;
+                // setAnimalsList(data);
+                dispatch(
+                  animalActions.updateElement({
+                    ...animals[dataIndex],
+                    isFeatured: !Boolean(animals[dataIndex].isFeatured),
+                  })
+                ).then((data) => {
+                  dispatch({
+                    type: ACTION_TYPES.ANIMAL.UPDATE_CURRENT,
+                    payload: null,
+                  });
+                });
+              }}
+            >
+              {Boolean(animals[dataIndex].isFeatured) === true && (
+                <Star fontSize="small" />
+              )}
+
+              {Boolean(animals[dataIndex].isFeatured) === false && (
+                <StarBorder fontSize="small" />
+              )}
             </IconButton>
           </>
         );

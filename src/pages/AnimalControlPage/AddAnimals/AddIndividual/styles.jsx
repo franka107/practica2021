@@ -4,6 +4,16 @@ export const useStyles = makeStyles((theme) => ({
   modal: {
     padding: "2.5rem",
   },
+  formControlContainer: {
+    flexDirection: "row !important",
+    justifyContent: "space-between !important",
+  },
+  checkBoxFormControl: {
+    padding: ".3rem .2rem 0",
+  },
+  checkBoxLabelForm: {
+    fontSize: 13,
+  },
   raceInput: {
     minWidth: "100%",
   },

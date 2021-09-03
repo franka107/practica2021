@@ -6,7 +6,7 @@ import * as yup from "yup";
 import TextFieldFormik from "../../../../components/Inputs/TextFieldFormik";
 import DatePickerFieldFormik from "../../../../components/Inputs/DatePickerFieldFormik";
 import ButtonFormik from "../../../../components/Inputs/ButtonFormik";
-import CheckboxFormik from "../../../../components/Inputs/CheckboxFormik";
+import MultipleCheckboxFormik from "../../../../components/Inputs/MultipleCheckboxFormik";
 
 function OtherData({ setOpen }) {
   const classes = useStyles();
@@ -62,12 +62,12 @@ function OtherData({ setOpen }) {
                 alignContent="center"
                 alignItems="center"
               >
-                <CheckboxFormik
+                <MultipleCheckboxFormik
                   name="isReproductive"
                   options={[{ id: "1", name: "Descornado" }]}
                   onChange={props.handleChange}
                   checked={true}
-                ></CheckboxFormik>
+                ></MultipleCheckboxFormik>
               </Grid>
               <Grid
                 sm={4}
@@ -77,12 +77,12 @@ function OtherData({ setOpen }) {
                 alignContent="center"
                 alignItems="center"
               >
-                <CheckboxFormik
+                <MultipleCheckboxFormik
                   name="isReproductive"
                   options={[{ id: "2", name: "Herrado" }]}
                   onChange={props.handleChange}
                   checked={false}
-                ></CheckboxFormik>
+                ></MultipleCheckboxFormik>
               </Grid>
               <Grid
                 sm={4}
@@ -92,12 +92,12 @@ function OtherData({ setOpen }) {
                 alignContent="center"
                 alignItems="center"
               >
-                <CheckboxFormik
+                <MultipleCheckboxFormik
                   name="isReproductive"
                   options={[{ id: "3", name: "Podología" }]}
                   onChange={props.handleChange}
                   checked={false}
-                ></CheckboxFormik>
+                ></MultipleCheckboxFormik>
               </Grid>
             </Grid>
             <Grid item container justifyContent={"flex-end"} xs={12}>

@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Grid, Typography, InputAdornment } from "@material-ui/core";
+import {
+  Grid,
+  Typography,
+  InputAdornment,
+  FormControl,
+  FormLabel,
+  FormGroup,
+} from "@material-ui/core";
 import { AddCircle } from "@material-ui/icons";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { useStyles } from "./styles";
@@ -9,24 +16,14 @@ import TextFieldFormik from "../../../../components/Inputs/TextFieldFormik";
 import ButtonFormik from "../../../../components/Inputs/ButtonFormik";
 import DatePickerFieldFormik from "../../../../components/Inputs/DatePickerFieldFormik";
 import SelectFieldFormik from "../../../../components/Inputs/SelectFieldFormik";
-import SearchFieldFormik from "../../../../components/Inputs/SearchFieldFormik";
-import CheckboxFormik from "../../../../components/Inputs/CheckboxFormik";
+import MultipleCheckboxFormik from "../../../../components/Inputs/MultipleCheckboxFormik";
 import { useDispatch, useSelector } from "react-redux";
 import { animalActions } from "../../../../redux/actions/animal.actions";
 import { categoryOptions } from "./constants";
 import ACTION_TYPES from "../../../../redux/types";
-import {
-  racialTypeOptions,
-  sexOptions,
-  stateOptions,
-} from "../../../../constants";
-import {
-  getFemaleAnimals,
-  getMaleAnimals,
-} from "../../../../redux/selectors/animal.selector";
-import { format } from "date-fns";
+import { racialTypeOptions, sexOptions } from "../../../../constants";
 
-const propTypes = {};
+import CheckboxFormik from "../../../../components/Inputs/CheckboxFormik";
 
 function AddIndividual({ setOpen, typeAccion = "create", animalId = "" }) {
   const classes = useStyles();
@@ -41,8 +38,6 @@ function AddIndividual({ setOpen, typeAccion = "create", animalId = "" }) {
   const { current: currentAgribusiness } = useSelector(
     (state) => state.agribusiness
   );
-  const maleAnimals = useSelector(getMaleAnimals());
-  const femaleAnimals = useSelector(getFemaleAnimals());
 
   const [errorPercentage, setErrorPercentage] = useState("");
 
@@ -64,17 +59,16 @@ function AddIndividual({ setOpen, typeAccion = "create", animalId = "" }) {
       .string("Ingresa el genero del animal")
       .required("Este campo es requerido."),
   });
-  const [initValues] = useState({
+  const [initValues, setInitValues] = useState({
     identifier: "",
     name: "",
     birthDate: null,
     herdDate: new Date(),
     registerNumber: "",
     gender: "MALE",
-    isReproductive: false,
-    category: "",
-    father: null,
-    mother: null,
+    isReproductive: null,
+    fatherRef: null,
+    motherRef: null,
     fatherId: "",
     motherId: "",
     race1Id: races ? races[0]._id : "",
@@ -154,8 +148,6 @@ function AddIndividual({ setOpen, typeAccion = "create", animalId = "" }) {
   };
 
   const handleSubmit = (values, actions) => {
-    // if (errorPercentage === "") {
-
     const validPercentages = handleCheckPercentage({
       percentageRace1: values.percentageRace1,
       percentageRace2: values.percentageRace2,
@@ -168,35 +160,16 @@ function AddIndividual({ setOpen, typeAccion = "create", animalId = "" }) {
     values.agribusinessId = currentAgribusiness._id;
 
     if (values.gender === "MALE") {
-      if (values.isReproductive) {
-        values.category = "REPRODUCTOR";
-      } else {
-        values.category = "";
-      }
-      values.reproductiveStatus = null;
+      values.isPregnant = null;
+      values.isDry = null;
     }
-
     if (values.gender === "FEMALE") {
       values.isReproductive = null;
-      values.category = "";
-    }
-
-    if (values.father) {
-      values.fatherId = values.father._id;
-    } else {
-      values.fatherId = "";
-    }
-
-    if (values.mother) {
-      values.motherId = values.mother._id;
-    } else {
-      values.motherId = "";
     }
 
     if (typeAccion === "create") {
       dispatch(animalActions.createElement(values));
       setOpen(false);
-      console.log("init", values);
     }
     if (typeAccion === "update") {
       dispatch(animalActions.updateElement(values)).then((data) => {
@@ -206,8 +179,6 @@ function AddIndividual({ setOpen, typeAccion = "create", animalId = "" }) {
         });
       });
       setOpen(false);
-      console.log(values.birthDate);
-      console.log(format(new Date(values.birthDate), "yyyy-MM-dd"));
     }
     // }
   };
@@ -223,7 +194,7 @@ function AddIndividual({ setOpen, typeAccion = "create", animalId = "" }) {
     touched,
   }) => {
     return (
-      <form onSubmit={handleSubmit} className={classes.formStyle}>
+      <form onSubmit={handleSubmit}>
         <Grid container spacing={1} className={classes.formStyle}>
           <Grid item xs={12}>
             <Typography variant={"subtitle2"}>Datos Generales</Typography>
@@ -276,7 +247,7 @@ function AddIndividual({ setOpen, typeAccion = "create", animalId = "" }) {
             sm={6}
             xs={12}
           ></SelectFieldFormik>
-          {values.gender === "MALE" ? (
+          {values.gender === "MALE" && (
             <Grid
               lg={6}
               sm={6}
@@ -286,83 +257,61 @@ function AddIndividual({ setOpen, typeAccion = "create", animalId = "" }) {
               alignContent="center"
               alignItems="center"
             >
-              <CheckboxFormik
-                label="Categoria"
+              <MultipleCheckboxFormik
+                label="Categorías"
                 name="isReproductive"
                 options={categoryOptions}
                 onChange={handleChange}
                 checked={values.isReproductive}
-              ></CheckboxFormik>
+              ></MultipleCheckboxFormik>
             </Grid>
-          ) : (
-            <SelectFieldFormik
-              onChange={handleChange}
-              options={stateOptions}
-              label="Estado"
-              name="reproductiveStatus"
+          )}
+          {values.gender === "FEMALE" && (
+            <Grid
               lg={6}
               sm={6}
               xs={12}
-            ></SelectFieldFormik>
+              container
+              justifyContent="center"
+              alignContent="center"
+              alignItems="center"
+            >
+              <FormControl className={classes.checkBoxFormControl}>
+                <FormLabel className={classes.checkBoxLabelForm}>
+                  Estados
+                </FormLabel>
+                <FormGroup className={classes.formControlContainer}>
+                  <CheckboxFormik
+                    name="isPregnant"
+                    label="Preñada"
+                    onChange={handleChange}
+                  />
+                  <CheckboxFormik
+                    name="isDry"
+                    label="Seca"
+                    onChange={handleChange}
+                  />
+                </FormGroup>
+              </FormControl>
+            </Grid>
           )}
 
-          {typeAccion === "create" ? (
-            <SearchFieldFormik
-              options={maleAnimals}
-              label="Padre"
-              type="text"
-              name="fatherId"
-              onChange={(e, value) => {
-                setFieldValue("father", value);
-              }}
-              lg={6}
-              sm={6}
-              xs={12}
-            ></SearchFieldFormik>
-          ) : (
-            <SearchFieldFormik
-              options={maleAnimals}
-              label="Padre"
-              type="text"
-              name="fatherId"
-              onChange={(e, value) => {
-                setFieldValue("father", value);
-              }}
-              defaultValue={values.father || null}
-              lg={6}
-              sm={6}
-              xs={12}
-            ></SearchFieldFormik>
-          )}
-
-          {typeAccion === "create" ? (
-            <SearchFieldFormik
-              options={femaleAnimals}
-              label="Madre"
-              type="text"
-              name="motherId"
-              onChange={(e, value) => {
-                setFieldValue("mother", value);
-              }}
-              lg={6}
-              sm={6}
-              xs={12}
-            ></SearchFieldFormik>
-          ) : (
-            <SearchFieldFormik
-              options={femaleAnimals}
-              label="Madre"
-              type="text"
-              name="motherId"
-              onChange={(e, value) => {
-                setFieldValue("mother", value);
-              }}
-              defaultValue={values.mother || null}
-              lg={6}
-              sm={6}
-              xs={12}
-            ></SearchFieldFormik>
-          )}
+          <TextFieldFormik
+            label="Padre"
+            onChange={handleChange}
+            name="fatherRef"
+            lg={6}
+            sm={6}
+            xs={12}
+          />
+          <TextFieldFormik
+            label="Madre"
+            onChange={handleChange}
+            name="motherRef"
+            lg={6}
+            sm={6}
+            xs={12}
+          />
         </Grid>
         <Grid container spacing={1} className={classes.formStyle}>
           <Grid item xs={12}>
@@ -484,25 +433,6 @@ function AddIndividual({ setOpen, typeAccion = "create", animalId = "" }) {
       {typeAccion === "update" && currentAnimal && (
         <Formik
           initialValues={currentAnimal}
-          // initialValues={{
-          //   ...currentAnimal,
-          //   birthDate: formatISO(
-          //     new Date(currentAnimal.birthDate),
-          //     "yyyy-MM-dd"
-          //   ),
-          //   herdDate: format(new Date(currentAnimal.herdDate), "yyyy-MM-dd"),
-          // }}
-          // initialValues={{
-          //   ...currentAnimal,
-          //   birthDate: format(
-          //     new Date(currentAnimal.birthDate),
-          //     "yyyy-MM-dd'T'HH:mm:ss.SSS"
-          //   ),
-          //   herdDate: format(
-          //     new Date(currentAnimal.herdDate),
-          //     "yyyy-MM-dd'T'HH:mm:ss.SSS"
-          //   ),
-          // }}
           onSubmit={handleSubmit}
           validationSchema={validationSchema}
         >
@@ -521,7 +451,5 @@ function AddIndividual({ setOpen, typeAccion = "create", animalId = "" }) {
     </Grid>
   );
 }
-
-AddIndividual.propTypes = propTypes;
 
 export default AddIndividual;

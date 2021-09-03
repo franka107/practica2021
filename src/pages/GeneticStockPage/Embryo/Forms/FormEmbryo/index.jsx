@@ -8,7 +8,7 @@ import * as yup from "yup";
 import TextFieldFormik from "../../../../../components/Inputs/TextFieldFormik";
 import SelectFieldFormik from "../../../../../components/Inputs/SelectFieldFormik";
 import ButtonFormik from "../../../../../components/Inputs/ButtonFormik";
-import CheckboxFormik from "../../../../../components/Inputs/CheckboxFormik";
+import MultipleCheckboxFormik from "../../../../../components/Inputs/MultipleCheckboxFormik";
 import { useDispatch } from "react-redux";
 import GeneticStockActions from "../../../../../redux/actions/geneticStock.actions";
 
@@ -137,13 +137,13 @@ function FormEmbryo({ setOpen }) {
                 alignContent="center"
                 alignItems="center"
               >
-                <CheckboxFormik
+                <MultipleCheckboxFormik
                   label="Activo"
                   name="active"
                   options={[{ _id: 1, name: "Si" }]}
                   onChange={props.handleChange}
                   checked={props.values.active}
-                ></CheckboxFormik>
+                ></MultipleCheckboxFormik>
               </Grid>
             </Grid>
             <Grid item xs={12} container className={classes.border}>

@@ -7,7 +7,7 @@ import TextFieldFormik from "../../../../../components/Inputs/TextFieldFormik";
 import SelectFieldFormik from "../../../../../components/Inputs/SelectFieldFormik";
 import DatePickerFieldFormik from "../../../../../components/Inputs/DatePickerFieldFormik";
 import ButtonFormik from "../../../../../components/Inputs/ButtonFormik";
-import CheckboxFormik from "../../../../../components/Inputs/CheckboxFormik";
+import MultipleCheckboxFormik from "../../../../../components/Inputs/MultipleCheckboxFormik";
 import { useDispatch, useSelector } from "react-redux";
 
 const propTypes = {};

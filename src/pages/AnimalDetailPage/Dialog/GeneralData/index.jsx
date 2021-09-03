@@ -7,7 +7,7 @@ import TextFieldFormik from "../../../../components/Inputs/TextFieldFormik";
 import DatePickerFieldFormik from "../../../../components/Inputs/DatePickerFieldFormik";
 import SelectFieldFormik from "../../../../components/Inputs/SelectFieldFormik";
 import ButtonFormik from "../../../../components/Inputs/ButtonFormik";
-import CheckboxFormik from "../../../../components/Inputs/CheckboxFormik";
+import MultipleCheckboxFormik from "../../../../components/Inputs/MultipleCheckboxFormik";
 import { useDispatch, useSelector } from "react-redux";
 import { animalActions } from "../../../../redux/actions/animal.actions";
 import ACTION_TYPES from "../../../../redux/types";
@@ -152,13 +152,13 @@ function GeneralData({ setOpen }) {
                     alignContent="center"
                     alignItems="center"
                   >
-                    <CheckboxFormik
+                    <MultipleCheckboxFormik
                       label="Categoria"
                       name="isReproductive"
                       options={categoryOptions}
                       onChange={props.handleChange}
                       checked={props.values.isReproductive}
-                    ></CheckboxFormik>
+                    ></MultipleCheckboxFormik>
                   </Grid>
                 ) : (
                   <SelectFieldFormik

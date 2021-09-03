@@ -10,7 +10,7 @@ import TextFieldFormik from "../../../components/Inputs/TextFieldFormik";
 import ButtonFormik from "../../../components/Inputs/ButtonFormik";
 import DatePickerFieldFormik from "../../../components/Inputs/DatePickerFieldFormik";
 import SelectFieldFormik from "../../../components/Inputs/SelectFieldFormik";
-import CheckboxFormik from "../../../components/Inputs/CheckboxFormik";
+import MultipleCheckboxFormik from "../../../components/Inputs/MultipleCheckboxFormik";
 
 function BirthHeader() {
   const classes = useStyles();
@@ -155,11 +155,11 @@ function BirthHeader() {
                     alignContent="center"
                     alignItems="center"
                   >
-                    <CheckboxFormik
+                    <MultipleCheckboxFormik
                       name="finding"
                       options={categoryOptions}
                       onChange={props.handleChange}
-                    ></CheckboxFormik>
+                    ></MultipleCheckboxFormik>
                   </Grid>
                   <TextFieldFormik
                     label="Diagnóstico"

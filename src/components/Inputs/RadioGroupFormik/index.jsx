@@ -8,29 +8,39 @@ import {
   RadioGroup as MuiRadioGroup,
   Typography,
 } from "@material-ui/core";
-import { useStyles } from "./styles";
+import { useStyles } from "../styles";
+import { useField } from "formik";
 
-export default function RadioGroupFormik(props) {
+export default function RadioGroupFormik({ xs = 12, options, ...props }) {
   const classes = useStyles();
-  const { name, label, value, onChange, items, error = null } = props;
+  const [field, meta, helpers] = useField(props);
+  const { setValue } = helpers;
 
   return (
-    <FormControl error={Boolean(error)}>
-      <FormLabel>{label}</FormLabel>
-      <MuiRadioGroup row name={name} value={value} onChange={onChange}>
-        {items.map((item) => (
-          <FormControlLabel
-            key={item.id}
-            value={item.id}
-            control={<Radio />}
-            label={
-              <Typography className={classes.label}>{item.title}</Typography>
-            }
-            className={classes.labelContainer}
-          />
-        ))}
+    <FormControl error={meta.touched && Boolean(meta.error)}>
+      <FormLabel>{props.label}</FormLabel>
+      <MuiRadioGroup
+        row
+        {...field}
+        {...props}
+        onChange={(event) => setValue(event.currentTarget.value)}
+      >
+        {Boolean(options) &&
+          options.map((option, index) => (
+            <FormControlLabel
+              key={option.index}
+              value={option._id}
+              control={<Radio />}
+              label={
+                <Typography className={classes.label}>{option.name}</Typography>
+              }
+              className={classes.labelContainer}
+            />
+          ))}
       </MuiRadioGroup>
-      {Boolean(error) && <FormHelperText>{error}</FormHelperText>}
+      {meta.touched && Boolean(meta.error) && (
+        <FormHelperText>{meta.error}</FormHelperText>
+      )}
     </FormControl>
   );
 }

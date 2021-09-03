@@ -7,7 +7,7 @@ import TextFieldFormik from "../../../../../components/Inputs/TextFieldFormik";
 import ButtonFormik from "../../../../../components/Inputs/ButtonFormik";
 import DatePickerFieldFormik from "../../../../../components/Inputs/DatePickerFieldFormik";
 import SelectFieldFormik from "../../../../../components/Inputs/SelectFieldFormik";
-import CheckboxFormik from "../../../../../components/Inputs/CheckboxFormik";
+import MultipleCheckboxFormik from "../../../../../components/Inputs/MultipleCheckboxFormik";
 import TimerPicker from "../../../../../components/Inputs/TimePickerFormik";
 
 const propTypes = {};
@@ -134,11 +134,11 @@ function AddMN() {
                 alignContent="center"
                 alignItems="center"
               >
-                <CheckboxFormik
+                <MultipleCheckboxFormik
                   name="iatf"
                   options={categoryOptions}
                   onChange={props.handleChange}
-                ></CheckboxFormik>
+                ></MultipleCheckboxFormik>
               </Grid>
               <TextFieldFormik
                 label="Observaciones"

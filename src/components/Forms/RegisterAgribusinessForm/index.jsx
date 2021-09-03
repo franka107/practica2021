@@ -14,7 +14,7 @@ import { regionActions } from "../../../redux/actions/region.actions";
 import { districtActions } from "../../../redux/actions/district.actions";
 import { unitCapacityOptions } from "../../../constants";
 
-import CheckboxFormik from "../../Inputs/CheckboxFormik";
+import MultipleCheckboxFormik from "../../Inputs/MultipleCheckboxFormik";
 import { useHistory } from "react-router-dom";
 import { ROUTES_DICT } from "../../../routes/routesDict";
 import {
@@ -454,11 +454,11 @@ export default function RegisterAgribusinessForm({ setRegisterStep }) {
                   alignContent="center"
                   alignItems="center"
                 >
-                  <CheckboxFormik
+                  <MultipleCheckboxFormik
                     name="objectiveFarmOptions"
                     options={objectiveFarmOptions}
                     onChange={props.handleChange}
-                  ></CheckboxFormik>
+                  ></MultipleCheckboxFormik>
                 </Grid>
                 <Grid xs={12}>
                   <Typography variant={"subtitle2"} sm={12} xs={12}>

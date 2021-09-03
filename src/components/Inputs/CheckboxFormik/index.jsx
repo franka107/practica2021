@@ -11,37 +11,15 @@ import { useStyles } from "../styles";
 import clsx from "clsx";
 import { useField } from "formik";
 
-export default function CheckboxFormik({ xs = 12, options, ...props }) {
+export default function CheckboxFormik({ xs = 12, ...props }) {
   const [field, meta] = useField(props);
   const classes = useStyles();
 
   return (
-    <FormControl
-      required
-      error={meta.touched && Boolean(meta.error)}
-      component="fieldset"
-      className={clsx(classes.checkBoxFormControl)}
-    >
-      {props.label && (
-        <FormLabel className={classes.checkBoxLabelForm}>
-          {props.label}
-        </FormLabel>
-      )}
-      <FormGroup className={classes.formControlContainer}>
-        {Boolean(options) &&
-          options.map((option) => (
-            <FormControlLabel
-              key={`checkbox-${option._id}`}
-              control={
-                <MuiCheckbox error color="secondary" {...field} {...props} />
-              }
-              label={<div className={classes.checkBoxLabel}>{option.name}</div>}
-            />
-          ))}
-      </FormGroup>
-      {meta.touched && Boolean(meta.error) && (
-        <FormHelperText>{meta.error}</FormHelperText>
-      )}
-    </FormControl>
+    <FormControlLabel
+      control={<MuiCheckbox error color="secondary" {...field} {...props} />}
+      label={<div className={classes.checkBoxLabel}>{props.label}</div>}
+      checked={Boolean(meta.value)}
+    />
   );
 }
