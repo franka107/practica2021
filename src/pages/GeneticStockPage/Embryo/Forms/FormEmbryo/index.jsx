@@ -105,8 +105,8 @@ function FormEmbryo({ setOpen, type = "create", geneticStockId = "" }) {
     totalValue: 0,
     geneticType: "EMBRYO",
     observation: "",
-    race1Id: "",
-    percentageRace1: 0,
+    race1Id: races ? races[0]._id : "",
+    percentageRace1: 100,
     race2Id: "",
     percentageRace2: 0,
     race3Id: "",
@@ -115,7 +115,11 @@ function FormEmbryo({ setOpen, type = "create", geneticStockId = "" }) {
     percentageRace4: 0,
   });
 
-  const validationSchema = yup.object({});
+  const validationSchema = yup.object({
+    animalId: yup
+      .string("Este campo no puedo ir vacio")
+      .required("Este campo es requerido."),
+  });
 
   const handleSubmit = (values, actions) => {
     values.animalId = values.animal._id;
@@ -125,7 +129,6 @@ function FormEmbryo({ setOpen, type = "create", geneticStockId = "" }) {
         (data) => {
           dispatch(
             GeneticStockActions.listGeneticStockByAgribusiness({
-              agribusinessId: currentAgribusiness._id,
               geneticType: "EMBRYO",
             })
           );
@@ -140,7 +143,6 @@ function FormEmbryo({ setOpen, type = "create", geneticStockId = "" }) {
         (data) => {
           dispatch(
             GeneticStockActions.listGeneticStockByAgribusiness({
-              agribusinessId: currentAgribusiness._id,
               geneticType: "EMBRYO",
             })
           );
@@ -164,20 +166,44 @@ function FormEmbryo({ setOpen, type = "create", geneticStockId = "" }) {
     return (
       <form onSubmit={handleSubmit}>
         <Grid container spacing={1} className={classes.formStyle}>
-          <SearchFieldFormik
-            options={femaleAnimals}
-            label="Cod. animal"
-            type="text"
-            name="animalId"
-            onChange={(e, value) => {
-              setFieldValue("animal", value);
-              // setFieldValue("animalId", value._id);
-            }}
-            defaultValue={values.animal || null}
-            lg={4}
-            sm={4}
-            xs={12}
-          />
+          {type === "create" ? (
+            <SearchFieldFormik
+              options={femaleAnimals}
+              label="Cod. animal"
+              type="text"
+              name="animalId"
+              onChange={(e, value) => {
+                setFieldValue("animal", value);
+                if (value) {
+                  setFieldValue("animalId", value._id);
+                } else {
+                  setFieldValue("animalId", "");
+                }
+              }}
+              lg={4}
+              sm={4}
+              xs={12}
+            />
+          ) : (
+            <SearchFieldFormik
+              options={femaleAnimals}
+              label="Cod. animal"
+              type="text"
+              name="animalId"
+              onChange={(e, value) => {
+                setFieldValue("animal", value);
+                if (value) {
+                  setFieldValue("animalId", value._id);
+                } else {
+                  setFieldValue("animalId", "");
+                }
+              }}
+              defaultValue={values.animal || null}
+              lg={4}
+              sm={4}
+              xs={12}
+            />
+          )}
           <TextFieldFormik
             label="Nombre"
             name="name"
@@ -294,7 +320,7 @@ function FormEmbryo({ setOpen, type = "create", geneticStockId = "" }) {
             sm={4}
             xs={12}
           ></TextFieldFormik>
-          <TextFieldFormik
+          {/* <TextFieldFormik
             label="Valor Total"
             type="number"
             name="totalValue"
@@ -302,7 +328,7 @@ function FormEmbryo({ setOpen, type = "create", geneticStockId = "" }) {
             lg={4}
             sm={4}
             xs={12}
-          ></TextFieldFormik>
+          ></TextFieldFormik> */}
           <TextFieldFormik
             label="Observación"
             type="text"

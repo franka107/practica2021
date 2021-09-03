@@ -26,7 +26,7 @@ function SearchFieldFormik({
         // {...props}
         defaultValue={defaultValue}
         options={options || []}
-        getOptionLabel={(option) => (option ? option.name : "")}
+        getOptionLabel={(option) => (option ? option.identifier : "")}
         getOptionSelected={(option, value) => option._id === value._id}
         // filterOptions={filterOptions}
         renderInput={(params) => (

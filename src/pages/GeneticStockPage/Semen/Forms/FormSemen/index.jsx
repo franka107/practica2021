@@ -12,7 +12,7 @@ import ButtonFormik from "../../../../../components/Inputs/ButtonFormik";
 import { useDispatch, useSelector } from "react-redux";
 import GeneticStockActions from "../../../../../redux/actions/geneticStock.actions";
 import RaceActions from "../../../../../redux/actions/race.actions";
-import { getFemaleAnimals } from "../../../../../redux/selectors/animal.selector";
+import { getMaleAnimals } from "../../../../../redux/selectors/animal.selector";
 import MultipleCheckboxFormik from "../../../../../components/Inputs/MultipleCheckboxFormik";
 
 const propTypes = {};
@@ -33,7 +33,7 @@ function FormSemen({ setOpen, type = "create", geneticStockId = "" }) {
     (state) => state.geneticStock
   );
 
-  const femaleAnimals = useSelector(getFemaleAnimals());
+  const maleAnimals = useSelector(getMaleAnimals());
 
   const [errorPercentage, setErrorPercentage] = useState("");
 
@@ -103,10 +103,10 @@ function FormSemen({ setOpen, type = "create", geneticStockId = "" }) {
     value: 0,
     stock: 0,
     totalValue: 0,
-    geneticType: "EMBRYO",
+    geneticType: "SEMEN",
     observation: "",
-    race1Id: "",
-    percentageRace1: 0,
+    race1Id: races ? races[0]._id : "",
+    percentageRace1: 100,
     race2Id: "",
     percentageRace2: 0,
     race3Id: "",
@@ -115,7 +115,11 @@ function FormSemen({ setOpen, type = "create", geneticStockId = "" }) {
     percentageRace4: 0,
   });
 
-  const validationSchema = yup.object({});
+  const validationSchema = yup.object({
+    animalId: yup
+      .string("Este campo no puedo ir vacio")
+      .required("Este campo es requerido."),
+  });
 
   const handleSubmit = (values, actions) => {
     values.animalId = values.animal._id;
@@ -125,8 +129,7 @@ function FormSemen({ setOpen, type = "create", geneticStockId = "" }) {
         (data) => {
           dispatch(
             GeneticStockActions.listGeneticStockByAgribusiness({
-              agribusinessId: currentAgribusiness._id,
-              geneticType: "EMBRYO",
+              geneticType: "SEMEN",
             })
           );
           dispatch(GeneticStockActions.clearCurrentGenticStock());
@@ -140,8 +143,7 @@ function FormSemen({ setOpen, type = "create", geneticStockId = "" }) {
         (data) => {
           dispatch(
             GeneticStockActions.listGeneticStockByAgribusiness({
-              agribusinessId: currentAgribusiness._id,
-              geneticType: "EMBRYO",
+              geneticType: "SEMEN",
             })
           );
           setOpen(false);
@@ -164,20 +166,44 @@ function FormSemen({ setOpen, type = "create", geneticStockId = "" }) {
     return (
       <form onSubmit={handleSubmit}>
         <Grid container spacing={1} className={classes.formStyle}>
-          <SearchFieldFormik
-            options={femaleAnimals}
-            label="Cod. animal"
-            type="text"
-            name="animalId"
-            onChange={(e, value) => {
-              setFieldValue("animal", value);
-              // setFieldValue("animalId", value._id);
-            }}
-            defaultValue={values.animal || null}
-            lg={4}
-            sm={4}
-            xs={12}
-          />
+          {type === "create" ? (
+            <SearchFieldFormik
+              options={maleAnimals}
+              label="Cod. animal"
+              type="text"
+              name="animalId"
+              onChange={(e, value) => {
+                setFieldValue("animal", value);
+                if (value) {
+                  setFieldValue("animalId", value._id);
+                } else {
+                  setFieldValue("animalId", "");
+                }
+              }}
+              lg={4}
+              sm={4}
+              xs={12}
+            />
+          ) : (
+            <SearchFieldFormik
+              options={maleAnimals}
+              label="Cod. animal"
+              type="text"
+              name="animalId"
+              onChange={(e, value) => {
+                setFieldValue("animal", value);
+                if (value) {
+                  setFieldValue("animalId", value._id);
+                } else {
+                  setFieldValue("animalId", "");
+                }
+              }}
+              defaultValue={values.animal || null}
+              lg={4}
+              sm={4}
+              xs={12}
+            />
+          )}
           <TextFieldFormik
             label="Nombre"
             name="name"
@@ -294,15 +320,16 @@ function FormSemen({ setOpen, type = "create", geneticStockId = "" }) {
             sm={4}
             xs={12}
           ></TextFieldFormik>
-          <TextFieldFormik
+          {/* <TextFieldFormik
             label="Valor Total"
             type="number"
             name="totalValue"
+            disabled
             onChange={handleChange}
             lg={4}
             sm={4}
             xs={12}
-          ></TextFieldFormik>
+          ></TextFieldFormik> */}
           <TextFieldFormik
             label="Observación"
             type="text"
@@ -332,7 +359,7 @@ function FormSemen({ setOpen, type = "create", geneticStockId = "" }) {
 
   return (
     <Grid className={classes.modal}>
-      <Typography variant={"subtitle1"}>Nuevo Embrion</Typography>
+      <Typography variant={"subtitle1"}>Nuevo Semen</Typography>
       {type === "update" && currentGeneticStock && (
         <Formik
           initialValues={currentGeneticStock || {}}

@@ -7,11 +7,11 @@ import {
   IconButton,
   Button,
 } from "@material-ui/core";
-import { Delete, Edit, Close } from "@material-ui/icons";
+import { Delete, Edit, Close, Star, StarBorder } from "@material-ui/icons";
 import { columns, columns2 } from "./constants";
 import { useStyles } from "./styles";
 import clsx from "clsx";
-import FormEmbryo from "./Forms/FormSemen";
+import FormSemen from "./Forms/FormSemen";
 import FormMove from "./Forms/FormMove";
 import CustomMuiTable from "../../../components/CustomMuiTable";
 import { useDispatch, useSelector } from "react-redux";
@@ -39,8 +39,7 @@ function Semen() {
     console.log("Current", currentAgribusiness._id);
     dispatch(
       GeneticStockActions.listGeneticStockByAgribusiness({
-        agribusinessId: currentAgribusiness._id,
-        geneticType: "EMBRYO",
+        geneticType: "SEMEN",
       })
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -85,6 +84,37 @@ function Semen() {
             >
               <Delete fontSize="small" />
             </IconButton>
+            <IconButton
+              style={{ color: "#C25560" }}
+              size="small"
+              aria-label="delete"
+              onClick={() => {
+                // data.outstanding = !data.outstanding;
+                // setAnimalsList(data);
+                dispatch(
+                  GeneticStockActions.updateGeneticStock({
+                    ...geneticStockList[dataIndex],
+                    isFeatured: !Boolean(
+                      geneticStockList[dataIndex].isFeatured
+                    ),
+                  })
+                ).then((data) => {
+                  dispatch(
+                    GeneticStockActions.listGeneticStockByAgribusiness({
+                      geneticType: "EMBRYO",
+                    })
+                  );
+                });
+              }}
+            >
+              {Boolean(geneticStockList[dataIndex].isFeatured) === true && (
+                <Star fontSize="small" />
+              )}
+
+              {Boolean(geneticStockList[dataIndex].isFeatured) === false && (
+                <StarBorder fontSize="small" />
+              )}
+            </IconButton>
           </>
         );
       },
@@ -99,8 +129,7 @@ function Semen() {
       (data) => {
         dispatch(
           GeneticStockActions.listGeneticStockByAgribusiness({
-            agribusinessId: currentAgribusiness._id,
-            geneticType: "EMBRYO",
+            geneticType: "SEMEN",
           })
         );
         setOpen(false);
@@ -112,7 +141,7 @@ function Semen() {
   return (
     <Grid container xs={12}>
       <Grid item container xs={12}>
-        <Typography variant={"h6"}>Embriones</Typography>
+        <Typography variant={"h6"}>Semen</Typography>
         <Grid container spacing={2} className={classes.optionContainer}>
           <Grid item>
             <Chip
@@ -125,10 +154,10 @@ function Semen() {
           </Grid>
           <Grid item>
             <Chip
-              label={"Nuevo embrión"}
+              label={"Nuevo semen"}
               onClick={() => {
                 setOpen(true);
-                setDialog("Embryo");
+                setDialog("Semen");
               }}
               className={clsx(classes.option)}
             />
@@ -191,10 +220,10 @@ function Semen() {
             dispatch(GeneticStockActions.clearCurrentGenticStock());
           }}
         />
-        {dialog === "Embryo" && <FormEmbryo setOpen={setOpen} />}
+        {dialog === "Semen" && <FormSemen setOpen={setOpen} />}
         {dialog === "Move" && <FormMove setOpen={setOpen} />}
         {dialog === "update" && (
-          <FormEmbryo
+          <FormSemen
             setOpen={setOpen}
             type="update"
             geneticStockId={geneticStockId}
