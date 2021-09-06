@@ -198,6 +198,7 @@ function Embryo() {
       </Grid>
       {ind === "1" && (
         <>
+          {/* 
           <Grid item xs={12} className={classes.charts}>
             <Paper className={classes.paper}>
               <Typography variant={"overline"}>
@@ -206,6 +207,7 @@ function Embryo() {
               <Divider className={classes.divider} />
             </Paper>
           </Grid>
+*/}
           <Grid item xs={12} className={classes.registerContainer}>
             <CustomMuiTable
               data={geneticStockList}

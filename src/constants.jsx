@@ -88,24 +88,3 @@ export const deleteOptions = [
 ];
 
 export const categoryOptions = [{ _id: "1", name: "Reproductor" }];
-
-//export const coinOptions = [
-//  { _id: 1, name: "PEN", icon: PEN },
-//  { _id: 2, name: "COL", icon: COP },
-//  { _id: 3, name: "ARS", icon: ARS },
-//  { _id: 4, name: "CLP", icon: CHF },
-//  { _id: 5, name: "USD", icon: USD },
-//  { _id: 6, name: "BRL", icon: BRL },
-//  { _id: 7, name: "CAD", icon: CAD },
-//  { _id: 8, name: "CUP", icon: CUP },
-//  { _id: 9, name: "EUR", icon: EUR },
-//  { _id: 10, name: "JPY", icon: JPY },
-//  { _id: 11, name: "MXN", icon: MXN },
-//  { _id: 12, name: "UYU", icon: UYU },
-//];
-
-//export const racialTypeOptions = [
-//{ _id: "BULLFIGHTING", name: "Toreo" },
-//{ _id: "ZEBU", name: "Zebu" },
-//{ _id: "HALF_BLOOD", name: "Media Sangre" },
-//];
