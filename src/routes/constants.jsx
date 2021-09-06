@@ -15,6 +15,7 @@ import EmailVerifiedPage from "../pages/EmailVerifiedPage";
 import LoginPage from "../pages/LoginPage";
 import RegisterPage from "../pages/RegisterPage";
 import { ROUTES_DICT } from "./routesDict";
+import MovementPage from "../pages/MovementPage";
 
 export const ROUTE_TYPES = {
   public: "public",
@@ -141,5 +142,13 @@ export const ROUTES = [
     component: EmailVerifiedPage,
     layout: AuthLayout,
     type: ROUTE_TYPES.public,
+  },
+  {
+    path: ROUTES_DICT.movements,
+    key: "Movimientos",
+    exact: true,
+    component: MovementPage,
+    layout: DashboardLayout,
+    type: ROUTE_TYPES.private,
   },
 ];
