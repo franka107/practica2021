@@ -86,13 +86,13 @@ const mainTheme = createTheme({
       contrastText: "#4D4D4D",
       contrastTextLess: "rgba(94, 94, 94, 0.5)",
     },
-    //primary: {
-    //  main: PRIMARY_COLOR,
-    //  light: "#D9DCE1",
-    //  dark: "#333238",
-    //  contrastText: "#4D4D4D",
-    //  contrastTextLess: "#666666",
-    //},
+    primary: {
+      main: PRIMARY_COLOR,
+      light: "#D9DCE1",
+      dark: "#333238",
+      contrastText: "#4D4D4D",
+      contrastTextLess: "#666666",
+    },
     secondary: {
       main: SECONDARY_COLOR,
       light: "#DDF4FA",
