@@ -1,6 +1,6 @@
 import { ROUTES_DICT, ROUTES_SLUGS } from "../../routes/routesDict";
 
-export const embryoRouteOptions = [
+export const embryoRouteOptions = (location) => [
   {
     key: "Inventario",
     path: ROUTES_DICT.embryo,
@@ -15,14 +15,19 @@ export const embryoRouteOptions = [
   },
   {
     key: "Nuevo movimiento",
-    path: ROUTES_DICT.movementsCreate.replace(
-      ":geneticType",
-      ROUTES_SLUGS.embryo
-    ),
+    path: {
+      pathname: ROUTES_DICT.movementsCreate.replace(
+        ":geneticType",
+        ROUTES_SLUGS.embryo
+      ),
+      state: {
+        from: location.pathname,
+      },
+    },
   },
 ];
 
-export const semenRouteOptions = [
+export const semenRouteOptions = (location) => [
   {
     key: "Inventario",
     path: ROUTES_DICT.semen,
@@ -37,9 +42,14 @@ export const semenRouteOptions = [
   },
   {
     key: "Nuevo movimiento",
-    path: ROUTES_DICT.movementsCreate.replace(
-      ":geneticType",
-      ROUTES_SLUGS.semen
-    ),
+    path: {
+      pathname: ROUTES_DICT.movementsCreate.replace(
+        ":geneticType",
+        ROUTES_SLUGS.semen
+      ),
+      state: {
+        from: location.pathname,
+      },
+    },
   },
 ];

@@ -24,6 +24,7 @@ import geneticStockActions from "../../../redux/actions/geneticStock.actions";
 import RaceActions from "../../../redux/actions/race.actions";
 import ChipList from "../../../components/ChipList";
 import { embryoRouteOptions } from "../constants";
+import { useLocation } from "react-router";
 
 function Embryo() {
   const [open, setOpen] = useState(false);
@@ -39,6 +40,7 @@ function Embryo() {
     (state) => state.agribusiness
   );
   const { list: races } = useSelector((state) => state.race);
+  const location = useLocation();
 
   useEffect(() => {
     if (!races || races.length === 0) {
@@ -157,7 +159,7 @@ function Embryo() {
     <Grid container xs={12}>
       <Grid item container xs={12}>
         <Typography variant={"h6"}>Embriones</Typography>
-        <ChipList routes={embryoRouteOptions} />
+        <ChipList routes={embryoRouteOptions(location)} />
         <Grid container spacing={2} className={classes.optionContainer}>
           <Grid item>
             <Chip

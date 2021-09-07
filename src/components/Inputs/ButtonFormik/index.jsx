@@ -9,6 +9,15 @@ const useStyles = makeStyles((theme) => ({
   label: {
     textTransform: "none",
   },
+  button: {
+    marginTop: "2rem",
+    width: "100%",
+    backgroundColor: theme.palette.button.primary.secondary,
+    color: "black",
+    "&:hover": {
+      backgroundColor: theme.palette.primary.contrastText,
+    },
+  },
   buttonSubmit: {
     marginTop: "2rem",
     width: "100%",
@@ -39,6 +48,7 @@ export default function ButtonFormik({ xs = 12, ...props }) {
       size={"large"}
       classes={{ root: classes.root, label: classes.label }}
       className={clsx(
+        classes.button,
         props.type === "cancel" && classes.buttonCancel,
         props.type === "submit" && classes.buttonSubmit
       )}
