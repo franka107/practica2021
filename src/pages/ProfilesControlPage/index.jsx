@@ -62,7 +62,7 @@ function ProfilesControlPage() {
     <Grid container xs={12}>
       <Typography variant={"h6"}>Configuración Perfiles</Typography>
       <Grid container spacing={2} className={classes.optionContainer}>
-        {menuList[0].submenu.map((menu) => (
+        {menuList[1].submenu.map((menu) => (
           <Grid item key={`option-${menu.id}`}>
             <Chip
               label={menu.title}
