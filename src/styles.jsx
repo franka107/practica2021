@@ -1,6 +1,15 @@
 import { makeStyles } from "@material-ui/core";
 
 export const useStyles = makeStyles((theme) => ({
+  customModal: {
+    padding: "1.2rem",
+  },
+  customModal__closeBtn: {
+    position: "absolute",
+    right: 10,
+    top: 10,
+    cursor: "pointer",
+  },
   chipList__container: {
     padding: "1rem 0",
   },
