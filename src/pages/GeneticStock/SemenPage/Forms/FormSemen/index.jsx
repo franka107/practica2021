@@ -163,14 +163,14 @@ function FormSemen({ setOpen, type = "create", geneticStockId = "" }) {
             name="identifier"
             onChange={handleChange}
             xs={12}
-            sm={8}
+            sm={4}
           />
           <TextFieldFormik
             label="Nombre"
             name="name"
             onChange={handleChange}
             xs={12}
-            sm={4}
+            sm={8}
           />
           <Grid
             lg={4}

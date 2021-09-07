@@ -14,6 +14,7 @@ import EmbryoPage from "../pages/GeneticStock/EmbryoPage";
 import HaciendaConfigurationPage from "../pages/HaciendaConfigurationPage";
 import ProfilesControlPage from "../pages/ProfilesControlPage";
 import UserControlPage from "../pages/UserControlPage";
+import PlanPage from "../pages/PlanPage";
 import AccountControlPage from "../pages/AccountControlPage";
 import SetupControlPage from "../pages/SetupControlPage";
 import EmailVerifiedPage from "../pages/EmailVerifiedPage";
@@ -29,6 +30,14 @@ export const ROUTE_TYPES = {
 };
 
 export const ROUTES = [
+  {
+    path: ROUTES_DICT.plan,
+    key: "Planes",
+    exact: true,
+    component: PlanPage,
+    layout: ConfigLayout,
+    type: ROUTE_TYPES.private,
+  },
   {
     path: ROUTES_DICT.users,
     key: "Usuarios",

@@ -27,6 +27,7 @@ export const menuItems = [
   {
     id: 4,
     title: "Planes",
+    link: ROUTES_DICT.plan,
   },
   {
     id: 5,

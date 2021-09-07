@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Typography, Grid } from "@material-ui/core";
+import { Grid, Button } from "@material-ui/core";
 import { useStyles } from "./styles";
 import { Formik } from "formik";
 import * as yup from "yup";
@@ -7,15 +7,18 @@ import SelectFieldFormik from "../../../components/Inputs/SelectFieldFormik";
 import TextFieldFormik from "../../../components/Inputs/TextFieldFormik";
 import ButtonFormik from "../../../components/Inputs/ButtonFormik";
 import PasswordFieldFormik from "../../../components/Inputs/PasswordFieldFormik";
+import { useHistory } from "react-router-dom";
+import { ROUTES_DICT } from "../../../routes/routesDict";
 function FormUser() {
   const classes = useStyles();
+  const history = useHistory();
 
   const [initValues] = useState({
     name: "",
     lastName: "",
     email: "",
     password: "",
-    profile: "",
+    plan: "",
   });
 
   const handleSubmit = (values) => {
@@ -66,13 +69,28 @@ function FormUser() {
                 onChange={props.handleChange}
               ></PasswordFieldFormik>
               <SelectFieldFormik
-                label="Perfil de usuario"
-                name="profile"
+                label="Plan"
+                name="plan"
                 onChange={props.handleChange}
                 options={[]}
                 xs={12}
                 sm={6}
               />
+              <Grid
+                container
+                sm={6}
+                xs={12}
+                alignItems={"center"}
+                alignContent={"center"}
+              >
+                <Button
+                  onClick={() => {
+                    history.push(ROUTES_DICT.plan);
+                  }}
+                >
+                  Cambiar Plan
+                </Button>
+              </Grid>
             </Grid>
             <Grid item container justifyContent={"flex-end"} xs={12}>
               <Grid item xs={4}>
