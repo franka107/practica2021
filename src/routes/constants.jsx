@@ -2,9 +2,19 @@ import { Redirect } from "react-router-dom";
 import { AuthLayout } from "../layouts/AuthLayout";
 import { DashboardLayout } from "../layouts/DashboardLayout";
 import { ConfigLayout } from "../layouts/ConfigLayout";
+import { ROUTES_DICT } from "./routesDict";
+
+/* routes authentication */
+import LoginPage from "../pages/LoginPage";
+import RegisterPage from "../pages/RegisterPage";
+import EmailVerifiedPage from "../pages/EmailVerifiedPage";
+import SetupControlPage from "../pages/SetupControlPage";
+
+/* routes with dashboard layout */
 import AnimalControlPage from "../pages/AnimalControlPage";
 import AnimalDetailPage from "../pages/AnimalDetailPage";
-import ServicePage from "../pages/ServicePage";
+import ServicePage from "../pages/ServicePage/ServiceTablePage";
+import IAMNFormPage from "../pages/ServicePage/IAMNFormPage";
 import PalpationPage from "../pages/PalpationPage";
 import BirthPage from "../pages/BirthPage";
 import PregnanciesPage from "../pages/PregnanciesPage";
@@ -12,17 +22,14 @@ import PedigreePage from "../pages/PedigreePage";
 import SemenPage from "../pages/GeneticStock/SemenPage";
 import EmbryoPage from "../pages/GeneticStock/EmbryoPage";
 import HaciendaConfigurationPage from "../pages/HaciendaConfigurationPage";
+import MovementPage from "../pages/GeneticStock/MovementPage";
+import MovementCreatePage from "../pages/GeneticStock/MovementCreatePage";
+
+/* routes with config layout */
 import ProfilesControlPage from "../pages/ProfilesControlPage";
 import UserControlPage from "../pages/UserControlPage";
 import PlanPage from "../pages/PlanPage";
 import AccountControlPage from "../pages/AccountControlPage";
-import SetupControlPage from "../pages/SetupControlPage";
-import EmailVerifiedPage from "../pages/EmailVerifiedPage";
-import LoginPage from "../pages/LoginPage";
-import RegisterPage from "../pages/RegisterPage";
-import { ROUTES_DICT } from "./routesDict";
-import MovementPage from "../pages/GeneticStock/MovementPage";
-import MovementCreatePage from "../pages/GeneticStock/MovementCreatePage";
 
 export const ROUTE_TYPES = {
   public: "public",
@@ -143,8 +150,16 @@ export const ROUTES = [
     type: ROUTE_TYPES.private,
   },
   {
+    path: ROUTES_DICT.iamnCreate,
+    key: "IA/MN",
+    exact: true,
+    component: IAMNFormPage,
+    layout: DashboardLayout,
+    type: ROUTE_TYPES.private,
+  },
+  {
     path: ROUTES_DICT.service,
-    key: "Celos",
+    key: "Servicios",
     exact: true,
     component: ServicePage,
     layout: DashboardLayout,
