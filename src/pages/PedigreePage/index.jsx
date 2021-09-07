@@ -24,9 +24,9 @@ import { animalActions } from "../../redux/actions/animal.actions";
 export default function PedigreePage() {
   const classes = useStyles();
   const history = useHistory();
-  const [dialog, setDialog] = useState();
+  // const [dialog, setDialog] = useState();
   const dispatch = useDispatch();
-  const [open, setOpen] = useState(false);
+  // const [open, setOpen] = useState(false);
   const params = useParams();
 
   const { current: currentAnimal } = useSelector((state) => state.animal);
@@ -123,10 +123,10 @@ export default function PedigreePage() {
               <IconButton
                 className={classes.cardEditIcon}
                 size="small"
-                onClick={() => {
-                  setOpen(true);
-                  setDialog("GeneralData");
-                }}
+                // onClick={() => {
+                //   setOpen(true);
+                //   setDialog("GeneralData");
+                // }}
               >
                 <Edit fontSize="small"></Edit>
               </IconButton>
@@ -152,15 +152,6 @@ export default function PedigreePage() {
                   srcset=""
                 />
                 <div className={clsx(classes.cowImageQrButton)}>
-                  {/* <img
-                            src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Codigo_QR.svg/1200px-Codigo_QR.svg.png"
-                            alt=""
-                            className={classes.qrImage}
-                            onClick={() => {
-                              setOpen(true);
-                              setDialog("QRData");
-                            }}
-                          /> */}
                   <QRCode
                     renderAs="svg"
                     value={window.location.href}

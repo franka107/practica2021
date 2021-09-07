@@ -1,53 +1,54 @@
-import { IconButton } from '@material-ui/core'
-import DeleteIcon from '@material-ui/icons/Delete'
-import { Edit } from '@material-ui/icons'
+import { IconButton } from "@material-ui/core";
+import DeleteIcon from "@material-ui/icons/Delete";
+import { Edit } from "@material-ui/icons";
+import { ROUTES_DICT } from "../../routes/routesDict";
 
 export const columns = [
   {
-    title: 'Id Vaca',
-    field: 'identifier',
+    title: "Id Vaca",
+    field: "identifier",
     color: true,
   },
   {
-    title: 'Nombre Vaca',
-    field: 'name',
+    title: "Nombre Vaca",
+    field: "name",
     color: true,
   },
   {
-    title: 'Estado',
-    field: 'state',
+    title: "Estado",
+    field: "state",
     color: true,
   },
   {
-    title: 'Tipo de Servicio',
-    field: 'typeService',
+    title: "Tipo de Servicio",
+    field: "typeService",
     color: true,
   },
   {
-    title: 'Fecha Registro',
-    field: 'registerDate',
+    title: "Fecha Registro",
+    field: "registerDate",
     color: true,
   },
   {
-    title: 'Responsable',
-    field: 'responsable',
+    title: "Responsable",
+    field: "responsable",
     color: true,
   },
   {
-    title: 'Acciones',
-    field: 'actions',
+    title: "Acciones",
+    field: "actions",
     color: true,
   },
-]
+];
 
 export const exampleTable = [
   {
     identifier: 1,
-    name: 'Sara',
-    state: 'Preñada',
-    typeService: 'I.A',
-    registerDate: '12-02-2021',
-    responsable: '003352',
+    name: "Sara",
+    state: "Preñada",
+    typeService: "I.A",
+    registerDate: "12-02-2021",
+    responsable: "003352",
     actions: (
       <>
         <IconButton aria-label="edit">
@@ -61,11 +62,11 @@ export const exampleTable = [
   },
   {
     identifier: 1,
-    name: 'Lola',
-    state: 'Vacia ',
-    typeService: 'M.N',
-    registerDate: '12-02-2021',
-    responsable: '003352',
+    name: "Lola",
+    state: "Vacia ",
+    typeService: "M.N",
+    registerDate: "12-02-2021",
+    responsable: "003352",
     actions: (
       <>
         <IconButton aria-label="edit">
@@ -77,4 +78,15 @@ export const exampleTable = [
       </>
     ),
   },
-]
+];
+
+export const serviceRouteOptions = [
+  {
+    key: "Inventario",
+    path: ROUTES_DICT.service,
+  },
+  {
+    key: "Nuevo embrión",
+    path: ROUTES_DICT.service,
+  },
+];

@@ -1,14 +1,6 @@
 import React from "react";
-import {
-  Checkbox as MuiCheckbox,
-  FormControl,
-  FormControlLabel,
-  FormGroup,
-  FormHelperText,
-  FormLabel,
-} from "@material-ui/core";
+import { Checkbox as MuiCheckbox, FormControlLabel } from "@material-ui/core";
 import { useStyles } from "../styles";
-import clsx from "clsx";
 import { useField } from "formik";
 
 export default function CheckboxFormik({ xs = 12, ...props }) {

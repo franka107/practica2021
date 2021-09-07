@@ -1,11 +1,11 @@
 import React from "react";
-import { Grid, Typography } from "@material-ui/core";
+import { Grid } from "@material-ui/core";
 import PlanCard from "../../components/PlanCard";
 import { plans } from "./constants";
-import { useStyles } from "./styles";
+// import { useStyles } from "./styles";
 
 function PlanPage() {
-  const classes = useStyles();
+  // const classes = useStyles();
 
   return (
     <Grid container>

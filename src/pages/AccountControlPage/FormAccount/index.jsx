@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Grid, Button } from "@material-ui/core";
-import { useStyles } from "./styles";
+// import { useStyles } from "./styles";
 import { Formik } from "formik";
 import * as yup from "yup";
 import SelectFieldFormik from "../../../components/Inputs/SelectFieldFormik";
@@ -10,7 +10,7 @@ import PasswordFieldFormik from "../../../components/Inputs/PasswordFieldFormik"
 import { useHistory } from "react-router-dom";
 import { ROUTES_DICT } from "../../../routes/routesDict";
 function FormUser() {
-  const classes = useStyles();
+  // const classes = useStyles();
   const history = useHistory();
 
   const [initValues] = useState({
