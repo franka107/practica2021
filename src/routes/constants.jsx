@@ -1,6 +1,7 @@
 import { Redirect } from "react-router-dom";
 import { AuthLayout } from "../layouts/AuthLayout";
 import { DashboardLayout } from "../layouts/DashboardLayout";
+import { ConfigLayout } from "../layouts/ConfigLayout";
 import AnimalControlPage from "../pages/AnimalControlPage";
 import AnimalDetailPage from "../pages/AnimalDetailPage";
 import ServicePage from "../pages/ServicePage";
@@ -10,6 +11,10 @@ import PregnanciesPage from "../pages/PregnanciesPage";
 import PedigreePage from "../pages/PedigreePage";
 import SemenPage from "../pages/GeneticStockPage/Semen";
 import EmbryoPage from "../pages/GeneticStockPage/Embryo";
+import HaciendaConfigurationPage from "../pages/HaciendaConfigurationPage";
+import ProfilesControlPage from "../pages/ProfilesControlPage";
+import UserControlPage from "../pages/UserControlPage";
+import AccountControlPage from "../pages/AccountControlPage";
 import SetupControlPage from "../pages/SetupControlPage";
 import EmailVerifiedPage from "../pages/EmailVerifiedPage";
 import LoginPage from "../pages/LoginPage";
@@ -22,6 +27,30 @@ export const ROUTE_TYPES = {
 };
 
 export const ROUTES = [
+  {
+    path: ROUTES_DICT.users,
+    key: "Usuarios",
+    exact: true,
+    component: UserControlPage,
+    layout: ConfigLayout,
+    type: ROUTE_TYPES.private,
+  },
+  {
+    path: ROUTES_DICT.profile,
+    key: "Perfiles",
+    exact: true,
+    component: ProfilesControlPage,
+    layout: ConfigLayout,
+    type: ROUTE_TYPES.private,
+  },
+  {
+    path: ROUTES_DICT.account,
+    key: "Cuenta",
+    exact: true,
+    component: AccountControlPage,
+    layout: ConfigLayout,
+    type: ROUTE_TYPES.private,
+  },
   {
     path: ROUTES_DICT.login,
     key: "Login",
@@ -75,6 +104,14 @@ export const ROUTES = [
     key: "Detalles de animal",
     exact: true,
     component: AnimalDetailPage,
+    layout: DashboardLayout,
+    type: ROUTE_TYPES.private,
+  },
+  {
+    path: ROUTES_DICT.hacienda,
+    key: "Hacienda",
+    exact: true,
+    component: HaciendaConfigurationPage,
     layout: DashboardLayout,
     type: ROUTE_TYPES.private,
   },

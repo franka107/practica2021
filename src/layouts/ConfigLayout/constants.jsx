@@ -1,4 +1,5 @@
 import { faUsers, faUser, faSignal } from "@fortawesome/free-solid-svg-icons";
+import { ROUTES_DICT } from "../../routes/routesDict";
 
 export const menuList = [
   {
@@ -9,7 +10,7 @@ export const menuList = [
       {
         id: "inicio",
         title: "Inicio",
-        // link: routesDictionary.test1,
+        link: ROUTES_DICT.users,
       },
       {
         id: "agregar-nuevo-usuario",
@@ -26,6 +27,7 @@ export const menuList = [
       {
         id: "inicio",
         title: "Inicio",
+        link: ROUTES_DICT.profile,
       },
       {
         id: "agregar-nuevo-perfil",
@@ -38,6 +40,6 @@ export const menuList = [
     id: "account",
     title: "Cuenta",
     img: faUser,
-    // link: routesDictionary.account,
+    link: ROUTES_DICT.account,
   },
 ];

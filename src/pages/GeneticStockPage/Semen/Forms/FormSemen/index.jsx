@@ -7,11 +7,9 @@ import { Formik } from "formik";
 import * as yup from "yup";
 import TextFieldFormik from "../../../../../components/Inputs/TextFieldFormik";
 import SelectFieldFormik from "../../../../../components/Inputs/SelectFieldFormik";
-import SearchFieldFormik from "../../../../../components/Inputs/SearchFieldFormik";
 import ButtonFormik from "../../../../../components/Inputs/ButtonFormik";
 import { useDispatch, useSelector } from "react-redux";
 import GeneticStockActions from "../../../../../redux/actions/geneticStock.actions";
-import { getMaleAnimals } from "../../../../../redux/selectors/animal.selector";
 import MultipleCheckboxFormik from "../../../../../components/Inputs/MultipleCheckboxFormik";
 
 const propTypes = {};
@@ -32,8 +30,6 @@ function FormSemen({ setOpen, type = "create", geneticStockId = "" }) {
     (state) => state.geneticStock
   );
 
-  const maleAnimals = useSelector(getMaleAnimals());
-
   const [errorPercentage, setErrorPercentage] = useState("");
 
   useEffect(() => {
@@ -48,28 +44,6 @@ function FormSemen({ setOpen, type = "create", geneticStockId = "" }) {
   }, []);
 
   // eslint-disable-next-line no-unused-vars
-  const handleCheckPercentage = (list = {}) => {
-    let total = 0;
-
-    Object.keys(list).forEach((animal) => {
-      const percentage = list[animal];
-      total = total + parseFloat(percentage);
-    });
-
-    console.log("total");
-    console.log(total);
-
-    if (total !== 100) {
-      setErrorPercentage(
-        "El porcentaje total debe ser 100%. Porfavor ajuste sus cantidades"
-      );
-      return false;
-    } else {
-      setErrorPercentage("");
-      return true;
-    }
-  };
-
   const handleAddRace = () => {
     const races = { ...animalRace };
     if (letters[Object.keys(races).length]) {
@@ -85,15 +59,14 @@ function FormSemen({ setOpen, type = "create", geneticStockId = "" }) {
   const handleRemoveRace = (id, index, values) => {
     const races = { ...animalRace };
     delete races[id];
-    // values[`percentageRace${index + 1}`] = 0;
-    // values[`race${index + 1}Id`] = "";
+    values[`percentageRace${index + 1}`] = 0;
+    values[`race${index + 1}Id`] = "";
     setAnimalRace(races);
   };
 
   const [initValues] = useState({
     agribusinessId: "",
-    animalId: "",
-    animal: {},
+    identifier: "",
     name: "",
     active: false,
     value: 0,
@@ -102,50 +75,73 @@ function FormSemen({ setOpen, type = "create", geneticStockId = "" }) {
     geneticType: "SEMEN",
     observation: "",
     race1Id: races ? races[0]._id : "",
-    percentageRace1: 100,
+    percentageRace1: "100",
     race2Id: "",
-    percentageRace2: 0,
+    percentageRace2: "0",
     race3Id: "",
-    percentageRace3: 0,
+    percentageRace3: "0",
     race4Id: "",
-    percentageRace4: 0,
+    percentageRace4: "0",
   });
 
   const validationSchema = yup.object({
-    animalId: yup
+    identifier: yup
       .string("Este campo no puedo ir vacio")
       .required("Este campo es requerido."),
   });
 
-  const handleSubmit = (values, actions) => {
-    values.animalId = values.animal._id;
-    values.agribusinessId = currentAgribusiness._id;
-    if (type === "create") {
-      dispatch(GeneticStockActions.createGenticStock(values)).then(
-        (data) => {
-          dispatch(
-            GeneticStockActions.listGeneticStockByAgribusiness({
-              geneticType: "SEMEN",
-            })
-          );
-          dispatch(GeneticStockActions.clearCurrentGenticStock());
-          setOpen(false);
-        },
-        (err) => {}
+  const verifyPercentage = (index, val, values) => {
+    let tot = 0;
+    const p1 = index === 1 ? val : values.percentageRace1;
+    const p2 = index === 2 ? val : values.percentageRace2;
+    const p3 = index === 3 ? val : values.percentageRace3;
+    const p4 = index === 4 ? val : values.percentageRace4;
+
+    tot = parseFloat(p1) + parseFloat(p2) + parseFloat(p3) + parseFloat(p4);
+
+    if (tot !== 100) {
+      setErrorPercentage(
+        "El porcentaje total debe ser 100%. Porfavor ajuste sus cantidades"
       );
+    } else {
+      setErrorPercentage("");
     }
-    if (type === "update") {
-      dispatch(GeneticStockActions.updateGeneticStock(values)).then(
-        (data) => {
-          dispatch(
-            GeneticStockActions.listGeneticStockByAgribusiness({
-              geneticType: "SEMEN",
-            })
-          );
-          setOpen(false);
-        },
-        (err) => {}
-      );
+  };
+
+  const handleSubmit = (values, actions) => {
+    values.agribusinessId = currentAgribusiness._id;
+    values.percentageRace1 = parseFloat(values.percentageRace1);
+    values.percentageRace2 = parseFloat(values.percentageRace2);
+    values.percentageRace3 = parseFloat(values.percentageRace3);
+    values.percentageRace4 = parseFloat(values.percentageRace4);
+    if (errorPercentage === "") {
+      if (type === "create") {
+        dispatch(GeneticStockActions.createGenticStock(values)).then(
+          (data) => {
+            dispatch(
+              GeneticStockActions.listGeneticStockByAgribusiness({
+                geneticType: "SEMEN",
+              })
+            );
+            dispatch(GeneticStockActions.clearCurrentGenticStock());
+            setOpen(false);
+          },
+          (err) => {}
+        );
+      }
+      if (type === "update") {
+        dispatch(GeneticStockActions.updateGeneticStock(values)).then(
+          (data) => {
+            dispatch(
+              GeneticStockActions.listGeneticStockByAgribusiness({
+                geneticType: "SEMEN",
+              })
+            );
+            setOpen(false);
+          },
+          (err) => {}
+        );
+      }
     }
   };
 
@@ -162,44 +158,13 @@ function FormSemen({ setOpen, type = "create", geneticStockId = "" }) {
     return (
       <form onSubmit={handleSubmit}>
         <Grid container spacing={1} className={classes.formStyle}>
-          {type === "create" ? (
-            <SearchFieldFormik
-              options={maleAnimals}
-              label="Cod. animal"
-              type="text"
-              name="animalId"
-              onChange={(e, value) => {
-                setFieldValue("animal", value);
-                if (value) {
-                  setFieldValue("animalId", value._id);
-                } else {
-                  setFieldValue("animalId", "");
-                }
-              }}
-              lg={4}
-              sm={4}
-              xs={12}
-            />
-          ) : (
-            <SearchFieldFormik
-              options={maleAnimals}
-              label="Cod. animal"
-              type="text"
-              name="animalId"
-              onChange={(e, value) => {
-                setFieldValue("animal", value);
-                if (value) {
-                  setFieldValue("animalId", value._id);
-                } else {
-                  setFieldValue("animalId", "");
-                }
-              }}
-              defaultValue={values.animal || null}
-              lg={4}
-              sm={4}
-              xs={12}
-            />
-          )}
+          <TextFieldFormik
+            label="Cod. animal"
+            name="identifier"
+            onChange={handleChange}
+            xs={12}
+            sm={8}
+          />
           <TextFieldFormik
             label="Nombre"
             name="name"
@@ -217,9 +182,8 @@ function FormSemen({ setOpen, type = "create", geneticStockId = "" }) {
             alignItems="center"
           >
             <MultipleCheckboxFormik
-              label="Activo"
               name="active"
-              options={[{ _id: 1, name: "Si" }]}
+              options={[{ _id: 1, name: "Activo" }]}
               onChange={handleChange}
               checked={values.active}
             ></MultipleCheckboxFormik>
@@ -267,11 +231,21 @@ function FormSemen({ setOpen, type = "create", geneticStockId = "" }) {
                     endAdornment={
                       <InputAdornment position="start">%</InputAdornment>
                     }
-                    type="number"
+                    type="text"
                     label="Porcentaje"
                     style={{ textAlign: "end" }}
                     // type="number"
-                    onChange={handleChange}
+                    // onChange={handleChange}
+                    onChange={(e) => {
+                      const regex = /^\d+(.\d{0,2})?$/;
+                      // let newValue = ''
+                      const i = index;
+                      // setFieldValue("percentageRace1", i + 1);
+                      if (regex.test(e.target.value)) {
+                        setFieldValue(`percentageRace${i + 1}`, e.target.value);
+                      }
+                      verifyPercentage(i + 1, e.target.value, values);
+                    }}
                   />
                 </Grid>
                 <Grid item xs={1}>
@@ -303,8 +277,8 @@ function FormSemen({ setOpen, type = "create", geneticStockId = "" }) {
             type="number"
             name="value"
             onChange={handleChange}
-            lg={4}
-            sm={4}
+            lg={6}
+            sm={6}
             xs={12}
           ></TextFieldFormik>
           <TextFieldFormik
@@ -312,8 +286,8 @@ function FormSemen({ setOpen, type = "create", geneticStockId = "" }) {
             type="number"
             name="stock"
             onChange={handleChange}
-            lg={4}
-            sm={4}
+            lg={6}
+            sm={6}
             xs={12}
           ></TextFieldFormik>
           {/* <TextFieldFormik

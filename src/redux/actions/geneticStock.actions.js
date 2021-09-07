@@ -1,5 +1,6 @@
 import GeneticStockService from "../../services/geneticStock.service";
 import ACTION_TYPES from "../types";
+import UiActions from "./ui.actions";
 
 class GeneticStockActions {
   listGeneticStockByAgribusiness(data) {
@@ -31,9 +32,11 @@ class GeneticStockActions {
             type: ACTION_TYPES.GENETICSTOCK.CREATE,
             payload: response,
           });
+          dispatch(UiActions.showSnackbar("El registro de creo exitosamente"));
           return Promise.resolve();
         },
         (error) => {
+          dispatch(UiActions.showSnackbar(error.message, "error"));
           return Promise.reject();
         }
       );
@@ -65,9 +68,13 @@ class GeneticStockActions {
             type: ACTION_TYPES.GENETICSTOCK.UPDATE,
             payload: response,
           });
+          dispatch(
+            UiActions.showSnackbar("El registro se actualizo exitosamente")
+          );
           return Promise.resolve();
         },
         (error) => {
+          dispatch(UiActions.showSnackbar(error.message, "error"));
           return Promise.reject();
         }
       );
@@ -91,9 +98,13 @@ class GeneticStockActions {
             type: ACTION_TYPES.GENETICSTOCK.DELETE,
             payload: response,
           });
+          dispatch(
+            UiActions.showSnackbar("Se eliminó el registro exitosamente")
+          );
           return Promise.resolve();
         },
         (error) => {
+          dispatch(UiActions.showSnackbar(error.message, "error"));
           return Promise.reject();
         }
       );
