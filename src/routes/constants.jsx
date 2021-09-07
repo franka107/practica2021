@@ -8,14 +8,15 @@ import PalpationPage from "../pages/PalpationPage";
 import BirthPage from "../pages/BirthPage";
 import PregnanciesPage from "../pages/PregnanciesPage";
 import PedigreePage from "../pages/PedigreePage";
-import SemenPage from "../pages/GeneticStockPage/Semen";
-import EmbryoPage from "../pages/GeneticStockPage/Embryo";
+import SemenPage from "../pages/GeneticStock/SemenPage";
+import EmbryoPage from "../pages/GeneticStock/EmbryoPage";
 import SetupControlPage from "../pages/SetupControlPage";
 import EmailVerifiedPage from "../pages/EmailVerifiedPage";
 import LoginPage from "../pages/LoginPage";
 import RegisterPage from "../pages/RegisterPage";
 import { ROUTES_DICT } from "./routesDict";
-import MovementPage from "../pages/MovementPage";
+import MovementPage from "../pages/GeneticStock/MovementPage";
+import MovementCreatePage from "../pages/GeneticStock/MovementCreatePage";
 
 export const ROUTE_TYPES = {
   public: "public",
@@ -148,6 +149,14 @@ export const ROUTES = [
     key: "Movimientos",
     exact: true,
     component: MovementPage,
+    layout: DashboardLayout,
+    type: ROUTE_TYPES.private,
+  },
+  {
+    path: ROUTES_DICT.movementsCreate,
+    key: "Nuevo movimiento",
+    exact: true,
+    component: MovementCreatePage,
     layout: DashboardLayout,
     type: ROUTE_TYPES.private,
   },

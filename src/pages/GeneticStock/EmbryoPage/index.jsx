@@ -22,6 +22,8 @@ import { animalActions } from "../../../redux/actions/animal.actions";
 import ACTION_TYPES from "../../../redux/types";
 import geneticStockActions from "../../../redux/actions/geneticStock.actions";
 import RaceActions from "../../../redux/actions/race.actions";
+import ChipList from "../../../components/ChipList";
+import { embryoRouteOptions } from "../constants";
 
 function Embryo() {
   const [open, setOpen] = useState(false);
@@ -155,6 +157,7 @@ function Embryo() {
     <Grid container xs={12}>
       <Grid item container xs={12}>
         <Typography variant={"h6"}>Embriones</Typography>
+        <ChipList routes={embryoRouteOptions} />
         <Grid container spacing={2} className={classes.optionContainer}>
           <Grid item>
             <Chip
