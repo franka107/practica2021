@@ -1,7 +1,10 @@
+import { Grid } from "@material-ui/core";
 import { Formik } from "formik";
 import * as yup from "yup";
+import TextFieldFormik from "../../../components/Inputs/TextFieldFormik";
 
 const defaultInitValues = {
+  agribusinessId: "",
   geneticStockId: "",
   movementType: "",
   date: new Date(),
@@ -37,7 +40,15 @@ const MovementForm = ({ initValues = defaultInitValues }) => {
       initialValues={initValues}
       validationSchema={validationSchema}
       onSubmit={onSubmit}
-    ></Formik>
+    >
+      {(props) => (
+        <Grid container spacing={1}>
+          <form onSubmit={props.handleSubmit}>
+            <TextFieldFormik name="description" />
+          </form>
+        </Grid>
+      )}
+    </Formik>
   );
 };
 
