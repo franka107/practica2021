@@ -93,3 +93,8 @@ export const movementOptions = {
   SALE: "Venta",
   SERVICE: "Servicio",
 };
+
+export const typeServices = [
+  { _id: "I.A", name: "I.A" },
+  { _id: "M.N", name: "M.N" },
+];

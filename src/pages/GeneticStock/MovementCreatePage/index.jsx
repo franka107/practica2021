@@ -1,4 +1,4 @@
-import { useLocation, useParams } from "react-router";
+import { useParams } from "react-router";
 import CustomDialog from "../../../components/CustomDialog";
 import { ROUTES_DICT } from "../../../routes/routesDict";
 import MovementForm from "../Forms/MovementForm";

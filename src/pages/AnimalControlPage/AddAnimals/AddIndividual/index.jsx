@@ -281,8 +281,8 @@ function AddIndividual({ setOpen, typeAccion = "create", animalId = "" }) {
               lg={6}
               sm={6}
               xs={12}
+              item
               container
-              justifyContent="center"
               alignContent="center"
               alignItems="center"
             >

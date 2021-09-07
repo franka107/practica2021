@@ -122,7 +122,7 @@ export const menuList = [
           {
             id: "agregar",
             title: "Agregar I.A / M.N.",
-            // link: routesDictionary.service,
+            link: ROUTES_DICT.iamnCreate,
           },
           {
             id: "agregar-transferencias",
