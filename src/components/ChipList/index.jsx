@@ -26,7 +26,13 @@ const ChipList = ({ routes, options }) => {
                 location.pathname === route.path &&
                   `${classes.chipList__chip}--active`
               )}
-              onClick={() => history.push(route.path)}
+              onClick={() => {
+                if (route.onClick) {
+                  route.onClick();
+                } else {
+                  history.push(route.path);
+                }
+              }}
             />
           </Grid>
         ))}

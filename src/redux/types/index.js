@@ -26,6 +26,12 @@ const ACTION_TYPES = {
     UPDATE_CURRENT: "agribusiness/UPDATE_CURRENT",
     DELETE: "agribusiness/DELETE",
   },
+  MOVEMENT: {
+    RETRIEVE_LIST: "movement/RETRIEVE_LIST",
+    CREATE: "movement/CREATE",
+    UPDATE_CURRENT: "movement/UPDATE_CURRENT",
+    DELETE: "movement/DELETE",
+  },
   FARM: {
     RETRIEVE_BY_OWNER_ID: "farm/RETRIEVE_BY_OWNER_ID",
     CLEAR_ALL: "farm/CLEAR_ALL",

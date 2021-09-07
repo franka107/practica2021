@@ -157,7 +157,8 @@ function Embryo() {
     <Grid container xs={12}>
       <Grid item container xs={12}>
         <Typography variant={"h6"}>Embriones</Typography>
-        <ChipList routes={embryoRouteOptions(location)} />
+        <ChipList routes={embryoRouteOptions(location, setOpen, setDialog)} />
+        {/* 
         <Grid container spacing={2} className={classes.optionContainer}>
           <Grid item>
             <Chip
@@ -198,6 +199,7 @@ function Embryo() {
             />
           </Grid>
         </Grid>
+            */}
       </Grid>
       {ind === "1" && (
         <>

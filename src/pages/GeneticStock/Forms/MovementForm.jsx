@@ -7,9 +7,15 @@ import PropTypes from "prop-types";
 import DatePickerFieldFormik from "../../../components/Inputs/DatePickerFieldFormik";
 import ButtonFormik from "../../../components/Inputs/ButtonFormik";
 import { movementOptions } from "../../../constants";
+import { useDispatch } from "react-redux";
+import MovementActions from "../../../redux/actions/movement.actions";
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
+import geneticStockActions from "../../../redux/actions/geneticStock.actions";
+import SearchFieldFormik from "../../../components/Inputs/SearchFieldFormik";
+import AutocompleteFieldFormik from "../../../components/Inputs/AutocompleteFieldFormik";
 
 const defaultInitValues = {
-  agribusinessId: "",
   geneticStockId: "",
   movementType: "",
   date: new Date(),
@@ -42,9 +48,23 @@ const MovementForm = ({
   initValues = defaultInitValues,
   type = "create",
   onClickCancelButton,
+  geneticType,
 }) => {
+  const dispatch = useDispatch();
+  const geneticStockList = useSelector((state) => state.geneticStock.list);
+
+  useEffect(() => {
+    //(!geneticStockList || geneticStockList.length !== 0) &&
+    dispatch(
+      geneticStockActions.listGeneticStockByAgribusiness({
+        geneticType,
+      })
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch]);
+
   const onSubmitCreate = (values, actions) => {
-    console.log("submitCreate");
+    dispatch(MovementActions.create(values));
   };
   const onSubmitUpdate = (values, actions) => {
     console.log("submitUpdate");
@@ -67,7 +87,7 @@ const MovementForm = ({
             <SelectFieldFormik
               onChange={props.handleChange}
               xs={12}
-              sm={4}
+              sm={6}
               name="movementType"
               label="Movimiento"
               options={Object.keys(movementOptions).map((key) => ({
@@ -75,19 +95,28 @@ const MovementForm = ({
                 name: movementOptions[key],
               }))}
             />
+            <AutocompleteFieldFormik
+              options={geneticStockList}
+              name="geneticStockId"
+              label="Stock genético"
+              onChange={props.handleChange}
+              xs={12}
+              sm={6}
+            />
+
             <DatePickerFieldFormik
               label="Fecha"
               onChange={props.handleChange}
               name="date"
               xs={12}
-              sm={4}
+              sm={6}
             />
             <TextFieldFormik
               onChange={props.handleChange}
               name="toWho"
               label="A quien"
               xs={12}
-              sm={4}
+              sm={6}
             />
             <TextFieldFormik
               onChange={props.handleChange}

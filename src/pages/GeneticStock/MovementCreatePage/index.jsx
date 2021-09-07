@@ -1,6 +1,6 @@
 import { useLocation, useParams } from "react-router";
 import CustomDialog from "../../../components/CustomDialog";
-import { ROUTES_DICT } from "../../../routes/routesDict";
+import { ROUTES_DICT, ROUTES_SLUGS } from "../../../routes/routesDict";
 import MovementForm from "../Forms/MovementForm";
 import MovementPage from "../MovementPage";
 
@@ -20,6 +20,9 @@ const MovementCreatePage = () => {
             <MovementForm
               type="create"
               onClickCancelButton={props.handleClose}
+              geneticType={
+                params.geneticType === ROUTES_SLUGS.embryo ? "EMBRYO" : "SEMEN"
+              }
             />
           )}
         </CustomDialog>

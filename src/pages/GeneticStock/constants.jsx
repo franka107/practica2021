@@ -1,13 +1,18 @@
 import { ROUTES_DICT, ROUTES_SLUGS } from "../../routes/routesDict";
 
-export const embryoRouteOptions = (location) => [
+export const embryoRouteOptions = (location, setOpen, setDialog) => [
   {
     key: "Inventario",
     path: ROUTES_DICT.embryo,
   },
   {
     key: "Nuevo embrión",
-    path: ROUTES_DICT.embryoCreate,
+
+    //path: ROUTES_DICT.embryoCreate,
+    onClick: () => {
+      setOpen(true);
+      setDialog("Embryo");
+    },
   },
   {
     key: "Movimientos",

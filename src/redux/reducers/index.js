@@ -10,6 +10,7 @@ import { regionReducer } from "./region.reducer";
 import { uiReducer } from "./ui.reducer";
 import { raceReducer } from "./race.reducer";
 import { geneticStockReducer } from "./geneticStock.reducer";
+import { movementReducer } from "./movement.reducer";
 
 const rootReducer = combineReducers({
   auth: authReducer,
@@ -23,6 +24,7 @@ const rootReducer = combineReducers({
   agribusiness: agribusinessReducer,
   race: raceReducer,
   geneticStock: geneticStockReducer,
+  movement: movementReducer,
 });
 
 //const rootReducer = (state, action) => {
