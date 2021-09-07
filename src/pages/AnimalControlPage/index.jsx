@@ -170,36 +170,6 @@ function AnimalControlPage() {
           columns={[...columnsToMuiTable, actionColumn]}
           options={options}
         />
-        {/* 
-        <CustomMaterialTable
-          data={animals}
-          columns={[
-            ...columnsToCustomMaterialTable,
-            {
-              field: "outstanding",
-              title: "",
-              render: (data) => (
-                <>
-                  <IconButton
-                    style={{ color: "#C25560" }}
-                    size="small"
-                    aria-label="delete"
-                    onClick={() => {
-                      // data.outstanding = !data.outstanding;
-                      // setAnimalsList(data);
-                    }}
-                  >
-                    {data.outstanding === false && <Star fontSize="small" />}
-                    {data.outstanding === true && (
-                      <StarBorder fontSize="small" />
-                    )}
-                  </IconButton>
-                </>
-              ),
-            },
-          ]}
-        />
-        */}
       </Grid>
       <Dialog
         open={Boolean(open)}

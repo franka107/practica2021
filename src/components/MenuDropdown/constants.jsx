@@ -13,7 +13,7 @@ export const menuItems = [
     id: 2,
     title: "Configuración",
     img: faCog,
-    link: ROUTES_DICT.test,
+    link: ROUTES_DICT.users,
   },
   {
     id: 3,

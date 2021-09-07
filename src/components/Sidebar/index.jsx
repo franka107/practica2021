@@ -8,8 +8,9 @@ import {
   ListSubheader,
   Typography,
   Drawer,
+  IconButton,
 } from "@material-ui/core";
-import { ExpandLess, ExpandMore } from "@material-ui/icons";
+import { ExpandLess, ExpandMore, Edit } from "@material-ui/icons";
 import clsx from "clsx";
 import { useStyles } from "./styles";
 import { useHistory } from "react-router-dom";
@@ -121,9 +122,6 @@ function Sidebar({ openDrawer, setOpenDrawer, options }) {
         >
           <ListItem
             button
-            onClick={() => {
-              handleClick(farm.title);
-            }}
             className={clsx(
               classes.farmItem,
               nestedList[farm.title] && classes.activeFarmItem
@@ -140,15 +138,48 @@ function Sidebar({ openDrawer, setOpenDrawer, options }) {
                 {currentAgribusiness && currentAgribusiness.name}
               </Typography>
             </ListItemText>
-            {farm.submenu && (
-              <div>
-                {nestedList[farm.title] ? (
-                  <ExpandLess className={classes.farmItem} />
-                ) : (
-                  <ExpandMore color={"primary"} className={classes.farmItem} />
-                )}
-              </div>
-            )}
+            <ListItemIcon>
+              {farm.submenu && (
+                <div>
+                  <IconButton
+                    aria-label="delete"
+                    className={classes.margin}
+                    size="small"
+                    onClick={() => {
+                      history.push(ROUTES_DICT.hacienda);
+                    }}
+                  >
+                    <Edit className={classes.farmItem} fontSize="inherit" />
+                  </IconButton>
+                  {nestedList[farm.title] ? (
+                    <IconButton
+                      aria-label="delete"
+                      className={classes.margin}
+                      size="small"
+                      onClick={() => {
+                        handleClick(farm.title);
+                      }}
+                    >
+                      <ExpandLess className={classes.farmItem} />
+                    </IconButton>
+                  ) : (
+                    <IconButton
+                      aria-label="delete"
+                      className={classes.margin}
+                      size="small"
+                      onClick={() => {
+                        handleClick(farm.title);
+                      }}
+                    >
+                      <ExpandMore
+                        color={"primary"}
+                        className={classes.farmItem}
+                      />
+                    </IconButton>
+                  )}
+                </div>
+              )}
+            </ListItemIcon>
           </ListItem>
           <Collapse in={nestedList[farm.title]} timeout="auto" unmountOnExit>
             {listAgribusiness &&
