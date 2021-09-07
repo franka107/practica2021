@@ -1,5 +1,4 @@
 import { faHome } from "@fortawesome/free-solid-svg-icons";
-import routesDictionary from "../../routes/routesDict";
 import { IconButton } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { Edit } from "@material-ui/icons";

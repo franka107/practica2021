@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Typography, Grid } from "@material-ui/core";
 import { useStyles } from "./styles";
 import { Formik } from "formik";

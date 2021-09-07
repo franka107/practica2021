@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Dialog, Grid, Typography } from "@material-ui/core";
-import { Close, Edit, Delete } from "@material-ui/icons";
+import { Close } from "@material-ui/icons";
 // import { useHistory } from "react-router-dom";
 import { useStyles } from "./styles";
 import FormAccount from "./FormAccount";

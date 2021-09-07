@@ -6,8 +6,6 @@ import {
   Dialog,
   IconButton,
   Button,
-  Paper,
-  Divider,
 } from "@material-ui/core";
 import { Delete, Edit, Close, Star, StarBorder } from "@material-ui/icons";
 import { columns, columns2 } from "./constants";

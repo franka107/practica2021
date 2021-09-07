@@ -1,11 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   Chip,
   Grid,
   Typography,
   Dialog,
-  CardMedia,
-  Button,
   IconButton,
   Paper,
   Divider,
@@ -29,7 +27,7 @@ function Management() {
   const history = useHistory();
   const { location = {} } = history;
   const [activeTab] = useState("inicio");
-  const [searchText, setSearchText] = useState();
+  const [searchText] = useState();
   const [open, setOpen] = useState(0);
   const [section, setSection] = useState(0);
   // const dispatch = useDispatch();
