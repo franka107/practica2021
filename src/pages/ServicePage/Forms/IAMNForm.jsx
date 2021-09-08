@@ -8,11 +8,16 @@ import DatePickerFieldFormik from "../../../components/Inputs/DatePickerFieldFor
 import ButtonFormik from "../../../components/Inputs/ButtonFormik";
 import CheckboxFormik from "../../../components/Inputs/CheckboxFormik";
 import { typeServices } from "../../../constants";
+import { useEffect } from "react";
+// import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+
+import serviceIAMNActions from "../../../redux/actions/serviceIAMN.actions";
 
 const defaultInitValues = {
-  identifier: "",
+  animalId: "",
   name: "",
-  date: new Date(),
+  serviceDate: new Date(),
   hour: "",
   typeService: "",
   reproductor: "",
@@ -25,20 +30,13 @@ const defaultInitValues = {
 };
 
 const validationSchema = yup.object({
-  movementType: yup
-    .string("Ingresa el tipo de movimiento")
-    .required("Esta campo es requerido."),
-  date: yup.date("Ingresa una fecha").required("Este campo es requerido"),
-  observation: yup.string("Ingresa una observación"),
-  quantity: yup
-    .number("Ingrese solo números")
-    .required("Este campo es requerido"),
-  unitValue: yup
-    .number("Ingrese solo números")
-    .required("Este campo es requerido"),
-  saleAccount: yup.string("Ingresa una cuenta"),
-  description: yup.string("Ingresa una descripción"),
-  toWho: yup.string("Ingresa información"),
+  // animalId: yup
+  //   .string("Ingresa el tipo de movimiento")
+  //   .required("Esta campo es requerido."),
+  // date: yup.date("Ingresa una fecha").required("Este campo es requerido"),
+  // typeService: yup
+  //   .string("Ingresa el tipo de servicio")
+  //   .required("Esta campo es requerido."),
 });
 
 const IAMNForm = ({
@@ -46,8 +44,15 @@ const IAMNForm = ({
   type = "create",
   onClickCancelButton,
 }) => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(serviceIAMNActions.listByAgribusiness());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch]);
+
   const onSubmitCreate = (values, actions) => {
-    console.log("submitCreate");
+    dispatch(serviceIAMNActions.create(values));
   };
   const onSubmitUpdate = (values, actions) => {
     console.log("submitUpdate");
@@ -69,7 +74,7 @@ const IAMNForm = ({
             </Grid>
             <TextFieldFormik
               onChange={props.handleChange}
-              name="identifier"
+              name="animalId"
               label="Identificación de hembra"
               xs={12}
               sm={6}
@@ -84,14 +89,14 @@ const IAMNForm = ({
             <DatePickerFieldFormik
               label="Fecha"
               onChange={props.handleChange}
-              name="date"
+              name="serviceDate"
               xs={12}
               sm={6}
             />
-            <DatePickerFieldFormik
-              label="Hora"
+            <TextFieldFormik
               onChange={props.handleChange}
-              name="date"
+              name="hour"
+              label="Hora"
               xs={12}
               sm={6}
             />

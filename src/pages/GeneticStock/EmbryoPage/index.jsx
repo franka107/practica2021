@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import {
   Grid,
   Typography,
-  Chip,
   Dialog,
   IconButton,
   Button,
@@ -10,7 +9,7 @@ import {
 import { Delete, Edit, Close, Star, StarBorder } from "@material-ui/icons";
 import { columns, columns2 } from "./constants";
 import { useStyles } from "./styles";
-import clsx from "clsx";
+// import clsx from "clsx";
 import FormEmbryo from "./Forms/FormEmbryo";
 import FormMove from "./Forms/FormMove";
 import CustomMuiTable from "../../../components/CustomMuiTable";
@@ -27,7 +26,7 @@ import { useLocation } from "react-router";
 function Embryo() {
   const [open, setOpen] = useState(false);
   const [dialog, setDialog] = useState("");
-  const [ind, setInd] = useState("1");
+  const [ind] = useState("1");
   const [geneticStockId, setGeneticStockId] = useState("");
   const [searchText] = useState();
   const classes = useStyles();

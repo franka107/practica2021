@@ -12,7 +12,6 @@ import MovementActions from "../../../redux/actions/movement.actions";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import geneticStockActions from "../../../redux/actions/geneticStock.actions";
-import SearchFieldFormik from "../../../components/Inputs/SearchFieldFormik";
 import AutocompleteFieldFormik from "../../../components/Inputs/AutocompleteFieldFormik";
 
 const defaultInitValues = {

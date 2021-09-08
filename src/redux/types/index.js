@@ -51,6 +51,15 @@ const ACTION_TYPES = {
     DELETE: "geneticStock/DELETE",
     CREATE: "geneticStock/CREATE",
   },
+  SERVICEIAMN: {
+    RETRIEVE: "serviceIAMN/RETRIEVE",
+    RETRIEVE_BY_CURRENCY: "serviceIAMN/RETRIEVE_BY_CURRENCY",
+    RETRIEVE_BY_ID: "serviceIAMN/RETRIEVE_BY_ID",
+    UPDATE: "serviceIAMN/UPDATE",
+    UPDATE_CURRENT: "serviceIAMN/UPDATE_CURRENT",
+    DELETE: "serviceIAMN/DELETE",
+    CREATE: "serviceIAMN/CREATE",
+  },
 };
 
 export default ACTION_TYPES;

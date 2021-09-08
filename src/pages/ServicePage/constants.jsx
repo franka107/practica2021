@@ -3,7 +3,7 @@ import { ROUTES_DICT } from "../../routes/routesDict";
 export const columnsToMuiTable = [
   {
     label: "Id Vaca",
-    name: "identifier",
+    name: "animalId",
     options: {
       filter: false,
     },
@@ -39,13 +39,6 @@ export const columnsToMuiTable = [
   {
     label: "Responsable",
     name: "responsable",
-    options: {
-      filter: false,
-    },
-  },
-  {
-    label: "Acciones",
-    name: "actions",
     options: {
       filter: false,
     },

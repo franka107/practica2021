@@ -26,7 +26,7 @@ export const ROUTES_DICT = {
   embryo: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.geneticStock}/${ROUTES_SLUGS.embryo}`,
   embryoCreate: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.geneticStock}/${ROUTES_SLUGS.embryo}/${ROUTES_SLUGS.create}`,
   service: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.service}`,
-  iamnCreate: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.service}/${ROUTES_SLUGS.iamn}}/${ROUTES_SLUGS.create}`,
+  iamnCreate: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.service}/${ROUTES_SLUGS.iamn}/${ROUTES_SLUGS.create}`,
   account: "/cuenta",
   profile: "/perfil",
   users: "/usuario",
