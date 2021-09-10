@@ -24,14 +24,14 @@ export const columnsToMuiTable = [
   },
   {
     label: "Tipo de Servicio",
-    name: "typeService",
+    name: "serviceType",
     options: {
       filter: false,
     },
   },
   {
     label: "Fecha Registro",
-    name: "registerDate",
+    name: "serviceDate",
     options: {
       filter: false,
     },

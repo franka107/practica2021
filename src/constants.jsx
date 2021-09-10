@@ -60,8 +60,9 @@ export const sexDictionary = {
 };
 
 export const sexOptions = [
-  { _id: "MALE", name: "Macho" },
+  { _id: "INDETERMINATE", name: "Indeterminado" },
   { _id: "FEMALE", name: "Hembra" },
+  { _id: "MALE", name: "Macho" },
 ];
 
 export const racialTypeOptions = [
@@ -95,6 +96,6 @@ export const movementOptions = {
 };
 
 export const typeServices = [
-  { _id: "I.A", name: "I.A" },
-  { _id: "M.N", name: "M.N" },
+  { _id: "AR_IN", name: "I.A" },
+  { _id: "NA_MO", name: "M.N" },
 ];

@@ -1,18 +1,17 @@
-import ServiceIAMNService from "../../services/serviceIAMN.service";
+import ServiceService from "../../services/service.service";
 import ACTION_TYPES from "../types";
 import UiActions from "./ui.actions";
 
-class ServiceIAMNActions {
+class ServiceActions {
   listByAgribusiness() {
     return (dispatch, getState) => {
-      // const { agribusiness } = getState();
-      // {
-      //   agribusinessId: agribusiness.current._id,
-      // }
-      return ServiceIAMNService.serviceIAMNListByAgribusiness().then(
+      const { agribusiness } = getState();
+      return ServiceService.serviceListByAgribusiness({
+        agribusinessId: agribusiness.current._id,
+      }).then(
         (response) => {
           dispatch({
-            type: ACTION_TYPES.SERVICEIAMN.RETRIEVE_BY_CURRENCY,
+            type: ACTION_TYPES.SERVICE.RETRIEVE_BY_CURRENCY,
             payload: response,
           });
           return Promise.resolve();
@@ -25,10 +24,10 @@ class ServiceIAMNActions {
   }
   listById(data) {
     return (dispatch) => {
-      return ServiceIAMNService.serviceIAMNGetById(data).then(
+      return ServiceService.serviceGetById(data).then(
         (response) => {
           dispatch({
-            type: ACTION_TYPES.SERVICEIAMN.RETRIEVE_BY_ID,
+            type: ACTION_TYPES.SERVICE.RETRIEVE_BY_ID,
             payload: response,
           });
           return Promise.resolve();
@@ -42,10 +41,10 @@ class ServiceIAMNActions {
 
   create(data) {
     return (dispatch) => {
-      return ServiceIAMNService.serviceIAMNCreate(data).then(
+      return ServiceService.serviceCreate(data).then(
         (response) => {
           dispatch({
-            type: ACTION_TYPES.SERVICEIAMN.CREATE,
+            type: ACTION_TYPES.SERVICE.CREATE,
             payload: response,
           });
           dispatch(UiActions.showSnackbar("El registro de creo exitosamente"));
@@ -61,10 +60,10 @@ class ServiceIAMNActions {
 
   update(data) {
     return (dispatch) => {
-      return ServiceIAMNService.serviceIAMNUpdate(data).then(
+      return ServiceService.serviceUpdate(data).then(
         (response) => {
           dispatch({
-            type: ACTION_TYPES.SERVICEIAMN.UPDATE,
+            type: ACTION_TYPES.SERVICE.UPDATE,
             payload: response,
           });
           dispatch(
@@ -83,7 +82,7 @@ class ServiceIAMNActions {
   clearCurrent() {
     return (dispatch) => {
       dispatch({
-        type: ACTION_TYPES.SERVICEIAMN.UPDATE_CURRENT,
+        type: ACTION_TYPES.SERVICE.UPDATE_CURRENT,
         payload: null,
       });
     };
@@ -91,10 +90,10 @@ class ServiceIAMNActions {
 
   delete(dataDelete) {
     return (dispatch) => {
-      return ServiceIAMNService.serviceIAMNDelete(dataDelete).then(
+      return ServiceService.serviceDelete(dataDelete).then(
         (response) => {
           dispatch({
-            type: ACTION_TYPES.SERVICEIAMN.DELETE,
+            type: ACTION_TYPES.SERVICE.DELETE,
             payload: response,
           });
           dispatch(
@@ -111,4 +110,4 @@ class ServiceIAMNActions {
   }
 }
 
-export default new ServiceIAMNActions();
+export default new ServiceActions();

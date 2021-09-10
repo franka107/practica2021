@@ -51,14 +51,14 @@ const ACTION_TYPES = {
     DELETE: "geneticStock/DELETE",
     CREATE: "geneticStock/CREATE",
   },
-  SERVICEIAMN: {
-    RETRIEVE: "serviceIAMN/RETRIEVE",
-    RETRIEVE_BY_CURRENCY: "serviceIAMN/RETRIEVE_BY_CURRENCY",
-    RETRIEVE_BY_ID: "serviceIAMN/RETRIEVE_BY_ID",
-    UPDATE: "serviceIAMN/UPDATE",
-    UPDATE_CURRENT: "serviceIAMN/UPDATE_CURRENT",
-    DELETE: "serviceIAMN/DELETE",
-    CREATE: "serviceIAMN/CREATE",
+  SERVICE: {
+    RETRIEVE: "service/RETRIEVE",
+    RETRIEVE_BY_CURRENCY: "service/RETRIEVE_BY_CURRENCY",
+    RETRIEVE_BY_ID: "service/RETRIEVE_BY_ID",
+    UPDATE: "service/UPDATE",
+    UPDATE_CURRENT: "service/UPDATE_CURRENT",
+    DELETE: "service/DELETE",
+    CREATE: "service/CREATE",
   },
 };
 

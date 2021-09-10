@@ -158,6 +158,14 @@ export const ROUTES = [
     type: ROUTE_TYPES.private,
   },
   {
+    path: ROUTES_DICT.iamnUpdate,
+    key: "IA/MN",
+    exact: true,
+    component: IAMNFormPage,
+    layout: DashboardLayout,
+    type: ROUTE_TYPES.private,
+  },
+  {
     path: ROUTES_DICT.service,
     key: "Servicios",
     exact: true,
