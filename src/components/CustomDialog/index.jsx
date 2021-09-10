@@ -3,15 +3,15 @@ import { Dialog } from "@material-ui/core";
 import { useStyles } from "../../styles";
 import { Close } from "@material-ui/icons";
 
-const CustomDialog = ({ children, parentPathName }) => {
+const CustomDialog = ({ children, parentPathname }) => {
   const history = useHistory();
   const classes = useStyles();
   const location = useLocation();
   const handleClose = () => {
-    if (location.state && location.state.from) {
-      history.push(location.state.from);
-    } else if (parentPathName) {
-      history.push(parentPathName);
+    if (location.state && location.state.background) {
+      history.push(location.state.background.pathname);
+    } else if (parentPathname) {
+      history.push(parentPathname);
     } else {
       history.goBack();
     }

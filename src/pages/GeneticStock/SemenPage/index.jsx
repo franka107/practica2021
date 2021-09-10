@@ -41,11 +41,12 @@ function Semen() {
     if (!animalList) {
       dispatch(animalActions.listAll(currentAgribusiness._id));
     }
-    dispatch(
-      GeneticStockActions.listGeneticStockByAgribusiness({
-        geneticType: "SEMEN",
-      })
-    );
+    (!geneticStockList || geneticStockList.length === 0) &&
+      dispatch(
+        GeneticStockActions.listGeneticStockByAgribusiness({
+          geneticType: "SEMEN",
+        })
+      );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

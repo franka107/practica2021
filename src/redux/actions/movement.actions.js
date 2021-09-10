@@ -1,5 +1,6 @@
 import IdeasCloudApi from "../../helpers/ideascloudApi";
 import ACTION_TYPES from "../types";
+import uiActions from "./ui.actions";
 
 const MovementActions = {
   create: (data) => async (dispatch, getState) => {
@@ -9,6 +10,7 @@ const MovementActions = {
       agribusinessId: agribusiness._id,
     });
     dispatch({ type: ACTION_TYPES.MOVEMENT.CREATE, payload: response });
+    dispatch(uiActions.showSnackbar("Movimiento registrado con éxito"));
   },
 
   list: (geneticType) => async (dispatch, getState) => {

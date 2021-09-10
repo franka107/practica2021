@@ -36,6 +36,44 @@ export const ROUTE_TYPES = {
   private: "private",
 };
 
+export const RENDER_ROUTES = [
+  {
+    path: ROUTES_DICT.movements,
+    key: "Movimientos",
+    exact: false,
+    component: MovementPage,
+    layout: DashboardLayout,
+    type: ROUTE_TYPES.private,
+    routes: [
+      {
+        parentPathname: ROUTES_DICT.movements,
+        path: ROUTES_DICT.movementsCreate,
+        key: "Nuevo movimiento",
+        exact: true,
+        component: MovementCreatePage,
+        type: ROUTE_TYPES.private,
+      },
+    ],
+  },
+
+  {
+    path: ROUTES_DICT.animalControl,
+    key: "Control Animal",
+    exact: true,
+    component: AnimalControlPage,
+    layout: DashboardLayout,
+    type: ROUTE_TYPES.private,
+  },
+  {
+    path: ROUTES_DICT.embryo,
+    key: "Embriones",
+    exact: true,
+    component: EmbryoPage,
+    layout: DashboardLayout,
+    type: ROUTE_TYPES.private,
+  },
+];
+
 export const ROUTES = [
   {
     path: ROUTES_DICT.plan,
@@ -208,7 +246,7 @@ export const ROUTES = [
   {
     path: ROUTES_DICT.movements,
     key: "Movimientos",
-    exact: true,
+    exact: false,
     component: MovementPage,
     layout: DashboardLayout,
     type: ROUTE_TYPES.private,
@@ -220,5 +258,6 @@ export const ROUTES = [
     component: MovementCreatePage,
     layout: DashboardLayout,
     type: ROUTE_TYPES.private,
+    parent: ROUTES_DICT.movements,
   },
 ];

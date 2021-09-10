@@ -23,7 +23,7 @@ import ChipList from "../../../components/ChipList";
 import { embryoRouteOptions } from "../constants";
 import { useLocation } from "react-router";
 
-function Embryo() {
+function Embryo({ children }) {
   const [open, setOpen] = useState(false);
   const [dialog, setDialog] = useState("");
   const [ind] = useState("1");
@@ -46,11 +46,12 @@ function Embryo() {
     if (!animalList) {
       dispatch(animalActions.listAll(currentAgribusiness._id));
     }
-    dispatch(
-      GeneticStockActions.listGeneticStockByAgribusiness({
-        geneticType: "EMBRYO",
-      })
-    );
+    (!geneticStockList || geneticStockList.length === 0) &&
+      dispatch(
+        GeneticStockActions.listGeneticStockByAgribusiness({
+          geneticType: "EMBRYO",
+        })
+      );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -294,6 +295,7 @@ function Embryo() {
           </Grid>
         )}
       </Dialog>
+      {children}
     </Grid>
   );
 }

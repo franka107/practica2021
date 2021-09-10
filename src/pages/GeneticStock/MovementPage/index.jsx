@@ -21,10 +21,13 @@ const MovementPage = (props) => {
   };
 
   useEffect(() => {
-    params.geneticType === ROUTES_SLUGS.embryo &&
-      dispatch(MovementActions.list("EMBRYO"));
-    params.geneticType === ROUTES_SLUGS.semen &&
-      dispatch(MovementActions.list("SEMEN"));
+    if (!movementList || movementList.length === 0) {
+      params.geneticType === ROUTES_SLUGS.embryo &&
+        dispatch(MovementActions.list("EMBRYO"));
+      params.geneticType === ROUTES_SLUGS.semen &&
+        dispatch(MovementActions.list("SEMEN"));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, params]);
 
   return (

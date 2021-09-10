@@ -1,32 +1,29 @@
-import { useParams } from "react-router";
+import { useParams, useLocation } from "react-router-dom";
 import CustomDialog from "../../../components/CustomDialog";
 import { ROUTES_DICT, ROUTES_SLUGS } from "../../../routes/routesDict";
 import MovementForm from "../Forms/MovementForm";
 import MovementPage from "../MovementPage";
 
-const MovementCreatePage = () => {
+const MovementCreatePage = ({ parentPathname }) => {
   const params = useParams();
-  const parentPathName = ROUTES_DICT.movements.replace(
+  const parentPathnameParsed = parentPathname.replace(
     ":geneticType",
     params.geneticType
   );
-  //http://localhost:3000/#/dashboard/genetic-stock/embryo/movements/
 
   return (
     <>
-      <MovementPage>
-        <CustomDialog parentPathName={parentPathName}>
-          {(props) => (
-            <MovementForm
-              type="create"
-              onClickCancelButton={props.handleClose}
-              geneticType={
-                params.geneticType === ROUTES_SLUGS.embryo ? "EMBRYO" : "SEMEN"
-              }
-            />
-          )}
-        </CustomDialog>
-      </MovementPage>
+      <CustomDialog parentPathname={parentPathnameParsed}>
+        {(props) => (
+          <MovementForm
+            type="create"
+            onClickCancelButton={props.handleClose}
+            geneticType={
+              params.geneticType === ROUTES_SLUGS.embryo ? "EMBRYO" : "SEMEN"
+            }
+          />
+        )}
+      </CustomDialog>
     </>
   );
 };

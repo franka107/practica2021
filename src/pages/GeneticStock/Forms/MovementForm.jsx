@@ -10,7 +10,7 @@ import { movementOptions } from "../../../constants";
 import { useDispatch } from "react-redux";
 import MovementActions from "../../../redux/actions/movement.actions";
 import { useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, shallowEqual } from "react-redux";
 import geneticStockActions from "../../../redux/actions/geneticStock.actions";
 import AutocompleteFieldFormik from "../../../components/Inputs/AutocompleteFieldFormik";
 
@@ -19,7 +19,7 @@ const defaultInitValues = {
   movementType: "",
   date: new Date(),
   observation: "",
-  quantity: 0,
+  quantity: 1,
   unitValue: 0,
   saleAccount: "",
   description: "",
@@ -31,9 +31,14 @@ const validationSchema = yup.object({
     .string("Ingresa el tipo de movimiento")
     .required("Esta campo es requerido."),
   date: yup.date("Ingresa una fecha").required("Este campo es requerido"),
+  geneticStockId: yup
+    .string("Ingresa stock genético")
+    .required("Esta campo es requerido."),
   observation: yup.string("Ingresa una observación"),
   quantity: yup
     .number("Ingrese solo números")
+    .integer("Solo números enteros")
+    .min(1, "La cantidad debe ser mayor o igual a 1")
     .required("Este campo es requerido"),
   unitValue: yup
     .number("Ingrese solo números")
@@ -50,15 +55,18 @@ const MovementForm = ({
   geneticType,
 }) => {
   const dispatch = useDispatch();
-  const geneticStockList = useSelector((state) => state.geneticStock.list);
+  const geneticStockList = useSelector(
+    (state) => state.geneticStock.list.filter((e) => e.active),
+    shallowEqual
+  );
 
   useEffect(() => {
-    //(!geneticStockList || geneticStockList.length !== 0) &&
-    dispatch(
-      geneticStockActions.listGeneticStockByAgribusiness({
-        geneticType,
-      })
-    );
+    (!geneticStockList || geneticStockList.length === 0) &&
+      dispatch(
+        geneticStockActions.listGeneticStockByAgribusiness({
+          geneticType,
+        })
+      );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch]);
 

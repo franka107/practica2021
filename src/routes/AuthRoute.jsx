@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 
 // eslint-disable-next-line no-unused-vars
-import { Route, Redirect, RouteProps } from "react-router-dom";
+import { Route, Redirect } from "react-router-dom";
 import { ROUTE_TYPES } from "./constants";
 import { ROUTES_DICT } from "./routesDict";
 import { useEffect } from "react";

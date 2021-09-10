@@ -27,6 +27,7 @@ export const embryoRouteOptions = (location, setOpen, setDialog) => [
       ),
       state: {
         from: location.pathname,
+        background: location,
       },
     },
   },
@@ -54,6 +55,7 @@ export const semenRouteOptions = (location) => [
       ),
       state: {
         from: location.pathname,
+        background: location,
       },
     },
   },
