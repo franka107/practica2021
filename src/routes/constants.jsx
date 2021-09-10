@@ -24,6 +24,7 @@ import EmbryoPage from "../pages/GeneticStock/EmbryoPage";
 import HaciendaConfigurationPage from "../pages/HaciendaConfigurationPage";
 import MovementPage from "../pages/GeneticStock/MovementPage";
 import MovementCreatePage from "../pages/GeneticStock/MovementCreatePage";
+import MovementUpdatePage from "../pages/GeneticStock/MovementUpdatePage";
 
 /* routes with config layout */
 import ProfilesControlPage from "../pages/ProfilesControlPage";
@@ -51,6 +52,14 @@ export const RENDER_ROUTES = [
         key: "Nuevo movimiento",
         exact: true,
         component: MovementCreatePage,
+        type: ROUTE_TYPES.private,
+      },
+      {
+        parentPathname: ROUTES_DICT.movements,
+        path: ROUTES_DICT.movementsUpdate,
+        key: "Actualizar movimiento",
+        exact: true,
+        component: MovementUpdatePage,
         type: ROUTE_TYPES.private,
       },
     ],

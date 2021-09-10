@@ -1,7 +1,10 @@
 import { IconButton } from "@material-ui/core";
 import { Edit, Delete } from "@material-ui/icons";
+import { format } from "date-fns";
+import { movementOptions } from "../../../constants";
+import { ROUTES_DICT } from "../../../routes/routesDict";
 
-const actionColumn = {
+const actionColumn = (location, history, geneticType, movements) => ({
   label: "Acciones",
   name: "actions",
   options: {
@@ -15,7 +18,14 @@ const actionColumn = {
             style={{ color: "#C25560" }}
             size="small"
             aria-label="edit"
-            onClick={() => {}}
+            onClick={() =>
+              history.push({
+                pathname: ROUTES_DICT.movementsUpdate
+                  .replace(":geneticType", geneticType)
+                  .replace(":_id", movements[dataIndex]._id),
+                background: location,
+              })
+            }
           >
             <Edit fontSize="small" />
           </IconButton>
@@ -31,14 +41,15 @@ const actionColumn = {
       );
     },
   },
-};
+});
 
-export const columns = [
+export const columns = (location, history, geneticType, movements) => [
   {
     label: "Movimiento",
     name: "movementType",
     options: {
       filter: false,
+      customBodyRender: (value) => movementOptions[value],
     },
   },
   {
@@ -46,6 +57,8 @@ export const columns = [
     name: "date",
     options: {
       filter: false,
+      customBodyRender: (value) =>
+        value && format(new Date(value), "yyyy-MM-dd"),
     },
   },
   {
@@ -69,5 +82,5 @@ export const columns = [
       filter: false,
     },
   },
-  actionColumn,
+  actionColumn(location, history, geneticType, movements),
 ];

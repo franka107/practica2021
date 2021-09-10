@@ -13,7 +13,7 @@ export function movementReducer(state = {}, action) {
         ...state,
         list: action.payload,
       };
-    case ACTION_TYPES.AGRIBUSINESS.UPDATE_CURRENT:
+    case ACTION_TYPES.MOVEMENT.UPDATE_CURRENT:
       return {
         ...state,
         current: action.payload,

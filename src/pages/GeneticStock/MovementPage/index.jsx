@@ -2,7 +2,7 @@ import { Grid, Typography } from "@material-ui/core";
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import { useLocation, useParams } from "react-router";
+import { useHistory, useLocation, useParams } from "react-router";
 import ChipList from "../../../components/ChipList";
 import CustomMuiTable from "../../../components/CustomMuiTable";
 import MovementActions from "../../../redux/actions/movement.actions";
@@ -19,6 +19,7 @@ const MovementPage = (props) => {
     selectableRows: "none",
     search: false,
   };
+  const history = useHistory();
 
   useEffect(() => {
     if (!movementList || movementList.length === 0) {
@@ -45,7 +46,7 @@ const MovementPage = (props) => {
       <Grid item xs={12}>
         <CustomMuiTable
           data={movementList}
-          columns={columns}
+          columns={columns(location, history, params.geneticType, movementList)}
           options={options}
         />
       </Grid>

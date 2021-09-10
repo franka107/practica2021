@@ -26,32 +26,11 @@ const defaultInitValues = {
   toWho: "",
 };
 
-const validationSchema = yup.object({
-  movementType: yup
-    .string("Ingresa el tipo de movimiento")
-    .required("Esta campo es requerido."),
-  date: yup.date("Ingresa una fecha").required("Este campo es requerido"),
-  geneticStockId: yup
-    .string("Ingresa stock genético")
-    .required("Esta campo es requerido."),
-  observation: yup.string("Ingresa una observación"),
-  quantity: yup
-    .number("Ingrese solo números")
-    .integer("Solo números enteros")
-    .min(1, "La cantidad debe ser mayor o igual a 1")
-    .required("Este campo es requerido"),
-  unitValue: yup
-    .number("Ingrese solo números")
-    .required("Este campo es requerido"),
-  saleAccount: yup.string("Ingresa una cuenta"),
-  description: yup.string("Ingresa una descripción"),
-  toWho: yup.string("Ingresa información"),
-});
-
 const MovementForm = ({
   initValues = defaultInitValues,
   type = "create",
   onClickCancelButton,
+  onCompleteSubmit = () => {},
   geneticType,
 }) => {
   const dispatch = useDispatch();
@@ -59,9 +38,44 @@ const MovementForm = ({
     (state) => state.geneticStock.list.filter((e) => e.active),
     shallowEqual
   );
-  const currentAgribusiness = useSelector(
-    (state) => state.agribusiness.current
-  );
+  const currentFarm = useSelector((state) => state.farm.current);
+  const validationSchema = () =>
+    yup.lazy((values) => {
+      return yup.object({
+        movementType: yup
+          .string("Ingresa el tipo de movimiento")
+          .required("Esta campo es requerido."),
+        date: yup
+          .date("Ingresa una fecha")
+          .required("Este campo es requerido."),
+        geneticStockId: yup
+          .string("Ingresa stock genético")
+          .nullable(true)
+          .required("Esta campo es requerido."),
+        observation: yup.string("Ingresa una observación"),
+        quantity: yup
+          .number("Ingrese solo números")
+          .integer("Solo números enteros")
+          .min(1, "La cantidad debe ser mayor o igual a 1")
+          .max(
+            movementOptions[values.movementType] === movementOptions.SALE
+              ? values.geneticStockId
+                ? geneticStockList.find((e) => e._id === values.geneticStockId)
+                    ?.stock
+                : 0
+              : Infinity,
+            ({ max }) => `La cantidad debe ser menor o igual a ${max}`
+          )
+
+          .required("Este campo es requerido"),
+        unitValue: yup
+          .number("Ingrese solo números")
+          .required("Este campo es requerido"),
+        saleAccount: yup.string("Ingresa una cuenta"),
+        description: yup.string("Ingresa una descripción"),
+        toWho: yup.string("Ingresa información"),
+      });
+    });
 
   useEffect(() => {
     (!geneticStockList || geneticStockList.length === 0) &&
@@ -73,17 +87,34 @@ const MovementForm = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch]);
 
-  const onSubmitCreate = (values, actions) => {
-    dispatch(MovementActions.create(values));
+  const transformByMovementType = (values) => {
+    if (movementOptions[values.movementType] === movementOptions.SALE) {
+      values.quantity = values.quantity * -1;
+    }
+    return values;
   };
-  const onSubmitUpdate = (values, actions) => {
-    console.log("submitUpdate");
+
+  const onSubmit = async (values, actions) => {
+    try {
+      const transformedValues = transformByMovementType(values);
+      if (type === "create") {
+        await dispatch(MovementActions.create(transformedValues, geneticType));
+      }
+      if (type === "update") {
+        await dispatch(MovementActions.update(transformedValues, geneticType));
+      }
+      onCompleteSubmit();
+    } catch {
+      actions.setSubmitting(false);
+    }
   };
+
   return (
     <Formik
       initialValues={initValues}
       validationSchema={validationSchema}
-      onSubmit={type === "create" ? onSubmitCreate : onSubmitUpdate}
+      onSubmit={onSubmit}
+      enableReinitialize
     >
       {(props) => (
         <form onSubmit={props.handleSubmit}>
@@ -97,7 +128,7 @@ const MovementForm = ({
             <SelectFieldFormik
               onChange={props.handleChange}
               xs={12}
-              sm={6}
+              sm={4}
               name="movementType"
               label="Movimiento"
               options={Object.keys(movementOptions).map((key) => ({
@@ -111,7 +142,22 @@ const MovementForm = ({
               label="Stock genético"
               onChange={props.handleChange}
               xs={12}
-              sm={6}
+              sm={4}
+            />
+            <TextFieldFormik
+              name="stock"
+              label="Cantidad"
+              onChange={props.handleChange}
+              xs={12}
+              sm={4}
+              disabled
+              value={
+                props.values.geneticStockId
+                  ? geneticStockList.find(
+                      (e) => e._id === props.values.geneticStockId
+                    )?.stock
+                  : 0
+              }
             />
 
             <DatePickerFieldFormik
@@ -145,7 +191,11 @@ const MovementForm = ({
               onChange={props.handleChange}
               name="unitValue"
               label="Valor unidad"
-              endAdornment={<InputAdornment position="start">%</InputAdornment>}
+              endAdornment={
+                <InputAdornment position="start">
+                  {currentFarm?.currency?.currencyAbbreviation}
+                </InputAdornment>
+              }
               type="number"
               xs={12}
               sm={4}
@@ -155,10 +205,16 @@ const MovementForm = ({
               label="Total"
               type="number"
               xs={12}
+              endAdornment={
+                <InputAdornment position="start">
+                  {currentFarm?.currency?.currencyAbbreviation}
+                </InputAdornment>
+              }
               sm={4}
               disabled
               value={props.values.unitValue * props.values.quantity}
             />
+            {/* 
             <TextFieldFormik
               onChange={props.handleChange}
               name="saleAccount"
@@ -166,12 +222,13 @@ const MovementForm = ({
               xs={12}
               sm={6}
             />
+            */}
             <TextFieldFormik
               onChange={props.handleChange}
               name="description"
               label="Descripción"
               xs={12}
-              sm={6}
+              sm={12}
             />
           </Grid>
           <Grid

@@ -24,6 +24,7 @@ export const ROUTES_DICT = {
   semenCreate: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.geneticStock}/${ROUTES_SLUGS.semen}/${ROUTES_SLUGS.create}`,
   movements: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.geneticStock}/:geneticType/${ROUTES_SLUGS.movements}`,
   movementsCreate: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.geneticStock}/:geneticType/${ROUTES_SLUGS.movements}/${ROUTES_SLUGS.create}`,
+  movementsUpdate: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.geneticStock}/:geneticType/${ROUTES_SLUGS.movements}/:_id/${ROUTES_SLUGS.update}`,
   embryo: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.geneticStock}/${ROUTES_SLUGS.embryo}`,
   embryoCreate: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.geneticStock}/${ROUTES_SLUGS.embryo}/${ROUTES_SLUGS.create}`,
   service: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.service}`,
