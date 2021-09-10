@@ -1,4 +1,4 @@
-import { Grid, Typography } from "@material-ui/core";
+import { Grid, Typography, InputAdornment } from "@material-ui/core";
 import { Formik } from "formik";
 import * as yup from "yup";
 import SelectFieldFormik from "../../../components/Inputs/SelectFieldFormik";
@@ -58,6 +58,9 @@ const MovementForm = ({
   const geneticStockList = useSelector(
     (state) => state.geneticStock.list.filter((e) => e.active),
     shallowEqual
+  );
+  const currentAgribusiness = useSelector(
+    (state) => state.agribusiness.current
   );
 
   useEffect(() => {
@@ -136,15 +139,25 @@ const MovementForm = ({
               label="Cantidad"
               type="number"
               xs={12}
-              sm={6}
+              sm={4}
             />
             <TextFieldFormik
               onChange={props.handleChange}
               name="unitValue"
               label="Valor unidad"
+              endAdornment={<InputAdornment position="start">%</InputAdornment>}
               type="number"
               xs={12}
-              sm={6}
+              sm={4}
+            />
+            <TextFieldFormik
+              name="total"
+              label="Total"
+              type="number"
+              xs={12}
+              sm={4}
+              disabled
+              value={props.values.unitValue * props.values.quantity}
             />
             <TextFieldFormik
               onChange={props.handleChange}
