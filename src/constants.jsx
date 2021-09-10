@@ -98,7 +98,15 @@ export const movementOptions = {
 export const typeServices = [
   { _id: "AR_IN", name: "I.A" },
   { _id: "NA_MO", name: "M.N" },
+  { _id: "EM_TR", name: "Tranferencia de embriones" },
 ];
+
+export const typeServicesTest = {
+  AR_IN: "I.A",
+  NA_MO: "M.N",
+  EM_TR: "Tranferencia de embriones",
+};
+
 export const estadiosOptions = [
   { _id: "MO_CO", name: "Mórula Compacta" },
   { _id: "BL_TE", name: "Blastocito Temprano" },
@@ -109,23 +117,24 @@ export const estadiosOptions = [
 ];
 
 export const qualityEmbryoOptions = [
-  { _id: "1", name: "1" },
-  { _id: "2", name: "2" },
-  { _id: "3", name: "3" },
-  { _id: "4", name: "4" },
-  { _id: "5", name: "5" },
-  { _id: "6", name: "6" },
-  { _id: "7", name: "7" },
-  { _id: "8", name: "8" },
+  { _id: 0, name: "0" },
+  { _id: 1, name: "1" },
+  { _id: 2, name: "2" },
+  { _id: 3, name: "3" },
+  { _id: 4, name: "4" },
+  { _id: 5, name: "5" },
+  { _id: 6, name: "6" },
+  { _id: 7, name: "7" },
+  { _id: 8, name: "8" },
 ];
 
 export const conditionOptions = [
-  { _id: "1", name: "Congelado" },
-  { _id: "2", name: "Vitrificado" },
-  { _id: "3", name: "Fresco" },
+  { _id: "FROZEN", name: "Congelado" },
+  { _id: "VITRIFIED", name: "Vitrificado" },
+  { _id: "FRESH", name: "Fresco" },
 ];
 
 export const typeEmbryonOptions = [
   { _id: "MOET", name: "In Vivo (MOET)" },
-  { _id: "FIV", name: "In Vitro (FIV) e Indeterminado" },
+  { _id: "FIV", name: "In Vitro (FIV)" },
 ];

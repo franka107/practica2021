@@ -11,81 +11,94 @@ import ButtonFormik from "../../../components/Inputs/ButtonFormik";
 import CheckboxFormik from "../../../components/Inputs/CheckboxFormik";
 import { typeServices } from "../../../constants";
 import { useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, shallowEqual } from "react-redux";
 import { useDispatch } from "react-redux";
 import serviceActions from "../../../redux/actions/service.actions";
-import {
-  getFemaleAnimals,
-  getMaleAnimals,
-} from "../../../redux/selectors/animal.selector";
+import { animalActions } from "../../../redux/actions/animal.actions";
 import { sexOptions } from "../../../constants";
 import ACTION_TYPES from "../../../redux/types";
 
-// const defaultInitValues = {
-//   agribusinessId: "",
-//   animalId: "",
-//   name: "",
-//   serviceDate: new Date(),
-//   serviceTime: "",
-//   serviceType: "",
-//   reproductorAnimalId: null,
-//   geneticStockId: null,
-//   userId: null,
-//   strawQuantity: 0,
-//   strawGender: "",
-//   isIatf: false,
-//   observation: "",
-// };
+const defaultInitValues = {
+  agribusinessId: "",
+  animalId: "",
+  name: "",
+  serviceDate: new Date(),
+  serviceTime: "",
+  serviceType: "",
+  reproductorAnimalId: null,
+  geneticStockId: null,
+  userId: null,
+  strawQuantity: 0,
+  strawGender: "",
+  isIatf: false,
+  observation: "",
+};
 
-const validationSchema = yup.object({
-  animalId: yup
-    .string("Ingresa el tipo de movimiento")
-    .required("Esta campo es requerido."),
-  serviceDate: yup
-    .date("Ingresa una fecha")
-    .required("Este campo es requerido"),
-  serviceType: yup
-    .string("Ingresa el tipo de servicio")
-    .required("Esta campo es requerido."),
-});
-
-const IAMNForm = ({ initValues, type = "create", onClickCancelButton }) => {
+const IAMNForm = ({
+  initValues = defaultInitValues,
+  type = "create",
+  onClickCancelButton,
+  onCompleteSubmit = () => {},
+}) => {
   const dispatch = useDispatch();
-  const femaleAnimals = useSelector(getFemaleAnimals());
-  const maleAnimals = useSelector(getMaleAnimals());
-  const { current: currentAgribusiness } = useSelector(
-    (state) => state.agribusiness
+
+  const maleAnimals = useSelector(
+    (state) => state.animal.list.filter((animal) => animal.gender === "MALE"),
+    shallowEqual
   );
-  const { list: listSemen } = useSelector((state) => state.geneticStock);
+  const femaleAnimals = useSelector(
+    (state) => state.animal.list.filter((animal) => animal.gender === "FEMALE"),
+    shallowEqual
+  );
+
+  const currentAgribusiness = useSelector(
+    (state) => state.agribusiness.current
+  );
+  const listSemen = useSelector((state) => state.geneticStock.list);
+
+  const validationSchema = yup.object({
+    animalId: yup
+      .string("Ingresa el tipo de movimiento")
+      .required("Esta campo es requerido."),
+    serviceDate: yup
+      .date("Ingresa una fecha")
+      .required("Este campo es requerido"),
+    serviceType: yup
+      .string("Ingresa el tipo de servicio")
+      .required("Esta campo es requerido."),
+  });
 
   useEffect(() => {
-    dispatch(serviceActions.listByAgribusiness());
+    (!femaleAnimals ||
+      !maleAnimals ||
+      femaleAnimals.length === 0 ||
+      maleAnimals.length === 0) &&
+      dispatch(animalActions.listAll());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch]);
 
-  const onSubmitCreate = (values, actions) => {
-    values.agribusinessId = currentAgribusiness._id;
-    dispatch(serviceActions.create(values));
-    onClickCancelButton();
-  };
-  const onSubmitUpdate = (values, actions) => {
-    dispatch(serviceActions.update(values));
-    onClickCancelButton();
-  };
-
-  const onCancel = () => {
-    onClickCancelButton();
-    dispatch({
-      type: ACTION_TYPES.SERVICE.UPDATE_CURRENT,
-      payload: null,
-    });
+  const onSubmit = async (values, actions) => {
+    try {
+      if (type === "create") {
+        values.agribusinessId = currentAgribusiness._id;
+        await dispatch(serviceActions.create(values));
+      }
+      if (type === "update") {
+        await dispatch(serviceActions.update(values));
+      }
+      await dispatch(serviceActions.listByAgribusiness());
+      onCompleteSubmit();
+    } catch {
+      actions.setSubmitting(false);
+    }
   };
 
   return (
     <Formik
       initialValues={initValues}
       validationSchema={validationSchema}
-      onSubmit={type === "create" ? onSubmitCreate : onSubmitUpdate}
+      onSubmit={onSubmit}
+      enableReinitialize
     >
       {(props) => (
         <form onSubmit={props.handleSubmit}>
@@ -110,6 +123,12 @@ const IAMNForm = ({ initValues, type = "create", onClickCancelButton }) => {
               name="name"
               label="Nombre"
               disabled
+              value={
+                props.values.animalId
+                  ? femaleAnimals.find((e) => e._id === props.values.animalId)
+                      ?.name
+                  : ""
+              }
               xs={12}
               sm={6}
             />
@@ -227,7 +246,7 @@ const IAMNForm = ({ initValues, type = "create", onClickCancelButton }) => {
             {onClickCancelButton && (
               <Grid item xs={2}>
                 <ButtonFormik
-                  onClick={onCancel}
+                  onClick={onClickCancelButton}
                   xs={2}
                   label="Cancelar"
                   type="button"

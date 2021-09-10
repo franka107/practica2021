@@ -12,7 +12,7 @@ const MovementCreatePage = ({ parentPathname }) => {
 
   return (
     <>
-      <CustomDialog parentPathname={parentPathnameParsed}>
+      <CustomDialog parentPathname={parentPathnameParsed} maxWidth="md">
         {(props) => (
           <MovementForm
             type="create"

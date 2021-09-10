@@ -1,18 +1,22 @@
 import { ROUTES_DICT } from "../../routes/routesDict";
+import { format } from "date-fns";
+import { typeServicesTest } from "../../constants";
 
 export const columnsToMuiTable = [
   {
     label: "Id Vaca",
-    name: "animalId",
+    name: "animal",
     options: {
       filter: false,
+      customBodyRender: (value) => (value ? value.identifier : ""),
     },
   },
   {
     label: "Nombre Vaca",
-    name: "name",
+    name: "animal",
     options: {
       filter: false,
+      customBodyRender: (value) => (value ? value.name : "Sin nombre"),
     },
   },
   {
@@ -27,6 +31,7 @@ export const columnsToMuiTable = [
     name: "serviceType",
     options: {
       filter: false,
+      customBodyRender: (value) => typeServicesTest[value],
     },
   },
   {
@@ -34,13 +39,16 @@ export const columnsToMuiTable = [
     name: "serviceDate",
     options: {
       filter: false,
+      customBodyRender: (value) =>
+        value && format(new Date(value), "yyyy-MM-dd"),
     },
   },
   {
     label: "Responsable",
-    name: "responsable",
+    name: "userId",
     options: {
       filter: false,
+      customBodyRender: (value) => (value ? value.name : "Sin responsable"),
     },
   },
 ];
