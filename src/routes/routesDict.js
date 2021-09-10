@@ -10,6 +10,7 @@ export const ROUTES_SLUGS = {
   sale: "sale",
   service: "service",
   iamn: "I.A-M.N",
+  embryoTransfer: "transfer-embryo",
   /* common routes slugs */
   create: "create",
   update: "update",
@@ -30,6 +31,8 @@ export const ROUTES_DICT = {
   service: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.service}`,
   iamnCreate: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.service}/${ROUTES_SLUGS.iamn}/${ROUTES_SLUGS.create}`,
   iamnUpdate: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.service}/${ROUTES_SLUGS.iamn}/${ROUTES_SLUGS.update}/:id`,
+  embryoTransferCreate: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.service}/${ROUTES_SLUGS.embryoTransfer}/${ROUTES_SLUGS.create}`,
+  embryoTransferUpdate: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.service}/${ROUTES_SLUGS.embryoTransfer}/${ROUTES_SLUGS.update}/:id`,
   account: "/cuenta",
   profile: "/perfil",
   users: "/usuario",

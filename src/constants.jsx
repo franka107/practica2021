@@ -99,3 +99,32 @@ export const typeServices = [
   { _id: "AR_IN", name: "I.A" },
   { _id: "NA_MO", name: "M.N" },
 ];
+export const estadiosOptions = [
+  { _id: "MO_CO", name: "Mórula Compacta" },
+  { _id: "BL_TE", name: "Blastocito Temprano" },
+  { _id: "BL_MA", name: "Blastocito Maduro" },
+  { _id: "BL_EX", name: "Blastocito Expandido" },
+  { _id: "BL_E_EC", name: "Blastocito en Eclosión" },
+  { _id: "BL_EC", name: "Blastocito Eclosionado" },
+];
+
+export const qualityEmbryoOptions = [
+  { _id: "1", name: "1" },
+  { _id: "2", name: "2" },
+  { _id: "3", name: "3" },
+  { _id: "4", name: "4" },
+  { _id: "5", name: "5" },
+  { _id: "6", name: "6" },
+  { _id: "7", name: "7" },
+  { _id: "8", name: "8" },
+];
+export const conditionOptions = [
+  { _id: "1", name: "Congelado" },
+  { _id: "2", name: "Vitrificado" },
+  { _id: "3", name: "Fresco" },
+];
+
+export const typeEmbryonOptions = [
+  { _id: "MOET", name: "In Vivo (MOET)" },
+  { _id: "FIV", name: "In Vitro (FIV) e Indeterminado" },
+];

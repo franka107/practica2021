@@ -15,6 +15,7 @@ import AnimalControlPage from "../pages/AnimalControlPage";
 import AnimalDetailPage from "../pages/AnimalDetailPage";
 import ServicePage from "../pages/ServicePage/ServiceTablePage";
 import IAMNFormPage from "../pages/ServicePage/IAMNFormPage";
+import EmbryoTransferFormPage from "../pages/ServicePage/EmbryoTransferFormPage";
 import PalpationPage from "../pages/PalpationPage";
 import BirthPage from "../pages/BirthPage";
 import PregnanciesPage from "../pages/PregnanciesPage";
@@ -38,6 +39,48 @@ export const ROUTE_TYPES = {
 };
 
 export const RENDER_ROUTES = [
+  {
+    path: ROUTES_DICT.service,
+    key: "Servicios",
+    exact: false,
+    component: ServicePage,
+    layout: DashboardLayout,
+    type: ROUTE_TYPES.private,
+    routes: [
+      {
+        parentPathname: ROUTES_DICT.service,
+        path: ROUTES_DICT.iamnCreate,
+        key: "Nuevo IA/MN",
+        exact: true,
+        component: IAMNFormPage,
+        type: ROUTE_TYPES.private,
+      },
+      {
+        parentPathname: ROUTES_DICT.service,
+        path: ROUTES_DICT.iamnUpdate,
+        key: "Editar IA/MN",
+        exact: true,
+        component: IAMNFormPage,
+        type: ROUTE_TYPES.private,
+      },
+      {
+        parentPathname: ROUTES_DICT.service,
+        path: ROUTES_DICT.embryoTransferCreate,
+        key: "Nueva Transferencia de Embrión",
+        exact: true,
+        component: EmbryoTransferFormPage,
+        type: ROUTE_TYPES.private,
+      },
+      {
+        parentPathname: ROUTES_DICT.service,
+        path: ROUTES_DICT.embryoTransferUpdate,
+        key: "Editar Transferencia de Embrión",
+        exact: true,
+        component: EmbryoTransferFormPage,
+        type: ROUTE_TYPES.private,
+      },
+    ],
+  },
   {
     path: ROUTES_DICT.movements,
     key: "Movimientos",
@@ -64,7 +107,6 @@ export const RENDER_ROUTES = [
       },
     ],
   },
-
   {
     path: ROUTES_DICT.animalControl,
     key: "Control Animal",

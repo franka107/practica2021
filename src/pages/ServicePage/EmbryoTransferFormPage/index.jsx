@@ -3,7 +3,7 @@ import CustomDialog from "../../../components/CustomDialog";
 import { ROUTES_DICT } from "../../../routes/routesDict";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router";
-import IAMNForm from "../Forms/IAMNForm";
+import EmbryoTransferForm from "../Forms/EmbryoTransferForm";
 import ServiceTablePage from "../ServiceTablePage";
 import serviceActions from "../../../redux/actions/service.actions.js";
 import { useSelector } from "react-redux";
@@ -24,7 +24,7 @@ const defaultInitValues = {
   observation: "",
 };
 
-const IAMNFormPage = () => {
+const EmbryoTransferFormPage = () => {
   const dispatch = useDispatch();
   const params = useParams();
   const parentPathName = ROUTES_DICT.service;
@@ -44,14 +44,14 @@ const IAMNFormPage = () => {
           {(props) => (
             <>
               {serviceCurrent && params.id && (
-                <IAMNForm
+                <EmbryoTransferForm
                   type="update"
                   onClickCancelButton={props.handleClose}
                   initValues={serviceCurrent}
                 />
               )}
               {!params.id && (
-                <IAMNForm
+                <EmbryoTransferForm
                   type="create"
                   onClickCancelButton={props.handleClose}
                   initValues={defaultInitValues}
@@ -65,4 +65,4 @@ const IAMNFormPage = () => {
   );
 };
 
-export default IAMNFormPage;
+export default EmbryoTransferFormPage;
