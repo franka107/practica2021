@@ -13,9 +13,11 @@ import SetupControlPage from "../pages/SetupControlPage";
 /* routes with dashboard layout */
 import AnimalControlPage from "../pages/AnimalControlPage";
 import AnimalDetailPage from "../pages/AnimalDetailPage";
-import ServicePage from "../pages/ServicePage/ServiceTablePage";
-import IAMNFormPage from "../pages/ServicePage/IAMNFormPage";
-import EmbryoTransferFormPage from "../pages/ServicePage/EmbryoTransferFormPage";
+import ServicePage from "../pages/ServicePage/ServicePage";
+import IAMNCreatePage from "../pages/ServicePage/IAMNCreatePage";
+import IAMNUpdatePage from "../pages/ServicePage/IAMNUpdatePage";
+import EmbryoTransferCreatePage from "../pages/ServicePage/EmbryoTransferCreatePage";
+import EmbryoTransferUpdatePage from "../pages/ServicePage/EmbryoTransferUpdatePage";
 import PalpationPage from "../pages/PalpationPage";
 import BirthPage from "../pages/BirthPage";
 import PregnanciesPage from "../pages/PregnanciesPage";
@@ -52,7 +54,7 @@ export const RENDER_ROUTES = [
         path: ROUTES_DICT.iamnCreate,
         key: "Nuevo IA/MN",
         exact: true,
-        component: IAMNFormPage,
+        component: IAMNCreatePage,
         type: ROUTE_TYPES.private,
       },
       {
@@ -60,7 +62,7 @@ export const RENDER_ROUTES = [
         path: ROUTES_DICT.iamnUpdate,
         key: "Editar IA/MN",
         exact: true,
-        component: IAMNFormPage,
+        component: IAMNUpdatePage,
         type: ROUTE_TYPES.private,
       },
       {
@@ -68,7 +70,7 @@ export const RENDER_ROUTES = [
         path: ROUTES_DICT.embryoTransferCreate,
         key: "Nueva Transferencia de Embrión",
         exact: true,
-        component: EmbryoTransferFormPage,
+        component: EmbryoTransferCreatePage,
         type: ROUTE_TYPES.private,
       },
       {
@@ -76,7 +78,7 @@ export const RENDER_ROUTES = [
         path: ROUTES_DICT.embryoTransferUpdate,
         key: "Editar Transferencia de Embrión",
         exact: true,
-        component: EmbryoTransferFormPage,
+        component: EmbryoTransferUpdatePage,
         type: ROUTE_TYPES.private,
       },
     ],
@@ -242,7 +244,7 @@ export const ROUTES = [
     path: ROUTES_DICT.iamnCreate,
     key: "IA/MN",
     exact: true,
-    component: IAMNFormPage,
+    component: IAMNCreatePage,
     layout: DashboardLayout,
     type: ROUTE_TYPES.private,
   },
@@ -250,7 +252,7 @@ export const ROUTES = [
     path: ROUTES_DICT.iamnUpdate,
     key: "IA/MN",
     exact: true,
-    component: IAMNFormPage,
+    component: IAMNCreatePage,
     layout: DashboardLayout,
     type: ROUTE_TYPES.private,
   },

@@ -4,7 +4,7 @@ import { ROUTES_DICT } from "../../../routes/routesDict";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router";
 import IAMNForm from "../Forms/IAMNForm";
-import ServiceTablePage from "../ServiceTablePage";
+import ServiceTablePage from "../ServicePage";
 import serviceActions from "../../../redux/actions/service.actions.js";
 import { useSelector } from "react-redux";
 
@@ -24,7 +24,7 @@ const defaultInitValues = {
   observation: "",
 };
 
-const IAMNFormPage = () => {
+const IAMNUpdatePage = ({ parentPathname }) => {
   const dispatch = useDispatch();
   const params = useParams();
   const parentPathName = ROUTES_DICT.service;
@@ -47,14 +47,8 @@ const IAMNFormPage = () => {
                 <IAMNForm
                   type="update"
                   onClickCancelButton={props.handleClose}
+                  onCompleteSubmit={props.handleClose}
                   initValues={serviceCurrent}
-                />
-              )}
-              {!params.id && (
-                <IAMNForm
-                  type="create"
-                  onClickCancelButton={props.handleClose}
-                  initValues={defaultInitValues}
                 />
               )}
             </>
@@ -65,4 +59,4 @@ const IAMNFormPage = () => {
   );
 };
 
-export default IAMNFormPage;
+export default IAMNUpdatePage;

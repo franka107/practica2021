@@ -11,12 +11,9 @@ import ButtonFormik from "../../../components/Inputs/ButtonFormik";
 import { typeServices } from "../../../constants";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
+import { useDispatch, shallowEqual } from "react-redux";
 import serviceActions from "../../../redux/actions/service.actions";
-import {
-  getFemaleAnimals,
-  getMaleAnimals,
-} from "../../../redux/selectors/animal.selector";
+import geneticStockActions from "../../../redux/actions/geneticStock.actions";
 import {
   sexOptions,
   estadiosOptions,
@@ -24,23 +21,29 @@ import {
   conditionOptions,
   typeEmbryonOptions,
 } from "../../../constants";
-import ACTION_TYPES from "../../../redux/types";
+import { animalActions } from "../../../redux/actions/animal.actions";
+import { seriesType } from "highcharts";
 
-// const defaultInitValues = {
-//   agribusinessId: "",
-//   animalId: "",
-//   name: "",
-//   serviceDate: new Date(),
-//   serviceTime: "",
-//   serviceType: "",
-//   reproductorAnimalId: null,
-//   geneticStockId: null,
-//   userId: null,
-//   strawQuantity: 0,
-//   strawGender: "",
-//   isIatf: false,
-//   observation: "",
-// };
+const defaultInitValues = {
+  agribusinessId: "",
+  animalId: "",
+  name: "",
+  serviceDate: new Date(),
+  serviceTime: new Date(),
+  serviceType: "EM_TR",
+  geneticStockId: null,
+  embryoName: "",
+  embryoType: "",
+  embryoCondition: "",
+  embryoPhase: "",
+  embryoQuality: 0,
+  embryoQuantity: 0,
+  embryoGender: "",
+  ovaryRight: "",
+  ovaryLeft: "",
+  userId: null,
+  observation: "",
+};
 
 const validationSchema = yup.object({
   animalId: yup
@@ -55,54 +58,59 @@ const validationSchema = yup.object({
 });
 
 const EmbryoTransferForm = ({
-  initValues,
+  initValues = defaultInitValues,
   type = "create",
   onClickCancelButton,
+  onCompleteSubmit = () => {},
 }) => {
   const dispatch = useDispatch();
-  const femaleAnimals = useSelector(getFemaleAnimals());
-  const maleAnimals = useSelector(getMaleAnimals());
+  const femaleAnimals = useSelector(
+    (state) => state.animal.list.filter((animal) => animal.gender === "FEMALE"),
+    shallowEqual
+  );
   const { current: currentAgribusiness } = useSelector(
     (state) => state.agribusiness
   );
-  const { list: listSemen } = useSelector((state) => state.geneticStock);
+  const listEmbryo = useSelector((state) => state.geneticStock.list);
 
   useEffect(() => {
     dispatch(serviceActions.listByAgribusiness());
+
+    dispatch(animalActions.listAll());
+
+    dispatch(
+      geneticStockActions.listGeneticStockByAgribusiness({
+        geneticType: "SEMEN",
+      })
+    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch]);
 
-  const onSubmitCreate = (values, actions) => {
-    values.agribusinessId = currentAgribusiness._id;
-    dispatch(serviceActions.create(values));
-    onClickCancelButton();
-  };
-  const onSubmitUpdate = (values, actions) => {
-    dispatch(serviceActions.update(values));
-    onClickCancelButton();
-  };
-
-  const onCancel = () => {
-    onClickCancelButton();
-    dispatch({
-      type: ACTION_TYPES.SERVICE.UPDATE_CURRENT,
-      payload: null,
-    });
+  const onSubmit = async (values, actions) => {
+    try {
+      if (type === "create") {
+        values.agribusinessId = currentAgribusiness._id;
+        await dispatch(serviceActions.create(values));
+      }
+      if (type === "update") {
+        await dispatch(serviceActions.update(values));
+      }
+      await dispatch(serviceActions.listByAgribusiness());
+      onCompleteSubmit();
+    } catch {
+      actions.setSubmitting(false);
+    }
   };
 
   return (
     <Formik
       initialValues={initValues}
       validationSchema={validationSchema}
-      onSubmit={type === "create" ? onSubmitCreate : onSubmitUpdate}
+      onSubmit={onSubmit}
+      enableReinitialize
     >
       {(props) => (
         <form onSubmit={props.handleSubmit}>
-          {/* <Grid container spacing={1} className={classes.formStyle}>
-            <Grid item>
-              <Typography variant={"subtitle2"}>Embrión</Typography>
-            </Grid>
-          </Grid> */}
           <Grid container spacing={1}>
             <Grid item xs={12}>
               <Typography variant="subtitle1">
@@ -131,6 +139,12 @@ const EmbryoTransferForm = ({
               disabled
               xs={12}
               sm={6}
+              value={
+                props.values.animalId && femaleAnimals
+                  ? femaleAnimals.find((e) => e._id === props.values.animalId)
+                      ?.name
+                  : ""
+              }
             />
             <DatePickerFieldFormik
               label="Fecha"
@@ -142,7 +156,7 @@ const EmbryoTransferForm = ({
             <TimePickerFormik
               label="Fecha"
               onChange={props.handleChange}
-              name="serviceDate"
+              name="serviceTime"
               xs={12}
               sm={6}
             />
@@ -158,21 +172,28 @@ const EmbryoTransferForm = ({
               sm={3}
               name="geneticStockId"
               label="Cód."
-              options={listSemen}
+              options={listEmbryo}
             />
             <TextFieldFormik
               onChange={props.handleChange}
-              name="name"
+              name="embryoName"
               label="Nom. embrión"
               disabled
               xs={12}
               sm={3}
+              value={
+                props.values.geneticStockId
+                  ? listEmbryo.find(
+                      (e) => e._id === props.values.geneticStockId
+                    )?.embryoName
+                  : ""
+              }
             />
             <SelectFieldFormik
               onChange={props.handleChange}
               xs={12}
               sm={3}
-              name="serviceType"
+              name="embryoType"
               label="Tip. embrión"
               options={typeEmbryonOptions}
             />
@@ -180,7 +201,7 @@ const EmbryoTransferForm = ({
               onChange={props.handleChange}
               xs={12}
               sm={3}
-              name="serviceType"
+              name="embryoCondition"
               label="Condición"
               options={conditionOptions}
             />
@@ -188,7 +209,7 @@ const EmbryoTransferForm = ({
               onChange={props.handleChange}
               xs={12}
               sm={4}
-              name="serviceType"
+              name="embryoPhase"
               label="Estadio"
               options={estadiosOptions}
             />
@@ -196,14 +217,15 @@ const EmbryoTransferForm = ({
               onChange={props.handleChange}
               xs={12}
               sm={2}
-              name="serviceType"
+              name="embryoQuality"
               label="Calidad"
               options={qualityEmbryoOptions}
             />
             <TextFieldFormik
               onChange={props.handleChange}
-              name="name"
+              name="embryoQuantity"
               label="Cantidad"
+              type="number"
               xs={12}
               sm={2}
             />
@@ -211,7 +233,7 @@ const EmbryoTransferForm = ({
               onChange={props.handleChange}
               xs={12}
               sm={4}
-              name="serviceType"
+              name="embryoGender"
               label="Sexo embrión"
               options={sexOptions}
             />
@@ -220,14 +242,14 @@ const EmbryoTransferForm = ({
             </Grid>
             <TextFieldFormik
               onChange={props.handleChange}
-              name="name"
+              name="ovaryRight"
               label="Ovario derecho"
               xs={12}
               sm={4}
             />
             <TextFieldFormik
               onChange={props.handleChange}
-              name="name"
+              name="ovaryLeft"
               label="Ovario izquierdo"
               xs={12}
               sm={4}
@@ -236,16 +258,16 @@ const EmbryoTransferForm = ({
               onChange={props.handleChange}
               xs={12}
               sm={4}
-              name="serviceType"
+              name="userId"
               label="Inseminador"
-              options={typeServices}
+              options={[]}
             />
             <TextFieldFormik
               onChange={props.handleChange}
               name="observation"
               multiline
               rows={3}
-              label="Comentario"
+              label="Observaciones"
               xs={12}
             />
           </Grid>
@@ -258,7 +280,7 @@ const EmbryoTransferForm = ({
             {onClickCancelButton && (
               <Grid item xs={2}>
                 <ButtonFormik
-                  onClick={onCancel}
+                  onClick={onClickCancelButton}
                   xs={2}
                   label="Cancelar"
                   type="button"

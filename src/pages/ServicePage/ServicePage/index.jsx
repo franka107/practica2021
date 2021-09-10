@@ -50,11 +50,19 @@ const ServicePage = (props) => {
               size="small"
               aria-label="edit"
               onClick={() => {
-                let parentPathName = ROUTES_DICT.iamnUpdate.replace(
-                  ":id",
-                  serviceList[dataIndex]._id
-                );
-                history.push(parentPathName);
+                if (serviceList[dataIndex].serviceType === "EM_TR") {
+                  let parentPathName = ROUTES_DICT.embryoTransferUpdate.replace(
+                    ":id",
+                    serviceList[dataIndex]._id
+                  );
+                  history.push(parentPathName);
+                } else {
+                  let parentPathName = ROUTES_DICT.iamnUpdate.replace(
+                    ":id",
+                    serviceList[dataIndex]._id
+                  );
+                  history.push(parentPathName);
+                }
               }}
             >
               <Edit fontSize="small" />
