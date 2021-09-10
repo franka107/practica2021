@@ -29,4 +29,29 @@ export const useStyles = makeStyles((theme) => ({
       },
     },
   },
+  form__border: {
+    marginTop: ".9rem",
+    border: `1px solid ${theme.palette.secondary.main}`,
+    padding: "0 1rem",
+    marginBottom: "1rem",
+    position: "relative",
+  },
+  form__raceContainer: {
+    padding: "1rem 0",
+  },
+  form__raceContainer__deleteIcon: {
+    cursor: "pointer",
+    marginLeft: theme.spacing(1),
+  },
+  form__raceContainer__errorMessage: {
+    color: "red",
+    textAlign: "center",
+  },
+  form__raceContainer__addBtn: {
+    position: "absolute",
+    right: -12,
+    bottom: 7,
+    backgroundColor: "white",
+    cursor: "pointer",
+  },
 }));

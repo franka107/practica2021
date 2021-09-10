@@ -29,6 +29,7 @@ export const columns = [
     name: "value",
     options: {
       filter: false,
+      customBodyRender: (value) => value && value.toFixed(2),
     },
   },
   {
@@ -36,6 +37,7 @@ export const columns = [
     name: "totalValue",
     options: {
       filter: false,
+      customBodyRender: (value) => value && value.toFixed(2),
     },
   },
 ];

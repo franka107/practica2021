@@ -6,12 +6,12 @@ export const embryoRouteOptions = (location, setOpen, setDialog) => [
     path: ROUTES_DICT.embryo,
   },
   {
-    key: "Nuevo embrión",
-
-    //path: ROUTES_DICT.embryoCreate,
-    onClick: () => {
-      setOpen(true);
-      setDialog("Embryo");
+    key: "Nuevo stock de embriónes",
+    path: {
+      pathname: ROUTES_DICT.embryoCreate,
+      state: {
+        background: location,
+      },
     },
   },
   {
@@ -39,8 +39,13 @@ export const semenRouteOptions = (location) => [
     path: ROUTES_DICT.semen,
   },
   {
-    key: "Nuevo semen",
-    path: ROUTES_DICT.semenCreate,
+    key: "Nuevo stock de semen",
+    path: {
+      pathname: ROUTES_DICT.semenCreate,
+      state: {
+        background: location,
+      },
+    },
   },
   {
     key: "Movimientos",

@@ -25,7 +25,11 @@ export function geneticStockReducer(state = initialState, action) {
         current: null,
       };
     case ACTION_TYPES.GENETICSTOCK.CREATE:
-      return state;
+      return {
+        ...state,
+        list: [...state.list, action.payload],
+        current: action.payload,
+      };
     case ACTION_TYPES.GENETICSTOCK.DELETE:
       return state;
     default:

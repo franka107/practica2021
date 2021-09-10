@@ -9,7 +9,7 @@ class GeneticStockActions {
 
       return GeneticStockService.geneticStockListByAgribusiness({
         ...data,
-        agribusinessId: agribusiness.current._id,
+        agribusinessId: agribusiness.current?._id,
       }).then(
         (response) => {
           dispatch({
@@ -24,13 +24,20 @@ class GeneticStockActions {
       );
     };
   }
-  createGenticStock(data) {
-    return (dispatch) => {
-      return GeneticStockService.geneticStockCreate(data).then(
+  createGenticStock(data, geneticType) {
+    return (dispatch, getState) => {
+      const agribusiness = getState().agribusiness.current;
+      return GeneticStockService.geneticStockCreate({
+        ...data,
+        agribusinessId: agribusiness._id,
+      }).then(
         (response) => {
           dispatch({
             type: ACTION_TYPES.GENETICSTOCK.CREATE,
-            payload: response,
+            payload: {
+              ...response,
+              totalValue: response.stock * response.value,
+            },
           });
           dispatch(UiActions.showSnackbar("El registro de creo exitosamente"));
           return Promise.resolve();
@@ -71,6 +78,7 @@ class GeneticStockActions {
           dispatch(
             UiActions.showSnackbar("El registro se actualizo exitosamente")
           );
+          dispatch(this.listGeneticStockByAgribusiness());
           return Promise.resolve();
         },
         (error) => {

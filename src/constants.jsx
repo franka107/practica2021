@@ -118,6 +118,7 @@ export const qualityEmbryoOptions = [
   { _id: "7", name: "7" },
   { _id: "8", name: "8" },
 ];
+
 export const conditionOptions = [
   { _id: "1", name: "Congelado" },
   { _id: "2", name: "Vitrificado" },

@@ -13,7 +13,7 @@ import { useStyles } from "./styles";
 import FormEmbryo from "./Forms/FormEmbryo";
 import FormMove from "./Forms/FormMove";
 import CustomMuiTable from "../../../components/CustomMuiTable";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector, shallowEqual } from "react-redux";
 import GeneticStockActions from "../../../redux/actions/geneticStock.actions";
 import { animalActions } from "../../../redux/actions/animal.actions";
 import ACTION_TYPES from "../../../redux/types";
@@ -21,7 +21,8 @@ import geneticStockActions from "../../../redux/actions/geneticStock.actions";
 import RaceActions from "../../../redux/actions/race.actions";
 import ChipList from "../../../components/ChipList";
 import { embryoRouteOptions } from "../constants";
-import { useLocation } from "react-router";
+import { useLocation, useHistory } from "react-router-dom";
+import { ROUTES_DICT } from "../../../routes/routesDict";
 
 function Embryo({ children }) {
   const [open, setOpen] = useState(false);
@@ -31,20 +32,25 @@ function Embryo({ children }) {
   const [searchText] = useState();
   const classes = useStyles();
   const dispatch = useDispatch();
-  const { list: geneticStockList } = useSelector((state) => state.geneticStock);
+  const geneticStockList = useSelector(
+    (state) =>
+      state.geneticStock.list.filter((e) => e.geneticType === "EMBRYO"),
+    shallowEqual
+  );
   const { list: animalList } = useSelector((state) => state.animal);
   const { current: currentAgribusiness } = useSelector(
     (state) => state.agribusiness
   );
   const { list: races } = useSelector((state) => state.race);
   const location = useLocation();
+  const history = useHistory();
 
   useEffect(() => {
     if (!races || races.length === 0) {
       dispatch(RaceActions.listRace());
     }
     if (!animalList) {
-      dispatch(animalActions.listAll(currentAgribusiness._id));
+      dispatch(animalActions.listAll(currentAgribusiness?._id));
     }
     (!geneticStockList || geneticStockList.length === 0) &&
       dispatch(
@@ -75,9 +81,13 @@ function Embryo({ children }) {
               size="small"
               aria-label="edit"
               onClick={() => {
-                setOpen(true);
-                setDialog("update");
-                setGeneticStockId(geneticStockList[dataIndex]._id);
+                history.push({
+                  pathname: ROUTES_DICT.embryoUpdate.replace(
+                    ":_id",
+                    geneticStockList[dataIndex]._id
+                  ),
+                  background: location,
+                });
               }}
             >
               <Edit fontSize="small" />

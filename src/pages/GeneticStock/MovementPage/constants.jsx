@@ -48,7 +48,6 @@ export const columns = (location, history, geneticType, movements) => [
     label: "Movimiento",
     name: "movementType",
     options: {
-      filter: false,
       customBodyRender: (value) => movementOptions[value],
     },
   },
@@ -73,6 +72,15 @@ export const columns = (location, history, geneticType, movements) => [
     name: "unitValue",
     options: {
       filter: false,
+      customBodyRender: (value) => value && value.toFixed(2),
+    },
+  },
+  {
+    label: "Total",
+    name: "total",
+    options: {
+      filter: false,
+      customBodyRender: (value) => value && value.toFixed(2),
     },
   },
   {
@@ -82,5 +90,5 @@ export const columns = (location, history, geneticType, movements) => [
       filter: false,
     },
   },
-  actionColumn(location, history, geneticType, movements),
+  //actionColumn(location, history, geneticType, movements),
 ];

@@ -17,7 +17,7 @@ function listAll() {
     const { agribusiness } = getState();
     dispatch(request());
     return AnimalService.animalList({
-      agribusinessId: agribusiness.current._id,
+      agribusinessId: agribusiness.current?._id,
     }).then(
       (response) => {
         dispatch(success(response));

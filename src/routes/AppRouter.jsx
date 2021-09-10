@@ -129,7 +129,7 @@ const RouterList = ({ routes, outside }) => {
 
                 case ROUTE_TYPES.private:
                   return !isLoggedIn ? (
-                    <Redirect to={ROUTES_DICT.dashboard} />
+                    <Redirect to={ROUTES_DICT.login} />
                   ) : (
                     <AuthWrapper>
                       <Route

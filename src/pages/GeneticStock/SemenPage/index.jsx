@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import {
   Grid,
   Typography,
-  Chip,
   Dialog,
   IconButton,
   Button,
@@ -10,36 +9,47 @@ import {
 import { Delete, Edit, Close, Star, StarBorder } from "@material-ui/icons";
 import { columns, columns2 } from "./constants";
 import { useStyles } from "./styles";
-import clsx from "clsx";
+// import clsx from "clsx";
 import FormSemen from "./Forms/FormSemen";
 import FormMove from "./Forms/FormMove";
 import CustomMuiTable from "../../../components/CustomMuiTable";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector, shallowEqual } from "react-redux";
 import GeneticStockActions from "../../../redux/actions/geneticStock.actions";
-import RaceActions from "../../../redux/actions/race.actions";
 import { animalActions } from "../../../redux/actions/animal.actions";
+import ACTION_TYPES from "../../../redux/types";
+import geneticStockActions from "../../../redux/actions/geneticStock.actions";
+import RaceActions from "../../../redux/actions/race.actions";
+import ChipList from "../../../components/ChipList";
+import { embryoRouteOptions, semenRouteOptions } from "../constants";
+import { useLocation, useHistory } from "react-router-dom";
+import { ROUTES_DICT } from "../../../routes/routesDict";
 
-function Semen() {
+function Semen({ children }) {
   const [open, setOpen] = useState(false);
   const [dialog, setDialog] = useState("");
-  const [ind, setInd] = useState("1");
+  const [ind] = useState("1");
   const [geneticStockId, setGeneticStockId] = useState("");
   const [searchText] = useState();
   const classes = useStyles();
   const dispatch = useDispatch();
-  const { list: geneticStockList } = useSelector((state) => state.geneticStock);
+  const geneticStockList = useSelector(
+    (state) => state.geneticStock.list.filter((e) => e.geneticType === "SEMEN"),
+    shallowEqual
+  );
   const { list: animalList } = useSelector((state) => state.animal);
   const { current: currentAgribusiness } = useSelector(
     (state) => state.agribusiness
   );
   const { list: races } = useSelector((state) => state.race);
+  const location = useLocation();
+  const history = useHistory();
 
   useEffect(() => {
     if (!races || races.length === 0) {
       dispatch(RaceActions.listRace());
     }
     if (!animalList) {
-      dispatch(animalActions.listAll(currentAgribusiness._id));
+      dispatch(animalActions.listAll(currentAgribusiness?._id));
     }
     (!geneticStockList || geneticStockList.length === 0) &&
       dispatch(
@@ -70,9 +80,13 @@ function Semen() {
               size="small"
               aria-label="edit"
               onClick={() => {
-                setOpen(true);
-                setDialog("update");
-                setGeneticStockId(geneticStockList[dataIndex]._id);
+                history.push({
+                  pathname: ROUTES_DICT.semenUpdate.replace(
+                    ":_id",
+                    geneticStockList[dataIndex]._id
+                  ),
+                  background: location,
+                });
               }}
             >
               <Edit fontSize="small" />
@@ -89,6 +103,7 @@ function Semen() {
             >
               <Delete fontSize="small" />
             </IconButton>
+
             <IconButton
               style={{ color: "#C25560" }}
               size="small"
@@ -97,16 +112,20 @@ function Semen() {
                 // data.outstanding = !data.outstanding;
                 // setAnimalsList(data);
                 dispatch(
-                  GeneticStockActions.updateGeneticStock({
+                  geneticStockActions.updateGeneticStock({
                     ...geneticStockList[dataIndex],
                     isFeatured: !Boolean(
                       geneticStockList[dataIndex].isFeatured
                     ),
                   })
                 ).then((data) => {
+                  dispatch({
+                    type: ACTION_TYPES.GENETICSTOCK.UPDATE_CURRENT,
+                    payload: null,
+                  });
                   dispatch(
-                    GeneticStockActions.listGeneticStockByAgribusiness({
-                      geneticType: "EMBRYO",
+                    geneticStockActions.listGeneticStockByAgribusiness({
+                      geneticType: "SEMEN",
                     })
                   );
                 });
@@ -147,6 +166,8 @@ function Semen() {
     <Grid container xs={12}>
       <Grid item container xs={12}>
         <Typography variant={"h6"}>Semen</Typography>
+        <ChipList routes={semenRouteOptions(location, setOpen, setDialog)} />
+        {/* 
         <Grid container spacing={2} className={classes.optionContainer}>
           <Grid item>
             <Chip
@@ -159,10 +180,10 @@ function Semen() {
           </Grid>
           <Grid item>
             <Chip
-              label={"Nuevo semen"}
+              label={"Nuevo embrión"}
               onClick={() => {
                 setOpen(true);
-                setDialog("Semen");
+                setDialog("Embryo");
               }}
               className={clsx(classes.option)}
             />
@@ -187,15 +208,28 @@ function Semen() {
             />
           </Grid>
         </Grid>
+            */}
       </Grid>
       {ind === "1" && (
-        <Grid item xs={12} className={classes.registerContainer}>
-          <CustomMuiTable
-            data={geneticStockList}
-            columns={[...columns, actionColumn]}
-            options={options}
-          />
-        </Grid>
+        <>
+          {/* 
+          <Grid item xs={12} className={classes.charts}>
+            <Paper className={classes.paper}>
+              <Typography variant={"overline"}>
+                Registro de nacimiento
+              </Typography>
+              <Divider className={classes.divider} />
+            </Paper>
+          </Grid>
+*/}
+          <Grid item xs={12} className={classes.registerContainer}>
+            <CustomMuiTable
+              data={geneticStockList}
+              columns={[...columns, actionColumn]}
+              options={options}
+            />
+          </Grid>
+        </>
       )}
       {ind === "2" && (
         <Grid item xs={12} className={classes.registerContainer}>
@@ -225,7 +259,7 @@ function Semen() {
             dispatch(GeneticStockActions.clearCurrentGenticStock());
           }}
         />
-        {dialog === "Semen" && <FormSemen setOpen={setOpen} />}
+        {dialog === "Embryo" && <FormSemen setOpen={setOpen} />}
         {dialog === "Move" && <FormMove setOpen={setOpen} />}
         {dialog === "update" && (
           <FormSemen
@@ -270,6 +304,7 @@ function Semen() {
           </Grid>
         )}
       </Dialog>
+      {children}
     </Grid>
   );
 }

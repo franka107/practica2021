@@ -6,7 +6,7 @@ import uiActions from "./ui.actions";
 const list = (geneticType) => async (dispatch, getState) => {
   const agribusiness = getState().agribusiness.current;
   const response = await IdeasCloudApi.fetch("movementListByAgribusiness", {
-    agribusinessId: agribusiness._id,
+    agribusinessId: agribusiness?._id,
     geneticType,
   });
 
@@ -26,7 +26,10 @@ const MovementActions = {
       "Movimiento registrado satisfactoriamente.",
       "Error desconocido, intente nuavamente."
     );
-    dispatch({ type: ACTION_TYPES.MOVEMENT.CREATE, payload: response });
+    dispatch({
+      type: ACTION_TYPES.MOVEMENT.CREATE,
+      payload: { ...response, total: response.quantity * response.unitValue },
+    });
     dispatch(
       geneticStockActions.listGeneticStockByAgribusiness({
         geneticType,

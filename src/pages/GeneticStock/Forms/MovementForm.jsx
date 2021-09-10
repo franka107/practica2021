@@ -35,7 +35,10 @@ const MovementForm = ({
 }) => {
   const dispatch = useDispatch();
   const geneticStockList = useSelector(
-    (state) => state.geneticStock.list.filter((e) => e.active),
+    (state) =>
+      state.geneticStock.list.filter(
+        (e) => e.active && e.geneticType === geneticType
+      ),
     shallowEqual
   );
   const currentFarm = useSelector((state) => state.farm.current);
@@ -203,7 +206,6 @@ const MovementForm = ({
             <TextFieldFormik
               name="total"
               label="Total"
-              type="number"
               xs={12}
               endAdornment={
                 <InputAdornment position="start">
@@ -212,7 +214,9 @@ const MovementForm = ({
               }
               sm={4}
               disabled
-              value={props.values.unitValue * props.values.quantity}
+              value={(props.values.unitValue * props.values.quantity).toFixed(
+                2
+              )}
             />
             {/* 
             <TextFieldFormik

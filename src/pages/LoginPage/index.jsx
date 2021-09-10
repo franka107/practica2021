@@ -34,7 +34,7 @@ function LoginPage(props) {
     dispatch(AuthActions.login(values))
       .then((farm) => {
         if (farm) {
-          history.push(ROUTES_DICT.dashboard);
+          history.push(ROUTES_DICT.animalControl);
         } else {
           history.push(ROUTES_DICT.setup);
         }

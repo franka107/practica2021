@@ -1,7 +1,7 @@
 import { Grid, Typography } from "@material-ui/core";
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
+import { useSelector, shallowEqual } from "react-redux";
 import { useHistory, useLocation, useParams } from "react-router";
 import ChipList from "../../../components/ChipList";
 import CustomMuiTable from "../../../components/CustomMuiTable";
@@ -13,7 +13,13 @@ import { columns } from "./constants";
 const MovementPage = (props) => {
   const location = useLocation();
   const params = useParams();
-  const movementList = useSelector((state) => state.movement.list);
+  const movementList = useSelector((state) =>
+    state.movement.list?.filter(
+      (e) =>
+        e.geneticStock?.geneticType ===
+        (params.geneticType === ROUTES_SLUGS.embryo ? "EMBRYO" : "SEMEN")
+    )
+  );
   const dispatch = useDispatch();
   const options = {
     selectableRows: "none",
