@@ -29,10 +29,12 @@ export const AppRouter = () => {
 const NestedSwitcher = () => {
   return (
     <>
-      <Switch>
-        <RouterList routes={RENDER_ROUTES} />
-      </Switch>
-      <RouterList routes={RENDER_ROUTES} outside />
+      <AuthWrapper>
+        <Switch>
+          <RouterList routes={RENDER_ROUTES} />
+        </Switch>
+        <RouterList routes={RENDER_ROUTES} outside />
+      </AuthWrapper>
     </>
   );
 };
@@ -131,34 +133,32 @@ const RouterList = ({ routes, outside }) => {
                   return !isLoggedIn ? (
                     <Redirect to={ROUTES_DICT.login} />
                   ) : (
-                    <AuthWrapper>
-                      <Route
-                        path={path}
-                        location={background || location}
-                        exact={exact}
-                        render={(routeProps) => (
-                          <>
-                            {Layout ? (
-                              <Layout>
-                                <Component
-                                  parentPathname={parentPathname}
-                                  {...routeProps}
-                                >
-                                  {routes && <RouterList routes={routes} />}
-                                </Component>
-                              </Layout>
-                            ) : (
+                    <Route
+                      path={path}
+                      location={background || location}
+                      exact={exact}
+                      render={(routeProps) => (
+                        <>
+                          {Layout ? (
+                            <Layout>
                               <Component
                                 parentPathname={parentPathname}
                                 {...routeProps}
                               >
                                 {routes && <RouterList routes={routes} />}
                               </Component>
-                            )}
-                          </>
-                        )}
-                      />
-                    </AuthWrapper>
+                            </Layout>
+                          ) : (
+                            <Component
+                              parentPathname={parentPathname}
+                              {...routeProps}
+                            >
+                              {routes && <RouterList routes={routes} />}
+                            </Component>
+                          )}
+                        </>
+                      )}
+                    />
                   );
                 default:
               }
