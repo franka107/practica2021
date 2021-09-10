@@ -3,7 +3,7 @@ import { Dialog } from "@material-ui/core";
 import { useStyles } from "../../styles";
 import { Close } from "@material-ui/icons";
 
-const CustomDialog = ({ children, parentPathname }) => {
+const CustomDialog = ({ children, parentPathname, maxWidth = "sm" }) => {
   const history = useHistory();
   const classes = useStyles();
   const location = useLocation();
@@ -22,6 +22,7 @@ const CustomDialog = ({ children, parentPathname }) => {
       fullWidth
       classes={{ paperFullWidth: classes.customModal }}
       onClose={handleClose}
+      maxWidth={maxWidth}
     >
       <Close onClick={handleClose} className={classes.customModal__closeBtn} />
       {children({ handleClose })}

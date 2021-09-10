@@ -54,6 +54,7 @@ const MovementActions = {
   },
 
   list,
+
   get: (data) => async (dispatch) => {
     const response = await IdeasCloudApi.fetch("movementGetById", data);
     dispatch({ type: ACTION_TYPES.MOVEMENT.UPDATE_CURRENT, payload: response });
