@@ -25,7 +25,7 @@ const EmbryoTransferUpdatePage = ({ parentPathname }) => {
         <CustomDialog parentPathName={parentPathname} maxWidth="md">
           {(props) => (
             <>
-              {serviceCurrent && (
+              {serviceCurrent && serviceCurrent._id === params.id && (
                 <EmbryoTransferForm
                   type="update"
                   onClickCancelButton={props.handleClose}
