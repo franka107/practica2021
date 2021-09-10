@@ -32,7 +32,7 @@ const IAMNUpdatePage = ({ parentPathname }) => {
   //http://localhost:3000/#/dashboard/genetic-stock/embryo/movements/
 
   useEffect(() => {
-    if (params.id) {
+    if (!serviceCurrent || serviceCurrent._id !== params.id) {
       dispatch(serviceActions.listById({ _id: params.id }));
     }
   }, [dispatch, params]);
@@ -43,7 +43,7 @@ const IAMNUpdatePage = ({ parentPathname }) => {
         <CustomDialog parentPathName={parentPathName}>
           {(props) => (
             <>
-              {serviceCurrent && params.id && (
+              {serviceCurrent && serviceCurrent._id === params.id && (
                 <IAMNForm
                   type="update"
                   onClickCancelButton={props.handleClose}
