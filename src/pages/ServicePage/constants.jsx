@@ -61,7 +61,12 @@ export const serviceRouteOptions = (location) => [
   },
   {
     key: "Agregar Tranferencia de embriones",
-    path: ROUTES_DICT.service,
+    path: {
+      pathname: ROUTES_DICT.embryoTransferCreate,
+      state: {
+        from: location.pathname,
+      },
+    },
   },
   // {
   //   key: "Nuevo movimiento",

@@ -8,7 +8,6 @@ import DatePickerFieldFormik from "../../../components/Inputs/DatePickerFieldFor
 import TimePickerFormik from "../../../components/Inputs/TimePickerFormik";
 import AutocompleteFieldFormik from "../../../components/Inputs/AutocompleteFieldFormik";
 import ButtonFormik from "../../../components/Inputs/ButtonFormik";
-import CheckboxFormik from "../../../components/Inputs/CheckboxFormik";
 import { typeServices } from "../../../constants";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
@@ -18,7 +17,13 @@ import {
   getFemaleAnimals,
   getMaleAnimals,
 } from "../../../redux/selectors/animal.selector";
-import { sexOptions } from "../../../constants";
+import {
+  sexOptions,
+  estadiosOptions,
+  qualityEmbryoOptions,
+  conditionOptions,
+  typeEmbryonOptions,
+} from "../../../constants";
 import ACTION_TYPES from "../../../redux/types";
 
 // const defaultInitValues = {
@@ -49,7 +54,11 @@ const validationSchema = yup.object({
     .required("Esta campo es requerido."),
 });
 
-const IAMNForm = ({ initValues, type = "create", onClickCancelButton }) => {
+const EmbryoTransferForm = ({
+  initValues,
+  type = "create",
+  onClickCancelButton,
+}) => {
   const dispatch = useDispatch();
   const femaleAnimals = useSelector(getFemaleAnimals());
   const maleAnimals = useSelector(getMaleAnimals());
@@ -89,11 +98,21 @@ const IAMNForm = ({ initValues, type = "create", onClickCancelButton }) => {
     >
       {(props) => (
         <form onSubmit={props.handleSubmit}>
+          {/* <Grid container spacing={1} className={classes.formStyle}>
+            <Grid item>
+              <Typography variant={"subtitle2"}>Embrión</Typography>
+            </Grid>
+          </Grid> */}
           <Grid container spacing={1}>
             <Grid item xs={12}>
               <Typography variant="subtitle1">
                 {type === "create" && "Registrar servicio"}
                 {type === "update" && "Editar servicio"}
+              </Typography>
+            </Grid>
+            <Grid item xs={12}>
+              <Typography variant="subtitle2">
+                Información de Servicio
               </Typography>
             </Grid>
             <AutocompleteFieldFormik
@@ -127,94 +146,106 @@ const IAMNForm = ({ initValues, type = "create", onClickCancelButton }) => {
               xs={12}
               sm={6}
             />
+            <Grid item xs={12}>
+              <Typography variant="subtitle2">Embrión</Typography>
+            </Grid>
+            <AutocompleteFieldFormik
+              defaultValue={
+                type === "create" ? null : props.values.geneticStock
+              }
+              onChange={props.handleChange}
+              xs={12}
+              sm={3}
+              name="geneticStockId"
+              label="Cód."
+              options={listSemen}
+            />
+            <TextFieldFormik
+              onChange={props.handleChange}
+              name="name"
+              label="Nom. embrión"
+              disabled
+              xs={12}
+              sm={3}
+            />
             <SelectFieldFormik
               onChange={props.handleChange}
               xs={12}
-              sm={6}
+              sm={3}
               name="serviceType"
-              label="Tipo de servicio"
-              options={typeServices}
-              // options={Object.keys(movementOptions).map((key) => ({
-              //   _id: key,
-              //   name: movementOptions[key],
-              // }))}
+              label="Tip. embrión"
+              options={typeEmbryonOptions}
             />
-            {props.values.serviceType !== typeServices[1]._id ? (
-              <AutocompleteFieldFormik
-                defaultValue={
-                  type === "create" ? null : props.values.geneticStock
-                }
-                onChange={props.handleChange}
-                xs={12}
-                sm={6}
-                name="geneticStockId"
-                label="Semen"
-                options={listSemen}
-              />
-            ) : (
-              <AutocompleteFieldFormik
-                defaultValue={
-                  type === "create" ? null : props.values.reproductor
-                }
-                onChange={props.handleChange}
-                xs={12}
-                sm={6}
-                name="reproductorAnimalId"
-                label="Reproductor"
-                options={maleAnimals}
-              />
-            )}
-            {props.values.serviceType !== typeServices[1]._id && (
-              <AutocompleteFieldFormik
-                // defaultValue={
-                //   type === "create" ? null : props.values.reproductor
-                // }
-                onChange={props.handleChange}
-                xs={12}
-                sm={6}
-                name="userId"
-                label="Inseminador"
-                options={[]}
-              />
-            )}
-            {props.values.serviceType !== typeServices[1]._id && (
-              <TextFieldFormik
-                onChange={props.handleChange}
-                name="strawQuantity"
-                label="Nro de pajillas"
-                type="number"
-                xs={12}
-                sm={6}
-              />
-            )}
-            {props.values.serviceType !== typeServices[1]._id && (
-              <SelectFieldFormik
-                onChange={props.handleChange}
-                xs={12}
-                sm={6}
-                name="strawGender"
-                label="Genero de pajilla"
-                options={sexOptions}
-                // options={Object.keys(movementOptions).map((key) => ({
-                //   _id: key,
-                //   name: movementOptions[key],
-                // }))}
-              />
-            )}
-            <Grid sm={6} xs={12} item alignContent="center" alignItems="center">
-              <CheckboxFormik
-                label="I.A.T.F"
-                name="isIatf"
-                onChange={props.handleChange}
-                // checked={values.isReproductive}
-              ></CheckboxFormik>
+            <SelectFieldFormik
+              onChange={props.handleChange}
+              xs={12}
+              sm={3}
+              name="serviceType"
+              label="Condición"
+              options={conditionOptions}
+            />
+            <SelectFieldFormik
+              onChange={props.handleChange}
+              xs={12}
+              sm={4}
+              name="serviceType"
+              label="Estadio"
+              options={estadiosOptions}
+            />
+            <SelectFieldFormik
+              onChange={props.handleChange}
+              xs={12}
+              sm={2}
+              name="serviceType"
+              label="Calidad"
+              options={qualityEmbryoOptions}
+            />
+            <TextFieldFormik
+              onChange={props.handleChange}
+              name="name"
+              label="Cantidad"
+              xs={12}
+              sm={2}
+            />
+            <SelectFieldFormik
+              onChange={props.handleChange}
+              xs={12}
+              sm={4}
+              name="serviceType"
+              label="Sexo embrión"
+              options={sexOptions}
+            />
+            <Grid item xs={12}>
+              <Typography variant="subtitle2">Hallazgo en ovarios</Typography>
             </Grid>
+            <TextFieldFormik
+              onChange={props.handleChange}
+              name="name"
+              label="Ovario derecho"
+              xs={12}
+              sm={4}
+            />
+            <TextFieldFormik
+              onChange={props.handleChange}
+              name="name"
+              label="Ovario izquierdo"
+              xs={12}
+              sm={4}
+            />
+            <SelectFieldFormik
+              onChange={props.handleChange}
+              xs={12}
+              sm={4}
+              name="serviceType"
+              label="Inseminador"
+              options={typeServices}
+            />
             <TextFieldFormik
               onChange={props.handleChange}
               name="observation"
               multiline
               rows={3}
-              label="Observaciones"
+              label="Comentario"
               xs={12}
             />
           </Grid>
@@ -244,10 +275,10 @@ const IAMNForm = ({ initValues, type = "create", onClickCancelButton }) => {
   );
 };
 
-IAMNForm.propTypes = {
+EmbryoTransferForm.propTypes = {
   type: PropTypes.oneOf(["create", "update"]).isRequired,
   onClickCancelButton: PropTypes.func,
   initValues: PropTypes.object,
 };
 
-export default IAMNForm;
+export default EmbryoTransferForm;
