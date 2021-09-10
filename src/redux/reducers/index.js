@@ -11,7 +11,7 @@ import { uiReducer } from "./ui.reducer";
 import { raceReducer } from "./race.reducer";
 import { geneticStockReducer } from "./geneticStock.reducer";
 import { movementReducer } from "./movement.reducer";
-import { serviceIAMNReducer } from "./serviceIAMN.reducer";
+import { serviceReducer } from "./service.reducer";
 
 const rootReducer = combineReducers({
   auth: authReducer,
@@ -26,7 +26,7 @@ const rootReducer = combineReducers({
   race: raceReducer,
   geneticStock: geneticStockReducer,
   movement: movementReducer,
-  serviceIAMN: serviceIAMNReducer,
+  service: serviceReducer,
 });
 
 //const rootReducer = (state, action) => {

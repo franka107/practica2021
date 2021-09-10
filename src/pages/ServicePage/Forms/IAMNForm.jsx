@@ -5,58 +5,81 @@ import SelectFieldFormik from "../../../components/Inputs/SelectFieldFormik";
 import TextFieldFormik from "../../../components/Inputs/TextFieldFormik";
 import PropTypes from "prop-types";
 import DatePickerFieldFormik from "../../../components/Inputs/DatePickerFieldFormik";
+import AutocompleteFieldFormik from "../../../components/Inputs/AutocompleteFieldFormik";
 import ButtonFormik from "../../../components/Inputs/ButtonFormik";
 import CheckboxFormik from "../../../components/Inputs/CheckboxFormik";
 import { typeServices } from "../../../constants";
 import { useEffect } from "react";
-// import { useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
+import serviceActions from "../../../redux/actions/service.actions";
+import {
+  getFemaleAnimals,
+  getMaleAnimals,
+} from "../../../redux/selectors/animal.selector";
+import { sexOptions } from "../../../constants";
+import ACTION_TYPES from "../../../redux/types";
 
-import serviceIAMNActions from "../../../redux/actions/serviceIAMN.actions";
-
-const defaultInitValues = {
-  animalId: "",
-  name: "",
-  serviceDate: new Date(),
-  hour: "",
-  typeService: "",
-  reproductor: "",
-  semen: "",
-  inseminator: "",
-  nroStraws: "",
-  genderStraw: "",
-  iatf: false,
-  observation: "",
-};
+// const defaultInitValues = {
+//   agribusinessId: "",
+//   animalId: "",
+//   name: "",
+//   serviceDate: new Date(),
+//   serviceTime: "",
+//   serviceType: "",
+//   reproductorAnimalId: null,
+//   geneticStockId: null,
+//   userId: null,
+//   strawQuantity: 0,
+//   strawGender: "",
+//   isIatf: false,
+//   observation: "",
+// };
 
 const validationSchema = yup.object({
-  // animalId: yup
-  //   .string("Ingresa el tipo de movimiento")
-  //   .required("Esta campo es requerido."),
-  // date: yup.date("Ingresa una fecha").required("Este campo es requerido"),
-  // typeService: yup
-  //   .string("Ingresa el tipo de servicio")
-  //   .required("Esta campo es requerido."),
+  animalId: yup
+    .string("Ingresa el tipo de movimiento")
+    .required("Esta campo es requerido."),
+  serviceDate: yup
+    .date("Ingresa una fecha")
+    .required("Este campo es requerido"),
+  serviceType: yup
+    .string("Ingresa el tipo de servicio")
+    .required("Esta campo es requerido."),
 });
 
-const IAMNForm = ({
-  initValues = defaultInitValues,
-  type = "create",
-  onClickCancelButton,
-}) => {
+const IAMNForm = ({ initValues, type = "create", onClickCancelButton }) => {
   const dispatch = useDispatch();
+  const femaleAnimals = useSelector(getFemaleAnimals());
+  const maleAnimals = useSelector(getMaleAnimals());
+  const { current: currentAgribusiness } = useSelector(
+    (state) => state.agribusiness
+  );
+  const { list: listSemen } = useSelector((state) => state.geneticStock);
 
   useEffect(() => {
-    dispatch(serviceIAMNActions.listByAgribusiness());
+    dispatch(serviceActions.listByAgribusiness());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch]);
 
   const onSubmitCreate = (values, actions) => {
-    dispatch(serviceIAMNActions.create(values));
+    values.agribusinessId = currentAgribusiness._id;
+    dispatch(serviceActions.create(values));
+    onClickCancelButton();
   };
   const onSubmitUpdate = (values, actions) => {
-    console.log("submitUpdate");
+    dispatch(serviceActions.update(values));
+    onClickCancelButton();
   };
+
+  const onCancel = () => {
+    onClickCancelButton();
+    dispatch({
+      type: ACTION_TYPES.SERVICE.UPDATE_CURRENT,
+      payload: null,
+    });
+  };
+
   return (
     <Formik
       initialValues={initValues}
@@ -72,10 +95,12 @@ const IAMNForm = ({
                 {type === "update" && "Editar servicio"}
               </Typography>
             </Grid>
-            <TextFieldFormik
-              onChange={props.handleChange}
+            <AutocompleteFieldFormik
+              options={femaleAnimals}
               name="animalId"
               label="Identificación de hembra"
+              onChange={props.handleChange}
+              defaultValue={type === "create" ? null : props.values.animal}
               xs={12}
               sm={6}
             />
@@ -83,6 +108,7 @@ const IAMNForm = ({
               onChange={props.handleChange}
               name="name"
               label="Nombre"
+              disabled
               xs={12}
               sm={6}
             />
@@ -95,7 +121,7 @@ const IAMNForm = ({
             />
             <TextFieldFormik
               onChange={props.handleChange}
-              name="hour"
+              name="serviceTime"
               label="Hora"
               xs={12}
               sm={6}
@@ -104,7 +130,7 @@ const IAMNForm = ({
               onChange={props.handleChange}
               xs={12}
               sm={6}
-              name="typeService"
+              name="serviceType"
               label="Tipo de servicio"
               options={typeServices}
               // options={Object.keys(movementOptions).map((key) => ({
@@ -112,77 +138,76 @@ const IAMNForm = ({
               //   name: movementOptions[key],
               // }))}
             />
-            {props.values.typeService !== "I.A" ? (
-              <SelectFieldFormik
+            {props.values.serviceType !== typeServices[1]._id ? (
+              <AutocompleteFieldFormik
+                defaultValue={
+                  type === "create" ? null : props.values.geneticStock
+                }
                 onChange={props.handleChange}
                 xs={12}
                 sm={6}
-                name="reproductor"
-                label="Reproductor"
-                options={[]}
+                name="geneticStockId"
+                label="Semen"
+                options={listSemen}
               />
             ) : (
-              <SelectFieldFormik
+              <AutocompleteFieldFormik
+                defaultValue={
+                  type === "create" ? null : props.values.reproductor
+                }
                 onChange={props.handleChange}
                 xs={12}
                 sm={6}
-                name="semen"
-                label="Semen"
+                name="reproductorAnimalId"
+                label="Reproductor"
+                options={maleAnimals}
+              />
+            )}
+            {props.values.serviceType !== typeServices[1]._id && (
+              <AutocompleteFieldFormik
+                // defaultValue={
+                //   type === "create" ? null : props.values.reproductor
+                // }
+                onChange={props.handleChange}
+                xs={12}
+                sm={6}
+                name="userId"
+                label="Inseminador"
                 options={[]}
               />
             )}
-            <SelectFieldFormik
-              onChange={props.handleChange}
-              xs={12}
-              sm={6}
-              name="inseminator"
-              label="Inseminador"
-              options={[]}
-            />
-            {props.values.typeService !== "M.N" && (
-              <SelectFieldFormik
+            {props.values.serviceType !== typeServices[1]._id && (
+              <TextFieldFormik
                 onChange={props.handleChange}
-                xs={12}
-                sm={6}
-                name="nroStraws"
+                name="strawQuantity"
                 label="Nro de pajillas"
-                options={[]}
-                // options={Object.keys(movementOptions).map((key) => ({
-                //   _id: key,
-                //   name: movementOptions[key],
-                // }))}
+                type="number"
+                xs={12}
+                sm={6}
               />
             )}
-            {props.values.typeService !== "M.N" && (
+            {props.values.serviceType !== typeServices[1]._id && (
               <SelectFieldFormik
                 onChange={props.handleChange}
                 xs={12}
                 sm={6}
-                name="genderStraw"
+                name="strawGender"
                 label="Genero de pajilla"
-                options={[]}
+                options={sexOptions}
                 // options={Object.keys(movementOptions).map((key) => ({
                 //   _id: key,
                 //   name: movementOptions[key],
                 // }))}
               />
             )}
-            {props.values.typeService !== "M.N" && (
-              <Grid
-                sm={6}
-                xs={12}
-                item
-                alignContent="center"
-                alignItems="center"
-              >
-                <CheckboxFormik
-                  label="I.A.T.F"
-                  name="iatf"
-                  onChange={props.handleChange}
-                  // checked={values.isReproductive}
-                ></CheckboxFormik>
-              </Grid>
-            )}
+            <Grid sm={6} xs={12} item alignContent="center" alignItems="center">
+              <CheckboxFormik
+                label="I.A.T.F"
+                name="isIatf"
+                onChange={props.handleChange}
+                // checked={values.isReproductive}
+              ></CheckboxFormik>
+            </Grid>
             <TextFieldFormik
               onChange={props.handleChange}
               name="observation"
@@ -201,7 +226,7 @@ const IAMNForm = ({
             {onClickCancelButton && (
               <Grid item xs={2}>
                 <ButtonFormik
-                  onClick={onClickCancelButton}
+                  onClick={onCancel}
                   xs={2}
                   label="Cancelar"
                   type="button"
