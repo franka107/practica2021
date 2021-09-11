@@ -27,6 +27,9 @@ const MovementPage = (props) => {
   };
   const history = useHistory();
 
+  const { current: currentAgribusiness } = useSelector(
+    (state) => state.agribusiness
+  );
   useEffect(() => {
     if (!movementList || movementList.length === 0) {
       params.geneticType === ROUTES_SLUGS.embryo &&
@@ -35,7 +38,7 @@ const MovementPage = (props) => {
         dispatch(MovementActions.list("SEMEN"));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch, params]);
+  }, [dispatch, params, currentAgribusiness]);
 
   return (
     <Grid container>

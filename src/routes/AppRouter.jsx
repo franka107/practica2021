@@ -96,16 +96,17 @@ const RouterList = ({ routes, outside }) => {
                 )
               );
             } else {
-              switch (type) {
-                case ROUTE_TYPES.public:
-                  return isLoggedIn ? (
-                    <Redirect to={ROUTES_DICT.animalControl} />
-                  ) : (
-                    <Route
-                      path={path}
-                      location={background || location}
-                      exact={exact}
-                      render={(routeProps) => (
+              return (
+                <Route
+                  path={path}
+                  location={background || location}
+                  exact={exact}
+                  render={(routeProps) => {
+                    if (
+                      (type === ROUTE_TYPES.public && !isLoggedIn) ||
+                      (type === ROUTE_TYPES.private && isLoggedIn)
+                    ) {
+                      return (
                         <>
                           {Layout ? (
                             <Layout>
@@ -125,43 +126,88 @@ const RouterList = ({ routes, outside }) => {
                             </Component>
                           )}
                         </>
-                      )}
+                      );
+                    } else if (type === ROUTE_TYPES.public && isLoggedIn) {
+                      <Redirect to={ROUTES_DICT.animalControl} />;
+                    } else if (type === ROUTE_TYPES.private && !isLoggedIn) {
+                      <Redirect to={ROUTES_DICT.login} />;
+                    }
+                  }}
+                />
+              );
+              /*
+
+              switch (type) {
+                case ROUTE_TYPES.public:
+                  return (
+                    <Route
+                      path={path}
+                      location={background || location}
+                      exact={exact}
+                      render={(routeProps) =>
+                        !isLoggedIn ? (
+                          <>
+                            {Layout ? (
+                              <Layout>
+                                <Component
+                                  parentPathname={parentPathname}
+                                  {...routeProps}
+                                >
+                                  {routes && <RouterList routes={routes} />}
+                                </Component>
+                              </Layout>
+                            ) : (
+                              <Component
+                                parentPathname={parentPathname}
+                                {...routeProps}
+                              >
+                                {routes && <RouterList routes={routes} />}
+                              </Component>
+                            )}
+                          </>
+                        ) : (
+                          <Redirect to={ROUTES_DICT.animalControl} />
+                        )
+                      }
                     />
                   );
 
                 case ROUTE_TYPES.private:
-                  return !isLoggedIn ? (
-                    <Redirect to={ROUTES_DICT.login} />
-                  ) : (
+                  return (
                     <Route
                       path={path}
                       location={background || location}
                       exact={exact}
-                      render={(routeProps) => (
-                        <>
-                          {Layout ? (
-                            <Layout>
+                      render={(routeProps) =>
+                        isLoggedIn ? (
+                          <>
+                            {Layout ? (
+                              <Layout>
+                                <Component
+                                  parentPathname={parentPathname}
+                                  {...routeProps}
+                                >
+                                  {routes && <RouterList routes={routes} />}
+                                </Component>
+                              </Layout>
+                            ) : (
                               <Component
                                 parentPathname={parentPathname}
                                 {...routeProps}
                               >
                                 {routes && <RouterList routes={routes} />}
                               </Component>
-                            </Layout>
-                          ) : (
-                            <Component
-                              parentPathname={parentPathname}
-                              {...routeProps}
-                            >
-                              {routes && <RouterList routes={routes} />}
-                            </Component>
-                          )}
-                        </>
-                      )}
+                            )}
+                          </>
+                        ) : (
+                          <Redirect to={ROUTES_DICT.login} />
+                        )
+                      }
                     />
                   );
                 default:
               }
+              */
             }
           }
         )}
@@ -173,17 +219,23 @@ const RouterList = ({ routes, outside }) => {
  *
  * @param {Array} children - Component hijo a renderizar
  * @returns {Component}
- * @description Wrapper de autentificacion que solicita datos globales de prioridad
+ * @description Wrapper de autentificacion que solicita datos globales de prioridad (Farm actual y Agronegocio actual)
  * @author Frank Cary Viveros <frank.cary@tecsup.edu.pe>
  */
 const AuthWrapper = ({ children }) => {
   const dispatch = useDispatch();
-  const { current: currentFarm } = useSelector((state) => state.farm);
-  const { user } = useSelector((state) => state.auth);
+  const currentFarm = useSelector((state) => state.farm.current);
+
+  const currentAgribusiness = useSelector(
+    (state) => state.agribusiness.current
+  );
+
+  const user = useSelector((state) => state.auth.user);
+
   useEffect(() => {
     if (!currentFarm) {
       dispatch(farmActions.findFarmByOwnerId(user._id));
     }
-  }, [dispatch, currentFarm, user]);
+  }, [dispatch, currentFarm, currentAgribusiness, user]);
   return <>{children}</>;
 };

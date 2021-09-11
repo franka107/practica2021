@@ -59,7 +59,7 @@ function Embryo({ children }) {
         })
       );
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [currentAgribusiness]);
 
   const options = {
     selectableRows: "none",
