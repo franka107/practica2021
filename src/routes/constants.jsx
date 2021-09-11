@@ -96,7 +96,6 @@ export const RENDER_ROUTES = [
     type: ROUTE_TYPES.private,
     routes: [
       {
-        parentPathname: ROUTES_DICT.movements,
         path: ROUTES_DICT.movementsCreate,
         key: "Nuevo movimiento",
         exact: true,
@@ -104,7 +103,6 @@ export const RENDER_ROUTES = [
         type: ROUTE_TYPES.private,
       },
       {
-        parentPathname: ROUTES_DICT.movements,
         path: ROUTES_DICT.movementsUpdate,
         key: "Actualizar movimiento",
         exact: true,

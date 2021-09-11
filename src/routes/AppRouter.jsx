@@ -13,13 +13,13 @@ import { GlobalSnackbar } from "../components/GlobalSnackbar";
 import { farmActions } from "../redux/actions/farm.actions";
 import { RENDER_ROUTES, ROUTE_TYPES } from "./constants";
 import { ROUTES_DICT } from "./routesDict";
+import PropTypes from "prop-types";
 
 export const AppRouter = () => {
   return (
     <Router>
       <div>
         <GlobalSnackbar />
-        {/* <RenderRoutes routes={ROUTES} /> */}
         <NestedSwitcher />
       </div>
     </Router>
@@ -31,9 +31,9 @@ const NestedSwitcher = () => {
     <>
       <AuthWrapper>
         <Switch>
-          <RouterList routes={RENDER_ROUTES} />
+          <RouterList routes={RENDER_ROUTES} outside={false} />
         </Switch>
-        <RouterList routes={RENDER_ROUTES} outside />
+        <RouterList routes={RENDER_ROUTES} outside={true} />
       </AuthWrapper>
     </>
   );
@@ -41,14 +41,17 @@ const NestedSwitcher = () => {
 
 /**
  *
+ *
+ * @component
  * @param {Array} routes - Array con rutas
  * @param {Boolean} outside - evalua logica para compatibilidad con Dialogs enrutados
+ * @param {string} parentPathName - evalua logica para compatibilidad con Dialogs enrutados
  * @returns {Component}
  * @description Componente recursivo, renderiza una lista de rutas con hijos
  * @author Frank Cary Viveros <frank.cary@tecsup.edu.pe>
  */
 
-const RouterList = ({ routes, outside }) => {
+const RouterList = ({ routes, outside, parentPathname }) => {
   const location = useLocation();
   const background = location.state && location.state.background;
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
@@ -64,43 +67,15 @@ const RouterList = ({ routes, outside }) => {
             layout: Layout,
             type,
             routes,
-            parentPathname,
           }) => {
-            if (outside) {
-              return (
-                background && (
-                  <Route
-                    path={path}
-                    render={(routeProps) => (
-                      <>
-                        {Layout ? (
-                          <Layout>
-                            <Component
-                              parentPathname={parentPathname}
-                              {...routeProps}
-                            >
-                              {routes && <RouterList routes={routes} outside />}
-                            </Component>
-                          </Layout>
-                        ) : (
-                          <Component
-                            parentPathname={parentPathname}
-                            {...routeProps}
-                          >
-                            {routes && <RouterList routes={routes} outside />}
-                          </Component>
-                        )}
-                      </>
-                    )}
-                  />
-                )
-              );
-            } else {
+            if (!outside || (outside && background)) {
               return (
                 <Route
                   path={path}
-                  location={background || location}
-                  exact={exact}
+                  location={
+                    !(outside && background) && (background || location)
+                  }
+                  exact={!(outside && background) && exact}
                   render={(routeProps) => {
                     if (
                       (type === ROUTE_TYPES.public && !isLoggedIn) ||
@@ -114,7 +89,13 @@ const RouterList = ({ routes, outside }) => {
                                 parentPathname={parentPathname}
                                 {...routeProps}
                               >
-                                {routes && <RouterList routes={routes} />}
+                                {routes && (
+                                  <RouterList
+                                    routes={routes}
+                                    outside={outside}
+                                    parentPathname={path}
+                                  />
+                                )}
                               </Component>
                             </Layout>
                           ) : (
@@ -122,97 +103,36 @@ const RouterList = ({ routes, outside }) => {
                               parentPathname={parentPathname}
                               {...routeProps}
                             >
-                              {routes && <RouterList routes={routes} />}
+                              {routes && (
+                                <RouterList
+                                  routes={routes}
+                                  parentPathname={path}
+                                  outside={outside}
+                                />
+                              )}
                             </Component>
                           )}
                         </>
                       );
                     } else if (type === ROUTE_TYPES.public && isLoggedIn) {
-                      <Redirect to={ROUTES_DICT.animalControl} />;
+                      return <Redirect to={ROUTES_DICT.animalControl} />;
                     } else if (type === ROUTE_TYPES.private && !isLoggedIn) {
-                      <Redirect to={ROUTES_DICT.login} />;
+                      return <Redirect to={ROUTES_DICT.login} />;
                     }
                   }}
                 />
               );
-              /*
-
-              switch (type) {
-                case ROUTE_TYPES.public:
-                  return (
-                    <Route
-                      path={path}
-                      location={background || location}
-                      exact={exact}
-                      render={(routeProps) =>
-                        !isLoggedIn ? (
-                          <>
-                            {Layout ? (
-                              <Layout>
-                                <Component
-                                  parentPathname={parentPathname}
-                                  {...routeProps}
-                                >
-                                  {routes && <RouterList routes={routes} />}
-                                </Component>
-                              </Layout>
-                            ) : (
-                              <Component
-                                parentPathname={parentPathname}
-                                {...routeProps}
-                              >
-                                {routes && <RouterList routes={routes} />}
-                              </Component>
-                            )}
-                          </>
-                        ) : (
-                          <Redirect to={ROUTES_DICT.animalControl} />
-                        )
-                      }
-                    />
-                  );
-
-                case ROUTE_TYPES.private:
-                  return (
-                    <Route
-                      path={path}
-                      location={background || location}
-                      exact={exact}
-                      render={(routeProps) =>
-                        isLoggedIn ? (
-                          <>
-                            {Layout ? (
-                              <Layout>
-                                <Component
-                                  parentPathname={parentPathname}
-                                  {...routeProps}
-                                >
-                                  {routes && <RouterList routes={routes} />}
-                                </Component>
-                              </Layout>
-                            ) : (
-                              <Component
-                                parentPathname={parentPathname}
-                                {...routeProps}
-                              >
-                                {routes && <RouterList routes={routes} />}
-                              </Component>
-                            )}
-                          </>
-                        ) : (
-                          <Redirect to={ROUTES_DICT.login} />
-                        )
-                      }
-                    />
-                  );
-                default:
-              }
-              */
             }
           }
         )}
     </>
   );
+};
+
+RouterList.propTypes = {
+  routes: PropTypes.array,
+  outside: PropTypes.bool,
+  parentPathName: PropTypes.string,
 };
 
 /**
@@ -234,7 +154,7 @@ const AuthWrapper = ({ children }) => {
 
   useEffect(() => {
     if (!currentFarm) {
-      dispatch(farmActions.findFarmByOwnerId(user._id));
+      dispatch(farmActions.findFarmByOwnerId(user?._id));
     }
   }, [dispatch, currentFarm, currentAgribusiness, user]);
   return <>{children}</>;
