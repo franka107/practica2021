@@ -46,6 +46,14 @@ export const ROUTE_TYPES = {
 
 export const RENDER_ROUTES = [
   {
+    path: ROUTES_DICT.root,
+    key: "Dashboard",
+    exact: true,
+    component: () => <Redirect to={ROUTES_DICT.login} />,
+    layout: DashboardLayout,
+    type: ROUTE_TYPES.public,
+  },
+  {
     path: ROUTES_DICT.service,
     key: "Servicios",
     exact: false,
@@ -54,7 +62,6 @@ export const RENDER_ROUTES = [
     type: ROUTE_TYPES.private,
     routes: [
       {
-        parentPathname: ROUTES_DICT.service,
         path: ROUTES_DICT.iamnCreate,
         key: "Nuevo IA/MN",
         exact: true,
@@ -62,7 +69,6 @@ export const RENDER_ROUTES = [
         type: ROUTE_TYPES.private,
       },
       {
-        parentPathname: ROUTES_DICT.service,
         path: ROUTES_DICT.iamnUpdate,
         key: "Editar IA/MN",
         exact: true,
@@ -70,7 +76,6 @@ export const RENDER_ROUTES = [
         type: ROUTE_TYPES.private,
       },
       {
-        parentPathname: ROUTES_DICT.service,
         path: ROUTES_DICT.embryoTransferCreate,
         key: "Nueva Transferencia de Embrión",
         exact: true,
@@ -87,6 +92,80 @@ export const RENDER_ROUTES = [
       },
     ],
   },
+  {
+    path: ROUTES_DICT.geneticStock.root,
+    key: "Stock genético",
+    exact: false,
+    component: ({ children }) => <>{children}</>,
+    layout: DashboardLayout,
+    type: ROUTE_TYPES.private,
+    routes: [
+      {
+        path: ROUTES_DICT.geneticStock.geneticTypeList,
+        key: "Lista de Stock",
+        exact: false,
+        component: ({ children }) => <>{children}</>,
+        type: ROUTE_TYPES.private,
+        routes: [
+          {
+            path: ROUTES_DICT.geneticStock.geneticType.list,
+            key: "Nuevo stock",
+            exact: true,
+            component: EmbryoPage,
+            type: ROUTE_TYPES.private,
+          },
+          {
+            parentPathname: ROUTES_DICT.embryo,
+            path: ROUTES_DICT.embryoCreate,
+            key: "Nuevo stock",
+            exact: true,
+            component: EmbryoCreatePage,
+            type: ROUTE_TYPES.private,
+          },
+          {
+            parentPathname: ROUTES_DICT.embryo,
+            path: ROUTES_DICT.embryoUpdate,
+            key: "Actualizar stock",
+            exact: true,
+            component: EmbryoUpdatePage,
+            type: ROUTE_TYPES.private,
+          },
+          {
+            path: ROUTES_DICT.geneticStock.movements.root,
+            key: "Movimientos",
+            exact: false,
+            component: ({ children }) => <>{children}</>,
+            type: ROUTE_TYPES.private,
+            routes: [
+              {
+                path: ROUTES_DICT.geneticStock.movements.list,
+                key: "Nuevo movimiento",
+                exact: true,
+                component: MovementPage,
+                type: ROUTE_TYPES.private,
+              },
+              {
+                path: ROUTES_DICT.movementsCreate,
+                key: "Nuevo movimiento",
+                exact: true,
+                component: MovementCreatePage,
+                type: ROUTE_TYPES.private,
+              },
+              {
+                path: ROUTES_DICT.movementsUpdate,
+                key: "Actualizar movimiento",
+                exact: true,
+                component: MovementUpdatePage,
+                type: ROUTE_TYPES.private,
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+
+  /*
   {
     path: ROUTES_DICT.movements,
     key: "Movimientos",
@@ -123,7 +202,7 @@ export const RENDER_ROUTES = [
         parentPathname: ROUTES_DICT.embryo,
         path: ROUTES_DICT.embryoCreate,
         key: "Nuevo stock",
-        exact: true,
+        exact: false,
         component: EmbryoCreatePage,
         type: ROUTE_TYPES.private,
       },
@@ -163,6 +242,7 @@ export const RENDER_ROUTES = [
       },
     ],
   },
+  */
   {
     path: ROUTES_DICT.animalControl,
     key: "Control Animal",

@@ -21,11 +21,22 @@ export const ROUTES_DICT = {
   register: `/${ROUTES_SLUGS.register}`,
   login: `/${ROUTES_SLUGS.login}`,
   dashboard: `/${ROUTES_SLUGS.dashboard}`,
+  geneticStock: {
+    root: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.geneticStock}`,
+    geneticType: {
+      root: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.geneticStock}/:geneticType`,
+      list: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.geneticStock}/:geneticType/list`,
+    },
+    movements: {
+      root: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.geneticStock}/:geneticType/${ROUTES_SLUGS.movements}`,
+      list: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.geneticStock}/:geneticType/${ROUTES_SLUGS.movements}/list`,
+    },
+  },
   semen: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.geneticStock}/${ROUTES_SLUGS.semen}`,
+  embryo: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.geneticStock}/${ROUTES_SLUGS.embryo}`,
   movements: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.geneticStock}/:geneticType/${ROUTES_SLUGS.movements}`,
   movementsCreate: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.geneticStock}/:geneticType/${ROUTES_SLUGS.movements}/${ROUTES_SLUGS.create}`,
   movementsUpdate: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.geneticStock}/:geneticType/${ROUTES_SLUGS.movements}/:_id/${ROUTES_SLUGS.update}`,
-  embryo: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.geneticStock}/${ROUTES_SLUGS.embryo}`,
   embryoCreate: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.geneticStock}/${ROUTES_SLUGS.embryo}/${ROUTES_SLUGS.create}`,
   embryoUpdate: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.geneticStock}/${ROUTES_SLUGS.embryo}/:_id/${ROUTES_SLUGS.update}`,
   semenCreate: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.geneticStock}/${ROUTES_SLUGS.semen}/${ROUTES_SLUGS.create}`,
