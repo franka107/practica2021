@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import CustomDialog from "../../../components/CustomDialog";
-import { ROUTES_DICT } from "../../../routes/routesDict";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router";
 import IAMNForm from "../Forms/IAMNForm";
@@ -11,9 +10,7 @@ import { CircularProgress, Grid } from "@material-ui/core";
 const IAMNUpdatePage = ({ parentPathname }) => {
   const dispatch = useDispatch();
   const params = useParams();
-  const parentPathName = ROUTES_DICT.service;
   const serviceCurrent = useSelector((state) => state.service.current);
-  //http://localhost:3000/#/dashboard/genetic-stock/embryo/movements/
 
   useEffect(() => {
     if (!serviceCurrent || serviceCurrent._id !== params.id) {
@@ -24,26 +21,16 @@ const IAMNUpdatePage = ({ parentPathname }) => {
 
   return (
     <>
-      <CustomDialog parentPathName={parentPathName}>
+      <CustomDialog parentPathName={parentPathname}>
         {(props) => (
           <>
-            {serviceCurrent && serviceCurrent._id === params.id && (
+            {serviceCurrent && (
               <IAMNForm
                 type="update"
                 initValues={serviceCurrent}
                 onClickCancelButton={props.handleClose}
                 onCompleteSubmit={props.handleClose}
               />
-            )}
-            {!serviceCurrent && serviceCurrent._id !== params.id && (
-              <Grid
-                container
-                justifyContent="center"
-                alignContent="center"
-                alignItems="center"
-              >
-                <CircularProgress color="secondary" />
-              </Grid>
             )}
           </>
         )}

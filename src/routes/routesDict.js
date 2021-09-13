@@ -14,6 +14,7 @@ export const ROUTES_SLUGS = {
   /* common routes slugs */
   create: "create",
   update: "update",
+  delete: "delete",
 };
 
 export const ROUTES_DICT = {
@@ -46,6 +47,7 @@ export const ROUTES_DICT = {
   iamnUpdate: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.service}/${ROUTES_SLUGS.iamn}/:id/${ROUTES_SLUGS.update}`,
   embryoTransferCreate: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.service}/${ROUTES_SLUGS.embryoTransfer}/${ROUTES_SLUGS.create}`,
   embryoTransferUpdate: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.service}/${ROUTES_SLUGS.embryoTransfer}/:id/${ROUTES_SLUGS.update}`,
+  serviceDelete: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.service}/:id/${ROUTES_SLUGS.delete}`,
   account: "/cuenta",
   profile: "/perfil",
   users: "/usuario",
