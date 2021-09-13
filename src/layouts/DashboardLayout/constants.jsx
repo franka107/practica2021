@@ -14,7 +14,7 @@ import {
   // faShoppingCart,
   faSyringe,
 } from "@fortawesome/free-solid-svg-icons";
-import { ROUTES_DICT } from "../../routes/routesDict";
+import { ROUTES_DICT, ROUTES_SLUGS } from "../../routes/routesDict";
 
 export const menuList = [
   {
@@ -176,12 +176,18 @@ export const menuList = [
           {
             id: "semen",
             title: "Semen",
-            link: ROUTES_DICT.semen,
+            link: ROUTES_DICT.geneticStock.geneticType.list.replace(
+              ":geneticType",
+              ROUTES_SLUGS.semen
+            ),
           },
           {
             id: "embriones",
             title: "Embriones",
-            link: ROUTES_DICT.embryo,
+            link: ROUTES_DICT.geneticStock.geneticType.list.replace(
+              ":geneticType",
+              ROUTES_SLUGS.embryo
+            ),
           },
         ],
       },

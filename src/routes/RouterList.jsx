@@ -3,6 +3,7 @@ import { Route, useLocation, Redirect } from "react-router-dom";
 import { ROUTE_TYPES } from "./constants";
 import PropTypes from "prop-types";
 import { ROUTES_DICT } from "./routesDict";
+import React from "react";
 
 /**
  * @component
@@ -10,7 +11,7 @@ import { ROUTES_DICT } from "./routesDict";
  * @author Frank Cary Viveros <frank.cary@tecsup.edu.pe>
  */
 
-const RouterList = ({ routes, outside, parentPathname }) => {
+const RouterList = ({ routes, outside, parentPathname, ...parentProps }) => {
   const location = useLocation();
   const background = location.state && location.state.background;
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
@@ -19,67 +20,34 @@ const RouterList = ({ routes, outside, parentPathname }) => {
     <>
       {routes &&
         routes.map(
-          ({
-            path,
-            exact,
-            component: Component,
-            layout: Layout,
-            type,
-            routes,
-            // eslint-disable-next-line array-callback-return
-          }) => {
+          (
+            {
+              path,
+              exact,
+              component: Component,
+              layout: Layout,
+              type,
+              routes,
+              // eslint-disable-next-line array-callback-return
+            },
+            index
+          ) => {
             if (!outside || (outside && background)) {
               return (
-                <Route
+                <MemoizedRoute
+                  key={index}
                   path={path}
-                  location={
-                    !(outside && background) && (background || location)
-                  }
-                  exact={!(outside && background) && exact}
-                  render={(routeProps) => {
-                    if (
-                      (type === ROUTE_TYPES.public && !isLoggedIn) ||
-                      (type === ROUTE_TYPES.private && isLoggedIn)
-                    ) {
-                      return (
-                        <>
-                          {Layout ? (
-                            <Layout>
-                              <Component
-                                parentPathname={parentPathname}
-                                {...routeProps}
-                              >
-                                {routes && (
-                                  <RouterList
-                                    routes={routes}
-                                    outside={outside}
-                                    parentPathname={path}
-                                  />
-                                )}
-                              </Component>
-                            </Layout>
-                          ) : (
-                            <Component
-                              parentPathname={parentPathname}
-                              {...routeProps}
-                            >
-                              {routes && (
-                                <RouterList
-                                  routes={routes}
-                                  parentPathname={path}
-                                  outside={outside}
-                                />
-                              )}
-                            </Component>
-                          )}
-                        </>
-                      );
-                    } else if (type === ROUTE_TYPES.public && isLoggedIn) {
-                      return <Redirect to={ROUTES_DICT.animalControl} />;
-                    } else if (type === ROUTE_TYPES.private && !isLoggedIn) {
-                      return <Redirect to={ROUTES_DICT.login} />;
-                    }
-                  }}
+                  outside={outside}
+                  background={background}
+                  location={location}
+                  exact={exact}
+                  isLoggedIn={isLoggedIn}
+                  parentProps={parentProps}
+                  type={type}
+                  layout={Layout}
+                  component={Component}
+                  parentPathname={parentPathname}
+                  routes={routes}
                 />
               );
             }
@@ -103,4 +71,84 @@ RouterList.propTypes = {
    */
   parentPathName: PropTypes.string,
 };
+
+const MemoizedRoute = React.memo(
+  ({
+    path,
+    outside,
+    background,
+    location,
+    exact,
+    isLoggedIn,
+    parentProps,
+    type,
+    layout: Layout,
+    component: Component,
+    parentPathname,
+    routes,
+  }) => (
+    <Route
+      path={path}
+      location={!(outside && background) && (background || location)}
+      exact={!(outside && background) && exact}
+      render={(routeProps) => {
+        if (
+          (type === ROUTE_TYPES.public && !isLoggedIn) ||
+          (type === ROUTE_TYPES.private && isLoggedIn)
+        ) {
+          console.log(
+            (type === ROUTE_TYPES.public && !isLoggedIn) ||
+              (type === ROUTE_TYPES.private && isLoggedIn)
+          );
+          return (
+            <>
+              {Layout ? (
+                <Layout>
+                  <Component
+                    parentPathname={parentPathname}
+                    {...routeProps}
+                    {...parentProps}
+                  >
+                    {(childProps) =>
+                      routes && (
+                        <RouterList
+                          routes={routes}
+                          outside={outside}
+                          parentPathname={path}
+                          {...childProps}
+                        />
+                      )
+                    }
+                  </Component>
+                </Layout>
+              ) : (
+                <Component
+                  parentPathname={parentPathname}
+                  {...routeProps}
+                  {...parentProps}
+                >
+                  {(parentProps) =>
+                    routes && (
+                      <RouterList
+                        routes={routes}
+                        parentPathname={path}
+                        outside={outside}
+                        {...parentProps}
+                      />
+                    )
+                  }
+                </Component>
+              )}
+            </>
+          );
+        } else if (type === ROUTE_TYPES.public && isLoggedIn) {
+          return <Redirect to={ROUTES_DICT.animalControl} />;
+        } else if (type === ROUTE_TYPES.private && !isLoggedIn) {
+          return <Redirect to={ROUTES_DICT.login} />;
+        }
+      }}
+    />
+  ),
+  (prevProps, nextProps) => false
+);
 export default RouterList;

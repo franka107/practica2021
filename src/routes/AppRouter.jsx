@@ -5,6 +5,10 @@ import { RENDER_ROUTES } from "./constants";
 import AuthWrapper from "./AuthWrapper";
 import RouterList from "./RouterList";
 
+const MemoizedRouterList = React.memo(({ routes, outside }) => (
+  <RouterList routes={routes} outside={outside} />
+));
+
 export const AppRouter = () => {
   return (
     <Router>
@@ -12,9 +16,9 @@ export const AppRouter = () => {
         <GlobalSnackbar />
         <AuthWrapper>
           <Switch>
-            <RouterList routes={RENDER_ROUTES} outside={false} />
+            <MemoizedRouterList routes={RENDER_ROUTES} outside={false} />
           </Switch>
-          <RouterList routes={RENDER_ROUTES} outside={true} />
+          <MemoizedRouterList routes={RENDER_ROUTES} outside={true} />
         </AuthWrapper>
       </div>
     </Router>

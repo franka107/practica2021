@@ -12,6 +12,7 @@ export const useStyles = makeStyles((theme) => ({
   },
   chipList__container: {
     padding: "1rem 0",
+    marginBottom: "0.4rem",
   },
   chipList__chip: {
     padding: "1.2rem .5rem",

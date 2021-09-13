@@ -23,7 +23,7 @@ import BirthPage from "../pages/BirthPage";
 import PregnanciesPage from "../pages/PregnanciesPage";
 import PedigreePage from "../pages/PedigreePage";
 import SemenPage from "../pages/GeneticStock/SemenPage";
-import EmbryoPage from "../pages/GeneticStock/EmbryoPage";
+import GeneticStockList from "../pages/GeneticStock/GeneticStockList";
 import HaciendaConfigurationPage from "../pages/HaciendaConfigurationPage";
 import MovementPage from "../pages/GeneticStock/MovementPage";
 import MovementCreatePage from "../pages/GeneticStock/MovementCreatePage";
@@ -38,6 +38,7 @@ import EmbryoCreatePage from "../pages/GeneticStock/EmbryoCreatePage";
 import EmbryoUpdatePage from "../pages/GeneticStock/EmbryoUpdatePage";
 import SemenCreatePage from "../pages/GeneticStock/SemenCreatePage";
 import SemenUpdatePage from "../pages/GeneticStock/SemenUpdatePage";
+import DefaultPage from "../components/DefaultPage";
 
 export const ROUTE_TYPES = {
   public: "public",
@@ -45,14 +46,6 @@ export const ROUTE_TYPES = {
 };
 
 export const RENDER_ROUTES = [
-  {
-    path: ROUTES_DICT.root,
-    key: "Dashboard",
-    exact: true,
-    component: () => <Redirect to={ROUTES_DICT.login} />,
-    layout: DashboardLayout,
-    type: ROUTE_TYPES.public,
-  },
   {
     path: ROUTES_DICT.service,
     key: "Servicios",
@@ -96,32 +89,38 @@ export const RENDER_ROUTES = [
     path: ROUTES_DICT.geneticStock.root,
     key: "Stock genético",
     exact: false,
-    component: ({ children }) => <>{children}</>,
+    component: ({ children }) => <>{children()}</>,
     layout: DashboardLayout,
     type: ROUTE_TYPES.private,
     routes: [
       {
-        path: ROUTES_DICT.geneticStock.geneticTypeList,
+        path: ROUTES_DICT.geneticStock.geneticType.root,
         key: "Lista de Stock",
         exact: false,
-        component: ({ children }) => <>{children}</>,
+        component: ({ children }) => (
+          <DefaultPage>{(props) => children(props)}</DefaultPage>
+        ),
         type: ROUTE_TYPES.private,
         routes: [
           {
             path: ROUTES_DICT.geneticStock.geneticType.list,
             key: "Nuevo stock",
-            exact: true,
-            component: EmbryoPage,
+            exact: false,
+            component: (props) => <GeneticStockList {...props} />,
+
             type: ROUTE_TYPES.private,
+            routes: [
+              {
+                path: ROUTES_DICT.geneticStock.geneticType.create,
+                key: "Nuevo stock",
+                exact: true,
+                component: (props) => <EmbryoCreatePage {...props} />,
+                type: ROUTE_TYPES.private,
+              },
+            ],
           },
-          {
-            parentPathname: ROUTES_DICT.embryo,
-            path: ROUTES_DICT.embryoCreate,
-            key: "Nuevo stock",
-            exact: true,
-            component: EmbryoCreatePage,
-            type: ROUTE_TYPES.private,
-          },
+
+          /*
           {
             parentPathname: ROUTES_DICT.embryo,
             path: ROUTES_DICT.embryoUpdate,
@@ -160,10 +159,22 @@ export const RENDER_ROUTES = [
               },
             ],
           },
+          */
         ],
       },
     ],
   },
+
+  /*
+  {
+    path: ROUTES_DICT.root,
+    key: "Dashboard",
+    exact: true,
+    component: () => <Redirect to={ROUTES_DICT.login} />,
+    layout: DashboardLayout,
+    type: ROUTE_TYPES.public,
+  },
+  */
 
   /*
   {
