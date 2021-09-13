@@ -96,10 +96,6 @@ const MemoizedRoute = React.memo(
           (type === ROUTE_TYPES.public && !isLoggedIn) ||
           (type === ROUTE_TYPES.private && isLoggedIn)
         ) {
-          console.log(
-            (type === ROUTE_TYPES.public && !isLoggedIn) ||
-              (type === ROUTE_TYPES.private && isLoggedIn)
-          );
           return (
             <>
               {Layout ? (
