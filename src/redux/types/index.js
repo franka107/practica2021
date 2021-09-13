@@ -38,6 +38,12 @@ const ACTION_TYPES = {
   },
   ANIMAL: {
     UPDATE_CURRENT: "animal/UPDATE_CURRENT",
+    RETRIEVE: "animal/RETRIEVE",
+    RETRIEVE_BY_CURRENCY: "animal/RETRIEVE_BY_CURRENCY",
+    RETRIEVE_BY_ID: "animal/RETRIEVE_BY_ID",
+    UPDATE: "animal/UPDATE",
+    DELETE: "animal/DELETE",
+    CREATE: "animal/CREATE",
   },
   RACE: {
     RETRIEVE: "race/RETRIEVE",

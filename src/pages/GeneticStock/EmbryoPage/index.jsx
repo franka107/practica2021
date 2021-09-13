@@ -15,7 +15,6 @@ import FormMove from "./Forms/FormMove";
 import CustomMuiTable from "../../../components/CustomMuiTable";
 import { useDispatch, useSelector, shallowEqual } from "react-redux";
 import GeneticStockActions from "../../../redux/actions/geneticStock.actions";
-import { animalActions } from "../../../redux/actions/animal.actions";
 import ACTION_TYPES from "../../../redux/types";
 import geneticStockActions from "../../../redux/actions/geneticStock.actions";
 import RaceActions from "../../../redux/actions/race.actions";
@@ -23,6 +22,7 @@ import ChipList from "../../../components/ChipList";
 import { embryoRouteOptions } from "../constants";
 import { useLocation, useHistory } from "react-router-dom";
 import { ROUTES_DICT } from "../../../routes/routesDict";
+import animalActions from "../../../redux/actions/animal.actions";
 
 function Embryo({ children }) {
   const [open, setOpen] = useState(false);

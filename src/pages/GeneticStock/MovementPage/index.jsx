@@ -11,6 +11,7 @@ import { embryoRouteOptions, semenRouteOptions } from "../constants";
 import { columns } from "./constants";
 
 const MovementPage = (props) => {
+  const history = useHistory();
   const location = useLocation();
   const params = useParams();
   const movementList = useSelector((state) =>
@@ -25,7 +26,6 @@ const MovementPage = (props) => {
     selectableRows: "none",
     search: false,
   };
-  const history = useHistory();
 
   const { current: currentAgribusiness } = useSelector(
     (state) => state.agribusiness

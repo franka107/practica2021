@@ -1,6 +1,6 @@
 import { ROUTES_DICT } from "../../routes/routesDict";
 import { format } from "date-fns";
-import { typeServicesTest } from "../../constants";
+import { typeServicesTest, stateOptions } from "../../constants";
 
 export const columnsToMuiTable = [
   {
@@ -21,9 +21,11 @@ export const columnsToMuiTable = [
   },
   {
     label: "Estado",
-    name: "state",
+    name: "animal",
     options: {
       filter: false,
+      customBodyRender: (value) =>
+        value ? stateOptions[value.reproductiveStatus] : "",
     },
   },
   {
@@ -60,21 +62,11 @@ export const serviceRouteOptions = (location) => [
   },
   {
     key: "Agregar I.A / Agregar M.N",
-    path: {
-      pathname: ROUTES_DICT.iamnCreate,
-      state: {
-        from: location.pathname,
-      },
-    },
+    path: ROUTES_DICT.iamnCreate,
   },
   {
     key: "Agregar Tranferencia de embriones",
-    path: {
-      pathname: ROUTES_DICT.embryoTransferCreate,
-      state: {
-        from: location.pathname,
-      },
-    },
+    path: ROUTES_DICT.embryoTransferCreate,
   },
   // {
   //   key: "Nuevo movimiento",

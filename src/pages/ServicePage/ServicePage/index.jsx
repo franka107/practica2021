@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { Grid, Typography, IconButton } from "@material-ui/core";
 import { Edit, Delete } from "@material-ui/icons";
-import { connect } from "react-redux";
 import { useLocation } from "react-router";
 import { useHistory } from "react-router";
 import { useDispatch } from "react-redux";
@@ -10,8 +9,7 @@ import ChipList from "../../../components/ChipList";
 import CustomMuiTable from "../../../components/CustomMuiTable";
 import { serviceRouteOptions, columnsToMuiTable } from "../constants";
 import serviceActions from "../../../redux/actions/service.actions";
-import geneticStock from "../../../redux/actions/geneticStock.actions";
-import { animalActions } from "../../../redux/actions/animal.actions";
+import AnimalActions from "../../../redux/actions/animal.actions";
 import { ROUTES_DICT } from "../../../routes/routesDict";
 
 const ServicePage = (props) => {
@@ -19,20 +17,20 @@ const ServicePage = (props) => {
   const dispatch = useDispatch();
   const history = useHistory();
   const serviceList = useSelector((state) => state.service.list);
-
+  const animalList = useSelector((state) => state.animal.list);
   const options = {
     selectableRows: "none",
     search: false,
   };
 
   useEffect(() => {
-    dispatch(animalActions.listAll());
-    dispatch(
-      geneticStock.listGeneticStockByAgribusiness({
-        geneticType: "SEMEN",
-      })
-    );
-    dispatch(serviceActions.listByAgribusiness());
+    if (!animalList || animalList.length === 0) {
+      dispatch(AnimalActions.listAll());
+    }
+    if (!serviceList || serviceList.length === 0) {
+      dispatch(serviceActions.listByAgribusiness());
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch]);
 
   const actionColumn = {
@@ -99,8 +97,4 @@ const ServicePage = (props) => {
   );
 };
 
-const mapStateToProps = (state) => ({});
-
-const mapDispatchToProps = {};
-
-export default connect(mapStateToProps, mapDispatchToProps)(ServicePage);
+export default ServicePage;

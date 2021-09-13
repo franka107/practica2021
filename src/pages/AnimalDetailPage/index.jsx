@@ -32,7 +32,7 @@ import TimelineDot from "@material-ui/lab/TimelineDot";
 import QRData from "./Dialog/QRData";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { animalActions } from "../../redux/actions/animal.actions";
+import AnimalActions from "../../redux/actions/animal.actions";
 import { getAge, formatDate } from "../../helpers/convertDate";
 import ChipsSection from "./ChipsSection";
 import QRCode from "qrcode.react";
@@ -55,10 +55,10 @@ export default function AnimalDetailPage() {
 
   useEffect(() => {
     if (currentAgribusiness) {
-      dispatch(animalActions.listAll(currentAgribusiness._id));
+      dispatch(AnimalActions.listAll(currentAgribusiness._id));
     }
     if (!currentAnimal) {
-      dispatch(animalActions.listById({ _id: params.animalId }));
+      dispatch(AnimalActions.listById({ _id: params.animalId }));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, currentAnimal]);

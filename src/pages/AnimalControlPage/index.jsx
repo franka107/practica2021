@@ -15,7 +15,7 @@ import {
   Star,
 } from "@material-ui/icons";
 import { useDispatch, useSelector } from "react-redux";
-import { animalActions } from "../../redux/actions/animal.actions";
+import AnimalActions from "../../redux/actions/animal.actions";
 import { ROUTES_DICT } from "../../routes/routesDict";
 import { Formik } from "formik";
 import * as yup from "yup";
@@ -49,7 +49,7 @@ function AnimalControlPage() {
   useEffect(() => {
     dispatch(RaceActions.listRace());
     if (currentAgribusiness) {
-      dispatch(animalActions.listAll(currentAgribusiness._id));
+      dispatch(AnimalActions.listAll());
     }
   }, [dispatch, currentAgribusiness]);
 
@@ -62,7 +62,7 @@ function AnimalControlPage() {
   const handleSubmit = (values) => {
     values._id = animalId;
     console.log(values);
-    dispatch(animalActions.deleteElement(values)).then(
+    dispatch(AnimalActions.deleteElement(values)).then(
       (data) => {
         history.push(ROUTES_DICT.animalControl);
       },
@@ -132,7 +132,7 @@ function AnimalControlPage() {
                 // data.outstanding = !data.outstanding;
                 // setAnimalsList(data);
                 dispatch(
-                  animalActions.updateElement({
+                  AnimalActions.updateElement({
                     ...animals[dataIndex],
                     isFeatured: !Boolean(animals[dataIndex].isFeatured),
                   })

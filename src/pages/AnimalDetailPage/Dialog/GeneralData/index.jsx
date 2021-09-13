@@ -9,7 +9,7 @@ import SelectFieldFormik from "../../../../components/Inputs/SelectFieldFormik";
 import ButtonFormik from "../../../../components/Inputs/ButtonFormik";
 import MultipleCheckboxFormik from "../../../../components/Inputs/MultipleCheckboxFormik";
 import { useDispatch, useSelector } from "react-redux";
-import { animalActions } from "../../../../redux/actions/animal.actions";
+import AnimalActions from "../../../../redux/actions/animal.actions";
 import ACTION_TYPES from "../../../../redux/types";
 
 import {
@@ -45,7 +45,7 @@ function GeneralData({ setOpen }) {
       values.motherId = values.mother._id;
     }
 
-    dispatch(animalActions.updateElement(values)).then(
+    dispatch(AnimalActions.updateElement(values)).then(
       (data) => {
         dispatch({
           type: ACTION_TYPES.ANIMAL.UPDATE_CURRENT,
@@ -163,7 +163,10 @@ function GeneralData({ setOpen }) {
                 ) : (
                   <SelectFieldFormik
                     onChange={props.handleChange}
-                    options={stateOptions}
+                    options={Object.keys(stateOptions).map((key) => ({
+                      _id: key,
+                      name: stateOptions[key],
+                    }))}
                     label="Estado"
                     name="reproductiveStatus"
                     lg={6}

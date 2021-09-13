@@ -12,7 +12,7 @@ import SelectFieldFormik from "../../../../components/Inputs/SelectFieldFormik";
 import SearchFieldFormik from "../../../../components/Inputs/SearchFieldFormik";
 import CheckboxFormik from "../../../../components/Inputs/CheckboxFormik";
 import { useDispatch, useSelector } from "react-redux";
-import { animalActions } from "../../../../redux/actions/animal.actions";
+import AnimalActions from "../../../../redux/actions/animal.actions";
 import { categoryOptions } from "./constants";
 import ACTION_TYPES from "../../../../redux/types";
 import {
@@ -93,7 +93,7 @@ function AddIndividual({ setOpen, typeAccion = "create", animalId = "" }) {
   useEffect(() => {
     if (typeAccion === "update") {
       if (!currentAnimal) {
-        dispatch(animalActions.listById({ _id: animalId }));
+        dispatch(AnimalActions.listById({ _id: animalId }));
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -194,12 +194,12 @@ function AddIndividual({ setOpen, typeAccion = "create", animalId = "" }) {
     }
 
     if (typeAccion === "create") {
-      dispatch(animalActions.createElement(values));
+      dispatch(AnimalActions.createElement(values));
       setOpen(false);
       console.log("init", values);
     }
     if (typeAccion === "update") {
-      dispatch(animalActions.updateElement(values)).then((data) => {
+      dispatch(AnimalActions.updateElement(values)).then((data) => {
         dispatch({
           type: ACTION_TYPES.ANIMAL.UPDATE_CURRENT,
           payload: null,
@@ -297,7 +297,10 @@ function AddIndividual({ setOpen, typeAccion = "create", animalId = "" }) {
           ) : (
             <SelectFieldFormik
               onChange={handleChange}
-              options={stateOptions}
+              options={Object.keys(stateOptions).map((key) => ({
+                _id: key,
+                name: stateOptions[key],
+              }))}
               label="Estado"
               name="reproductiveStatus"
               lg={6}

@@ -76,10 +76,10 @@ export const stateDictionary = {
   EMPTY: "Vacía",
 };
 
-export const stateOptions = [
-  { _id: "PREGNANT", name: "Preñada" },
-  { _id: "EMPTY", name: "Vacía" },
-];
+export const stateOptions = {
+  PREGNANT: "Preñada",
+  EMPTY: "Vacía",
+};
 
 export const deleteOptions = [
   { _id: "DEATH", name: "Muerte" },
@@ -98,7 +98,6 @@ export const movementOptions = {
 export const typeServices = [
   { _id: "AR_IN", name: "I.A" },
   { _id: "NA_MO", name: "M.N" },
-  { _id: "EM_TR", name: "Tranferencia de embriones" },
 ];
 
 export const typeServicesTest = {
