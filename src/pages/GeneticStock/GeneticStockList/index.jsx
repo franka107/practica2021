@@ -1,28 +1,12 @@
 import React, { useEffect, useState } from "react";
-import {
-  Grid,
-  Typography,
-  Dialog,
-  IconButton,
-  Button,
-} from "@material-ui/core";
-import { Delete, Edit, Close, Star, StarBorder } from "@material-ui/icons";
-import { columns, columns2 } from "./constants";
-import { useStyles } from "./styles";
-// import clsx from "clsx";
-import FormEmbryo from "./Forms/FormEmbryo";
-import FormMove from "./Forms/FormMove";
+import { Grid } from "@material-ui/core";
+import { columns } from "./constants";
 import CustomMuiTable from "../../../components/CustomMuiTable";
 import { useDispatch, useSelector, shallowEqual } from "react-redux";
 import GeneticStockActions from "../../../redux/actions/geneticStock.actions";
-import ACTION_TYPES from "../../../redux/types";
-import geneticStockActions from "../../../redux/actions/geneticStock.actions";
-import RaceActions from "../../../redux/actions/race.actions";
-import ChipList from "../../../components/ChipList";
 import { embryoRouteOptions, semenRouteOptions } from "../constants";
 import { useLocation, useHistory, useParams } from "react-router-dom";
-import { ROUTES_DICT, ROUTES_SLUGS } from "../../../routes/routesDict";
-import animalActions from "../../../redux/actions/animal.actions";
+import { ROUTES_SLUGS } from "../../../routes/routesDict";
 import TableButtons from "../../../components/TableButtons";
 
 function GeneticStockList({ children, setTitle, setChipList }) {
@@ -36,7 +20,6 @@ function GeneticStockList({ children, setTitle, setChipList }) {
     shallowEqual
   );
   const location = useLocation();
-  const history = useHistory();
 
   useEffect(() => {
     if (params.geneticType === ROUTES_SLUGS.semen) {
@@ -49,6 +32,7 @@ function GeneticStockList({ children, setTitle, setChipList }) {
     if (!geneticStockList || geneticStockList.length === 0) {
       dispatch(GeneticStockActions.listGeneticStockByAgribusiness());
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params.geneticType]);
 
   const options = {
