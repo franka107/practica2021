@@ -13,13 +13,13 @@ import { columns } from "./constants";
 const MovementPage = (props) => {
   const location = useLocation();
   const params = useParams();
+  const history = useHistory();
   const movementList = useSelector((state) => state.movement.list);
   const dispatch = useDispatch();
   const options = {
     selectableRows: "none",
     search: false,
   };
-  const history = useHistory();
 
   useEffect(() => {
     if (!movementList || movementList.length === 0) {

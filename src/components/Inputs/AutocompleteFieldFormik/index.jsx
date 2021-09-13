@@ -9,6 +9,7 @@ function AutocompleteFieldFormik({
   options,
   defaultValue = null,
   onChange,
+  disabled = false,
   ...props
 }) {
   const [field, meta, helpers] = useField(props);
@@ -25,6 +26,7 @@ function AutocompleteFieldFormik({
         // onChange={(event, value) => console.log(props)}
         onChange={(e, value) => setValue(value && value._id)}
         // {...props}
+        disabled={disabled}
         defaultValue={defaultValue}
         options={options || []}
         getOptionLabel={(option) => (option ? option.identifier : "")}

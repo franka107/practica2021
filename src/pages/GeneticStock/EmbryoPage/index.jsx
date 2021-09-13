@@ -15,7 +15,7 @@ import FormMove from "./Forms/FormMove";
 import CustomMuiTable from "../../../components/CustomMuiTable";
 import { useDispatch, useSelector } from "react-redux";
 import GeneticStockActions from "../../../redux/actions/geneticStock.actions";
-import { animalActions } from "../../../redux/actions/animal.actions";
+import AnimalActions from "../../../redux/actions/animal.actions";
 import ACTION_TYPES from "../../../redux/types";
 import geneticStockActions from "../../../redux/actions/geneticStock.actions";
 import RaceActions from "../../../redux/actions/race.actions";
@@ -44,7 +44,7 @@ function Embryo({ children }) {
       dispatch(RaceActions.listRace());
     }
     if (!animalList) {
-      dispatch(animalActions.listAll(currentAgribusiness._id));
+      dispatch(AnimalActions.listAll(currentAgribusiness._id));
     }
     (!geneticStockList || geneticStockList.length === 0) &&
       dispatch(

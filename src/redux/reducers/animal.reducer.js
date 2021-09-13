@@ -1,23 +1,24 @@
 import ACTION_TYPES from "../types";
-import { animalConstans } from "../types/animal.constants";
 
-export function animalReducer(state = {}, action) {
+const initialState = { list: [], current: null };
+
+export function animalReducer(state = initialState, action) {
   switch (action.type) {
-    case animalConstans.GETALL_SUCCESS:
+    case ACTION_TYPES.ANIMAL.RETRIEVE:
       return {
         ...state,
-        list: action.animals,
+        list: action.payload,
       };
-    case animalConstans.GETBYID_SUCCESS:
+    case ACTION_TYPES.ANIMAL.RETRIEVE_BY_ID:
       return {
         ...state,
         current: action.payload,
       };
-    case animalConstans.DELETE_SUCCESS:
+    case ACTION_TYPES.ANIMAL.DELETE:
       return state;
-    case animalConstans.CREATE_SUCCESS:
+    case ACTION_TYPES.ANIMAL.CREATE:
       return state;
-    case animalConstans.UPDATE_SUCCESS:
+    case ACTION_TYPES.ANIMAL.UPDATE:
       return state;
     case ACTION_TYPES.ANIMAL.UPDATE_CURRENT:
       return {

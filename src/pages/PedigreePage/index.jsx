@@ -19,7 +19,7 @@ import { BorderLinearProgress } from "../../components/BorderLinearProgress";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { animalActions } from "../../redux/actions/animal.actions";
+import AnimalActions from "../../redux/actions/animal.actions";
 
 export default function PedigreePage() {
   const classes = useStyles();
@@ -36,10 +36,10 @@ export default function PedigreePage() {
 
   useEffect(() => {
     if (currentAgribusiness) {
-      dispatch(animalActions.listAll(currentAgribusiness._id));
+      dispatch(AnimalActions.listAll(currentAgribusiness._id));
     }
     if (!currentAnimal) {
-      dispatch(animalActions.listById({ _id: params.animalId }));
+      dispatch(AnimalActions.listById({ _id: params.animalId }));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, currentAnimal]);

@@ -10,7 +10,7 @@ import SelectFieldFormik from "../../../../components/Inputs/SelectFieldFormik";
 import ButtonFormik from "../../../../components/Inputs/ButtonFormik";
 import SearchFieldFormik from "../../../../components/Inputs/SearchFieldFormik";
 import { useDispatch, useSelector } from "react-redux";
-import { animalActions } from "../../../../redux/actions/animal.actions";
+import AnimalActions from "../../../../redux/actions/animal.actions";
 
 import ACTION_TYPES from "../../../../redux/types";
 import { racialTypeOptions } from "../../../../constants";
@@ -117,7 +117,7 @@ function RaceData({ setOpen }) {
       values.motherId = "";
     }
 
-    dispatch(animalActions.updateElement(values)).then(
+    dispatch(AnimalActions.updateElement(values)).then(
       (data) => {
         dispatch({
           type: ACTION_TYPES.ANIMAL.UPDATE_CURRENT,

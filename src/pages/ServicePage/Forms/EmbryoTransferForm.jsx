@@ -21,7 +21,7 @@ import {
   conditionOptions,
   typeEmbryonOptions,
 } from "../../../constants";
-import { animalActions } from "../../../redux/actions/animal.actions";
+import AnimalActions from "../../../redux/actions/animal.actions";
 import { seriesType } from "highcharts";
 
 const defaultInitValues = {
@@ -76,11 +76,11 @@ const EmbryoTransferForm = ({
   useEffect(() => {
     dispatch(serviceActions.listByAgribusiness());
 
-    dispatch(animalActions.listAll());
+    dispatch(AnimalActions.listAll());
 
     dispatch(
       geneticStockActions.listGeneticStockByAgribusiness({
-        geneticType: "SEMEN",
+        geneticType: "EMBRYO",
       })
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps

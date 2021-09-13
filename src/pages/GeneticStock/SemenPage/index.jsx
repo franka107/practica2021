@@ -17,7 +17,7 @@ import CustomMuiTable from "../../../components/CustomMuiTable";
 import { useDispatch, useSelector } from "react-redux";
 import GeneticStockActions from "../../../redux/actions/geneticStock.actions";
 import RaceActions from "../../../redux/actions/race.actions";
-import { animalActions } from "../../../redux/actions/animal.actions";
+import AnimalActions from "../../../redux/actions/animal.actions";
 
 function Semen() {
   const [open, setOpen] = useState(false);
@@ -39,7 +39,7 @@ function Semen() {
       dispatch(RaceActions.listRace());
     }
     if (!animalList) {
-      dispatch(animalActions.listAll(currentAgribusiness._id));
+      dispatch(AnimalActions.listAll(currentAgribusiness._id));
     }
     (!geneticStockList || geneticStockList.length === 0) &&
       dispatch(

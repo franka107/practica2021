@@ -14,9 +14,9 @@ import { useEffect } from "react";
 import { useSelector, shallowEqual } from "react-redux";
 import { useDispatch } from "react-redux";
 import serviceActions from "../../../redux/actions/service.actions";
-import { animalActions } from "../../../redux/actions/animal.actions";
+import AnimalActions from "../../../redux/actions/animal.actions";
+import GeneticStockActions from "../../../redux/actions/geneticStock.actions";
 import { sexOptions } from "../../../constants";
-import ACTION_TYPES from "../../../redux/types";
 
 const defaultInitValues = {
   agribusinessId: "",
@@ -42,12 +42,14 @@ const IAMNForm = ({
 }) => {
   const dispatch = useDispatch();
 
-  const maleAnimals = useSelector(
-    (state) => state.animal.list.filter((animal) => animal.gender === "MALE"),
+  const femaleAnimals = useSelector(
+    (state) => state.animal.list.filter((e) => e.gender === "FEMALE"),
     shallowEqual
   );
-  const femaleAnimals = useSelector(
-    (state) => state.animal.list.filter((animal) => animal.gender === "FEMALE"),
+
+  const maleAnimals = useSelector(
+    (state) =>
+      state.animal.list.filter((e) => e.gender === "MALE" && e.isReproductive),
     shallowEqual
   );
 
@@ -69,11 +71,21 @@ const IAMNForm = ({
   });
 
   useEffect(() => {
-    (!femaleAnimals ||
-      !maleAnimals ||
+    if (
+      !femaleAnimals ||
       femaleAnimals.length === 0 ||
-      maleAnimals.length === 0) &&
-      dispatch(animalActions.listAll());
+      !maleAnimals ||
+      maleAnimals.length === 0
+    ) {
+      dispatch(AnimalActions.listAll());
+    }
+    if (!listSemen || listSemen.length === 0) {
+      dispatch(
+        GeneticStockActions.listGeneticStockByAgribusiness({
+          geneticType: "SEMEN",
+        })
+      );
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch]);
 
@@ -115,6 +127,7 @@ const IAMNForm = ({
               label="Identificación de hembra"
               onChange={props.handleChange}
               defaultValue={type === "create" ? null : props.values.animal}
+              disabled={type === "create" ? false : true}
               xs={12}
               sm={6}
             />
@@ -169,6 +182,7 @@ const IAMNForm = ({
                 name="geneticStockId"
                 label="Semen"
                 options={listSemen}
+                disabled={type === "create" ? false : true}
               />
             ) : (
               <AutocompleteFieldFormik
@@ -181,13 +195,14 @@ const IAMNForm = ({
                 name="reproductorAnimalId"
                 label="Reproductor"
                 options={maleAnimals}
+                disabled={type === "create" ? false : true}
               />
             )}
             {props.values.serviceType !== typeServices[1]._id && (
               <AutocompleteFieldFormik
-                // defaultValue={
-                //   type === "create" ? null : props.values.reproductor
-                // }
+                defaultValue={
+                  type === "create" ? null : props.values.reproductor
+                }
                 onChange={props.handleChange}
                 xs={12}
                 sm={6}
@@ -204,6 +219,7 @@ const IAMNForm = ({
                 type="number"
                 xs={12}
                 sm={6}
+                disabled={type === "create" ? false : true}
               />
             )}
             {props.values.serviceType !== typeServices[1]._id && (

@@ -11,7 +11,7 @@ import SelectFieldFormik from "../../../components/Inputs/SelectFieldFormik";
 import DatePickerFieldFormik from "../../../components/Inputs/DatePickerFieldFormik";
 import TextFieldFormik from "../../../components/Inputs/TextFieldFormik";
 import ButtonFormik from "../../../components/Inputs/ButtonFormik";
-import { animalActions } from "../../../redux/actions/animal.actions";
+import AnimalActions from "../../../redux/actions/animal.actions";
 import { deleteOptions } from "../../../constants";
 import { useDispatch } from "react-redux";
 
@@ -29,7 +29,7 @@ export default function ChipsSection() {
   });
   const handleSubmit = (values) => {
     console.log(values);
-    dispatch(animalActions.deleteElement(values)).then(
+    dispatch(AnimalActions.deleteElement(values)).then(
       (data) => {
         history.push(ROUTES_DICT.animalControl);
       },
