@@ -12,6 +12,12 @@ import serviceActions from "../../../redux/actions/service.actions";
 import AnimalActions from "../../../redux/actions/animal.actions";
 import { ROUTES_DICT } from "../../../routes/routesDict";
 
+/**
+ * @component
+ * @description Componente, renderiza una tabla con la lista de servicios
+ * @author Emerson Puma Quispe <emerson.puma@ideascloud.io>
+ */
+
 const ServicePage = (props) => {
   const location = useLocation();
   const dispatch = useDispatch();
@@ -69,7 +75,13 @@ const ServicePage = (props) => {
               style={{ color: "#C25560" }}
               size="small"
               aria-label="delete"
-              onClick={() => {}}
+              onClick={() => {
+                let parentPathName = ROUTES_DICT.serviceDelete.replace(
+                  ":id",
+                  serviceList[dataIndex]._id
+                );
+                history.push(parentPathName);
+              }}
             >
               <Delete fontSize="small" />
             </IconButton>

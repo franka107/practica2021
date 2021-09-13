@@ -11,7 +11,6 @@ const EmbryoTransferUpdatePage = ({ parentPathname }) => {
   const params = useParams();
   const dispatch = useDispatch();
   const serviceCurrent = useSelector((state) => state.service.current);
-  //http://localhost:3000/#/dashboard/genetic-stock/embryo/movements/
 
   useEffect(() => {
     if (!serviceCurrent || serviceCurrent._id !== params.id) {
@@ -25,23 +24,13 @@ const EmbryoTransferUpdatePage = ({ parentPathname }) => {
       <CustomDialog parentPathName={parentPathname} maxWidth="md">
         {(props) => (
           <>
-            {serviceCurrent && serviceCurrent._id === params.id && (
+            {serviceCurrent && (
               <EmbryoTransferForm
                 type="update"
+                initValues={serviceCurrent}
                 onClickCancelButton={props.handleClose}
                 onCompleteSubmit={props.handleClose}
-                initValues={serviceCurrent}
               />
-            )}
-            {!serviceCurrent && serviceCurrent._id !== params.id && (
-              <Grid
-                container
-                justifyContent="center"
-                alignContent="center"
-                alignItems="center"
-              >
-                <CircularProgress color="secondary" />
-              </Grid>
             )}
           </>
         )}

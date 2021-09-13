@@ -129,6 +129,7 @@ const EmbryoTransferForm = ({
               label="Identificación de hembra"
               onChange={props.handleChange}
               defaultValue={type === "create" ? null : props.values.animal}
+              disabled={type === "create" ? false : true}
               xs={12}
               sm={6}
             />
@@ -173,6 +174,7 @@ const EmbryoTransferForm = ({
               name="geneticStockId"
               label="Cód."
               options={listEmbryo}
+              disabled={type === "create" ? false : true}
             />
             <TextFieldFormik
               onChange={props.handleChange}
@@ -220,12 +222,14 @@ const EmbryoTransferForm = ({
               name="embryoQuality"
               label="Calidad"
               options={qualityEmbryoOptions}
+              disabled={type === "create" ? false : true}
             />
             <TextFieldFormik
               onChange={props.handleChange}
               name="embryoQuantity"
               label="Cantidad"
               type="number"
+              disabled={type === "create" ? false : true}
               xs={12}
               sm={2}
             />

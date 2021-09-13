@@ -18,6 +18,7 @@ import IAMNCreatePage from "../pages/ServicePage/IAMNCreatePage";
 import IAMNUpdatePage from "../pages/ServicePage/IAMNUpdatePage";
 import EmbryoTransferCreatePage from "../pages/ServicePage/EmbryoTransferCreatePage";
 import EmbryoTransferUpdatePage from "../pages/ServicePage/EmbryoTransferUpdatePage";
+import ServiceDeletePage from "../pages/ServicePage/ServiceDeletePage";
 import PalpationPage from "../pages/PalpationPage";
 import BirthPage from "../pages/BirthPage";
 import PregnanciesPage from "../pages/PregnanciesPage";
@@ -81,6 +82,14 @@ export const RENDER_ROUTES = [
         key: "Editar Transferencia de Embrión",
         exact: true,
         component: EmbryoTransferUpdatePage,
+        type: ROUTE_TYPES.private,
+      },
+      {
+        parentPathname: ROUTES_DICT.service,
+        path: ROUTES_DICT.serviceDelete,
+        key: "Eliminar Servicio",
+        exact: true,
+        component: ServiceDeletePage,
         type: ROUTE_TYPES.private,
       },
     ],
