@@ -19,10 +19,12 @@
     "@testing-library/user-event": "^12.1.10",
     "clsx": "^1.1.1",
     "date-fns": "^2.23.0",
+    "better-docs": "^2.3.2",
     "date-fns-tz": "^1.1.6",
     "formik": "^2.2.9",
     "highcharts": "^9.0.1",
     "highcharts-react-official": "^3.0.0",
+    "jsdoc": "^3.6.7",
     "lodash": "^4.17.21",
     "material-ui-phone-number": "^2.2.6",
     "mui-datatables": "^3.7.8",
@@ -44,7 +46,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "docs": "jsdoc -c jsdoc.conf.json"
+
   },
   "eslintConfig": {
     "extends": [
