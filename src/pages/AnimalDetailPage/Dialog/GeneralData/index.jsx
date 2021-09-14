@@ -18,6 +18,12 @@ import {
   stateOptions,
 } from "../../../../constants";
 
+/**
+ * @component
+ * @description Componente, renderiza un dialog
+ * @author Emerson Puma Quispe <emerson.puma@ideascloud.io>
+ */
+
 function GeneralData({ setOpen }) {
   const classes = useStyles();
   const dispatch = useDispatch();

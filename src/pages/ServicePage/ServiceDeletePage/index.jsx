@@ -4,6 +4,12 @@ import { useParams } from "react-router";
 import serviceActions from "../../../redux/actions/service.actions.js";
 import DeleteForm from "../../../components/Forms/DeleteForm";
 
+/**
+ * @component
+ * @description Componente, renderiza un dialog
+ * @author Emerson Puma Quispe <emerson.puma@ideascloud.io>
+ */
+
 const ServiceDeletePage = ({ parentPathname }) => {
   const dispatch = useDispatch();
   const params = useParams();

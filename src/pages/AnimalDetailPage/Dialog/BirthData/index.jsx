@@ -7,6 +7,12 @@ import TextFieldFormik from "../../../../components/Inputs/TextFieldFormik";
 import DatePickerFieldFormik from "../../../../components/Inputs/DatePickerFieldFormik";
 import ButtonFormik from "../../../../components/Inputs/ButtonFormik";
 
+/**
+ * @component
+ * @description Componente, renderiza un dialog
+ * @author Emerson Puma Quispe <emerson.puma@ideascloud.io>
+ */
+
 function BirthData({ setOpen }) {
   const classes = useStyles();
   const handleSubmit = (values) => {

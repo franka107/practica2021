@@ -8,6 +8,12 @@ import DatePickerFieldFormik from "../../../../components/Inputs/DatePickerField
 import ButtonFormik from "../../../../components/Inputs/ButtonFormik";
 import MultipleCheckboxFormik from "../../../../components/Inputs/MultipleCheckboxFormik";
 
+/**
+ * @component
+ * @description Componente, renderiza un dialog
+ * @author Emerson Puma Quispe <emerson.puma@ideascloud.io>
+ */
+
 function OtherData({ setOpen }) {
   const classes = useStyles();
   const handleSubmit = (values) => {

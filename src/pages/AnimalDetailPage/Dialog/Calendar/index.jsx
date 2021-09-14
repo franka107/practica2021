@@ -9,6 +9,12 @@ import TextFieldFormik from "../../../../components/Inputs/TextFieldFormik";
 import { Formik } from "formik";
 import * as yup from "yup";
 
+/**
+ * @component
+ * @description Componente, renderiza un dialog
+ * @author Emerson Puma Quispe <emerson.puma@ideascloud.io>
+ */
+
 function CalendarData() {
   const classes = useStyles();
   const [newItem, setNewItem] = useState(true);

@@ -26,6 +26,12 @@ import {
 } from "../../../../redux/selectors/animal.selector";
 import { format } from "date-fns";
 
+/**
+ * @component
+ * @description Componente, renderiza un dialog
+ * @author Emerson Puma Quispe <emerson.puma@ideascloud.io>
+ */
+
 const propTypes = {};
 
 function AddIndividual({ setOpen, typeAccion = "create", animalId = "" }) {
