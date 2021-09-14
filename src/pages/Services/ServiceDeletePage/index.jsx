@@ -15,7 +15,7 @@ const ServiceDeletePage = ({ parentPathname }) => {
   const params = useParams();
 
   const onSubmit = () => {
-    dispatch(serviceActions.delete({ _id: params.id })).then(() => {
+    dispatch(serviceActions.delete({ _id: params._id })).then(() => {
       dispatch(serviceActions.listByAgribusiness());
     });
   };

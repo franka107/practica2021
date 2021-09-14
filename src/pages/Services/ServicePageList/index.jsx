@@ -18,7 +18,7 @@ import { ROUTES_DICT } from "../../../routes/routesDict";
  * @author Emerson Puma Quispe <emerson.puma@ideascloud.io>
  */
 
-const ServicePage = (props) => {
+const ServicePageList = (props) => {
   const location = useLocation();
   const dispatch = useDispatch();
   const history = useHistory();
@@ -55,14 +55,14 @@ const ServicePage = (props) => {
               aria-label="edit"
               onClick={() => {
                 if (serviceList[dataIndex].serviceType === "EM_TR") {
-                  let parentPathName = ROUTES_DICT.embryoTransferUpdate.replace(
-                    ":id",
+                  let parentPathName = ROUTES_DICT.service.updateET.replace(
+                    ":_id",
                     serviceList[dataIndex]._id
                   );
                   history.push(parentPathName);
                 } else {
-                  let parentPathName = ROUTES_DICT.iamnUpdate.replace(
-                    ":id",
+                  let parentPathName = ROUTES_DICT.service.updateIAMN.replace(
+                    ":_id",
                     serviceList[dataIndex]._id
                   );
                   history.push(parentPathName);
@@ -76,8 +76,8 @@ const ServicePage = (props) => {
               size="small"
               aria-label="delete"
               onClick={() => {
-                let parentPathName = ROUTES_DICT.serviceDelete.replace(
-                  ":id",
+                let parentPathName = ROUTES_DICT.service.delete.replace(
+                  ":_id",
                   serviceList[dataIndex]._id
                 );
                 history.push(parentPathName);
@@ -94,19 +94,15 @@ const ServicePage = (props) => {
   return (
     <Grid container>
       <Grid item xs={12}>
-        <Typography variant="h6">Servicios</Typography>
-      </Grid>
-      <ChipList routes={serviceRouteOptions(location)}></ChipList>
-      {props.children}
-      <Grid item xs={12}>
         <CustomMuiTable
           columns={[...columnsToMuiTable, actionColumn]}
           data={serviceList}
           options={options}
         />
       </Grid>
+      {props.children()}
     </Grid>
   );
 };
 
-export default ServicePage;
+export default ServicePageList;

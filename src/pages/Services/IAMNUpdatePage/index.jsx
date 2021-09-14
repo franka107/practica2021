@@ -2,30 +2,30 @@ import { useEffect } from "react";
 import CustomDialog from "../../../components/CustomDialog";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router";
-import EmbryoTransferForm from "../Forms/EmbryoTransferForm";
+import IAMNForm from "../Forms/IAMNForm";
 import serviceActions from "../../../redux/actions/service.actions.js";
 import { useSelector } from "react-redux";
 import { CircularProgress, Grid } from "@material-ui/core";
 
-const EmbryoTransferUpdatePage = ({ parentPathname }) => {
-  const params = useParams();
+const IAMNUpdatePage = ({ parentPathname }) => {
   const dispatch = useDispatch();
+  const params = useParams();
   const serviceCurrent = useSelector((state) => state.service.current);
 
   useEffect(() => {
-    if (!serviceCurrent || serviceCurrent._id !== params.id) {
-      dispatch(serviceActions.listById({ _id: params.id }));
+    if (!serviceCurrent || serviceCurrent._id !== params._id) {
+      dispatch(serviceActions.listById({ _id: params._id }));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch]);
 
   return (
     <>
-      <CustomDialog parentPathName={parentPathname} maxWidth="md">
+      <CustomDialog parentPathName={parentPathname}>
         {(props) => (
           <>
             {serviceCurrent && (
-              <EmbryoTransferForm
+              <IAMNForm
                 type="update"
                 initValues={serviceCurrent}
                 onClickCancelButton={props.handleClose}
@@ -39,4 +39,4 @@ const EmbryoTransferUpdatePage = ({ parentPathname }) => {
   );
 };
 
-export default EmbryoTransferUpdatePage;
+export default IAMNUpdatePage;

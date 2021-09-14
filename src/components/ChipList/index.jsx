@@ -37,7 +37,11 @@ const ChipList = ({ routes, options }) => {
                 if (route.onClick) {
                   route.onClick();
                 } else {
-                  history.push(route.path);
+                  if (typeof route.path === "object") history.push(route.path);
+                  if (typeof route.path === "string")
+                    history.push(route.path, {
+                      background: location,
+                    });
                 }
               }}
             />

@@ -12,12 +12,12 @@ import SetupControlPage from "../pages/SetupControlPage";
 /* routes with dashboard layout */
 import AnimalControlPage from "../pages/AnimalControlPage";
 import AnimalDetailPage from "../pages/AnimalDetailPage";
-import ServicePage from "../pages/ServicePage/ServicePage";
-import IAMNCreatePage from "../pages/ServicePage/IAMNCreatePage";
-import IAMNUpdatePage from "../pages/ServicePage/IAMNUpdatePage";
-import EmbryoTransferCreatePage from "../pages/ServicePage/EmbryoTransferCreatePage";
-import EmbryoTransferUpdatePage from "../pages/ServicePage/EmbryoTransferUpdatePage";
-import ServiceDeletePage from "../pages/ServicePage/ServiceDeletePage";
+import ServicePageList from "../pages/Services/ServicePageList";
+import IAMNCreatePage from "../pages/Services/IAMNCreatePage";
+import IAMNUpdatePage from "../pages/Services/IAMNUpdatePage";
+import EmbryoTransferCreatePage from "../pages/Services/EmbryoTransferCreatePage";
+import EmbryoTransferUpdatePage from "../pages/Services/EmbryoTransferUpdatePage";
+import ServiceDeletePage from "../pages/Services/ServiceDeletePage";
 import PalpationPage from "../pages/PalpationPage";
 import BirthPage from "../pages/BirthPage";
 import PregnanciesPage from "../pages/PregnanciesPage";
@@ -36,6 +36,7 @@ import GeneticStockUpdatePage from "../pages/GeneticStock/GeneticStockUpdatePage
 import GeneticStockDeletePage from "../pages/GeneticStock/GeneticStockDeletePage";
 import DefaultPage from "../components/DefaultPage";
 import MovementPageList from "../pages/GeneticStock/MovementPageList";
+import { serviceRouteOptions } from "../pages/Services/constants";
 
 export const ROUTE_TYPES = {
   public: "public",
@@ -50,46 +51,95 @@ export const RENDER_ROUTES = [
     path: ROUTES_DICT.service.root,
     key: "Servicios",
     exact: false,
-    component: ({ children }) => <>{children()}</>,
-    //component: ServicePage,
+    //component: ({ children }) => <>{children()}</>,
+    component: ({ children }) => (
+      <DefaultPage title="Servicios" chipList={serviceRouteOptions()}>
+        {(props) => children(props)}
+      </DefaultPage>
+    ),
     layout: DashboardLayout,
     type: ROUTE_TYPES.private,
     routes: [
       {
-        path: ROUTES_DICT.iamnCreate,
-        key: "Nuevo IA/MN",
-        exact: true,
-        component: IAMNCreatePage,
+        path: ROUTES_DICT.service.list,
+        key: "Lista de Servicios",
+        exact: false,
+        component: (props) => <ServicePageList {...props} />,
+        //component: ServicePage,
         type: ROUTE_TYPES.private,
+        routes: [
+          {
+            path: ROUTES_DICT.service.createIAMN,
+            key: "Nuevo IA/MN",
+            exact: true,
+            component: (props) => <IAMNCreatePage {...props} />,
+            type: ROUTE_TYPES.private,
+          },
+          {
+            path: ROUTES_DICT.service.createET,
+            key: "Nuevo IA/MN",
+            exact: true,
+            component: (props) => <EmbryoTransferCreatePage {...props} />,
+            type: ROUTE_TYPES.private,
+          },
+          {
+            path: ROUTES_DICT.service.updateIAMN,
+            key: "Editar IA/MN",
+            exact: true,
+            component: (props) => <IAMNUpdatePage {...props} />,
+            type: ROUTE_TYPES.private,
+          },
+          {
+            path: ROUTES_DICT.service.updateET,
+            key: "Editar Transferencia de embriones",
+            exact: true,
+            component: (props) => <EmbryoTransferUpdatePage {...props} />,
+            type: ROUTE_TYPES.private,
+          },
+          {
+            path: ROUTES_DICT.service.delete,
+            key: "Eliminar servicio",
+            exact: true,
+            component: (props) => <ServiceDeletePage {...props} />,
+            type: ROUTE_TYPES.private,
+          },
+        ],
       },
-      {
-        path: ROUTES_DICT.iamnUpdate,
-        key: "Editar IA/MN",
-        exact: true,
-        component: IAMNUpdatePage,
-        type: ROUTE_TYPES.private,
-      },
-      {
-        path: ROUTES_DICT.embryoTransferCreate,
-        key: "Nueva Transferencia de Embrión",
-        exact: true,
-        component: EmbryoTransferCreatePage,
-        type: ROUTE_TYPES.private,
-      },
-      {
-        path: ROUTES_DICT.embryoTransferUpdate,
-        key: "Editar Transferencia de Embrión",
-        exact: true,
-        component: EmbryoTransferUpdatePage,
-        type: ROUTE_TYPES.private,
-      },
-      {
-        path: ROUTES_DICT.serviceDelete,
-        key: "Eliminar Servicio",
-        exact: true,
-        component: ServiceDeletePage,
-        type: ROUTE_TYPES.private,
-      },
+      //{
+      //  path: ROUTES_DICT.iamnCreate,
+      //  key: "Nuevo IA/MN",
+      //  exact: true,
+      //  component: IAMNCreatePage,
+      //  type: ROUTE_TYPES.private,
+      //},
+      //{
+      //  path: ROUTES_DICT.iamnUpdate,
+      //  key: "Editar IA/MN",
+      //  exact: true,
+      //  component: IAMNUpdatePage,
+      //  type: ROUTE_TYPES.private,
+      //},
+      //{
+      //  path: ROUTES_DICT.embryoTransferCreate,
+      //  key: "Nueva Transferencia de Embrión",
+      //  exact: true,
+      //  component: EmbryoTransferCreatePage,
+      //  type: ROUTE_TYPES.private,
+      //},
+      //{
+      //  path: ROUTES_DICT.embryoTransferUpdate,
+      //  key: "Editar Transferencia de Embrión",
+      //  exact: true,
+      //  component: EmbryoTransferUpdatePage,
+      //  type: ROUTE_TYPES.private,
+      //},
+      //{
+      //  path: ROUTES_DICT.serviceDelete,
+      //  key: "Eliminar Servicio",
+      //  exact: true,
+      //  component: ServiceDeletePage,
+      //  type: ROUTE_TYPES.private,
+      //},
     ],
   },
   /**

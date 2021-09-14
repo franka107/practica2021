@@ -58,15 +58,15 @@ export const columnsToMuiTable = [
 export const serviceRouteOptions = (location) => [
   {
     key: "Inicio",
-    path: ROUTES_DICT.service.root,
+    path: ROUTES_DICT.service.list,
   },
   {
     key: "Agregar I.A / Agregar M.N",
-    path: ROUTES_DICT.iamnCreate,
+    path: ROUTES_DICT.service.createIAMN,
   },
   {
     key: "Agregar Tranferencia de embriones",
-    path: ROUTES_DICT.embryoTransferCreate,
+    path: ROUTES_DICT.service.createET,
   },
   // {
   //   key: "Nuevo movimiento",

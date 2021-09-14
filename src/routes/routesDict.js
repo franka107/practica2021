@@ -62,6 +62,12 @@ export const ROUTES_DICT = {
   },
   service: {
     root: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.service}`,
+    list: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.service}/list`,
+    createIAMN: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.service}/list/${ROUTES_SLUGS.create}IAMN/`,
+    updateIAMN: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.service}/list/:_id/${ROUTES_SLUGS.update}IAMN/`,
+    updateET: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.service}/list/:_id/${ROUTES_SLUGS.update}ET/`,
+    createET: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.service}/list/${ROUTES_SLUGS.create}ET/`,
+    delete: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.service}/list/_:id/${ROUTES_SLUGS.delete}`,
   },
 
   iamnCreate: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.service}/${ROUTES_SLUGS.iamn}/${ROUTES_SLUGS.create}`,
