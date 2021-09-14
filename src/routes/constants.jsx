@@ -50,8 +50,8 @@ export const RENDER_ROUTES = [
     path: ROUTES_DICT.service.root,
     key: "Servicios",
     exact: false,
-    //component: ({ children }) => <>{children()}</>,
-    component: ServicePage,
+    component: ({ children }) => <>{children()}</>,
+    //component: ServicePage,
     layout: DashboardLayout,
     type: ROUTE_TYPES.private,
     routes: [
