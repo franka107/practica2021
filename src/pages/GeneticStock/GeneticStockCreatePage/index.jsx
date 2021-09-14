@@ -1,11 +1,9 @@
-import { useParams } from "react-router-dom";
+import { useParams } from "react-router";
 import CustomDialog from "../../../components/CustomDialog";
-import { ROUTES_SLUGS } from "../../../routes/routesDict";
 import GeneticStockForm from "../Forms/GeneticStockForm";
 
-const SemenCreatePage = ({ parentPathname }) => {
+const GeneticStckCreatePage = ({ parentPathname }) => {
   const params = useParams();
-
   return (
     <>
       <CustomDialog parentPathname={parentPathname}>
@@ -14,7 +12,7 @@ const SemenCreatePage = ({ parentPathname }) => {
             type="create"
             onClickCancelButton={props.handleClose}
             onCompleteSubmit={props.handleClose}
-            geneticType={"SEMEN"}
+            geneticType={params.geneticType.toUpperCase()}
           />
         )}
       </CustomDialog>
@@ -22,4 +20,4 @@ const SemenCreatePage = ({ parentPathname }) => {
   );
 };
 
-export default SemenCreatePage;
+export default GeneticStckCreatePage;

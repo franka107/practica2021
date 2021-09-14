@@ -1,57 +1,56 @@
 import { Grid, Typography } from "@material-ui/core";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector, shallowEqual } from "react-redux";
 import { useHistory, useLocation, useParams } from "react-router";
 import ChipList from "../../../components/ChipList";
 import CustomMuiTable from "../../../components/CustomMuiTable";
+import SearchContainer from "../../../components/SearchContainer";
 import MovementActions from "../../../redux/actions/movement.actions";
 import { ROUTES_SLUGS } from "../../../routes/routesDict";
 import { embryoRouteOptions, semenRouteOptions } from "../constants";
 import { columns } from "./constants";
 
-const MovementPage = (props) => {
+const MovementPageList = ({ children, setTitle, setChipList }) => {
   const history = useHistory();
   const location = useLocation();
   const params = useParams();
-  const movementList = useSelector((state) =>
-    state.movement.list?.filter(
-      (e) =>
-        e.geneticStock?.geneticType ===
-        (params.geneticType === ROUTES_SLUGS.embryo ? "EMBRYO" : "SEMEN")
-    )
+  const [searchText, setSearchText] = useState();
+  const movementList = useSelector(
+    (state) =>
+      state.movement.list?.filter(
+        (e) => e.geneticStock?.geneticType === params.geneticType.toUpperCase()
+      ),
+    shallowEqual
   );
   const dispatch = useDispatch();
   const options = {
     selectableRows: "none",
     search: false,
+    searchText,
   };
 
   const { current: currentAgribusiness } = useSelector(
     (state) => state.agribusiness
   );
   useEffect(() => {
+    setTitle("Movimientos");
+
+    if (params.geneticType === ROUTES_SLUGS.semen) {
+      setChipList(semenRouteOptions(location));
+    } else if (params.geneticType === ROUTES_SLUGS.embryo) {
+      setChipList(embryoRouteOptions(location));
+    }
+
     if (!movementList || movementList.length === 0) {
-      params.geneticType === ROUTES_SLUGS.embryo &&
-        dispatch(MovementActions.list("EMBRYO"));
-      params.geneticType === ROUTES_SLUGS.semen &&
-        dispatch(MovementActions.list("SEMEN"));
+      dispatch(MovementActions.list());
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch, params, currentAgribusiness]);
+  }, [dispatch, params.geneticType, currentAgribusiness]);
 
   return (
-    <Grid container>
-      <Grid item xs={12}>
-        <Typography variant="h6">Movimientos</Typography>
-      </Grid>
-      {params.geneticType === ROUTES_SLUGS.embryo && (
-        <ChipList routes={embryoRouteOptions(location)}></ChipList>
-      )}
-      {params.geneticType === ROUTES_SLUGS.semen && (
-        <ChipList routes={semenRouteOptions(location)}></ChipList>
-      )}
-      {props.children}
+    <Grid container spacing={2}>
+      <SearchContainer searchText={searchText} setSearchText={setSearchText} />
       <Grid item xs={12}>
         <CustomMuiTable
           data={movementList}
@@ -59,8 +58,9 @@ const MovementPage = (props) => {
           options={options}
         />
       </Grid>
+      {children()}
     </Grid>
   );
 };
 
-export default MovementPage;
+export default MovementPageList;

@@ -9,9 +9,6 @@ const CustomDialog = ({ children, parentPathname, maxWidth = "sm" }) => {
   const location = useLocation();
   const params = useParams();
   const handleClose = () => {
-    console.log(location);
-    console.log(generatePath(parentPathname, params));
-    console.log(location.pathname);
     if (
       location.state &&
       location.state.background &&

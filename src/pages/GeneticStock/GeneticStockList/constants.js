@@ -22,6 +22,7 @@ export const columns = [
     name: "stock",
     options: {
       filter: false,
+      searchable: false,
     },
   },
   {
@@ -29,6 +30,7 @@ export const columns = [
     name: "value",
     options: {
       filter: false,
+      searchable: false,
       customBodyRender: (value) => value && value.toFixed(2),
     },
   },
@@ -37,6 +39,7 @@ export const columns = [
     name: "totalValue",
     options: {
       filter: false,
+      searchable: false,
       customBodyRender: (value) => value && value.toFixed(2),
     },
   },

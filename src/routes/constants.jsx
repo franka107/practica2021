@@ -23,10 +23,8 @@ import PalpationPage from "../pages/PalpationPage";
 import BirthPage from "../pages/BirthPage";
 import PregnanciesPage from "../pages/PregnanciesPage";
 import PedigreePage from "../pages/PedigreePage";
-import SemenPage from "../pages/GeneticStock/SemenPage";
 import GeneticStockList from "../pages/GeneticStock/GeneticStockList";
 import HaciendaConfigurationPage from "../pages/HaciendaConfigurationPage";
-import MovementPage from "../pages/GeneticStock/MovementPage";
 import MovementCreatePage from "../pages/GeneticStock/MovementCreatePage";
 import MovementUpdatePage from "../pages/GeneticStock/MovementUpdatePage";
 
@@ -35,11 +33,11 @@ import ProfilesControlPage from "../pages/ProfilesControlPage";
 import UserControlPage from "../pages/UserControlPage";
 import PlanPage from "../pages/PlanPage";
 import AccountControlPage from "../pages/AccountControlPage";
-import EmbryoCreatePage from "../pages/GeneticStock/EmbryoCreatePage";
-import EmbryoUpdatePage from "../pages/GeneticStock/EmbryoUpdatePage";
-import SemenCreatePage from "../pages/GeneticStock/SemenCreatePage";
-import SemenUpdatePage from "../pages/GeneticStock/SemenUpdatePage";
+import GeneticStockCreatePage from "../pages/GeneticStock/GeneticStockCreatePage";
+import GeneticStockUpdatePage from "../pages/GeneticStock/GeneticStockUpdatePage";
+import GeneticStockDeletePage from "../pages/GeneticStock/GeneticStockDeletePage";
 import DefaultPage from "../components/DefaultPage";
+import MovementPageList from "../pages/GeneticStock/MovementPageList";
 
 export const ROUTE_TYPES = {
   public: "public",
@@ -116,153 +114,52 @@ export const RENDER_ROUTES = [
             key: "Nuevo stock",
             exact: false,
             component: (props) => <GeneticStockList {...props} />,
-
             type: ROUTE_TYPES.private,
             routes: [
               {
                 path: ROUTES_DICT.geneticStock.geneticType.create,
                 key: "Nuevo stock",
                 exact: true,
-                component: (props) => <EmbryoCreatePage {...props} />,
+                component: (props) => <GeneticStockCreatePage {...props} />,
+                type: ROUTE_TYPES.private,
+              },
+              {
+                path: ROUTES_DICT.geneticStock.geneticType.update,
+                key: "Editar stock",
+                exact: true,
+                component: (props) => <GeneticStockUpdatePage {...props} />,
+                type: ROUTE_TYPES.private,
+              },
+              {
+                path: ROUTES_DICT.geneticStock.geneticType.delete,
+                key: "Eliminar stock",
+                exact: true,
+                component: (props) => <GeneticStockDeletePage {...props} />,
                 type: ROUTE_TYPES.private,
               },
             ],
           },
-
-          /*
           {
-            parentPathname: ROUTES_DICT.embryo,
-            path: ROUTES_DICT.embryoUpdate,
-            key: "Actualizar stock",
-            exact: true,
-            component: EmbryoUpdatePage,
-            type: ROUTE_TYPES.private,
-          },
-          {
-            path: ROUTES_DICT.geneticStock.movements.root,
+            path: ROUTES_DICT.geneticStock.movements.list,
             key: "Movimientos",
             exact: false,
-            component: ({ children }) => <>{children}</>,
+            component: (props) => <MovementPageList {...props} />,
             type: ROUTE_TYPES.private,
             routes: [
               {
-                path: ROUTES_DICT.geneticStock.movements.list,
-                key: "Nuevo movimiento",
+                path: ROUTES_DICT.geneticStock.movements.create,
+                key: "Movimientos",
                 exact: true,
-                component: MovementPage,
-                type: ROUTE_TYPES.private,
-              },
-              {
-                path: ROUTES_DICT.movementsCreate,
-                key: "Nuevo movimiento",
-                exact: true,
-                component: MovementCreatePage,
-                type: ROUTE_TYPES.private,
-              },
-              {
-                path: ROUTES_DICT.movementsUpdate,
-                key: "Actualizar movimiento",
-                exact: true,
-                component: MovementUpdatePage,
+                component: (props) => <MovementCreatePage {...props} />,
                 type: ROUTE_TYPES.private,
               },
             ],
           },
-          */
         ],
       },
     ],
   },
 
-  /*
-  {
-    path: ROUTES_DICT.root,
-    key: "Dashboard",
-    exact: true,
-    component: () => <Redirect to={ROUTES_DICT.login} />,
-    layout: DashboardLayout,
-    type: ROUTE_TYPES.public,
-  },
-  */
-
-  /*
-  {
-    path: ROUTES_DICT.movements,
-    key: "Movimientos",
-    exact: false,
-    component: MovementPage,
-    layout: DashboardLayout,
-    type: ROUTE_TYPES.private,
-    routes: [
-      {
-        path: ROUTES_DICT.movementsCreate,
-        key: "Nuevo movimiento",
-        exact: true,
-        component: MovementCreatePage,
-        type: ROUTE_TYPES.private,
-      },
-      {
-        path: ROUTES_DICT.movementsUpdate,
-        key: "Actualizar movimiento",
-        exact: true,
-        component: MovementUpdatePage,
-        type: ROUTE_TYPES.private,
-      },
-    ],
-  },
-  {
-    path: ROUTES_DICT.embryo,
-    key: "Embriones",
-    exact: false,
-    component: EmbryoPage,
-    layout: DashboardLayout,
-    type: ROUTE_TYPES.private,
-    routes: [
-      {
-        parentPathname: ROUTES_DICT.embryo,
-        path: ROUTES_DICT.embryoCreate,
-        key: "Nuevo stock",
-        exact: false,
-        component: EmbryoCreatePage,
-        type: ROUTE_TYPES.private,
-      },
-      {
-        parentPathname: ROUTES_DICT.embryo,
-        path: ROUTES_DICT.embryoUpdate,
-        key: "Actualizar stock",
-        exact: true,
-        component: EmbryoUpdatePage,
-        type: ROUTE_TYPES.private,
-      },
-    ],
-  },
-  {
-    path: ROUTES_DICT.semen,
-    key: "Semen",
-    exact: false,
-    component: SemenPage,
-    layout: DashboardLayout,
-    type: ROUTE_TYPES.private,
-    routes: [
-      {
-        parentPathname: ROUTES_DICT.semen,
-        path: ROUTES_DICT.semenCreate,
-        key: "Nuevo stock",
-        exact: true,
-        component: SemenCreatePage,
-        type: ROUTE_TYPES.private,
-      },
-      {
-        parentPathname: ROUTES_DICT.semen,
-        path: ROUTES_DICT.semenUpdate,
-        key: "Actualizar stock",
-        exact: true,
-        component: SemenUpdatePage,
-        type: ROUTE_TYPES.private,
-      },
-    ],
-  },
-  */
   {
     path: ROUTES_DICT.animalControl,
     key: "Control Animal",
@@ -455,7 +352,7 @@ export const ROUTES = [
     path: ROUTES_DICT.movements,
     key: "Movimientos",
     exact: false,
-    component: MovementPage,
+    component: MovementPageList,
     layout: DashboardLayout,
     type: ROUTE_TYPES.private,
   },

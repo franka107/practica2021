@@ -5,13 +5,23 @@ import CustomMuiTable from "../../../components/CustomMuiTable";
 import { useDispatch, useSelector, shallowEqual } from "react-redux";
 import GeneticStockActions from "../../../redux/actions/geneticStock.actions";
 import { embryoRouteOptions, semenRouteOptions } from "../constants";
-import { useLocation, useHistory, useParams } from "react-router-dom";
-import { ROUTES_SLUGS } from "../../../routes/routesDict";
+import {
+  useLocation,
+  useHistory,
+  useParams,
+  generatePath,
+} from "react-router-dom";
+import { ROUTES_DICT, ROUTES_SLUGS } from "../../../routes/routesDict";
 import TableButtons from "../../../components/TableButtons";
+import geneticStockActions from "../../../redux/actions/geneticStock.actions";
+import DataContainer from "../../../components/DataContainer";
+import SearchContainer from "../../../components/SearchContainer";
 
 function GeneticStockList({ children, setTitle, setChipList }) {
   const dispatch = useDispatch();
   const params = useParams();
+  const history = useHistory();
+  const [searchText, setSearchText] = useState();
   const geneticStockList = useSelector(
     (state) =>
       state.geneticStock.list.filter(
@@ -35,8 +45,17 @@ function GeneticStockList({ children, setTitle, setChipList }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params.geneticType]);
 
+  const parseNumber = (n) => (isNaN(n) ? 0 : n);
+
+  const getTotalValue = (list, property = "") =>
+    list.reduce(
+      (accumulated, current) => accumulated + parseNumber(current[property]),
+      0
+    );
+
   const options = {
     selectableRows: "none",
+    searchText,
     search: false,
   };
   const actionColumn = {
@@ -49,10 +68,31 @@ function GeneticStockList({ children, setTitle, setChipList }) {
       customBodyRenderLite: (dataIndex, rowIndex) => {
         return (
           <TableButtons
-            onClickDeleteButton={() => {}}
-            onClickEditButton={() => {}}
-            onClickStarButton={() => {}}
-            starButtonFeatured={true}
+            onClickDeleteButton={() => {
+              history.push(
+                generatePath(ROUTES_DICT.geneticStock.geneticType.delete, {
+                  ...params,
+                  _id: geneticStockList[dataIndex]._id,
+                })
+              );
+            }}
+            onClickEditButton={() => {
+              history.push(
+                generatePath(ROUTES_DICT.geneticStock.geneticType.update, {
+                  ...params,
+                  _id: geneticStockList[dataIndex]._id,
+                })
+              );
+            }}
+            onClickStarButton={() => {
+              dispatch(
+                geneticStockActions.updateGeneticStock({
+                  ...geneticStockList[dataIndex],
+                  isFeatured: !Boolean(geneticStockList[dataIndex].isFeatured),
+                })
+              );
+            }}
+            starButtonFeatured={geneticStockList[dataIndex].isFeatured}
           />
         );
       },
@@ -60,7 +100,8 @@ function GeneticStockList({ children, setTitle, setChipList }) {
   };
 
   return (
-    <Grid container xs={12}>
+    <Grid container spacing={2} xs={12}>
+      <SearchContainer searchText={searchText} setSearchText={setSearchText} />
       <Grid item xs={12}>
         <CustomMuiTable
           data={geneticStockList}
@@ -68,6 +109,16 @@ function GeneticStockList({ children, setTitle, setChipList }) {
           options={options}
         />
       </Grid>
+      <DataContainer
+        md={6}
+        number={getTotalValue(geneticStockList, "stock")}
+        title={"Existencias"}
+      />
+      <DataContainer
+        md={6}
+        number={getTotalValue(geneticStockList, "totalValue").toFixed(2)}
+        title={"Valor total"}
+      />
       {children()}
     </Grid>
   );

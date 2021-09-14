@@ -45,6 +45,13 @@ const actionColumn = (location, history, geneticType, movements) => ({
 
 export const columns = (location, history, geneticType, movements) => [
   {
+    label: "Stock genético",
+    name: "geneticStock",
+    options: {
+      customBodyRender: (value) => value.identifier,
+    },
+  },
+  {
     label: "Movimiento",
     name: "movementType",
     options: {

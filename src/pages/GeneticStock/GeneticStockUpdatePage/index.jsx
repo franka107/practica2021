@@ -9,7 +9,7 @@ import { ROUTES_SLUGS } from "../../../routes/routesDict";
 import GeneticStockForm from "../Forms/GeneticStockForm";
 import MovementForm from "../Forms/MovementForm";
 
-const EmbryoUpdatePage = ({ parentPathname }) => {
+const GeneticStockUpdatePage = ({ parentPathname }) => {
   const params = useParams();
   const dispatch = useDispatch();
 
@@ -19,7 +19,7 @@ const EmbryoUpdatePage = ({ parentPathname }) => {
 
   useEffect(() => {
     if (!currentGeneticStock || currentGeneticStock._id !== params._id) {
-      dispatch(geneticStockActions.listGeneticStockById({ _id: params._id }));
+      dispatch(geneticStockActions.getById({ _id: params._id }));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch]);
@@ -33,7 +33,7 @@ const EmbryoUpdatePage = ({ parentPathname }) => {
             initValues={currentGeneticStock}
             onClickCancelButton={props.handleClose}
             onCompleteSubmit={props.handleClose}
-            geneticType={"EMBRYO"}
+            geneticType={params.geneticType.toUpperCase()}
           />
         )}
       </CustomDialog>
@@ -41,4 +41,4 @@ const EmbryoUpdatePage = ({ parentPathname }) => {
   );
 };
 
-export default EmbryoUpdatePage;
+export default GeneticStockUpdatePage;

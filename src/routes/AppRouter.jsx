@@ -1,13 +1,15 @@
 import React from "react";
-import { HashRouter as Router, Switch } from "react-router-dom";
+import {
+  HashRouter as Router,
+  Route,
+  Switch,
+  Redirect,
+} from "react-router-dom";
 import { GlobalSnackbar } from "../components/GlobalSnackbar";
 import { RENDER_ROUTES } from "./constants";
 import AuthWrapper from "./AuthWrapper";
 import RouterList from "./RouterList";
-
-const MemoizedRouterList = React.memo(({ routes, outside }) => (
-  <RouterList routes={routes} outside={outside} />
-));
+import { ROUTES_DICT } from "./routesDict";
 
 export const AppRouter = () => {
   return (
@@ -16,9 +18,14 @@ export const AppRouter = () => {
         <GlobalSnackbar />
         <AuthWrapper>
           <Switch>
-            <MemoizedRouterList routes={RENDER_ROUTES} outside={false} />
+            <Route
+              path={ROUTES_DICT.root}
+              exact
+              render={() => <Redirect to={ROUTES_DICT.animalControl} />}
+            ></Route>
+            <RouterList routes={RENDER_ROUTES} outside={false} />
           </Switch>
-          <MemoizedRouterList routes={RENDER_ROUTES} outside={true} />
+          <RouterList routes={RENDER_ROUTES} outside={true} />
         </AuthWrapper>
       </div>
     </Router>

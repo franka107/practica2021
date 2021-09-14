@@ -22,12 +22,15 @@ export const embryoRouteOptions = (location) => [
   },
   {
     key: "Movimientos",
-    path: ROUTES_DICT.movements.replace(":geneticType", ROUTES_SLUGS.embryo),
+    path: ROUTES_DICT.geneticStock.movements.list.replace(
+      ":geneticType",
+      ROUTES_SLUGS.embryo
+    ),
   },
   {
     key: "Nuevo movimiento",
     path: {
-      pathname: ROUTES_DICT.movementsCreate.replace(
+      pathname: ROUTES_DICT.geneticStock.movements.create.replace(
         ":geneticType",
         ROUTES_SLUGS.embryo
       ),
@@ -60,12 +63,15 @@ export const semenRouteOptions = (location) => [
   },
   {
     key: "Movimientos",
-    path: ROUTES_DICT.movements.replace(":geneticType", ROUTES_SLUGS.semen),
+    path: ROUTES_DICT.geneticStock.movements.list.replace(
+      ":geneticType",
+      ROUTES_SLUGS.semen
+    ),
   },
   {
     key: "Nuevo movimiento",
     path: {
-      pathname: ROUTES_DICT.movementsCreate.replace(
+      pathname: ROUTES_DICT.geneticStock.movements.create.replace(
         ":geneticType",
         ROUTES_SLUGS.semen
       ),

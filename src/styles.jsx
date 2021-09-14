@@ -1,6 +1,44 @@
 import { makeStyles } from "@material-ui/core";
 
 export const useStyles = makeStyles((theme) => ({
+  searchContainer_container: {
+    padding: "0 .5rem",
+    borderRadius: "25px !important",
+    borderColor: "rgba(0, 0, 0, 0.24) !important",
+    border: `1px solid !important`,
+    backgroundColor: `${theme.palette.primary.light} !important`,
+    "&:hover": {
+      padding: "0 .5rem",
+      borderRadius: "25px !important",
+      borderColor: "rgba(0, 0, 0, 0.24) !important",
+      border: `1px solid !important`,
+      backgroundColor: `${theme.palette.primary.light} !important`,
+    },
+
+    [theme.breakpoints.down("sm")]: {
+      marginTop: "1rem",
+    },
+  },
+
+  searchContainer__input: {
+    width: "100% !important",
+    height: "100% !important",
+    backgroundColor: `inherit !important`,
+    border: `0px solid !important`,
+    "&:hover": {
+      backgroundColor: `inherit !important`,
+      border: `0px solid !important`,
+    },
+    "&$focused": {
+      backgroundColor: `inherit !important`,
+      border: `0px solid !important`,
+    },
+    "&$active": {
+      backgroundColor: `inherit !important`,
+      border: `0px solid !important`,
+    },
+  },
+
   customModal: {
     padding: "1.2rem",
   },
@@ -54,5 +92,23 @@ export const useStyles = makeStyles((theme) => ({
     bottom: 7,
     backgroundColor: "white",
     cursor: "pointer",
+  },
+  dataContainer__container: {
+    padding: theme.spacing(3),
+    height: "100%",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    boxShadow:
+      "0px 2px 4px -1px rgba(0,0,0,0.2),0px 4px 5px 0px rgba(0,0,0,0.14),0px 1px 10px 0px rgba(0,0,0,0.12)",
+    borderRadius: "4px",
+  },
+  dataContainer__number: {
+    color: "black",
+    fontSize: 45,
+    paddingBottom: theme.spacing(1),
+  },
+  dataContainer__text: {
+    paddingBottom: theme.spacing(1),
   },
 }));

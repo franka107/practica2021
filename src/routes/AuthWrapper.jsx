@@ -18,6 +18,7 @@ const AuthWrapper = ({ children }) => {
   const user = useSelector((state) => state.auth.user);
 
   useEffect(() => {
+    console.log("Auth wrapper reload");
     if (!currentFarm) {
       dispatch(farmActions.findFarmByOwnerId(user?._id));
     }

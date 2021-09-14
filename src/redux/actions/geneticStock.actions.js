@@ -50,7 +50,7 @@ class GeneticStockActions {
     };
   }
 
-  listGeneticStockById(data) {
+  getById(data) {
     return (dispatch) => {
       return GeneticStockService.geneticStockGetById(data).then(
         (response) => {

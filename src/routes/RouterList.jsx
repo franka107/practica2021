@@ -123,13 +123,13 @@ const MemoizedRoute = React.memo(
                   {...routeProps}
                   {...parentProps}
                 >
-                  {(parentProps) =>
+                  {(childProps) =>
                     routes && (
                       <RouterList
                         routes={routes}
                         parentPathname={path}
                         outside={outside}
-                        {...parentProps}
+                        {...childProps}
                       />
                     )
                   }
