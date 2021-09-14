@@ -117,7 +117,7 @@ export const menuList = [
           {
             id: "inicio",
             title: "Inicio",
-            link: ROUTES_DICT.service,
+            link: ROUTES_DICT.service.root,
           },
           {
             id: "agregar",

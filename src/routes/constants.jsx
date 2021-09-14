@@ -1,4 +1,3 @@
-import { Redirect } from "react-router-dom";
 import { AuthLayout } from "../layouts/AuthLayout";
 import { DashboardLayout } from "../layouts/DashboardLayout";
 import { ConfigLayout } from "../layouts/ConfigLayout";
@@ -26,7 +25,6 @@ import PedigreePage from "../pages/PedigreePage";
 import GeneticStockList from "../pages/GeneticStock/GeneticStockList";
 import HaciendaConfigurationPage from "../pages/HaciendaConfigurationPage";
 import MovementCreatePage from "../pages/GeneticStock/MovementCreatePage";
-import MovementUpdatePage from "../pages/GeneticStock/MovementUpdatePage";
 
 /* routes with config layout */
 import ProfilesControlPage from "../pages/ProfilesControlPage";
@@ -45,10 +43,14 @@ export const ROUTE_TYPES = {
 };
 
 export const RENDER_ROUTES = [
+  /**
+   * Rutas relacionadas al Módulo de servicios
+   */
   {
-    path: ROUTES_DICT.service,
+    path: ROUTES_DICT.service.root,
     key: "Servicios",
     exact: false,
+    //component: ({ children }) => <>{children()}</>,
     component: ServicePage,
     layout: DashboardLayout,
     type: ROUTE_TYPES.private,
@@ -75,7 +77,6 @@ export const RENDER_ROUTES = [
         type: ROUTE_TYPES.private,
       },
       {
-        parentPathname: ROUTES_DICT.service,
         path: ROUTES_DICT.embryoTransferUpdate,
         key: "Editar Transferencia de Embrión",
         exact: true,
@@ -83,7 +84,6 @@ export const RENDER_ROUTES = [
         type: ROUTE_TYPES.private,
       },
       {
-        parentPathname: ROUTES_DICT.service,
         path: ROUTES_DICT.serviceDelete,
         key: "Eliminar Servicio",
         exact: true,
@@ -92,6 +92,9 @@ export const RENDER_ROUTES = [
       },
     ],
   },
+  /**
+   * Rutas relacionadas al Módulo de stock genético
+   */
   {
     path: ROUTES_DICT.geneticStock.root,
     key: "Stock genético",
@@ -160,6 +163,9 @@ export const RENDER_ROUTES = [
     ],
   },
 
+  /**
+   * Rutas relacionadas al Módulo de control de animales
+   */
   {
     path: ROUTES_DICT.animalControl,
     key: "Control Animal",
@@ -168,6 +174,25 @@ export const RENDER_ROUTES = [
     layout: DashboardLayout,
     type: ROUTE_TYPES.private,
   },
+  {
+    path: ROUTES_DICT.pedigree,
+    key: "Control Animal",
+    exact: true,
+    component: PedigreePage,
+    layout: DashboardLayout,
+    type: ROUTE_TYPES.private,
+  },
+  {
+    path: ROUTES_DICT.animalDetail + "/:animalId",
+    key: "Detalles de animal",
+    exact: true,
+    component: AnimalDetailPage,
+    layout: DashboardLayout,
+    type: ROUTE_TYPES.private,
+  },
+  /**
+   * Rutas relacionadas al Módulo de usuarios y planes
+   */
   {
     path: ROUTES_DICT.plan,
     key: "Planes",
@@ -200,62 +225,9 @@ export const RENDER_ROUTES = [
     layout: ConfigLayout,
     type: ROUTE_TYPES.private,
   },
-  {
-    path: ROUTES_DICT.pedigree,
-    key: "Control Animal",
-    exact: true,
-    component: PedigreePage,
-    layout: DashboardLayout,
-    type: ROUTE_TYPES.private,
-  },
-  {
-    path: ROUTES_DICT.animalDetail + "/:animalId",
-    key: "Detalles de animal",
-    exact: true,
-    component: AnimalDetailPage,
-    layout: DashboardLayout,
-    type: ROUTE_TYPES.private,
-  },
-  {
-    path: ROUTES_DICT.hacienda,
-    key: "Hacienda",
-    exact: true,
-    component: HaciendaConfigurationPage,
-    layout: DashboardLayout,
-    type: ROUTE_TYPES.private,
-  },
-  {
-    path: ROUTES_DICT.birth,
-    key: "Nacimientos",
-    exact: true,
-    component: BirthPage,
-    layout: DashboardLayout,
-    type: ROUTE_TYPES.private,
-  },
-  {
-    path: ROUTES_DICT.palpations,
-    key: "Celos",
-    exact: true,
-    component: PalpationPage,
-    layout: DashboardLayout,
-    type: ROUTE_TYPES.private,
-  },
-  {
-    path: ROUTES_DICT.pregnancies,
-    key: "Celos",
-    exact: true,
-    component: PregnanciesPage,
-    layout: DashboardLayout,
-    type: ROUTE_TYPES.private,
-  },
-  {
-    path: ROUTES_DICT.setup,
-    key: "Celos",
-    exact: true,
-    component: SetupControlPage,
-    layout: DashboardLayout,
-    type: ROUTE_TYPES.private,
-  },
+  /**
+   * Rutas relacionadas al Módulo de autentificacion
+   */
   {
     path: ROUTES_DICT.emailVerified + "/:userId",
     key: "Verificacion",
@@ -281,88 +253,56 @@ export const RENDER_ROUTES = [
     layout: AuthLayout,
     type: ROUTE_TYPES.public,
   },
-];
-
-export const ROUTES = [
-  //{
-  //  path: ROUTES_DICT.dashboard,
-  //  key: "Dashboard",
-  //  exact: true,
-  //  component: () => <Redirect to={ROUTES_DICT.animalControl} />,
-  //  layout: DashboardLayout,
-  //  type: ROUTE_TYPES.private,
-  //},
-  //{
-  //  path: ROUTES_DICT.root,
-  //  key: "Dashboard",
-  //  exact: true,
-  //  component: () => <Redirect to={ROUTES_DICT.login} />,
-  //  layout: DashboardLayout,
-  //  type: ROUTE_TYPES.public,
-  //},
-  //{
-  //  path: ROUTES_DICT.animalControl,
-  //  key: "Control Animal",
-  //  exact: true,
-  //  component: AnimalControlPage,
-  //  layout: DashboardLayout,
-  //  type: ROUTE_TYPES.private,
-  //},
-  //{
-  //  path: ROUTES_DICT.semen,
-  //  key: "Semen",
-  //  exact: true,
-  //  component: SemenPage,
-  //  layout: DashboardLayout,
-  //  type: ROUTE_TYPES.private,
-  //},
-  //{
-  //  path: ROUTES_DICT.embryo,
-  //  key: "Embriones",
-  //  exact: true,
-  //  component: EmbryoPage,
-  //  layout: DashboardLayout,
-  //  type: ROUTE_TYPES.private,
-  //},
+  /**
+   * Rutas relacionadas al Módulo de nacimientos
+   */
   {
-    path: ROUTES_DICT.iamnCreate,
-    key: "IA/MN",
+    path: ROUTES_DICT.birth,
+    key: "Nacimientos",
     exact: true,
-    component: IAMNCreatePage,
+    component: BirthPage,
+    layout: DashboardLayout,
+    type: ROUTE_TYPES.private,
+  },
+  /**
+   * Rutas relacionadas al Módulo de gestion de haciendas y agronegocios
+   */
+  {
+    path: ROUTES_DICT.hacienda,
+    key: "Hacienda",
+    exact: true,
+    component: HaciendaConfigurationPage,
     layout: DashboardLayout,
     type: ROUTE_TYPES.private,
   },
   {
-    path: ROUTES_DICT.iamnUpdate,
-    key: "IA/MN",
+    path: ROUTES_DICT.setup,
+    key: "Celos",
     exact: true,
-    component: IAMNCreatePage,
+    component: SetupControlPage,
     layout: DashboardLayout,
     type: ROUTE_TYPES.private,
   },
+  /**
+   * Rutas relacionadas al Módulo de palpaciones
+   */
   {
-    path: ROUTES_DICT.service,
-    key: "Servicios",
+    path: ROUTES_DICT.palpations,
+    key: "Celos",
     exact: true,
-    component: ServicePage,
+    component: PalpationPage,
     layout: DashboardLayout,
     type: ROUTE_TYPES.private,
   },
+  /**
+   * Rutas relacionadas al Módulo de preñeces
+   */
   {
-    path: ROUTES_DICT.movements,
-    key: "Movimientos",
-    exact: false,
-    component: MovementPageList,
-    layout: DashboardLayout,
-    type: ROUTE_TYPES.private,
-  },
-  {
-    path: ROUTES_DICT.movementsCreate,
-    key: "Nuevo movimiento",
+    path: ROUTES_DICT.pregnancies,
+    key: "Celos",
     exact: true,
-    component: MovementCreatePage,
+    component: PregnanciesPage,
     layout: DashboardLayout,
     type: ROUTE_TYPES.private,
-    parent: ROUTES_DICT.movements,
   },
 ];
