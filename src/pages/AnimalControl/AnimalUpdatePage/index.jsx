@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 import CustomDialog from "../../../components/CustomDialog";
-import animalActions from "../../../redux/actions/animal.actions";
+import AnimalActions from "../../../redux/actions/animal.actions";
 import AnimalForm from "../Forms/AnimalForm";
 
 const AnimalUpdatePage = ({ parentPathname }) => {
@@ -12,7 +12,7 @@ const AnimalUpdatePage = ({ parentPathname }) => {
 
   useEffect(() => {
     if (!currentAnimal || currentAnimal._id !== params._id) {
-      dispatch(animalActions.listById({ _id: params._id }));
+      dispatch(AnimalActions.get({ _id: params._id }));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch]);
@@ -22,14 +22,16 @@ const AnimalUpdatePage = ({ parentPathname }) => {
       <CustomDialog parentPathname={parentPathname}>
         {(props) => (
           <>
-            {currentAnimal && (
-              <AnimalForm
-                type="update"
-                initValues={currentAnimal}
-                onClickCancelButton={props.handleClose}
-                onCompleteSubmit={props.handleClose}
-              />
-            )}
+            {currentAnimal &&
+              currentAnimal._id &&
+              currentAnimal._id === params._id && (
+                <AnimalForm
+                  type="update"
+                  initValues={currentAnimal}
+                  onClickCancelButton={props.handleClose}
+                  onCompleteSubmit={props.handleClose}
+                />
+              )}
           </>
         )}
       </CustomDialog>

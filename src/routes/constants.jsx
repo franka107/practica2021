@@ -39,6 +39,7 @@ import DefaultPage from "../components/DefaultPage";
 import MovementPageList from "../pages/GeneticStock/MovementPageList";
 import { serviceRouteOptions } from "../pages/Services/constants";
 import AnimalUpdatePage from "../pages/AnimalControl/AnimalUpdatePage";
+import AnimalDeletePage from "../pages/AnimalControl/AnimalDeletePage";
 
 export const ROUTE_TYPES = {
   public: "public",
@@ -256,7 +257,7 @@ export const RENDER_ROUTES = [
                 path: ROUTES_DICT.animal.delete,
                 key: "Eliminar animal",
                 exact: true,
-                component: (props) => <GeneticStockDeletePage {...props} />,
+                component: (props) => <AnimalDeletePage {...props} />,
                 type: ROUTE_TYPES.private,
               },
             ],

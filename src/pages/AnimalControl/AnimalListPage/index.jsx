@@ -11,14 +11,13 @@ import AnimalCharts from "../AnimalCharts";
 import AddAnimals from "../AddAnimals";
 import { useStyles } from "../styles";
 import { useDispatch, useSelector } from "react-redux";
-import ACTION_TYPES from "../../../redux/types";
 import CustomMuiTable from "../../../components/CustomMuiTable";
 import TableButtons from "../../../components/TableButtons";
 import RaceActions from "../../../redux/actions/race.actions";
 import { animalRouteOptions } from "../constants";
 import { columns } from "./constants";
 import { ROUTES_DICT } from "../../../routes/routesDict";
-import animalActions from "../../../redux/actions/animal.actions";
+import AnimalActions from "../../../redux/actions/animal.actions";
 
 const AnimalPageList = ({ children, setTitle, setChipList }) => {
   const history = useHistory();
@@ -35,12 +34,11 @@ const AnimalPageList = ({ children, setTitle, setChipList }) => {
   useEffect(() => {
     setTitle("Control Ganadero");
     setChipList(animalRouteOptions(location));
-    dispatch(RaceActions.listRace());
-    if (currentAgribusiness) {
-      dispatch(animalActions.listAll());
+    if (!listAnimal || listAnimal.length === 0) {
+      dispatch(AnimalActions.list());
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch, currentAgribusiness]);
+  }, []);
 
   const options = {
     selectableRows: "none",
@@ -68,7 +66,7 @@ const AnimalPageList = ({ children, setTitle, setChipList }) => {
             }}
             onClickDeleteButton={() => {
               history.push(
-                generatePath(ROUTES_DICT.geneticStock.geneticType.delete, {
+                generatePath(ROUTES_DICT.animal.delete, {
                   ...params,
                   _id: listAnimal[dataIndex]._id,
                 })
@@ -84,7 +82,7 @@ const AnimalPageList = ({ children, setTitle, setChipList }) => {
             }}
             onClickStarButton={() => {
               dispatch(
-                animalActions.updateElement({
+                AnimalActions.update({
                   ...listAnimal[dataIndex],
                   isFeatured: !Boolean(listAnimal[dataIndex].isFeatured),
                 })
