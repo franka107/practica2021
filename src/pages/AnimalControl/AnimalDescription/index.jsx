@@ -33,20 +33,6 @@ function AnimalDescription() {
 
   return (
     <Grid item container xs={12}>
-      <Grid container spacing={2} className={classes.optionContainer}>
-        {menuList[0].submenu.map((menu) => (
-          <Grid item key={`option-${menu.id}`}>
-            <Chip
-              label={menu.title}
-              onClick={() => history.push(`${location.pathname}#${menu.id}`)}
-              className={clsx(
-                classes.option,
-                activeTab === menu.id && classes.active
-              )}
-            />
-          </Grid>
-        ))}
-      </Grid>
       <Grid container spacing={2}>
         <Grid item md={7} xs={12}>
           <div className={classes.userContainer}>

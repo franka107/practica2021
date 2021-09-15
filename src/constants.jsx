@@ -88,7 +88,7 @@ export const deleteOptions = [
   { _id: "OTHERS", name: "Otros" },
 ];
 
-export const categoryOptions = [{ _id: "1", name: "Reproductor" }];
+export const categoryOptions = { _id: "1", name: "Reproductor" };
 
 export const movementOptions = {
   SALE: "Venta",

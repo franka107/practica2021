@@ -10,6 +10,16 @@ const TableButtons = ({
 }) => {
   return (
     <>
+      {onClickEyeButton && (
+        <IconButton
+          style={{ color: "#C25560" }}
+          size="small"
+          aria-label="delete"
+          onClick={onClickEyeButton}
+        >
+          <Visibility fontSize="small" />
+        </IconButton>
+      )}
       <IconButton
         style={{ color: "#C25560" }}
         size="small"
@@ -37,16 +47,6 @@ const TableButtons = ({
           {starButtonFeatured && <Star fontSize="small" />}
 
           {!starButtonFeatured && <StarBorder fontSize="small" />}
-        </IconButton>
-      )}
-      {onClickEyeButton && (
-        <IconButton
-          style={{ color: "#C25560" }}
-          size="small"
-          aria-label="delete"
-          onClick={onClickEyeButton}
-        >
-          <Visibility fontSize="small" />
         </IconButton>
       )}
     </>

@@ -23,6 +23,7 @@ export const ROUTES_SLUGS = {
   weight: "colectiva-pesaje",
   zeal: "colectiva-celos",
   iamn: "I.A-M.N",
+  animal: "animal",
   embryoTransfer: "transfer-embryo",
   account: "cuenta",
   profile: "perfil",
@@ -70,11 +71,14 @@ export const ROUTES_DICT = {
     delete: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.service}/list/:_id/${ROUTES_SLUGS.delete}`,
   },
 
-  iamnCreate: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.service}/${ROUTES_SLUGS.iamn}/${ROUTES_SLUGS.create}`,
-  iamnUpdate: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.service}/${ROUTES_SLUGS.iamn}/:id/${ROUTES_SLUGS.update}`,
-  embryoTransferCreate: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.service}/${ROUTES_SLUGS.embryoTransfer}/${ROUTES_SLUGS.create}`,
-  embryoTransferUpdate: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.service}/${ROUTES_SLUGS.embryoTransfer}/:id/${ROUTES_SLUGS.update}`,
-  serviceDelete: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.service}/:id/${ROUTES_SLUGS.delete}`,
+  animal: {
+    root: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animal}`,
+    list: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animal}/list`,
+    create: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animal}/list/${ROUTES_SLUGS.create}`,
+    update: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animal}/list/:_id/${ROUTES_SLUGS.update}`,
+    delete: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animal}/list/:_id/${ROUTES_SLUGS.delete}`,
+  },
+
   account: `/${ROUTES_SLUGS.account}`,
   profile: `/${ROUTES_SLUGS.profile}`,
   users: `/${ROUTES_SLUGS.user}`,

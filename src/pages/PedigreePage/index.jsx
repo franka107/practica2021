@@ -6,7 +6,7 @@ import QRCode from "qrcode.react";
 import { getAge, formatDate } from "../../helpers/convertDate";
 import { useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
-import { useStyles } from "../AnimalControlPage/AnimalDescription/styles";
+import { useStyles } from "../AnimalControl/AnimalDescription/styles";
 import { Paper } from "@material-ui/core";
 import { Divider } from "@material-ui/core";
 import { IconButton } from "@material-ui/core";
