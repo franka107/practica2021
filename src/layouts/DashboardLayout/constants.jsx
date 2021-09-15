@@ -117,17 +117,17 @@ export const menuList = [
           {
             id: "inicio",
             title: "Inicio",
-            link: ROUTES_DICT.service.root,
+            link: ROUTES_DICT.service.list,
           },
           {
             id: "agregar",
             title: "Agregar I.A / M.N.",
-            link: ROUTES_DICT.iamnCreate,
+            link: ROUTES_DICT.service.createIAMN,
           },
           {
             id: "agregar-transferencias",
             title: "Agregar transf. embriones",
-            // link: routesDictionary.service,
+            link: ROUTES_DICT.service.createET,
           },
         ],
       },

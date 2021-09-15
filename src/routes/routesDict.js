@@ -53,7 +53,7 @@ export const ROUTES_DICT = {
       delete: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.geneticStock}/:geneticType/list/:_id/${ROUTES_SLUGS.delete}`,
     },
     movements: {
-      root: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.geneticStock}/:geneticType/${ROUTES_SLUGS.movements}`,
+      root: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.geneserviceDeleteticStock}/:geneticType/${ROUTES_SLUGS.movements}`,
       list: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.geneticStock}/:geneticType/${ROUTES_SLUGS.movements}/list`,
       create: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.geneticStock}/:geneticType/${ROUTES_SLUGS.movements}/list/${ROUTES_SLUGS.create}`,
       update: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.geneticStock}/:geneticType/${ROUTES_SLUGS.movements}/list/:_id/${ROUTES_SLUGS.update}`,
@@ -67,7 +67,7 @@ export const ROUTES_DICT = {
     updateIAMN: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.service}/list/:_id/${ROUTES_SLUGS.update}IAMN/`,
     updateET: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.service}/list/:_id/${ROUTES_SLUGS.update}ET/`,
     createET: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.service}/list/${ROUTES_SLUGS.create}ET/`,
-    delete: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.service}/list/_:id/${ROUTES_SLUGS.delete}`,
+    delete: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.service}/list/:_id/${ROUTES_SLUGS.delete}`,
   },
 
   iamnCreate: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.service}/${ROUTES_SLUGS.iamn}/${ROUTES_SLUGS.create}`,

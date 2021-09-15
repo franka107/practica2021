@@ -55,13 +55,13 @@ const ServicePageList = (props) => {
               aria-label="edit"
               onClick={() => {
                 if (serviceList[dataIndex].serviceType === "EM_TR") {
-                  let parentPathName = ROUTES_DICT.service.updateET.replace(
+                  const parentPathName = ROUTES_DICT.service.updateET.replace(
                     ":_id",
                     serviceList[dataIndex]._id
                   );
                   history.push(parentPathName);
                 } else {
-                  let parentPathName = ROUTES_DICT.service.updateIAMN.replace(
+                  const parentPathName = ROUTES_DICT.service.updateIAMN.replace(
                     ":_id",
                     serviceList[dataIndex]._id
                   );
@@ -76,7 +76,7 @@ const ServicePageList = (props) => {
               size="small"
               aria-label="delete"
               onClick={() => {
-                let parentPathName = ROUTES_DICT.service.delete.replace(
+                const parentPathName = ROUTES_DICT.service.delete.replace(
                   ":_id",
                   serviceList[dataIndex]._id
                 );

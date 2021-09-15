@@ -13,7 +13,7 @@ import {
 import { ExpandLess, ExpandMore, Edit } from "@material-ui/icons";
 import clsx from "clsx";
 import { useStyles } from "./styles";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useDispatch, useSelector } from "react-redux";
 import agribusinessActions from "../../redux/actions/agribusiness.actions";
@@ -23,6 +23,7 @@ function Sidebar({ openDrawer, setOpenDrawer, options }) {
   const history = useHistory();
   const dispatch = useDispatch();
   const { location = {} } = history;
+  const realLocation = useLocation();
   const classes = useStyles();
   const farm = {
     id: "control-ganadero",
@@ -219,7 +220,11 @@ function Sidebar({ openDrawer, setOpenDrawer, options }) {
               onClick={() => {
                 handleClick(item.id);
                 if (item.link) {
-                  history.push(item.link);
+                  if (typeof item.link === "string") {
+                    history.push(item.link, { background: location });
+                  } else {
+                    history.push(item.link);
+                  }
                 }
                 if (openDrawer) {
                   setOpenDrawer(false);
@@ -260,7 +265,13 @@ function Sidebar({ openDrawer, setOpenDrawer, options }) {
                       disablePadding
                       onClick={() => {
                         if (subitem.link) {
-                          history.push(subitem.link);
+                          if (typeof subitem.link === "string") {
+                            history.push(subitem.link, {
+                              background: location,
+                            });
+                          } else {
+                            history.push(subitem.link);
+                          }
                         }
                         if (openDrawer) {
                           setOpenDrawer(false);
