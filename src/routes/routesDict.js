@@ -10,6 +10,7 @@ export const ROUTES_SLUGS = {
   sale: "sale",
   service: "service",
   iamn: "I.A-M.N",
+  animal: "animal",
   embryoTransfer: "transfer-embryo",
   /* common routes slugs */
   create: "create",
@@ -42,7 +43,14 @@ export const ROUTES_DICT = {
   service: {
     root: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.service}`,
   },
-
+  animal: {
+    root: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animal}`,
+    list: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animal}/list`,
+    create: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animal}/list/${ROUTES_SLUGS.create}`,
+    update: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animal}/list/:_id/${ROUTES_SLUGS.update}`,
+    delete: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animal}/list/:_id/${ROUTES_SLUGS.delete}`,
+  },
+  animalControl: "/dashboard/control-animal",
   //service: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.service}`,
   iamnCreate: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.service}/${ROUTES_SLUGS.iamn}/${ROUTES_SLUGS.create}`,
   iamnUpdate: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.service}/${ROUTES_SLUGS.iamn}/:id/${ROUTES_SLUGS.update}`,
@@ -63,7 +71,6 @@ export const ROUTES_DICT = {
   pregnancies: "/dashboard/preñeces",
   animalDetail: "/dashboard/detalles-animal",
   pedigree: "/dashboard/detalles-animal/:animalId/pedigree",
-  animalControl: "/dashboard/control-animal",
   recoverPassword: "/recover-password",
   setup: "/setup",
 };

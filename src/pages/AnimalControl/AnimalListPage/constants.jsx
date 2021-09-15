@@ -1,11 +1,10 @@
 import { format, isAfter, isBefore } from "date-fns";
-
-import { sexDictionary, stateDictionary } from "../../constants";
-import { getAgeInYears } from "../../helpers/convertDate";
+import { sexDictionary, stateDictionary } from "../../../constants";
+import { getAgeInYears } from "../../../helpers/convertDate";
 import { DatePicker } from "@material-ui/pickers";
 import { Grid } from "@material-ui/core";
 
-export const columnsToMuiTable = [
+export const columns = [
   {
     label: "ID. del animal",
     name: "identifier",

@@ -1,24 +1,17 @@
-import React, { useState } from "react";
-import { Close } from "@material-ui/icons";
-import { Button, Dialog, Grid, Menu, MenuItem } from "@material-ui/core";
-import { menuList } from "./constants";
-import AddIndividual from "./AddIndividual";
-// import AddMassive from "./AddMassive";
+import React from "react";
+import { Button, Grid } from "@material-ui/core";
 import { useStyles } from "./styles";
 import addAnimals from "../../../assets/icons/addAnimal.svg";
 import SearchAnimals from "../SearchAnimals";
+import { useHistory } from "react-router";
+import { ROUTES_DICT } from "../../../routes/routesDict";
 
 function AddAnimals({ searchText, setSearchText }) {
   const classes = useStyles();
-  const [open, setOpen] = useState(false);
-  const [openMenu, setOpenMenu] = useState(false);
-
+  const history = useHistory();
   const handleClick = (event) => {
-    setOpenMenu(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setOpenMenu(null);
+    // setOpenMenu(event.currentTarget);
+    history.push(ROUTES_DICT.animal.create);
   };
 
   return (
@@ -48,7 +41,7 @@ function AddAnimals({ searchText, setSearchText }) {
           >
             Nuevo Registro
           </Button>
-          <Menu
+          {/* <Menu
             id="simple-menu"
             anchorEl={openMenu}
             keepMounted
@@ -67,7 +60,7 @@ function AddAnimals({ searchText, setSearchText }) {
                 {item.title}
               </MenuItem>
             ))}
-          </Menu>
+          </Menu> */}
         </Grid>
         <Grid
           item
@@ -84,19 +77,6 @@ function AddAnimals({ searchText, setSearchText }) {
           />
         </Grid>
       </Grid>
-      <Dialog
-        open={Boolean(open)}
-        fullWidth
-        onClose={() => setOpen(false)}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-        classes={{ paperFullWidth: classes.modal }}
-      >
-        <Close className={classes.closeBtn} onClick={() => setOpen(false)} />
-        {open === 1 && <AddIndividual setOpen={setOpen} />}
-        {/* {open === 2 &&
-        <AddMassive setOpen={setOpen} handleAddMassive={handleAddMassive} agribusinessId={agribusinessId} />} */}
-      </Dialog>
     </Grid>
   );
 }

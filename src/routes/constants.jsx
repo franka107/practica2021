@@ -10,7 +10,6 @@ import EmailVerifiedPage from "../pages/EmailVerifiedPage";
 import SetupControlPage from "../pages/SetupControlPage";
 
 /* routes with dashboard layout */
-import AnimalControlPage from "../pages/AnimalControlPage";
 import AnimalDetailPage from "../pages/AnimalDetailPage";
 import ServicePage from "../pages/ServicePage/ServicePage";
 import IAMNCreatePage from "../pages/ServicePage/IAMNCreatePage";
@@ -25,6 +24,8 @@ import PedigreePage from "../pages/PedigreePage";
 import GeneticStockList from "../pages/GeneticStock/GeneticStockList";
 import HaciendaConfigurationPage from "../pages/HaciendaConfigurationPage";
 import MovementCreatePage from "../pages/GeneticStock/MovementCreatePage";
+import AnimalListPage from "../pages/AnimalControl/AnimalListPage";
+import AnimalCreatePage from "../pages/AnimalControl/AnimalCreatePage";
 
 /* routes with config layout */
 import ProfilesControlPage from "../pages/ProfilesControlPage";
@@ -36,6 +37,7 @@ import GeneticStockUpdatePage from "../pages/GeneticStock/GeneticStockUpdatePage
 import GeneticStockDeletePage from "../pages/GeneticStock/GeneticStockDeletePage";
 import DefaultPage from "../components/DefaultPage";
 import MovementPageList from "../pages/GeneticStock/MovementPageList";
+import AnimalUpdatePage from "../pages/AnimalControl/AnimalUpdatePage";
 
 export const ROUTE_TYPES = {
   public: "public",
@@ -162,18 +164,68 @@ export const RENDER_ROUTES = [
       },
     ],
   },
-
+  {
+    path: ROUTES_DICT.animal.root,
+    key: "Control animal",
+    exact: false,
+    component: ({ children }) => <>{children()}</>,
+    layout: DashboardLayout,
+    type: ROUTE_TYPES.private,
+    routes: [
+      {
+        path: ROUTES_DICT.animal.root,
+        key: "Lista de animales",
+        exact: false,
+        component: ({ children }) => (
+          <DefaultPage>{(props) => children(props)}</DefaultPage>
+        ),
+        type: ROUTE_TYPES.private,
+        routes: [
+          {
+            path: ROUTES_DICT.animal.list,
+            key: "Nuevo animal",
+            exact: false,
+            component: (props) => <AnimalListPage {...props} />,
+            type: ROUTE_TYPES.private,
+            routes: [
+              {
+                path: ROUTES_DICT.animal.create,
+                key: "Nuevo animal",
+                exact: true,
+                component: (props) => <AnimalCreatePage {...props} />,
+                type: ROUTE_TYPES.private,
+              },
+              {
+                path: ROUTES_DICT.animal.update,
+                key: "Editar animal",
+                exact: true,
+                component: (props) => <AnimalUpdatePage {...props} />,
+                type: ROUTE_TYPES.private,
+              },
+              {
+                path: ROUTES_DICT.animal.delete,
+                key: "Eliminar animal",
+                exact: true,
+                component: (props) => <GeneticStockDeletePage {...props} />,
+                type: ROUTE_TYPES.private,
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
   /**
    * Rutas relacionadas al Módulo de control de animales
    */
-  {
-    path: ROUTES_DICT.animalControl,
-    key: "Control Animal",
-    exact: true,
-    component: AnimalControlPage,
-    layout: DashboardLayout,
-    type: ROUTE_TYPES.private,
-  },
+  // {
+  //   path: ROUTES_DICT.animalControl,
+  //   key: "Control Animal",
+  //   exact: true,
+  //   component: AnimalControlPage,
+  //   layout: DashboardLayout,
+  //   type: ROUTE_TYPES.private,
+  // },
   {
     path: ROUTES_DICT.pedigree,
     key: "Control Animal",
