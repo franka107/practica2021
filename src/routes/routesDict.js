@@ -71,6 +71,14 @@ export const ROUTES_DICT = {
     delete: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.service}/list/:_id/${ROUTES_SLUGS.delete}`,
   },
 
+  birth: {
+    root: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.birth}`,
+    list: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.birth}/list`,
+    create: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.birth}/list/${ROUTES_SLUGS.create}/`,
+    update: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.birth}/list/:_id/${ROUTES_SLUGS.update}/`,
+    delete: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.birth}/list/:_id/${ROUTES_SLUGS.delete}/`,
+  },
+
   animal: {
     root: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animal}`,
     list: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animal}/list`,
@@ -87,7 +95,6 @@ export const ROUTES_DICT = {
   sale: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.sale}`,
   weight: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.weight}`,
   zeal: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.zeal}`,
-  birth: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.birth}`,
   palpations: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.palpations}`,
   emailVerified: `/${ROUTES_SLUGS.emailVerified}`,
   pregnancies: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.pregnancies}`,

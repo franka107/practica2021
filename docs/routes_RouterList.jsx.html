@@ -103,7 +103,7 @@ const RouterList = ({ routes, outside, parentPathname }) => {
                         &lt;/>
                       );
                     } else if (type === ROUTE_TYPES.public &amp;&amp; isLoggedIn) {
-                      return &lt;Redirect to={ROUTES_DICT.animalControl} />;
+                      return &lt;Redirect to={ROUTES_DICT.animal.list} />;
                     } else if (type === ROUTE_TYPES.private &amp;&amp; !isLoggedIn) {
                       return &lt;Redirect to={ROUTES_DICT.login} />;
                     }

@@ -17,7 +17,7 @@ function FormCollaborator() {
     console.log(values);
     // dispatch(animalActions.deleteElement(values)).then(
     //   (data) => {
-    //     history.push(ROUTES_DICT.animalControl);
+    //     history.push(ROUTES_DICT.animal.list);
     //   },
     //   (error) => {}
     // );

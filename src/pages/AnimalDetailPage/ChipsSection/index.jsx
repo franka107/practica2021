@@ -31,7 +31,7 @@ export default function ChipsSection() {
     console.log(values);
     dispatch(AnimalActions.deleteElement(values)).then(
       (data) => {
-        history.push(ROUTES_DICT.animalControl);
+        history.push(ROUTES_DICT.animal.list);
       },
       (error) => {}
     );
@@ -44,7 +44,7 @@ export default function ChipsSection() {
         <Chip
           className={clsx(classes.option)}
           onClick={() => {
-            history.push(ROUTES_DICT.animalControl);
+            history.push(ROUTES_DICT.animal.list);
           }}
           label="Inicio"
         ></Chip>

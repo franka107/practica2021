@@ -195,7 +195,7 @@ function Sidebar({ openDrawer, setOpenDrawer, options }) {
                       dispatch(
                         agribusinessActions.setCurrentAgribusiness(agribusiness)
                       );
-                      history.push(ROUTES_DICT.animalControl);
+                      history.push(ROUTES_DICT.animal.list);
                     }}
                   >
                     <ListItem button className={classes.nested}>

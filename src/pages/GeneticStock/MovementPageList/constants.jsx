@@ -56,6 +56,7 @@ export const columns = (location, history, geneticType, movements) => [
     name: "movementType",
     options: {
       customBodyRender: (value) => movementOptions[value],
+      searchable: false,
     },
   },
   {
@@ -63,6 +64,7 @@ export const columns = (location, history, geneticType, movements) => [
     name: "date",
     options: {
       filter: false,
+      searchable: false,
       customBodyRender: (value) =>
         value && format(new Date(value), "yyyy-MM-dd"),
     },
@@ -71,6 +73,7 @@ export const columns = (location, history, geneticType, movements) => [
     label: "Cantidad",
     name: "quantity",
     options: {
+      searchable: false,
       filter: false,
     },
   },
@@ -78,6 +81,7 @@ export const columns = (location, history, geneticType, movements) => [
     label: "Valor unitario",
     name: "unitValue",
     options: {
+      searchable: false,
       filter: false,
       customBodyRender: (value) => value && value.toFixed(2),
     },
@@ -87,6 +91,7 @@ export const columns = (location, history, geneticType, movements) => [
     name: "total",
     options: {
       filter: false,
+      searchable: false,
       customBodyRender: (value) => value && value.toFixed(2),
     },
   },

@@ -3,7 +3,7 @@ import { SearchRounded } from "@material-ui/icons";
 import { Grid, TextField } from "@material-ui/core";
 import { useStyles } from "../../styles";
 
-function SearchContainer({ setSearchText, searchText }) {
+function SearchContainer({ title, setSearchText, searchText }) {
   const classes = useStyles();
 
   return (
@@ -25,7 +25,7 @@ function SearchContainer({ setSearchText, searchText }) {
           <TextField
             variant="filled"
             name={"search"}
-            label={"Buscar por identificador o nombre"}
+            label={title || "Buscar por identificador o nombre"}
             defaultValue={""}
             value={searchText}
             onChange={(e) => setSearchText(e.target.value)}

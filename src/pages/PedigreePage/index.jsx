@@ -89,7 +89,7 @@ export default function PedigreePage() {
           <Chip
             className={clsx(classes.option)}
             onClick={() => {
-              history.push(ROUTES_DICT.animalControl);
+              history.push(ROUTES_DICT.animal.list);
             }}
             label="Inicio"
           ></Chip>

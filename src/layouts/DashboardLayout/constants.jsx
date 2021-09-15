@@ -25,7 +25,7 @@ export const menuList = [
       {
         id: "inicio",
         title: "Inicio",
-        link: ROUTES_DICT.animalControl,
+        link: ROUTES_DICT.animal.list,
       },
       {
         id: "estadisticas",
@@ -88,12 +88,12 @@ export const menuList = [
           {
             id: "inicio",
             title: "Inicio",
-            link: ROUTES_DICT.birth,
+            link: ROUTES_DICT.birth.list,
           },
           {
             id: "agregar",
             title: "Agregar nacimiento",
-            // link: routesDictionary.palpation,
+            link: ROUTES_DICT.birth.create,
           },
         ],
       },

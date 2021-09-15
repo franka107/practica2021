@@ -50,7 +50,13 @@ const MovementPageList = ({ children, setTitle, setChipList }) => {
 
   return (
     <Grid container spacing={2}>
-      <SearchContainer searchText={searchText} setSearchText={setSearchText} />
+      <SearchContainer
+        title={
+          "Buscar por identificador de stock genético o persona relacionada al movimiento"
+        }
+        searchText={searchText}
+        setSearchText={setSearchText}
+      />
       <Grid item xs={12}>
         <CustomMuiTable
           data={movementList}

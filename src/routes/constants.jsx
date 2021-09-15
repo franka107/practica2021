@@ -18,7 +18,7 @@ import EmbryoTransferCreatePage from "../pages/Services/EmbryoTransferCreatePage
 import EmbryoTransferUpdatePage from "../pages/Services/EmbryoTransferUpdatePage";
 import ServiceDeletePage from "../pages/Services/ServiceDeletePage";
 import PalpationPage from "../pages/PalpationPage";
-import BirthPage from "../pages/BirthPage";
+import BirthPage from "../pages/Birth";
 import PregnanciesPage from "../pages/PregnanciesPage";
 import PedigreePage from "../pages/PedigreePage";
 import GeneticStockList from "../pages/GeneticStock/GeneticStockList";
@@ -39,6 +39,9 @@ import DefaultPage from "../components/DefaultPage";
 import MovementPageList from "../pages/GeneticStock/MovementPageList";
 import { serviceRouteOptions } from "../pages/Services/constants";
 import AnimalUpdatePage from "../pages/AnimalControl/AnimalUpdatePage";
+import BirthListPage from "../pages/Birth/BirthListPage";
+import { birthChipOptions } from "../pages/Birth/constants";
+import BirthCreatePage from "../pages/Birth/BirthCreatePage";
 
 export const ROUTE_TYPES = {
   public: "public",
@@ -46,6 +49,54 @@ export const ROUTE_TYPES = {
 };
 
 export const RENDER_ROUTES = [
+  /**
+   * Rutas relacionadas al Módulo de nacimientos
+   */
+  {
+    path: ROUTES_DICT.birth.root,
+    key: "Nacimientos",
+    exact: false,
+    //component: BirthPage,
+    layout: DashboardLayout,
+    type: ROUTE_TYPES.private,
+    component: ({ children }) => (
+      <DefaultPage title="Nacimientos" chipList={birthChipOptions()}>
+        {(props) => children(props)}
+      </DefaultPage>
+    ),
+    routes: [
+      {
+        path: ROUTES_DICT.birth.list,
+        key: "Lista de nacimientos",
+        exact: false,
+        component: (props) => <BirthListPage {...props} />,
+        type: ROUTE_TYPES.private,
+        routes: [
+          {
+            path: ROUTES_DICT.birth.create,
+            key: "Nuevo nacimiento",
+            exact: true,
+            component: (props) => <BirthCreatePage {...props} />,
+            type: ROUTE_TYPES.private,
+          },
+          {
+            path: ROUTES_DICT.birth.update,
+            key: "Actualizar nacimiento",
+            exact: true,
+            component: (props) => <BirthCreatePage {...props} />,
+            type: ROUTE_TYPES.private,
+          },
+          {
+            path: ROUTES_DICT.birth.delete,
+            key: "Actualizar nacimiento",
+            exact: true,
+            component: (props) => <BirthCreatePage {...props} />,
+            type: ROUTE_TYPES.private,
+          },
+        ],
+      },
+    ],
+  },
   /**
    * Rutas relacionadas al Módulo de servicios
    */
@@ -67,7 +118,6 @@ export const RENDER_ROUTES = [
         key: "Lista de Servicios",
         exact: false,
         component: (props) => <ServicePageList {...props} />,
-        //component: ServicePage,
         type: ROUTE_TYPES.private,
         routes: [
           {
@@ -269,7 +319,7 @@ export const RENDER_ROUTES = [
    * Rutas relacionadas al Módulo de control de animales
    */
   // {
-  //   path: ROUTES_DICT.animalControl,
+  //   path: ROUTES_DICT.animal.list,
   //   key: "Control Animal",
   //   exact: true,
   //   component: AnimalControlPage,
@@ -354,17 +404,6 @@ export const RENDER_ROUTES = [
     component: RegisterPage,
     layout: AuthLayout,
     type: ROUTE_TYPES.public,
-  },
-  /**
-   * Rutas relacionadas al Módulo de nacimientos
-   */
-  {
-    path: ROUTES_DICT.birth,
-    key: "Nacimientos",
-    exact: true,
-    component: BirthPage,
-    layout: DashboardLayout,
-    type: ROUTE_TYPES.private,
   },
   /**
    * Rutas relacionadas al Módulo de gestion de haciendas y agronegocios
