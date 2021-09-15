@@ -11,7 +11,7 @@ import DatePickerFieldFormik from "../../../components/Inputs/DatePickerFieldFor
 import SelectFieldFormik from "../../../components/Inputs/SelectFieldFormik";
 import SearchFieldFormik from "../../../components/Inputs/SearchFieldFormik";
 import CheckboxFormik from "../../../components/Inputs/CheckboxFormik";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector, shallowEqual } from "react-redux";
 import AnimalActions from "../../../redux/actions/animal.actions";
 import {
   categoryOptions,
@@ -19,12 +19,7 @@ import {
   sexOptions,
   stateOptions,
 } from "../../../constants";
-import ACTION_TYPES from "../../../redux/types";
-import {
-  getFemaleAnimals,
-  getMaleAnimals,
-} from "../../../redux/selectors/animal.selector";
-import { format } from "date-fns";
+import raceActions from "../../../redux/actions/race.actions";
 
 /**
  * @component
@@ -53,7 +48,7 @@ const defaultInitValues = {
   percentageRace3: 0,
   race4Id: "",
   percentageRace4: 0,
-  racialType: null,
+  racialType: "",
   color: "",
   reproductiveStatus: null,
 };
@@ -75,8 +70,15 @@ function AnimalForm({
   const currentAgribusiness = useSelector(
     (state) => state.agribusiness.current
   );
-  const maleAnimals = useSelector(getMaleAnimals());
-  const femaleAnimals = useSelector(getFemaleAnimals());
+  const femaleAnimals = useSelector(
+    (state) => state.animal.list.filter((e) => e.gender === "FEMALE"),
+    shallowEqual
+  );
+
+  const maleAnimals = useSelector(
+    (state) => state.animal.list.filter((e) => e.gender === "MALE"),
+    shallowEqual
+  );
 
   const [errorPercentage, setErrorPercentage] = useState("");
 
@@ -99,6 +101,9 @@ function AnimalForm({
   });
 
   useEffect(() => {
+    if (!listRaces || listRaces.length === 0) {
+      dispatch(raceActions.listRace());
+    }
     if (type === "update") {
       if (initValues) {
         if (initValues.percentageRace2 !== 0) handleAddRace();
@@ -159,7 +164,7 @@ function AnimalForm({
     });
 
     if (!validPercentages) return;
-
+    if (values.racialType === "") values.racialType = null;
     values.agribusinessId = currentAgribusiness._id;
 
     if (values.gender === "MALE") {
@@ -189,18 +194,12 @@ function AnimalForm({
     }
 
     if (type === "create") {
-      dispatch(AnimalActions.createElement(values));
-      console.log("init", values);
+      dispatch(AnimalActions.create(values));
+      onClickCancelButton();
     }
     if (type === "update") {
-      dispatch(AnimalActions.updateElement(values)).then((data) => {
-        dispatch({
-          type: ACTION_TYPES.ANIMAL.UPDATE_CURRENT,
-          payload: null,
-        });
-      });
-      console.log(values.birthDate);
-      console.log(format(new Date(values.birthDate), "yyyy-MM-dd"));
+      dispatch(AnimalActions.update(values));
+      onClickCancelButton();
     }
     // }
   };
@@ -283,7 +282,7 @@ function AnimalForm({
                 alignItems="center"
               >
                 <CheckboxFormik
-                  label="Categoria"
+                  label="Reproductor"
                   name="isReproductive"
                   options={categoryOptions}
                   onChange={props.handleChange}
@@ -464,9 +463,14 @@ function AnimalForm({
             ></TextFieldFormik>
           </Grid>
           <Grid item container justifyContent={"flex-end"} xs={12}>
-            {/* <Grid item xs={3} className={classes.paddingButton}>
-                                  <ButtonFormik xs={3} label="Cancelar" type="cancel" />
-                              </Grid> */}
+            <Grid item xs={3} className={classes.paddingButton}>
+              <ButtonFormik
+                xs={3}
+                label="Cancelar"
+                type="cancel"
+                onClick={onClickCancelButton}
+              />
+            </Grid>
             <Grid item xs={3}>
               <ButtonFormik xs={3} label="Guardar" type="submit" />
             </Grid>

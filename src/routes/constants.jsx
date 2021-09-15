@@ -42,6 +42,7 @@ import AnimalUpdatePage from "../pages/AnimalControl/AnimalUpdatePage";
 import BirthListPage from "../pages/Birth/BirthListPage";
 import { birthChipOptions } from "../pages/Birth/constants";
 import BirthCreatePage from "../pages/Birth/BirthCreatePage";
+import AnimalDeletePage from "../pages/AnimalControl/AnimalDeletePage";
 
 export const ROUTE_TYPES = {
   public: "public",
@@ -306,7 +307,7 @@ export const RENDER_ROUTES = [
                 path: ROUTES_DICT.animal.delete,
                 key: "Eliminar animal",
                 exact: true,
-                component: (props) => <GeneticStockDeletePage {...props} />,
+                component: (props) => <AnimalDeletePage {...props} />,
                 type: ROUTE_TYPES.private,
               },
             ],

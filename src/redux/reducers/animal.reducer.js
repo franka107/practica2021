@@ -14,17 +14,18 @@ export function animalReducer(state = initialState, action) {
         ...state,
         current: action.payload,
       };
-    case ACTION_TYPES.ANIMAL.DELETE:
-      return state;
     case ACTION_TYPES.ANIMAL.CREATE:
-      return state;
-    case ACTION_TYPES.ANIMAL.UPDATE:
-      return state;
+      return {
+        ...state,
+        list: [...state.list, action.payload],
+      };
     case ACTION_TYPES.ANIMAL.UPDATE_CURRENT:
       return {
         ...state,
         current: action.payload,
       };
+    case ACTION_TYPES.ANIMAL.DELETE:
+      return state;
     default:
       return state;
   }
