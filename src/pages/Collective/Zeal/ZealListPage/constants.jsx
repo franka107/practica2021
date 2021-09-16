@@ -1,80 +1,44 @@
-import { IconButton } from '@material-ui/core'
-import DeleteIcon from '@material-ui/icons/Delete'
-import { Edit } from '@material-ui/icons'
-
 export const columns = [
   {
-    title: 'Nro Registro',
-    field: 'id',
-    color: true,
+    label: "Nro Registro",
+    name: "id",
+    options: {
+      filter: false,
+    },
   },
   {
-    title: 'Nombre',
-    field: 'name',
-    color: true,
+    label: "Nombre",
+    name: "name",
+    options: {
+      filter: false,
+    },
   },
   {
-    title: 'Edad',
-    field: 'age',
-    color: true,
+    label: "Edad",
+    name: "age",
+    options: {
+      filter: false,
+    },
   },
   {
-    title: 'Estado',
-    field: 'state',
-    color: true,
+    label: "Estado",
+    name: "state",
+    options: {
+      filter: false,
+    },
   },
   {
-    title: 'Peso',
-    field: 'weight',
-    color: true,
+    label: "Peso",
+    name: "weight",
+    options: {
+      filter: false,
+    },
   },
   {
-    title: 'Fecha celo',
-    field: 'zealDate',
-    color: true,
+    label: "Fecha celo",
+    name: "zealDate",
+    options: {
+      filter: false,
+    },
   },
-  {
-    title: 'Acciones',
-    field: 'actions',
-    color: true,
-  },
-]
-
-export const exampleTable = [
-  {
-    id: '0123',
-    name: 'Larizza',
-    age: '51 meses',
-    state: 'Vaca seca',
-    weight: '1410 lbs.',
-    zealDate: '12/02/2021',
-    actions: (
-      <>
-        <IconButton aria-label="edit">
-          <Edit />
-        </IconButton>
-        <IconButton aria-label="delete">
-          <DeleteIcon />
-        </IconButton>
-      </>
-    ),
-  },
-  {
-    id: '0124',
-    name: '-',
-    age: '51 meses',
-    state: 'Vaca seca',
-    weight: '1410 lbs.',
-    zealDate: '12/02/2021',
-    actions: (
-      <>
-        <IconButton aria-label="edit">
-          <Edit />
-        </IconButton>
-        <IconButton aria-label="delete">
-          <DeleteIcon />
-        </IconButton>
-      </>
-    ),
-  },
-]
+];

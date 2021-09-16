@@ -4,7 +4,7 @@ export const saleRouteOptions = (location) => [
   {
     key: "Agregar traslado y/o venta",
     path: {
-      pathname: ROUTES_DICT.collective.zeal.create,
+      pathname: ROUTES_DICT.collective.sale.create,
       state: {
         background: location,
       },
