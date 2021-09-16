@@ -93,6 +93,8 @@ export const categoryOptions = { _id: "1", name: "Reproductor" };
 export const movementOptions = {
   SALE: "Venta",
   PURCHASE: "Compra",
+  SERVICE: "Servicio",
+  OTHER: "Otros",
 };
 
 export const typeServices = [

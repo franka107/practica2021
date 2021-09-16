@@ -9,6 +9,7 @@ export const columnsToMuiTable = [
     options: {
       customBodyRender: (value) => (value ? value.identifier : ""),
       filterType: "textField",
+      searchable: true,
     },
   },
   {
@@ -17,12 +18,14 @@ export const columnsToMuiTable = [
     options: {
       filter: false,
       customBodyRender: (value) => (value ? value.name : "Sin nombre"),
+      searchable: true,
     },
   },
   {
     label: "Estado",
     name: "animal",
     options: {
+      searchable: false,
       customBodyRender: (value) =>
         value ? stateOptions[value.reproductiveStatus] : "",
     },
@@ -31,6 +34,7 @@ export const columnsToMuiTable = [
     label: "Tipo de Servicio",
     name: "serviceType",
     options: {
+      searchable: false,
       customBodyRender: (value) => typeServicesTest[value],
     },
   },
@@ -38,6 +42,7 @@ export const columnsToMuiTable = [
     label: "Fecha Registro",
     name: "serviceDate",
     options: {
+      searchable: false,
       filter: false,
       customBodyRender: (value) =>
         value && format(new Date(value), "yyyy-MM-dd"),
@@ -47,6 +52,7 @@ export const columnsToMuiTable = [
     label: "Responsable",
     name: "userId",
     options: {
+      searchable: false,
       customBodyRender: (value) => (value ? value.name : "Sin responsable"),
     },
   },

@@ -17,6 +17,7 @@ import serviceActions from "../../../redux/actions/service.actions";
 import AnimalActions from "../../../redux/actions/animal.actions";
 import GeneticStockActions from "../../../redux/actions/geneticStock.actions";
 import { sexOptions } from "../../../constants";
+import _ from "lodash";
 
 const defaultInitValues = {
   agribusinessId: "",
@@ -28,7 +29,7 @@ const defaultInitValues = {
   reproductorAnimalId: null,
   geneticStockId: null,
   userId: null,
-  strawQuantity: 0,
+  quantity: 1,
   strawGender: "",
   isIatf: false,
   observation: "",
@@ -56,19 +57,33 @@ const IAMNForm = ({
   const currentAgribusiness = useSelector(
     (state) => state.agribusiness.current
   );
-  const listSemen = useSelector((state) => state.geneticStock.list);
+  const listSemen = useSelector(
+    (state) => state.geneticStock.list.filter((e) => e.active),
+    shallowEqual
+  );
 
-  const validationSchema = yup.object({
-    animalId: yup
-      .string("Ingresa el tipo de movimiento")
-      .required("Esta campo es requerido."),
-    serviceDate: yup
-      .date("Ingresa una fecha")
-      .required("Este campo es requerido"),
-    serviceType: yup
-      .string("Ingresa el tipo de servicio")
-      .required("Esta campo es requerido."),
-  });
+  const validationSchema = () =>
+    yup.lazy((values) =>
+      yup.object({
+        animalId: yup
+          .string("Ingresa el tipo de movimiento")
+          .required("Esta campo es requerido."),
+        serviceDate: yup
+          .date("Ingresa una fecha")
+          .required("Este campo es requerido"),
+        serviceType: yup
+          .string("Ingresa el tipo de servicio")
+          .required("Esta campo es requerido."),
+        quantity: yup
+          .number("Ingrese solo números")
+          .integer("Solo números enteros")
+          .min(1, "La cantidad debe ser mayor o igual a 1")
+          .max(
+            listSemen.find((e) => e._id === values.geneticStockId)?.stock || 1,
+            ({ max }) => `La cantidad debe ser menor o igual a ${max}`
+          ),
+      })
+    );
 
   useEffect(() => {
     if (
@@ -93,10 +108,42 @@ const IAMNForm = ({
     try {
       if (type === "create") {
         values.agribusinessId = currentAgribusiness._id;
-        await dispatch(serviceActions.create(values));
+        if (values.serviceType === "AR_IN") {
+          await dispatch(
+            serviceActions.create(_.omit(values, "reproductorAnimalId"))
+          );
+        } else {
+          await dispatch(
+            serviceActions.create(
+              _.omit(
+                values,
+                "quantity",
+                "genetickStockId",
+                "strawGender",
+                "userId"
+              )
+            )
+          );
+        }
       }
       if (type === "update") {
-        await dispatch(serviceActions.update(values));
+        if (values.serviceType === "AR_IN") {
+          await dispatch(
+            serviceActions.update(_.omit(values, "reproductorAnimalId"))
+          );
+        } else {
+          await dispatch(
+            serviceActions.update(
+              _.omit(
+                values,
+                "quantity",
+                "genetickStockId",
+                "strawGender",
+                "userId"
+              )
+            )
+          );
+        }
       }
       await dispatch(serviceActions.listByAgribusiness());
       onCompleteSubmit();
@@ -162,9 +209,10 @@ const IAMNForm = ({
             <SelectFieldFormik
               onChange={props.handleChange}
               xs={12}
-              sm={6}
+              sm={props.values.serviceType !== typeServices[1]._id ? 4 : 6}
               name="serviceType"
               label="Tipo de servicio"
+              disabled={type === "update"}
               options={typeServices}
               // options={Object.keys(movementOptions).map((key) => ({
               //   _id: key,
@@ -178,7 +226,7 @@ const IAMNForm = ({
                 }
                 onChange={props.handleChange}
                 xs={12}
-                sm={6}
+                sm={4}
                 name="geneticStockId"
                 label="Semen"
                 options={listSemen}
@@ -199,6 +247,20 @@ const IAMNForm = ({
               />
             )}
             {props.values.serviceType !== typeServices[1]._id && (
+              <TextFieldFormik
+                name="availableStock"
+                disabled
+                label="Stock disponible"
+                value={
+                  listSemen.find((e) => e._id === props.values.geneticStockId)
+                    ?.stock || 0
+                }
+                type="number"
+                xs={12}
+                sm={4}
+              />
+            )}
+            {props.values.serviceType !== typeServices[1]._id && (
               <AutocompleteFieldFormik
                 defaultValue={
                   type === "create" ? null : props.values.reproductor
@@ -214,7 +276,7 @@ const IAMNForm = ({
             {props.values.serviceType !== typeServices[1]._id && (
               <TextFieldFormik
                 onChange={props.handleChange}
-                name="strawQuantity"
+                name="quantity"
                 label="Nro de pajillas"
                 type="number"
                 xs={12}

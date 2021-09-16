@@ -134,10 +134,12 @@ const MovementForm = ({
               sm={4}
               name="movementType"
               label="Movimiento"
-              options={Object.keys(movementOptions).map((key) => ({
-                _id: key,
-                name: movementOptions[key],
-              }))}
+              options={Object.keys(movementOptions)
+                .filter((key) => key === "SALE" || key === "PURCHASE")
+                .map((key) => ({
+                  _id: key,
+                  name: movementOptions[key],
+                }))}
             />
             <AutocompleteFieldFormik
               options={geneticStockList}

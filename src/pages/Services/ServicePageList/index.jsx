@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Grid, Typography, IconButton } from "@material-ui/core";
 import { Edit, Delete } from "@material-ui/icons";
 import { useLocation } from "react-router";
@@ -11,6 +11,7 @@ import { serviceRouteOptions, columnsToMuiTable } from "../constants";
 import serviceActions from "../../../redux/actions/service.actions";
 import AnimalActions from "../../../redux/actions/animal.actions";
 import { ROUTES_DICT } from "../../../routes/routesDict";
+import SearchContainer from "../../../components/SearchContainer";
 
 /**
  * @component
@@ -24,9 +25,11 @@ const ServicePageList = (props) => {
   const history = useHistory();
   const serviceList = useSelector((state) => state.service.list);
   const animalList = useSelector((state) => state.animal.list);
+  const [searchText, setSearchText] = useState();
   const options = {
     selectableRows: "none",
     search: false,
+    searchText,
   };
 
   useEffect(() => {
@@ -92,7 +95,8 @@ const ServicePageList = (props) => {
   };
 
   return (
-    <Grid container>
+    <Grid container spacing={2}>
+      <SearchContainer searchText={searchText} setSearchText={setSearchText} />
       <Grid item xs={12}>
         <CustomMuiTable
           columns={[...columnsToMuiTable, actionColumn]}

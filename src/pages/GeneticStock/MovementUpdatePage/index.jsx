@@ -27,17 +27,21 @@ const MovementCreatePage = ({ parentPathname }) => {
   return (
     <>
       <CustomDialog parentPathname={parentPathnameParsed}>
-        {(props) => (
-          <MovementForm
-            type="update"
-            initValues={currentMovement}
-            onClickCancelButton={props.handleClose}
-            onCompleteSubmit={props.handleClose}
-            geneticType={
-              params.geneticType === ROUTES_SLUGS.embryo ? "EMBRYO" : "SEMEN"
-            }
-          />
-        )}
+        {(props) =>
+          currentMovement &&
+          currentMovement._id &&
+          currentMovement._id === params._id && (
+            <MovementForm
+              type="update"
+              initValues={currentMovement}
+              onClickCancelButton={props.handleClose}
+              onCompleteSubmit={props.handleClose}
+              geneticType={
+                params.geneticType === ROUTES_SLUGS.embryo ? "EMBRYO" : "SEMEN"
+              }
+            />
+          )
+        }
       </CustomDialog>
     </>
   );

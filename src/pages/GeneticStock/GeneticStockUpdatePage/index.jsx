@@ -27,15 +27,17 @@ const GeneticStockUpdatePage = ({ parentPathname }) => {
   return (
     <>
       <CustomDialog parentPathname={parentPathname}>
-        {(props) => (
-          <GeneticStockForm
-            type="update"
-            initValues={currentGeneticStock}
-            onClickCancelButton={props.handleClose}
-            onCompleteSubmit={props.handleClose}
-            geneticType={params.geneticType.toUpperCase()}
-          />
-        )}
+        {(props) =>
+          currentGeneticStock && (
+            <GeneticStockForm
+              type="update"
+              initValues={currentGeneticStock}
+              onClickCancelButton={props.handleClose}
+              onCompleteSubmit={props.handleClose}
+              geneticType={params.geneticType.toUpperCase()}
+            />
+          )
+        }
       </CustomDialog>
     </>
   );

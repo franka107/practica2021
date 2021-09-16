@@ -99,7 +99,8 @@ export const columns = (location, history, geneticType, movements) => [
     label: "A quien",
     name: "toWho",
     options: {
-      filter: false,
+      filter: true,
+      filterType: "textField",
     },
   },
   //actionColumn(location, history, geneticType, movements),

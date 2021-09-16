@@ -37,7 +37,7 @@ const defaultInitValues = {
   embryoCondition: "",
   embryoPhase: "",
   embryoQuality: 0,
-  embryoQuantity: 0,
+  quantity: 0,
   embryoGender: "",
   ovaryRight: "",
   ovaryLeft: "",
@@ -226,7 +226,7 @@ const EmbryoTransferForm = ({
             />
             <TextFieldFormik
               onChange={props.handleChange}
-              name="embryoQuantity"
+              name="quantity"
               label="Cantidad"
               type="number"
               disabled={type === "create" ? false : true}
