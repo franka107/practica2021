@@ -152,6 +152,7 @@ const GeneticStockForm = ({
             <TextFieldFormik
               label="Cod. animal"
               name="identifier"
+              disabled={type === "update"}
               onChange={props.handleChange}
               xs={12}
               sm={4}
@@ -272,6 +273,7 @@ const GeneticStockForm = ({
               label="Existencia"
               type="number"
               name="stock"
+              disabled={type === "update"}
               onChange={props.handleChange}
               lg={4}
               sm={4}
@@ -280,6 +282,7 @@ const GeneticStockForm = ({
             <TextFieldFormik
               label="Costo unidad"
               type="number"
+              disabled={type === "update"}
               name="value"
               endAdornment={
                 <InputAdornment position="start">

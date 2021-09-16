@@ -7,14 +7,15 @@ export const columns = [
     label: "Cód.",
     name: "identifier",
     options: {
-      filter: false,
+      filter: true,
     },
   },
   {
     label: "Nombre",
     name: "name",
     options: {
-      filter: false,
+      filter: true,
+      filterType: "textField",
     },
   },
   {

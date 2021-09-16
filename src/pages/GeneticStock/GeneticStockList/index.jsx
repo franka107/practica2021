@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Grid } from "@material-ui/core";
+import { Grid, Switch } from "@material-ui/core";
 import { columns } from "./constants";
 import CustomMuiTable from "../../../components/CustomMuiTable";
 import { useDispatch, useSelector, shallowEqual } from "react-redux";
@@ -58,6 +58,29 @@ function GeneticStockList({ children, setTitle, setChipList }) {
     searchText,
     search: false,
   };
+
+  const activeColumn = {
+    label: "Activo",
+    name: "active",
+    options: {
+      searchable: false,
+      filter: false,
+      customBodyRenderLite: (dataIndex, rowIndex) => (
+        <Switch
+          checked={geneticStockList[dataIndex].active}
+          onChange={(e) => {
+            dispatch(
+              geneticStockActions.updateGeneticStock({
+                ...geneticStockList[dataIndex],
+                active: e.target.checked,
+              })
+            );
+          }}
+        />
+      ),
+    },
+  };
+
   const actionColumn = {
     label: "Acciones",
     name: "actions",
@@ -68,6 +91,9 @@ function GeneticStockList({ children, setTitle, setChipList }) {
       customBodyRenderLite: (dataIndex, rowIndex) => {
         return (
           <TableButtons
+            {
+              ...{
+                /* 
             onClickDeleteButton={() => {
               history.push(
                 generatePath(ROUTES_DICT.geneticStock.geneticType.delete, {
@@ -76,6 +102,10 @@ function GeneticStockList({ children, setTitle, setChipList }) {
                 })
               );
             }}
+
+            */
+              }
+            }
             onClickEditButton={() => {
               history.push(
                 generatePath(ROUTES_DICT.geneticStock.geneticType.update, {
@@ -105,7 +135,7 @@ function GeneticStockList({ children, setTitle, setChipList }) {
       <Grid item xs={12}>
         <CustomMuiTable
           data={geneticStockList}
-          columns={[...columns, actionColumn]}
+          columns={[...columns, actionColumn, activeColumn]}
           options={options}
         />
       </Grid>

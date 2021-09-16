@@ -2,7 +2,7 @@ import { IconButton } from "@material-ui/core";
 import { Edit, Delete, Star, StarBorder, Visibility } from "@material-ui/icons";
 
 const TableButtons = ({
-  onClickDeleteButton = () => {},
+  onClickDeleteButton,
   onClickEditButton = () => {},
   onClickEyeButton,
   onClickStarButton,
@@ -28,14 +28,16 @@ const TableButtons = ({
       >
         <Edit fontSize="small" />
       </IconButton>
-      <IconButton
-        style={{ color: "#C25560" }}
-        size="small"
-        aria-label="delete"
-        onClick={onClickDeleteButton}
-      >
-        <Delete fontSize="small" />
-      </IconButton>
+      {onClickDeleteButton && (
+        <IconButton
+          style={{ color: "#C25560" }}
+          size="small"
+          aria-label="delete"
+          onClick={onClickDeleteButton}
+        >
+          <Delete fontSize="small" />
+        </IconButton>
+      )}
 
       {onClickStarButton && (
         <IconButton

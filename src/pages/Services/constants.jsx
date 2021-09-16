@@ -7,8 +7,8 @@ export const columnsToMuiTable = [
     label: "Id Vaca",
     name: "animal",
     options: {
-      filter: false,
       customBodyRender: (value) => (value ? value.identifier : ""),
+      filterType: "textField",
     },
   },
   {
@@ -23,7 +23,6 @@ export const columnsToMuiTable = [
     label: "Estado",
     name: "animal",
     options: {
-      filter: false,
       customBodyRender: (value) =>
         value ? stateOptions[value.reproductiveStatus] : "",
     },
@@ -32,7 +31,6 @@ export const columnsToMuiTable = [
     label: "Tipo de Servicio",
     name: "serviceType",
     options: {
-      filter: false,
       customBodyRender: (value) => typeServicesTest[value],
     },
   },
@@ -49,7 +47,6 @@ export const columnsToMuiTable = [
     label: "Responsable",
     name: "userId",
     options: {
-      filter: false,
       customBodyRender: (value) => (value ? value.name : "Sin responsable"),
     },
   },
