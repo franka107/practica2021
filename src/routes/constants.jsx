@@ -43,6 +43,26 @@ import BirthListPage from "../pages/Birth/BirthListPage";
 import { birthChipOptions } from "../pages/Birth/constants";
 import BirthCreatePage from "../pages/Birth/BirthCreatePage";
 import AnimalDeletePage from "../pages/AnimalControl/AnimalDeletePage";
+import ZealListPage from "../pages/Collective/Zeal/ZealListPage";
+import ZealCreatePage from "../pages/Collective/Zeal/ZealCreatePage";
+import ZealUpdatePage from "../pages/Collective/Zeal/ZealUpdatePage";
+import ZealDeletePage from "../pages/Collective/Zeal/ZealDeletePage";
+import WeightListPage from "../pages/Collective/Weight/WeightListPage";
+import WeightCreatePage from "../pages/Collective/Weight/WeightCreatePage";
+import WeightUpdatePage from "../pages/Collective/Weight/WeightUpdatePage";
+import WeightDeletePage from "../pages/Collective/Weight/WeightDeletePage";
+import SaleListPage from "../pages/Collective/Sale/SaleListPage";
+import SaleCreatePage from "../pages/Collective/Sale/SaleCreatePage";
+import SaleUpdatePage from "../pages/Collective/Sale/SaleUpdatePage";
+import SaleDeletePage from "../pages/Collective/Sale/SaleDeletePage";
+import AssociationListPage from "../pages/Collective/Association/AssociationListPage";
+import AssociationDeletePage from "../pages/Collective/Association/AssociationDeletePage";
+import AssociationUpdatePage from "../pages/Collective/Association/AssociationUpdatePage";
+import AssociationCreatePage from "../pages/Collective/Association/AssociationCreatePage";
+import DryingListPage from "../pages/Collective/Drying/DryingListPage";
+import DryingCreatePage from "../pages/Collective/Drying/DryingCreatePage";
+import DryingUpdatePage from "../pages/Collective/Drying/DryingUpdatePage";
+import DryingDeletePage from "../pages/Collective/Drying/DryingDeletePage";
 
 export const ROUTE_TYPES = {
   public: "public",
@@ -158,41 +178,6 @@ export const RENDER_ROUTES = [
           },
         ],
       },
-      //{
-      //  path: ROUTES_DICT.iamnCreate,
-      //  key: "Nuevo IA/MN",
-      //  exact: true,
-      //  component: IAMNCreatePage,
-      //  type: ROUTE_TYPES.private,
-      //},
-      //{
-      //  path: ROUTES_DICT.iamnUpdate,
-      //  key: "Editar IA/MN",
-      //  exact: true,
-      //  component: IAMNUpdatePage,
-      //  type: ROUTE_TYPES.private,
-      //},
-      //{
-      //  path: ROUTES_DICT.embryoTransferCreate,
-      //  key: "Nueva Transferencia de Embrión",
-      //  exact: true,
-      //  component: EmbryoTransferCreatePage,
-      //  type: ROUTE_TYPES.private,
-      //},
-      //{
-      //  path: ROUTES_DICT.embryoTransferUpdate,
-      //  key: "Editar Transferencia de Embrión",
-      //  exact: true,
-      //  component: EmbryoTransferUpdatePage,
-      //  type: ROUTE_TYPES.private,
-      //},
-      //{
-      //  path: ROUTES_DICT.serviceDelete,
-      //  key: "Eliminar Servicio",
-      //  exact: true,
-      //  component: ServiceDeletePage,
-      //  type: ROUTE_TYPES.private,
-      //},
     ],
   },
   /**
@@ -265,17 +250,65 @@ export const RENDER_ROUTES = [
       },
     ],
   },
+  /**
+   * Rutas relacionadas al Módulo de control de animales
+   */
   {
     path: ROUTES_DICT.animal.root,
-    key: "Control animal",
+    key: "Control Animal",
+    exact: false,
+    component: ({ children }) => (
+      <DefaultPage>{(props) => children(props)}</DefaultPage>
+    ),
+    layout: DashboardLayout,
+    type: ROUTE_TYPES.private,
+    routes: [
+      {
+        path: ROUTES_DICT.animal.list,
+        key: "Lista de animales",
+        exact: false,
+        component: (props) => <AnimalListPage {...props} />,
+        type: ROUTE_TYPES.private,
+        routes: [
+          {
+            path: ROUTES_DICT.animal.create,
+            key: "Nuevo animal",
+            exact: true,
+            component: (props) => <AnimalCreatePage {...props} />,
+            type: ROUTE_TYPES.private,
+          },
+          {
+            path: ROUTES_DICT.animal.update,
+            key: "Editar animal",
+            exact: true,
+            component: (props) => <AnimalUpdatePage {...props} />,
+            type: ROUTE_TYPES.private,
+          },
+          {
+            path: ROUTES_DICT.animal.delete,
+            key: "Eliminar animal",
+            exact: true,
+            component: (props) => <AnimalDeletePage {...props} />,
+            type: ROUTE_TYPES.private,
+          },
+        ],
+      },
+    ],
+  },
+  /**
+   * Rutas relacionadas al Módulo de colectivas
+   */
+  {
+    path: ROUTES_DICT.collective.root,
+    key: "Colectiva",
     exact: false,
     component: ({ children }) => <>{children()}</>,
     layout: DashboardLayout,
     type: ROUTE_TYPES.private,
     routes: [
       {
-        path: ROUTES_DICT.animal.root,
-        key: "Lista de animales",
+        path: ROUTES_DICT.collective.root,
+        key: "Celos",
         exact: false,
         component: ({ children }) => (
           <DefaultPage>{(props) => children(props)}</DefaultPage>
@@ -283,42 +316,324 @@ export const RENDER_ROUTES = [
         type: ROUTE_TYPES.private,
         routes: [
           {
-            path: ROUTES_DICT.animal.list,
-            key: "Nuevo animal",
+            path: ROUTES_DICT.collective.zeal.list,
+            key: "Lista de Celos",
             exact: false,
-            component: (props) => <AnimalListPage {...props} />,
+            component: (props) => <ZealListPage {...props} />,
             type: ROUTE_TYPES.private,
             routes: [
               {
-                path: ROUTES_DICT.animal.create,
-                key: "Nuevo animal",
+                path: ROUTES_DICT.collective.zeal.create,
+                key: "Nuevo celo",
                 exact: true,
-                component: (props) => <AnimalCreatePage {...props} />,
+                component: (props) => <ZealCreatePage {...props} />,
                 type: ROUTE_TYPES.private,
               },
               {
-                path: ROUTES_DICT.animal.update,
-                key: "Editar animal",
+                path: ROUTES_DICT.collective.zeal.update,
+                key: "Editar celo",
                 exact: true,
-                component: (props) => <AnimalUpdatePage {...props} />,
+                component: (props) => <ZealUpdatePage {...props} />,
                 type: ROUTE_TYPES.private,
               },
               {
-                path: ROUTES_DICT.animal.delete,
-                key: "Eliminar animal",
+                path: ROUTES_DICT.collective.zeal.delete,
+                key: "Eliminar celo",
                 exact: true,
-                component: (props) => <AnimalDeletePage {...props} />,
+                component: (props) => <ZealDeletePage {...props} />,
+                type: ROUTE_TYPES.private,
+              },
+            ],
+          },
+          {
+            path: ROUTES_DICT.collective.weight.list,
+            key: "Lista de pesos",
+            exact: false,
+            component: (props) => <WeightListPage {...props} />,
+            type: ROUTE_TYPES.private,
+            routes: [
+              {
+                path: ROUTES_DICT.collective.weight.create,
+                key: "Nuevo peso",
+                exact: true,
+                component: (props) => <WeightCreatePage {...props} />,
+                type: ROUTE_TYPES.private,
+              },
+              {
+                path: ROUTES_DICT.collective.weight.update,
+                key: "Editar peso",
+                exact: true,
+                component: (props) => <WeightUpdatePage {...props} />,
+                type: ROUTE_TYPES.private,
+              },
+              {
+                path: ROUTES_DICT.collective.weight.delete,
+                key: "Eliminar peso",
+                exact: true,
+                component: (props) => <WeightDeletePage {...props} />,
+                type: ROUTE_TYPES.private,
+              },
+            ],
+          },
+          {
+            path: ROUTES_DICT.collective.sale.list,
+            key: "Lista de ventas",
+            exact: false,
+            component: (props) => <SaleListPage {...props} />,
+            type: ROUTE_TYPES.private,
+            routes: [
+              {
+                path: ROUTES_DICT.collective.sale.create,
+                key: "Nueva venta",
+                exact: true,
+                component: (props) => <SaleCreatePage {...props} />,
+                type: ROUTE_TYPES.private,
+              },
+              {
+                path: ROUTES_DICT.collective.sale.update,
+                key: "Editar venta",
+                exact: true,
+                component: (props) => <SaleUpdatePage {...props} />,
+                type: ROUTE_TYPES.private,
+              },
+              {
+                path: ROUTES_DICT.collective.sale.delete,
+                key: "Eliminar venta",
+                exact: true,
+                component: (props) => <SaleDeletePage {...props} />,
+                type: ROUTE_TYPES.private,
+              },
+            ],
+          },
+          {
+            path: ROUTES_DICT.collective.association.list,
+            key: "Lista de asociacion",
+            exact: false,
+            component: (props) => <AssociationListPage {...props} />,
+            type: ROUTE_TYPES.private,
+            routes: [
+              {
+                path: ROUTES_DICT.collective.association.create,
+                key: "Nuevo registro de asociacion",
+                exact: true,
+                component: (props) => <AssociationCreatePage {...props} />,
+                type: ROUTE_TYPES.private,
+              },
+              {
+                path: ROUTES_DICT.collective.association.update,
+                key: "Editar registro de asociacion",
+                exact: true,
+                component: (props) => <AssociationUpdatePage {...props} />,
+                type: ROUTE_TYPES.private,
+              },
+              {
+                path: ROUTES_DICT.collective.association.delete,
+                key: "Eliminar registro de asociacion",
+                exact: true,
+                component: (props) => <AssociationDeletePage {...props} />,
+                type: ROUTE_TYPES.private,
+              },
+            ],
+          },
+          {
+            path: ROUTES_DICT.collective.drying.list,
+            key: "Lista de secado/desteste",
+            exact: false,
+            component: (props) => <DryingListPage {...props} />,
+            type: ROUTE_TYPES.private,
+            routes: [
+              {
+                path: ROUTES_DICT.collective.drying.create,
+                key: "Nuevo secado/desteste",
+                exact: true,
+                component: (props) => <DryingCreatePage {...props} />,
+                type: ROUTE_TYPES.private,
+              },
+              {
+                path: ROUTES_DICT.collective.drying.update,
+                key: "Editar secado/desteste",
+                exact: true,
+                component: (props) => <DryingUpdatePage {...props} />,
+                type: ROUTE_TYPES.private,
+              },
+              {
+                path: ROUTES_DICT.collective.drying.delete,
+                key: "Eliminar secado/desteste",
+                exact: true,
+                component: (props) => <DryingDeletePage {...props} />,
                 type: ROUTE_TYPES.private,
               },
             ],
           },
         ],
       },
+      // {
+      //   path: ROUTES_DICT.collective.root,
+      //   key: "Celos",
+      //   exact: false,
+      //   component: ({ children }) => (
+      //     <DefaultPage>{(props) => children(props)}</DefaultPage>
+      //   ),
+      //   type: ROUTE_TYPES.private,
+      //   routes: [
+      //     {
+      //       path: ROUTES_DICT.collective.weight,
+      //       key: "Lista de pesos",
+      //       exact: false,
+      //       component: (props) => <ZealListPage {...props} />,
+      //       type: ROUTE_TYPES.private,
+      //       routes: [
+      //         {
+      //           path: ROUTES_DICT.collective.weight.create,
+      //           key: "Nuevo peso",
+      //           exact: true,
+      //           component: (props) => <AnimalCreatePage {...props} />,
+      //           type: ROUTE_TYPES.private,
+      //         },
+      //         {
+      //           path: ROUTES_DICT.collective.weight.update,
+      //           key: "Editar peso",
+      //           exact: true,
+      //           component: (props) => <AnimalUpdatePage {...props} />,
+      //           type: ROUTE_TYPES.private,
+      //         },
+      //         {
+      //           path: ROUTES_DICT.collective.weight.delete,
+      //           key: "Eliminar peso",
+      //           exact: true,
+      //           component: (props) => <AnimalDeletePage {...props} />,
+      //           type: ROUTE_TYPES.private,
+      //         },
+      //       ],
+      //     },
+      //   ],
+      // },
+      // {
+      //   path: ROUTES_DICT.collective.root,
+      //   key: "Celos",
+      //   exact: false,
+      //   component: ({ children }) => (
+      //     <DefaultPage>{(props) => children(props)}</DefaultPage>
+      //   ),
+      //   type: ROUTE_TYPES.private,
+      //   routes: [
+      //     {
+      //       path: ROUTES_DICT.collective.sale.list,
+      //       key: "Lista de ventas",
+      //       exact: false,
+      //       component: (props) => <ZealListPage {...props} />,
+      //       type: ROUTE_TYPES.private,
+      //       routes: [
+      //         {
+      //           path: ROUTES_DICT.collective.sale.create,
+      //           key: "Nueva venta",
+      //           exact: true,
+      //           component: (props) => <AnimalCreatePage {...props} />,
+      //           type: ROUTE_TYPES.private,
+      //         },
+      //         {
+      //           path: ROUTES_DICT.collective.sale.update,
+      //           key: "Editar venta",
+      //           exact: true,
+      //           component: (props) => <AnimalUpdatePage {...props} />,
+      //           type: ROUTE_TYPES.private,
+      //         },
+      //         {
+      //           path: ROUTES_DICT.collective.sale.delete,
+      //           key: "Eliminar venta",
+      //           exact: true,
+      //           component: (props) => <AnimalDeletePage {...props} />,
+      //           type: ROUTE_TYPES.private,
+      //         },
+      //       ],
+      //     },
+      //   ],
+      // },
+      // {
+      //   path: ROUTES_DICT.collective.root,
+      //   key: "Celos",
+      //   exact: false,
+      //   component: ({ children }) => (
+      //     <DefaultPage>{(props) => children(props)}</DefaultPage>
+      //   ),
+      //   type: ROUTE_TYPES.private,
+      //   routes: [
+      //     {
+      //       path: ROUTES_DICT.collective.association.list,
+      //       key: "Lista de asociacion",
+      //       exact: false,
+      //       component: (props) => <AnimalListPage {...props} />,
+      //       type: ROUTE_TYPES.private,
+      //       routes: [
+      //         {
+      //           path: ROUTES_DICT.collective.association.create,
+      //           key: "Nuevo registro de asociacion",
+      //           exact: true,
+      //           component: (props) => <AnimalCreatePage {...props} />,
+      //           type: ROUTE_TYPES.private,
+      //         },
+      //         {
+      //           path: ROUTES_DICT.collective.association.update,
+      //           key: "Editar registro de asociacion",
+      //           exact: true,
+      //           component: (props) => <AnimalUpdatePage {...props} />,
+      //           type: ROUTE_TYPES.private,
+      //         },
+      //         {
+      //           path: ROUTES_DICT.collective.association.delete,
+      //           key: "Eliminar registro de asociacion",
+      //           exact: true,
+      //           component: (props) => <AnimalDeletePage {...props} />,
+      //           type: ROUTE_TYPES.private,
+      //         },
+      //       ],
+      //     },
+      //   ],
+      // },
+      // {
+      //   path: ROUTES_DICT.collective.root,
+      //   key: "Celos",
+      //   exact: false,
+      //   component: ({ children }) => (
+      //     <DefaultPage>{(props) => children(props)}</DefaultPage>
+      //   ),
+      //   type: ROUTE_TYPES.private,
+      //   routes: [
+      //     {
+      //       path: ROUTES_DICT.collective.drying.list,
+      //       key: "Lista de secado/desteste",
+      //       exact: false,
+      //       component: (props) => <AnimalListPage {...props} />,
+      //       type: ROUTE_TYPES.private,
+      //       routes: [
+      //         {
+      //           path: ROUTES_DICT.collective.drying.create,
+      //           key: "Nuevo secado/desteste",
+      //           exact: true,
+      //           component: (props) => <AnimalCreatePage {...props} />,
+      //           type: ROUTE_TYPES.private,
+      //         },
+      //         {
+      //           path: ROUTES_DICT.collective.drying.update,
+      //           key: "Editar secado/desteste",
+      //           exact: true,
+      //           component: (props) => <AnimalUpdatePage {...props} />,
+      //           type: ROUTE_TYPES.private,
+      //         },
+      //         {
+      //           path: ROUTES_DICT.collective.drying.delete,
+      //           key: "Eliminar secado/desteste",
+      //           exact: true,
+      //           component: (props) => <AnimalDeletePage {...props} />,
+      //           type: ROUTE_TYPES.private,
+      //         },
+      //       ],
+      //     },
+      //   ],
+      // },
     ],
   },
-  /**
-   * Rutas relacionadas al Módulo de control de animales
-   */
+
   // {
   //   path: ROUTES_DICT.animal.list,
   //   key: "Control Animal",

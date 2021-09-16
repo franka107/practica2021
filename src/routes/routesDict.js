@@ -18,10 +18,7 @@ export const ROUTES_SLUGS = {
   movements: "movements",
   embryo: "embryo",
   colective: "colective",
-  sale: "colectiva-ventas",
   service: "service",
-  weight: "colectiva-pesaje",
-  zeal: "colectiva-celos",
   iamn: "I.A-M.N",
   animal: "animal",
   embryoTransfer: "transfer-embryo",
@@ -37,6 +34,11 @@ export const ROUTES_SLUGS = {
   animalControl: "control-animal",
   pedigree: "pedigree",
   setup: "setup",
+  zeal: "zeal",
+  association: "association",
+  drying: "drying",
+  sale: "sale",
+  weight: "weight",
 };
 
 export const ROUTES_DICT = {
@@ -54,7 +56,7 @@ export const ROUTES_DICT = {
       delete: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.geneticStock}/:geneticType/list/:_id/${ROUTES_SLUGS.delete}`,
     },
     movements: {
-      root: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.geneserviceDeleteticStock}/:geneticType/${ROUTES_SLUGS.movements}`,
+      root: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.geneticStock}/:geneticType/${ROUTES_SLUGS.movements}`,
       list: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.geneticStock}/:geneticType/${ROUTES_SLUGS.movements}/list`,
       create: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.geneticStock}/:geneticType/${ROUTES_SLUGS.movements}/list/${ROUTES_SLUGS.create}`,
       update: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.geneticStock}/:geneticType/${ROUTES_SLUGS.movements}/list/:_id/${ROUTES_SLUGS.update}`,
@@ -87,6 +89,44 @@ export const ROUTES_DICT = {
     delete: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animal}/list/:_id/${ROUTES_SLUGS.delete}`,
   },
 
+  collective: {
+    root: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.colective}`,
+    zeal: {
+      root: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.colective}/${ROUTES_SLUGS.zeal}`,
+      list: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.colective}/${ROUTES_SLUGS.zeal}/list`,
+      create: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.colective}/${ROUTES_SLUGS.zeal}/list/${ROUTES_SLUGS.create}`,
+      update: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.colective}/${ROUTES_SLUGS.zeal}/list/:_id/${ROUTES_SLUGS.update}`,
+      delete: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.colective}/${ROUTES_SLUGS.zeal}/list/:_id/${ROUTES_SLUGS.delete}`,
+    },
+    association: {
+      root: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.colective}/${ROUTES_SLUGS.association}`,
+      list: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.colective}/${ROUTES_SLUGS.association}/list`,
+      create: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.colective}/${ROUTES_SLUGS.association}/list/${ROUTES_SLUGS.create}`,
+      update: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.colective}/${ROUTES_SLUGS.association}/list/:_id/${ROUTES_SLUGS.update}`,
+      delete: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.colective}/${ROUTES_SLUGS.association}/list/:_id/${ROUTES_SLUGS.delete}`,
+    },
+    drying: {
+      root: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.colective}/${ROUTES_SLUGS.drying}`,
+      list: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.colective}/${ROUTES_SLUGS.drying}/list`,
+      create: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.colective}/${ROUTES_SLUGS.drying}/list/${ROUTES_SLUGS.create}`,
+      update: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.colective}/${ROUTES_SLUGS.drying}/list/:_id/${ROUTES_SLUGS.update}`,
+      delete: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.colective}/${ROUTES_SLUGS.drying}/list/:_id/${ROUTES_SLUGS.delete}`,
+    },
+    sale: {
+      root: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.colective}/${ROUTES_SLUGS.sale}`,
+      list: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.colective}/${ROUTES_SLUGS.sale}/list`,
+      create: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.colective}/${ROUTES_SLUGS.sale}/list/${ROUTES_SLUGS.create}`,
+      update: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.colective}/${ROUTES_SLUGS.sale}/list/:_id/${ROUTES_SLUGS.update}`,
+      delete: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.colective}/${ROUTES_SLUGS.sale}/list/:_id/${ROUTES_SLUGS.delete}`,
+    },
+    weight: {
+      root: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.colective}/${ROUTES_SLUGS.weight}`,
+      list: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.colective}/${ROUTES_SLUGS.weight}/list`,
+      create: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.colective}/${ROUTES_SLUGS.weight}/list/${ROUTES_SLUGS.create}`,
+      update: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.colective}/${ROUTES_SLUGS.weight}/list/:_id/${ROUTES_SLUGS.update}`,
+      delete: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.colective}/${ROUTES_SLUGS.weight}/list/:_id/${ROUTES_SLUGS.delete}`,
+    },
+  },
   account: `/${ROUTES_SLUGS.account}`,
   profile: `/${ROUTES_SLUGS.profile}`,
   users: `/${ROUTES_SLUGS.user}`,
