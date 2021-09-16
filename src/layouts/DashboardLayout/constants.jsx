@@ -139,32 +139,32 @@ export const menuList = [
           {
             id: "registro-celos",
             title: "Registro celos",
-            link: ROUTES_DICT.zeal,
+            link: ROUTES_DICT.collective.zeal.list,
           },
           {
             id: "agregar-pesos",
             title: "Ingresos Pesos",
-            link: ROUTES_DICT.weight,
+            link: ROUTES_DICT.collective.weight.list,
           },
           {
             id: "ventas",
             title: "Ventas",
-            // link: routesDictionary.sale,
+            link: ROUTES_DICT.collective.sale.list,
           },
-          {
-            id: "sanidad",
-            title: "Sanidad",
-            // link: routesDictionary.livestockControl,
-          },
+          // {
+          //   id: "sanidad",
+          //   title: "Sanidad",
+          //   link: routesDictionary.livestockControl,
+          // },
           {
             id: "agregar-registros",
             title: "Ingreso reg. asoc.",
-            // link: routesDictionary.association,
+            link: ROUTES_DICT.collective.association.list,
           },
           {
             id: "secados",
             title: "Secados/Destete",
-            // link: routesDictionary.drying,
+            link: ROUTES_DICT.collective.drying.list,
           },
         ],
       },
