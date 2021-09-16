@@ -36,7 +36,7 @@ export default function PedigreePage() {
 
   useEffect(() => {
     if (currentAgribusiness) {
-      dispatch(AnimalActions.listAll(currentAgribusiness._id));
+      dispatch(AnimalActions.list(currentAgribusiness._id));
     }
     if (!currentAnimal) {
       dispatch(AnimalActions.listById({ _id: params.animalId }));

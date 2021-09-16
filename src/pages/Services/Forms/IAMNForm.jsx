@@ -77,7 +77,7 @@ const IAMNForm = ({
       !maleAnimals ||
       maleAnimals.length === 0
     ) {
-      dispatch(AnimalActions.listAll());
+      dispatch(AnimalActions.list());
     }
     if (!listSemen || listSemen.length === 0) {
       dispatch(

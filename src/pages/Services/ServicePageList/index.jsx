@@ -31,7 +31,7 @@ const ServicePageList = (props) => {
 
   useEffect(() => {
     if (!animalList || animalList.length === 0) {
-      dispatch(AnimalActions.listAll());
+      dispatch(AnimalActions.list());
     }
     if (!serviceList || serviceList.length === 0) {
       dispatch(serviceActions.listByAgribusiness());

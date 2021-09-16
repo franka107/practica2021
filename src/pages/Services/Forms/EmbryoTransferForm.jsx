@@ -76,7 +76,7 @@ const EmbryoTransferForm = ({
   useEffect(() => {
     dispatch(serviceActions.listByAgribusiness());
 
-    dispatch(AnimalActions.listAll());
+    dispatch(AnimalActions.list());
 
     dispatch(
       geneticStockActions.listGeneticStockByAgribusiness({
