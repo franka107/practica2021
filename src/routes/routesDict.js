@@ -25,7 +25,7 @@ export const ROUTES_SLUGS = {
   account: "cuenta",
   profile: "perfil",
   user: "usuario",
-  palpations: "palpaciones",
+  palpation: "palpations",
   birth: "nacimientos",
   pregnancies: "preñeces",
   plan: "plan",
@@ -39,6 +39,7 @@ export const ROUTES_SLUGS = {
   drying: "drying",
   sale: "sale",
   weight: "weight",
+  milk: "milk",
 };
 
 export const ROUTES_DICT = {
@@ -88,7 +89,20 @@ export const ROUTES_DICT = {
     update: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animal}/list/:_id/${ROUTES_SLUGS.update}`,
     delete: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animal}/list/:_id/${ROUTES_SLUGS.delete}`,
   },
-
+  milk: {
+    root: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.milk}`,
+    list: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.milk}/list`,
+    create: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.milk}/list/${ROUTES_SLUGS.create}`,
+    update: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.milk}/list/:_id/${ROUTES_SLUGS.update}`,
+    delete: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.milk}/list/:_id/${ROUTES_SLUGS.delete}`,
+  },
+  palpation: {
+    root: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.palpation}`,
+    list: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.palpation}/list`,
+    create: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.palpation}/list/${ROUTES_SLUGS.create}`,
+    update: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.palpation}/list/:_id/${ROUTES_SLUGS.update}`,
+    delete: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.palpation}/list/:_id/${ROUTES_SLUGS.delete}`,
+  },
   collective: {
     root: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.colective}`,
     zeal: {
@@ -132,15 +146,10 @@ export const ROUTES_DICT = {
   users: `/${ROUTES_SLUGS.user}`,
   plan: `/${ROUTES_SLUGS.plan}`,
   hacienda: `/${ROUTES_SLUGS.hacienda}`,
-  sale: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.sale}`,
-  weight: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.weight}`,
-  zeal: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.zeal}`,
-  palpations: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.palpations}`,
   emailVerified: `/${ROUTES_SLUGS.emailVerified}`,
   pregnancies: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.pregnancies}`,
   animalDetail: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animalDetail}`,
   pedigree: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animalDetail}/:animalId/${ROUTES_SLUGS.pedigree}`,
-  animalControl: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animalControl}`,
   recoverPassword: `/${ROUTES_SLUGS.recoverPassword}`,
   setup: `/${ROUTES_SLUGS.setup}`,
 };
