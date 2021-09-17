@@ -4,7 +4,7 @@ import BirthForm from "../Forms/BirthForm";
 const BirthCreatePage = ({ parentPathname }) => {
   return (
     <>
-      <CustomDialog parentPathname={parentPathname}>
+      <CustomDialog maxWidth="md" parentPathname={parentPathname}>
         {(props) => <BirthForm type="create" />}
       </CustomDialog>
     </>

@@ -68,6 +68,12 @@ export const useStyles = makeStyles((theme) => ({
       },
     },
   },
+  form__subBorder: {
+    border: `1px solid ${theme.palette.secondary.main}`,
+    padding: "1rem",
+    marginBottom: "1rem",
+    position: "relative",
+  },
   form__border: {
     marginTop: ".9rem",
     border: `1px solid ${theme.palette.secondary.main}`,

@@ -1,13 +1,19 @@
 import { Divider, Grid, Typography } from "@material-ui/core";
 import { Formik } from "formik";
 import PropTypes from "prop-types";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { shallowEqual, useSelector } from "react-redux";
 import * as yup from "yup";
+import AutocompleteFieldFormik from "../../../components/Inputs/AutocompleteFieldFormik";
 import ButtonFormik from "../../../components/Inputs/ButtonFormik";
+import CheckboxFormik from "../../../components/Inputs/CheckboxFormik";
 import DatePickerFieldFormik from "../../../components/Inputs/DatePickerFieldFormik";
 import MultipleCheckboxFormik from "../../../components/Inputs/MultipleCheckboxFormik";
 import SelectFieldFormik from "../../../components/Inputs/SelectFieldFormik";
 import TextFieldFormik from "../../../components/Inputs/TextFieldFormik";
 import { categoryOptions } from "../../../constants";
+import AnimalActions from "../../../redux/actions/animal.actions";
 import { useStyles } from "../../../styles";
 const defaultInitValues = {};
 
@@ -17,8 +23,20 @@ const BirthForm = ({
   onClickCancelButton,
   onCompleteSubmit = () => {},
 }) => {
+  const dispatch = useDispatch();
+  const femaleAnimals = useSelector(
+    (state) => state.animal.list.filter((e) => e.gender === "FEMALE"),
+    shallowEqual
+  );
   const validationSchema = () => yup.lazy((values) => yup.object({}));
   const classes = useStyles();
+
+  useEffect(() => {
+    if (!femaleAnimals || femaleAnimals.length === 0) {
+      dispatch(AnimalActions.list());
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const onSubmit = async (values, actions) => {
     try {
@@ -48,140 +66,143 @@ const BirthForm = ({
             </Grid>
           </Grid>
           <Grid container spacing={1}>
+            <AutocompleteFieldFormik
+              options={femaleAnimals}
+              name="animalId"
+              label="Identificacíon del animal"
+              onChange={props.handleChange}
+              defaultValue={type === "create" ? null : props.values.animal}
+              md={6}
+              xs={12}
+            />
             <TextFieldFormik
-              label="Diagnóstico"
-              name="diagnosis"
-              onChange={props.handleChange}
-              lg={6}
-              sm={6}
-              xs={12}
-            ></TextFieldFormik>
-            <TextFieldFormik
-              label="Cond. Corp"
-              name="condCorp"
-              onChange={props.handleChange}
-              lg={6}
-              sm={6}
-              xs={12}
-            ></TextFieldFormik>
-            <DatePickerFieldFormik
-              label="Fecha de Preñez"
-              name="pregnancyDate"
-              onChange={props.handleChange}
-              lg={4}
-              sm={4}
-              xs={12}
-            ></DatePickerFieldFormik>
-            <SelectFieldFormik
-              onChange={props.handleChange}
-              label="Estado"
-              name="state"
-              lg={4}
-              sm={4}
-              xs={12}
-            ></SelectFieldFormik>
-            <SelectFieldFormik
-              onChange={props.handleChange}
-              label="Estado"
-              name="state"
-              lg={4}
-              sm={4}
-              xs={12}
-            ></SelectFieldFormik>
-            <TextFieldFormik
-              label="Cond. Corp"
-              name="condCorp"
-              onChange={props.handleChange}
-              rows={2}
-              multiline
-              xs={12}
-            ></TextFieldFormik>
-            <DatePickerFieldFormik
-              label="Fecha de Preñez"
-              name="pregnancyDate"
-              onChange={props.handleChange}
-              lg={6}
-              sm={6}
-              xs={12}
-            ></DatePickerFieldFormik>
-            <DatePickerFieldFormik
-              label="Fecha de Preñez"
-              name="pregnancyDate"
-              onChange={props.handleChange}
-              lg={6}
-              sm={6}
-              xs={12}
-            ></DatePickerFieldFormik>
-            <Grid
-              lg={6}
-              sm={6}
-              xs={12}
-              container
-              justifyContent="center"
-              alignContent="center"
-              alignItems="center"
-            >
-              <MultipleCheckboxFormik
-                name="finding"
-                options={[]}
-                onChange={props.handleChange}
-              ></MultipleCheckboxFormik>
-            </Grid>
-            <TextFieldFormik
-              label="Diagnóstico"
-              name="diagnosis"
-              onChange={props.handleChange}
-              lg={6}
-              sm={6}
-              xs={12}
+              label="Nombre"
+              name="name"
               disabled
+              onChange={props.handleChange}
+              xs={12}
+              md={6}
+              value={
+                props.values.animalId
+                  ? femaleAnimals.find((e) => e._id === props.values.animalId)
+                      ?.name
+                  : ""
+              }
+            />
+            <DatePickerFieldFormik
+              label="Fecha "
+              name="birthDate"
+              onChange={props.handleChange}
+              lg={4}
+              sm={4}
+              xs={12}
+            ></DatePickerFieldFormik>
+            <SelectFieldFormik
+              onChange={props.handleChange}
+              label="Tipo de parto"
+              name="birthType"
+              lg={4}
+              sm={4}
+              xs={12}
+            ></SelectFieldFormik>
+            <SelectFieldFormik
+              onChange={props.handleChange}
+              label="Dificultad"
+              name="difficulty"
+              lg={4}
+              sm={4}
+              xs={12}
+            ></SelectFieldFormik>
+            <TextFieldFormik
+              label="Detalles"
+              name="detail"
+              onChange={props.handleChange}
+              xs={12}
+            ></TextFieldFormik>
+            <DatePickerFieldFormik
+              label="Fecha de Preñez"
+              name="pregnancyDate"
+              onChange={props.handleChange}
+              lg={6}
+              sm={6}
+              disabled
+              xs={12}
+            ></DatePickerFieldFormik>
+            <DatePickerFieldFormik
+              label="Fecha de Ult. Tacto"
+              name="touchDate"
+              onChange={props.handleChange}
+              lg={6}
+              disabled
+              sm={6}
+              xs={12}
+            ></DatePickerFieldFormik>
+            <CheckboxFormik
+              sm={6}
+              xs={12}
+              name="retainedPlacenta"
+              label="Retuvo placenta"
+              onChange={props.handleChange}
+            />
+            <TextFieldFormik
+              label="Padre"
+              name="fatherId"
+              disabled
+              onChange={props.handleChange}
+              lg={6}
+              sm={6}
+              xs={12}
             ></TextFieldFormik>
           </Grid>
-          <Grid container spacing={1} className={classes.formStyle}>
-            <Grid item>
-              <Typography variant={"subtitle2"}>Nacimientos</Typography>
-            </Grid>
-          </Grid>
-          <Grid container spacing={1} className={classes.borderBirth}>
-            <TextFieldFormik
-              label="Cond. Corp"
-              name="condCorp"
-              onChange={props.handleChange}
-              lg={3}
-              sm={3}
-              xs={12}
-            ></TextFieldFormik>
-            <TextFieldFormik
-              label="Peso"
-              name="weight"
-              onChange={props.handleChange}
-              lg={3}
-              sm={3}
-              xs={12}
-            ></TextFieldFormik>
-            <TextFieldFormik
-              label="Dias Abiertos"
-              name="daysOpen"
-              onChange={props.handleChange}
-              lg={3}
-              sm={3}
-              xs={12}
-            ></TextFieldFormik>
-            <TextFieldFormik
-              label="Dias Abiertos"
-              name="daysOpen"
-              onChange={props.handleChange}
-              lg={3}
-              sm={3}
-              xs={12}
-            ></TextFieldFormik>
-          </Grid>
+          {props.values.birthType && (
+            <>
+              <Grid container spacing={1} className={classes.formStyle}>
+                <Grid item>
+                  <Typography variant={"subtitle2"}>Nacimientos</Typography>
+                </Grid>
+              </Grid>
+              <Grid container spacing={1} className={classes.form__subBorder}>
+                <TextFieldFormik
+                  label="Identificación"
+                  name="identifier"
+                  onChange={props.handleChange}
+                  lg={3}
+                  sm={3}
+                  xs={12}
+                ></TextFieldFormik>
+                <TextFieldFormik
+                  label="Nombre"
+                  name="name"
+                  onChange={props.handleChange}
+                  lg={3}
+                  sm={3}
+                  xs={12}
+                ></TextFieldFormik>
+                <TextFieldFormik
+                  label="Peso"
+                  name="weight"
+                  onChange={props.handleChange}
+                  lg={3}
+                  sm={3}
+                  xs={12}
+                ></TextFieldFormik>
+                <TextFieldFormik
+                  label="Color"
+                  name="color"
+                  onChange={props.handleChange}
+                  lg={3}
+                  sm={3}
+                  xs={12}
+                ></TextFieldFormik>
+              </Grid>
+            </>
+          )}
           <br />
           <Divider />
           <br />
           <Grid container spacing={1}>
             <TextFieldFormik
-              label="Potrero"
+              label="Ult. cria macho"
               name="paddock"
               onChange={props.handleChange}
               lg={6}
@@ -190,7 +211,7 @@ const BirthForm = ({
               disabled
             ></TextFieldFormik>
             <TextFieldFormik
-              label="Grupo"
+              label="Ult. cria hembra"
               name="group"
               onChange={props.handleChange}
               lg={6}
