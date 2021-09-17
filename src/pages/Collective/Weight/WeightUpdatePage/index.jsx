@@ -1,36 +1,40 @@
-// import { useEffect } from "react";
-// import { useDispatch } from "react-redux";
-// import { useSelector } from "react-redux";
-// import { useParams } from "react-router-dom";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 import CustomDialog from "../../../../components/CustomDialog";
-// import geneticStockActions from "../../../redux/actions/geneticStock.actions";
+import WeightActions from "../../../../redux/actions/weight.actions";
 import WeightForm from "../Forms/WeightForm";
 
 const WeightUpdatePage = ({ parentPathname }) => {
-  // const params = useParams();
-  // const dispatch = useDispatch();
+  const params = useParams();
+  const dispatch = useDispatch();
 
-  // const currentGeneticStock = useSelector(
-  //   (state) => state.geneticStock.current
-  // );
+  const currentWeightControl = useSelector((state) => state.weight.current);
 
-  // useEffect(() => {
-  //   if (!currentGeneticStock || currentGeneticStock._id !== params._id) {
-  //     dispatch(geneticStockActions.getById({ _id: params._id }));
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [dispatch]);
+  useEffect(() => {
+    if (!currentWeightControl || currentWeightControl._id !== params._id) {
+      dispatch(WeightActions.get({ _id: params._id }));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch]);
 
   return (
     <>
       <CustomDialog parentPathname={parentPathname} maxWidth="xs">
         {(props) => (
-          <WeightForm
-            type="update"
-            // initValues={currentGeneticStock}
-            onClickCancelButton={props.handleClose}
-            onCompleteSubmit={props.handleClose}
-          />
+          <>
+            {currentWeightControl &&
+              currentWeightControl._id &&
+              currentWeightControl._id === params._id && (
+                <WeightForm
+                  type="update"
+                  initValues={currentWeightControl}
+                  onClickCancelButton={props.handleClose}
+                  onCompleteSubmit={props.handleClose}
+                />
+              )}
+          </>
         )}
       </CustomDialog>
     </>

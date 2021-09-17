@@ -1,5 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { useHistory, useLocation } from "react-router-dom";
+import {
+  useHistory,
+  useLocation,
+  useParams,
+  generatePath,
+} from "react-router-dom";
 import { Grid } from "@material-ui/core";
 import { columns } from "./constants";
 import { associationRouteOptions } from "../constants";
@@ -7,16 +12,25 @@ import { useStyles } from "../styles";
 import TableButtons from "../../../../components/TableButtons";
 import { ROUTES_DICT } from "../../../../routes/routesDict";
 import CustomMuiTable from "../../../../components/CustomMuiTable";
+import { useDispatch, useSelector } from "react-redux";
+import AssociationActions from "../../../../redux/actions/association.actions";
 
 function AssociationListPage({ children, setTitle, setChipList }) {
   const history = useHistory();
   const location = useLocation();
-  const [searchText] = useState();
+  const params = useParams();
+  const dispatch = useDispatch();
   const classes = useStyles();
+  const [searchText] = useState();
+
+  const listAssociationControl = useSelector((state) => state.association.list);
 
   useEffect(() => {
     setTitle("Colectiva / Asociación");
     setChipList(associationRouteOptions(location));
+    if (!listAssociationControl || listAssociationControl.length === 0) {
+      dispatch(AssociationActions.list());
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const options = {
@@ -35,10 +49,20 @@ function AssociationListPage({ children, setTitle, setChipList }) {
         return (
           <TableButtons
             onClickDeleteButton={() => {
-              history.push(ROUTES_DICT.collective.association.delete);
+              history.push(
+                generatePath(ROUTES_DICT.collective.association.delete, {
+                  ...params,
+                  _id: listAssociationControl[dataIndex]._id,
+                })
+              );
             }}
             onClickEditButton={() => {
-              history.push(ROUTES_DICT.collective.association.update);
+              history.push(
+                generatePath(ROUTES_DICT.collective.association.update, {
+                  ...params,
+                  _id: listAssociationControl[dataIndex]._id,
+                })
+              );
             }}
           />
         );
@@ -49,7 +73,7 @@ function AssociationListPage({ children, setTitle, setChipList }) {
     <Grid container xs={12}>
       <Grid item xs={12} className={classes.registerContainer}>
         <CustomMuiTable
-          data={[{ _id: "hola" }]}
+          data={listAssociationControl}
           columns={[...columns, actionColumn]}
           options={options}
         />
