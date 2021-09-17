@@ -58,7 +58,11 @@ const IAMNForm = ({
     (state) => state.agribusiness.current
   );
   const listSemen = useSelector(
-    (state) => state.geneticStock.list.filter((e) => e.active),
+    (state) =>
+      state.geneticStock.list.filter(
+        (e) => e.active && e.geneticType === "SEMEN",
+        shallowEqual
+      ),
     shallowEqual
   );
 

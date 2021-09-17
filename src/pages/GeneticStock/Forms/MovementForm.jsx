@@ -6,7 +6,7 @@ import TextFieldFormik from "../../../components/Inputs/TextFieldFormik";
 import PropTypes from "prop-types";
 import DatePickerFieldFormik from "../../../components/Inputs/DatePickerFieldFormik";
 import ButtonFormik from "../../../components/Inputs/ButtonFormik";
-import { movementOptions } from "../../../constants";
+import { movementOptions, operationOptions } from "../../../constants";
 import { useDispatch } from "react-redux";
 import MovementActions from "../../../redux/actions/movement.actions";
 import { useEffect } from "react";
@@ -61,7 +61,8 @@ const MovementForm = ({
           .integer("Solo números enteros")
           .min(1, "La cantidad debe ser mayor o igual a 1")
           .max(
-            movementOptions[values.movementType] === movementOptions.SALE
+            movementOptions[values.movementType] === movementOptions.SALE ||
+              movementOptions[values.movementType] === movementOptions.OTHER
               ? values.geneticStockId
                 ? geneticStockList.find((e) => e._id === values.geneticStockId)
                     ?.stock
@@ -91,7 +92,11 @@ const MovementForm = ({
   }, [dispatch]);
 
   const transformByMovementType = (values) => {
-    if (movementOptions[values.movementType] === movementOptions.SALE) {
+    if (
+      movementOptions[values.movementType] === movementOptions.SALE ||
+      operationOptions[values.movementOperationType] ===
+        operationOptions.SUBSTRACTION
+    ) {
       values.quantity = values.quantity * -1;
     }
     return values;
@@ -131,30 +136,46 @@ const MovementForm = ({
             <SelectFieldFormik
               onChange={props.handleChange}
               xs={12}
-              sm={4}
+              sm={props.values.movementType === "OTHER" ? 2 : 5}
               name="movementType"
               label="Movimiento"
               options={Object.keys(movementOptions)
-                .filter((key) => key === "SALE" || key === "PURCHASE")
+                .filter(
+                  (key) =>
+                    key === "SALE" || key === "PURCHASE" || key === "OTHER"
+                )
                 .map((key) => ({
                   _id: key,
                   name: movementOptions[key],
                 }))}
             />
+            {props.values.movementType === "OTHER" && (
+              <SelectFieldFormik
+                onChange={props.handleChange}
+                xs={12}
+                sm={3}
+                name="movementOperationType"
+                label="Tipo de operacion"
+                options={Object.keys(operationOptions).map((key) => ({
+                  _id: key,
+                  name: operationOptions[key],
+                }))}
+              />
+            )}
             <AutocompleteFieldFormik
               options={geneticStockList}
               name="geneticStockId"
               label="Stock genético"
               onChange={props.handleChange}
               xs={12}
-              sm={4}
+              sm={5}
             />
             <TextFieldFormik
               name="stock"
               label="Cantidad"
               onChange={props.handleChange}
               xs={12}
-              sm={4}
+              sm={2}
               disabled
               value={
                 props.values.geneticStockId

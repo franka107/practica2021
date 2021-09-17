@@ -8,7 +8,6 @@ import DatePickerFieldFormik from "../../../components/Inputs/DatePickerFieldFor
 import TimePickerFormik from "../../../components/Inputs/TimePickerFormik";
 import AutocompleteFieldFormik from "../../../components/Inputs/AutocompleteFieldFormik";
 import ButtonFormik from "../../../components/Inputs/ButtonFormik";
-import { typeServices } from "../../../constants";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useDispatch, shallowEqual } from "react-redux";
@@ -22,7 +21,6 @@ import {
   typeEmbryonOptions,
 } from "../../../constants";
 import AnimalActions from "../../../redux/actions/animal.actions";
-import { seriesType } from "highcharts";
 
 const defaultInitValues = {
   agribusinessId: "",
@@ -45,18 +43,6 @@ const defaultInitValues = {
   observation: "",
 };
 
-const validationSchema = yup.object({
-  animalId: yup
-    .string("Ingresa el tipo de movimiento")
-    .required("Esta campo es requerido."),
-  serviceDate: yup
-    .date("Ingresa una fecha")
-    .required("Este campo es requerido"),
-  serviceType: yup
-    .string("Ingresa el tipo de servicio")
-    .required("Esta campo es requerido."),
-});
-
 const EmbryoTransferForm = ({
   initValues = defaultInitValues,
   type = "create",
@@ -71,7 +57,35 @@ const EmbryoTransferForm = ({
   const { current: currentAgribusiness } = useSelector(
     (state) => state.agribusiness
   );
-  const listEmbryo = useSelector((state) => state.geneticStock.list);
+  const listEmbryo = useSelector(
+    (state) =>
+      state.geneticStock.list.filter(
+        (e) => e.active && e.geneticType === "EMBRYO"
+      ),
+    shallowEqual
+  );
+  const validationSchema = () =>
+    yup.lazy((values) =>
+      yup.object({
+        animalId: yup
+          .string("Ingresa el tipo de movimiento")
+          .required("Esta campo es requerido."),
+        serviceDate: yup
+          .date("Ingresa una fecha")
+          .required("Este campo es requerido"),
+        serviceType: yup
+          .string("Ingresa el tipo de servicio")
+          .required("Esta campo es requerido."),
+        quantity: yup
+          .number("Ingrese solo números")
+          .integer("Solo números enteros")
+          .min(1, "La cantidad debe ser mayor o igual a 1")
+          .max(
+            listEmbryo.find((e) => e._id === values.geneticStockId)?.stock || 1,
+            ({ max }) => `La cantidad debe ser menor o igual a ${max}`
+          ),
+      })
+    );
 
   useEffect(() => {
     dispatch(serviceActions.listByAgribusiness());
@@ -170,7 +184,7 @@ const EmbryoTransferForm = ({
               }
               onChange={props.handleChange}
               xs={12}
-              sm={3}
+              sm={4}
               name="geneticStockId"
               label="Cód."
               options={listEmbryo}
@@ -182,7 +196,7 @@ const EmbryoTransferForm = ({
               label="Nom. embrión"
               disabled
               xs={12}
-              sm={3}
+              sm={4}
               value={
                 props.values.geneticStockId
                   ? listEmbryo.find(
@@ -191,10 +205,22 @@ const EmbryoTransferForm = ({
                   : ""
               }
             />
+            <TextFieldFormik
+              name="availableStock"
+              disabled
+              label="Stock disponible"
+              value={
+                listEmbryo.find((e) => e._id === props.values.geneticStockId)
+                  ?.stock || 0
+              }
+              type="number"
+              xs={12}
+              sm={4}
+            />
             <SelectFieldFormik
               onChange={props.handleChange}
               xs={12}
-              sm={3}
+              sm={6}
               name="embryoType"
               label="Tip. embrión"
               options={typeEmbryonOptions}
@@ -202,7 +228,7 @@ const EmbryoTransferForm = ({
             <SelectFieldFormik
               onChange={props.handleChange}
               xs={12}
-              sm={3}
+              sm={6}
               name="embryoCondition"
               label="Condición"
               options={conditionOptions}

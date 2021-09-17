@@ -97,6 +97,11 @@ export const movementOptions = {
   OTHER: "Otros",
 };
 
+export const operationOptions = {
+  ADDITION: "Adición",
+  SUBSTRACTION: "Substracción",
+};
+
 export const typeServices = [
   { _id: "AR_IN", name: "I.A" },
   { _id: "NA_MO", name: "M.N" },
