@@ -74,21 +74,7 @@ export const racialTypeOptions = [
 export const stateOptions = {
   PREGNANT: "Preñada",
   EMPTY: "Vacía",
-};
-
-export const birthTypeOptions = {
-  SIMPLE: "Simple",
-  TWIN: "Gemelar",
-  ABORTION: "Aborto",
-  REABSORTION: "Reabsorción",
-  MUMMIFICATION: "Momificación",
-  DEAD: "Nació muerto",
-};
-
-export const birthDifficulyOptions = {
-  EUTOCICUS: "Eutócico",
-  DISTOCICUS: "Distócico",
-  CEASAREAN: "Cesárea",
+  RECHECK: "Re-chequeo",
 };
 
 export const deleteOptions = [

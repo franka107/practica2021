@@ -1,5 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { useHistory, useLocation } from "react-router-dom";
+import {
+  useHistory,
+  useLocation,
+  useParams,
+  generatePath,
+} from "react-router-dom";
 import { Grid } from "@material-ui/core";
 import { columns } from "./constants";
 import { zealRouteOptions } from "../constants";
@@ -7,16 +12,25 @@ import { useStyles } from "../styles";
 import TableButtons from "../../../../components/TableButtons";
 import { ROUTES_DICT } from "../../../../routes/routesDict";
 import CustomMuiTable from "../../../../components/CustomMuiTable";
+import { useDispatch, useSelector } from "react-redux";
+import ZealActions from "../../../../redux/actions/zeal.actions";
 
 function ZealListPage({ children, setTitle, setChipList }) {
   const history = useHistory();
   const location = useLocation();
-  const [searchText] = useState();
+  const params = useParams();
+  const dispatch = useDispatch();
   const classes = useStyles();
+  const [searchText] = useState();
+
+  const listZealControl = useSelector((state) => state.zeal.list);
 
   useEffect(() => {
     setTitle("Colectiva / Celos");
     setChipList(zealRouteOptions(location));
+    if (!listZealControl || listZealControl.length === 0) {
+      dispatch(ZealActions.list());
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const options = {
@@ -35,10 +49,20 @@ function ZealListPage({ children, setTitle, setChipList }) {
         return (
           <TableButtons
             onClickDeleteButton={() => {
-              history.push(ROUTES_DICT.collective.zeal.delete);
+              history.push(
+                generatePath(ROUTES_DICT.collective.zeal.delete, {
+                  ...params,
+                  _id: listZealControl[dataIndex]._id,
+                })
+              );
             }}
             onClickEditButton={() => {
-              history.push(ROUTES_DICT.collective.zeal.update);
+              history.push(
+                generatePath(ROUTES_DICT.collective.zeal.update, {
+                  ...params,
+                  _id: listZealControl[dataIndex]._id,
+                })
+              );
             }}
           />
         );
@@ -49,7 +73,7 @@ function ZealListPage({ children, setTitle, setChipList }) {
     <Grid container xs={12}>
       <Grid item xs={12} className={classes.registerContainer}>
         <CustomMuiTable
-          data={[{ _id: "hola" }]}
+          data={listZealControl}
           columns={[...columns, actionColumn]}
           options={options}
         />

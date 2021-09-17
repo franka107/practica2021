@@ -1,5 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { useHistory, useLocation } from "react-router-dom";
+import {
+  useHistory,
+  useLocation,
+  useParams,
+  generatePath,
+} from "react-router-dom";
 import { Grid } from "@material-ui/core";
 import { columns } from "./constants";
 import { saleRouteOptions } from "../constants";
@@ -7,16 +12,25 @@ import { useStyles } from "../styles";
 import CustomMuiTable from "../../../components/CustomMuiTable";
 import { ROUTES_DICT } from "../../../routes/routesDict";
 import TableButtons from "../../../components/TableButtons";
+import { useDispatch, useSelector } from "react-redux";
+import MilkActions from "../../../redux/actions/milkControl.actions";
 
 const MilkListPage = ({ children, setTitle, setChipList }) => {
   const history = useHistory();
   const location = useLocation();
-  const [searchText] = useState();
+  const params = useParams();
+  const dispatch = useDispatch();
   const classes = useStyles();
+  const [searchText] = useState();
+
+  const listMilkControl = useSelector((state) => state.milk.list);
 
   useEffect(() => {
     setTitle("Control lechero");
     setChipList(saleRouteOptions(location));
+    if (!listMilkControl || listMilkControl.length === 0) {
+      dispatch(MilkActions.list());
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -36,10 +50,20 @@ const MilkListPage = ({ children, setTitle, setChipList }) => {
         return (
           <TableButtons
             onClickDeleteButton={() => {
-              history.push(ROUTES_DICT.milk.delete);
+              history.push(
+                generatePath(ROUTES_DICT.milk.delete, {
+                  ...params,
+                  _id: listMilkControl[dataIndex]._id,
+                })
+              );
             }}
             onClickEditButton={() => {
-              history.push(ROUTES_DICT.milk.update);
+              history.push(
+                generatePath(ROUTES_DICT.milk.update, {
+                  ...params,
+                  _id: listMilkControl[dataIndex]._id,
+                })
+              );
             }}
             onClickStarButton={() => {
               // dispatch(
@@ -59,7 +83,7 @@ const MilkListPage = ({ children, setTitle, setChipList }) => {
     <Grid container xs={12}>
       <Grid item xs={12} className={classes.registerContainer}>
         <CustomMuiTable
-          data={[{ _id: "hola" }]}
+          data={listMilkControl}
           columns={[...columns, actionColumn]}
           options={options}
         />

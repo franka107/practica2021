@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Grid, Typography } from "@material-ui/core";
 import * as yup from "yup";
 import { Formik } from "formik";
@@ -6,11 +6,16 @@ import TextFieldFormik from "../../../../components/Inputs/TextFieldFormik";
 import ButtonFormik from "../../../../components/Inputs/ButtonFormik";
 import DatePickerFieldFormik from "../../../../components/Inputs/DatePickerFieldFormik";
 import AutocompleteFieldFormik from "../../../../components/Inputs/AutocompleteFieldFormik";
+import { shallowEqual, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import ZealActions from "../../../../redux/actions/zeal.actions";
+import AnimalActions from "../../../../redux/actions/animal.actions";
 
 const defaultInitValues = {
   animalId: "",
-  date: "",
-  iec: "",
+  name: "",
+  controlDate: new Date(),
+  iecDate: new Date(),
   observation: "",
 };
 
@@ -20,10 +25,43 @@ const ZealForm = ({
   onClickCancelButton,
   onCompleteSubmit = () => {},
 }) => {
-  const validationSchema = yup.object({});
+  const dispatch = useDispatch();
+  const femaleAnimals = useSelector(
+    (state) => state.animal.list.filter((e) => e.gender === "FEMALE"),
+    shallowEqual
+  );
 
-  const handleSubmit = (values, actions) => {
-    console.log(values);
+  useEffect(() => {
+    if (!femaleAnimals || femaleAnimals.length === 0) {
+      dispatch(AnimalActions.list());
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const validationSchema = yup.object({
+    animalId: yup
+      .string("Ingresa la identificacion del animal.")
+      .required("Este campo es requerido."),
+    controlDate: yup
+      .date("Ingresa una fecha correcta.")
+      .max(new Date(), "No puedes poner una fecha futura")
+      .nullable(),
+  });
+
+  const handleSubmit = async (values, actions) => {
+    try {
+      if (type === "create") {
+        const animal = femaleAnimals.find((e) => e._id === values.animalId);
+        await dispatch(ZealActions.create(values, animal));
+      }
+      if (type === "update") {
+        await dispatch(ZealActions.update(values));
+      }
+
+      onCompleteSubmit();
+    } catch {
+      actions.setSubmitting(false);
+    }
   };
 
   return (
@@ -42,21 +80,35 @@ const ZealForm = ({
           </Grid>
           <Grid container spacing={1}>
             <AutocompleteFieldFormik
-              options={[]}
+              options={femaleAnimals}
               name="animalId"
               label="Identificacíon del animal"
               onChange={props.handleChange}
+              defaultValue={type === "create" ? null : props.values.animal}
               xs={12}
+            />
+            <TextFieldFormik
+              label="Nombre"
+              name="name"
+              disabled
+              onChange={props.handleChange}
+              xs={12}
+              value={
+                props.values.animalId
+                  ? femaleAnimals.find((e) => e._id === props.values.animalId)
+                      ?.name
+                  : ""
+              }
             />
             <DatePickerFieldFormik
               label="Fecha"
-              name="date"
+              name="controlDate"
               onChange={props.handleChange}
               xs={12}
             ></DatePickerFieldFormik>
             <DatePickerFieldFormik
               label="I.E.C"
-              name="iec"
+              name="iecDate"
               onChange={props.handleChange}
               xs={12}
             ></DatePickerFieldFormik>
