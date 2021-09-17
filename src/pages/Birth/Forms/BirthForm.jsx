@@ -12,10 +12,23 @@ import DatePickerFieldFormik from "../../../components/Inputs/DatePickerFieldFor
 import MultipleCheckboxFormik from "../../../components/Inputs/MultipleCheckboxFormik";
 import SelectFieldFormik from "../../../components/Inputs/SelectFieldFormik";
 import TextFieldFormik from "../../../components/Inputs/TextFieldFormik";
-import { categoryOptions } from "../../../constants";
+import {
+  birthDifficulyOptions,
+  birthTypeOptions,
+  categoryOptions,
+  sexOptions,
+} from "../../../constants";
 import AnimalActions from "../../../redux/actions/animal.actions";
+import BirthActions from "../../../redux/actions/birth.actions";
 import { useStyles } from "../../../styles";
-const defaultInitValues = {};
+const defaultInitValues = {
+  children: [],
+  birthDate: new Date(),
+  animalId: null,
+  birthType: birthTypeOptions.SIMPLE,
+  difficulty: birthDifficulyOptions.CEASAREAN,
+  retainedPlacenta: false,
+};
 
 const BirthForm = ({
   initValues = defaultInitValues,
@@ -28,7 +41,27 @@ const BirthForm = ({
     (state) => state.animal.list.filter((e) => e.gender === "FEMALE"),
     shallowEqual
   );
-  const validationSchema = () => yup.lazy((values) => yup.object({}));
+  const validationSchema = () =>
+    yup.lazy((values) =>
+      yup.object({
+        animalId: yup
+          .string("Ingresa vaca")
+          .nullable(true)
+          .required("Esta campo es requerido."),
+        birthDate: yup
+          .date("Ingresa una fecha")
+          .required("Este campo es requerido."),
+        birthType: yup
+          .string("Ingresa el tipo de nacimiento")
+          .required("Esta campo es requerido."),
+        retainedPlacenta: yup
+          .boolean("Evalua si retuvo placenta")
+          .required("Este campo es obligatorio"),
+        difficulty: yup
+          .string("Ingresa el tipo de deficultad")
+          .required("Esta campo es requerido."),
+      })
+    );
   const classes = useStyles();
 
   useEffect(() => {
@@ -42,8 +75,40 @@ const BirthForm = ({
     try {
       if (type === "create") {
         //await dispatch(MovementActions.create(transformedValues, geneticType));
+        if (
+          birthTypeOptions[values.birthType] === birthTypeOptions.SIMPLE ||
+          birthTypeOptions[values.birthType] === birthTypeOptions.TWIN
+        ) {
+          const firstChild = await dispatch(
+            AnimalActions.create({
+              identifier: values.firstChildIdentifier,
+              name: values.firstChildName,
+              gender: values.firstChildGender,
+              color: values.firstChildColor,
+              birthDate: values.birthDate,
+              herdDate: values.birthDate,
+            })
+          );
+          values.children.push(firstChild._id);
+          if (birthTypeOptions[values.birthType] === birthTypeOptions.TWIN) {
+            const secondChild = await dispatch(
+              AnimalActions.create({
+                identifier: values.firstChildIdentifier,
+                name: values.firstChildName,
+                gender: values.firstChildGender,
+                color: values.firstChildColor,
+                birthDate: values.birthDate,
+                herdDate: values.birthDate,
+              })
+            );
+            values.children.push(secondChild._id);
+          }
+          await dispatch(BirthActions.create(values));
+        }
       }
       if (type === "update") {
+        await dispatch(BirthActions.update(values));
+
         //await dispatch(MovementActions.update(transformedValues, geneticType));
       }
       onCompleteSubmit();
@@ -102,6 +167,10 @@ const BirthForm = ({
               label="Tipo de parto"
               name="birthType"
               lg={4}
+              options={Object.keys(birthTypeOptions).map((key) => ({
+                _id: key,
+                name: birthTypeOptions[key],
+              }))}
               sm={4}
               xs={12}
             ></SelectFieldFormik>
@@ -109,6 +178,10 @@ const BirthForm = ({
               onChange={props.handleChange}
               label="Dificultad"
               name="difficulty"
+              options={Object.keys(birthDifficulyOptions).map((key) => ({
+                _id: key,
+                name: birthDifficulyOptions[key],
+              }))}
               lg={4}
               sm={4}
               xs={12}
@@ -154,7 +227,11 @@ const BirthForm = ({
               xs={12}
             ></TextFieldFormik>
           </Grid>
-          {props.values.birthType && (
+
+          {(birthTypeOptions[props.values.birthType] ===
+            birthTypeOptions.SIMPLE ||
+            birthTypeOptions[props.values.birthType] ===
+              birthTypeOptions.TWIN) && (
             <>
               <Grid container spacing={1} className={classes.formStyle}>
                 <Grid item>
@@ -164,7 +241,7 @@ const BirthForm = ({
               <Grid container spacing={1} className={classes.form__subBorder}>
                 <TextFieldFormik
                   label="Identificación"
-                  name="identifier"
+                  name="firstChildIdentifier"
                   onChange={props.handleChange}
                   lg={3}
                   sm={3}
@@ -172,28 +249,65 @@ const BirthForm = ({
                 ></TextFieldFormik>
                 <TextFieldFormik
                   label="Nombre"
-                  name="name"
+                  name="firstChildName"
                   onChange={props.handleChange}
                   lg={3}
                   sm={3}
                   xs={12}
                 ></TextFieldFormik>
-                <TextFieldFormik
-                  label="Peso"
-                  name="weight"
+                <SelectFieldFormik
                   onChange={props.handleChange}
-                  lg={3}
+                  options={sexOptions.slice(1)}
+                  label="Sexo"
+                  name="firstChildGender"
                   sm={3}
                   xs={12}
-                ></TextFieldFormik>
+                ></SelectFieldFormik>
                 <TextFieldFormik
                   label="Color"
-                  name="color"
+                  name="firstChildColor"
                   onChange={props.handleChange}
                   lg={3}
                   sm={3}
                   xs={12}
                 ></TextFieldFormik>
+                {birthTypeOptions[props.values.birthType] ===
+                  birthTypeOptions.TWIN && (
+                  <>
+                    <TextFieldFormik
+                      label="Identificación"
+                      name="secondChildIdentifier"
+                      onChange={props.handleChange}
+                      lg={3}
+                      sm={3}
+                      xs={12}
+                    ></TextFieldFormik>
+                    <TextFieldFormik
+                      label="Nombre"
+                      name="secondChildName"
+                      onChange={props.handleChange}
+                      lg={3}
+                      sm={3}
+                      xs={12}
+                    ></TextFieldFormik>
+                    <SelectFieldFormik
+                      onChange={props.handleChange}
+                      options={sexOptions.slice(1)}
+                      label="Sexo"
+                      name="secondChildGender"
+                      sm={3}
+                      xs={12}
+                    ></SelectFieldFormik>
+                    <TextFieldFormik
+                      label="Color"
+                      name="secondChildColor"
+                      onChange={props.handleChange}
+                      lg={3}
+                      sm={3}
+                      xs={12}
+                    ></TextFieldFormik>
+                  </>
+                )}
               </Grid>
             </>
           )}

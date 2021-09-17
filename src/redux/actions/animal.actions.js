@@ -31,6 +31,7 @@ const create = (data) => async (dispatch, getState) => {
     type: ACTION_TYPES.ANIMAL.CREATE,
     payload: response,
   });
+  return response;
 };
 const update = (data) => async (dispatch) => {
   const response = await IdeasCloudApi.fetch(

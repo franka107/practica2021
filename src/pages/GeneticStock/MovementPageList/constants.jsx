@@ -48,7 +48,7 @@ export const columns = (location, history, geneticType, movements) => [
     label: "Stock genético",
     name: "geneticStock",
     options: {
-      customBodyRender: (value) => value.identifier,
+      customBodyRender: (value) => value && value.identifier,
     },
   },
   {

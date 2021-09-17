@@ -3,18 +3,18 @@ import ACTION_TYPES from "../types";
 
 const list = () => async (dispatch, getState) => {
   const agribusiness = getState().agribusiness.current;
-  const response = await IdeasCloudApi.fetch("birthListByAgribusiness", {
+  const response = await IdeasCloudApi.fetch("birthControlListByAgribusiness", {
     agribusinessId: agribusiness?._id,
   });
 
   dispatch({ type: ACTION_TYPES.BIRTH.RETRIEVE_LIST, payload: response });
 };
 
-const create = (data, geneticType) => async (dispatch, getState) => {
+const create = (data) => async (dispatch, getState) => {
   const agribusiness = getState().agribusiness.current;
 
   const response = await IdeasCloudApi.fetch(
-    "birthCreate",
+    "birthControlCreate",
     {
       ...data,
       agribusinessId: agribusiness._id,
@@ -30,7 +30,7 @@ const create = (data, geneticType) => async (dispatch, getState) => {
 };
 const update = (data, geneticType) => async (dispatch, getState) => {
   const response = await IdeasCloudApi.fetch(
-    "birthUpdate",
+    "birthControlUpdate",
     {
       ...data,
     },
@@ -44,15 +44,15 @@ const update = (data, geneticType) => async (dispatch, getState) => {
 };
 
 const get = (data) => async (dispatch) => {
-  const response = await IdeasCloudApi.fetch("birthGetById", data);
+  const response = await IdeasCloudApi.fetch("birthControlGetById", data);
   dispatch({ type: ACTION_TYPES.BIRTH.UPDATE_CURRENT, payload: response });
 };
 
-const MovementActions = {
+const BirthActions = {
   create,
   list,
   update,
   get,
 };
 
-export default MovementActions;
+export default BirthActions;

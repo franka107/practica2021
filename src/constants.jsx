@@ -109,6 +109,21 @@ export const typeServicesTest = {
   EM_TR: "Tranferencia de embriones",
 };
 
+export const birthTypeOptions = {
+  SIMPLE: "Simple",
+  TWIN: "Gemelar",
+  ABORTION: "Aborto",
+  REABSORPTION: "Reabsorción",
+  MUMMIFICATION: "Momificación",
+  DEAD: "Nació muerto",
+};
+
+export const birthDifficulyOptions = {
+  EUTOCICUS: "Eutócico",
+  DISTOCICUS: "Distócico",
+  CEASAREAN: "Cesárea",
+};
+
 export const estadiosOptions = [
   { _id: "MO_CO", name: "Mórula Compacta" },
   { _id: "BL_TE", name: "Blastocito Temprano" },

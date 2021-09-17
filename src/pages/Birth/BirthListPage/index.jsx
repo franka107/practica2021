@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Grid, Typography, Paper, Divider } from "@material-ui/core";
 import HighchartsReact from "highcharts-react-official";
 import Highcharts from "highcharts";
@@ -10,14 +10,41 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import { useStyles } from "../../../styles";
 import CustomMuiTable from "../../../components/CustomMuiTable";
+import { useSelector } from "react-redux";
+import SearchContainer from "../../../components/SearchContainer";
+import BirthActions from "../../../redux/actions/birth.actions";
+import { useDispatch } from "react-redux";
+import { columns } from "./constants";
 
 function BirthListPage({ children }) {
   const classes = useStyles();
+  const [searchText, setSearchText] = useState();
+
+  const options = {
+    selectableRows: "none",
+    search: false,
+    searchText,
+  };
+  const dispatch = useDispatch();
+
+  const birthList = useSelector((state) => state.birth.list);
+
+  useEffect(() => {
+    if (!birthList || birthList.length === 0) {
+      dispatch(BirthActions.list());
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch]);
 
   return (
     <Grid container spacing={2}>
+      <SearchContainer searchText={searchText} setSearchText={setSearchText} />
       <Grid item xs={12}>
-        <CustomMuiTable />
+        <CustomMuiTable
+          data={birthList}
+          columns={columns()}
+          options={options}
+        />
       </Grid>
       <Grid item xs={12} className={classes.charts}>
         <Paper className={classes.paper}>
