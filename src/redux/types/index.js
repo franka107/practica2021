@@ -48,6 +48,12 @@ const ACTION_TYPES = {
   RACE: {
     RETRIEVE: "race/RETRIEVE",
   },
+  BIRTH: {
+    RETRIEVE: "birth/RETRIEVE",
+    UPDATE_CURRENT: "birth/UPDATE_CURRENT",
+    DELETE: "birth/DELETE",
+    CREATE: "birth/CREATE",
+  },
   GENETICSTOCK: {
     RETRIEVE: "geneticStock/RETRIEVE",
     RETRIEVE_BY_CURRENCY: "geneticStock/RETRIEVE_BY_CURRENCY",
@@ -58,10 +64,11 @@ const ACTION_TYPES = {
     CREATE: "geneticStock/CREATE",
   },
   SERVICE: {
-    RETRIEVE: "service/RETRIEVE",
     RETRIEVE_BY_CURRENCY: "service/RETRIEVE_BY_CURRENCY",
     RETRIEVE_BY_ID: "service/RETRIEVE_BY_ID",
     UPDATE: "service/UPDATE",
+
+    RETRIEVE: "service/RETRIEVE",
     UPDATE_CURRENT: "service/UPDATE_CURRENT",
     DELETE: "service/DELETE",
     CREATE: "service/CREATE",

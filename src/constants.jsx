@@ -71,14 +71,24 @@ export const racialTypeOptions = [
   { _id: "HALF_BLOOD", name: "Media Sangre" },
 ];
 
-export const stateDictionary = {
+export const stateOptions = {
   PREGNANT: "Preñada",
   EMPTY: "Vacía",
 };
 
-export const stateOptions = {
-  PREGNANT: "Preñada",
-  EMPTY: "Vacía",
+export const birthTypeOptions = {
+  SIMPLE: "Simple",
+  TWIN: "Gemelar",
+  ABORTION: "Aborto",
+  REABSORTION: "Reabsorción",
+  MUMMIFICATION: "Momificación",
+  DEAD: "Nació muerto",
+};
+
+export const birthDifficulyOptions = {
+  EUTOCICUS: "Eutócico",
+  DISTOCICUS: "Distócico",
+  CEASAREAN: "Cesárea",
 };
 
 export const deleteOptions = [

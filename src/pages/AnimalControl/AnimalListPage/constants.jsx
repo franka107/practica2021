@@ -1,5 +1,5 @@
 import { format, isAfter, isBefore } from "date-fns";
-import { sexDictionary, stateDictionary } from "../../../constants";
+import { sexDictionary, stateOptions } from "../../../constants";
 import { getAgeInYears } from "../../../helpers/convertDate";
 import { DatePicker } from "@material-ui/pickers";
 import { Grid } from "@material-ui/core";
@@ -49,7 +49,7 @@ export const columns = [
         names: ["Preñada", "Vacía"],
       },
       searchable: false,
-      customBodyRender: (value) => stateDictionary[value],
+      customBodyRender: (value) => stateOptions[value],
     },
   },
   {
