@@ -79,6 +79,7 @@ export const stateDictionary = {
 export const stateOptions = {
   PREGNANT: "Preñada",
   EMPTY: "Vacía",
+  RECHECK: "Re-chequeo",
 };
 
 export const deleteOptions = [

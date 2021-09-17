@@ -1,5 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { useHistory, useLocation } from "react-router-dom";
+import {
+  useHistory,
+  useLocation,
+  useParams,
+  generatePath,
+} from "react-router-dom";
 import { Grid } from "@material-ui/core";
 import { columns } from "./constants";
 import { palpationRouteOptions } from "../constants";
@@ -7,16 +12,25 @@ import { useStyles } from "../styles";
 import CustomMuiTable from "../../../components/CustomMuiTable";
 import { ROUTES_DICT } from "../../../routes/routesDict";
 import TableButtons from "../../../components/TableButtons";
+import { useDispatch, useSelector } from "react-redux";
+import PalpationActions from "../../../redux/actions/palpation.actions";
 
 const PalpationListPage = ({ children, setTitle, setChipList }) => {
   const history = useHistory();
   const location = useLocation();
-  const [searchText] = useState();
   const classes = useStyles();
+  const params = useParams();
+  const dispatch = useDispatch();
+  const [searchText] = useState();
+
+  const listPalpationControl = useSelector((state) => state.palpation.list);
 
   useEffect(() => {
     setTitle("Palpaciones");
     setChipList(palpationRouteOptions(location));
+    if (!listPalpationControl || listPalpationControl.length === 0) {
+      dispatch(PalpationActions.list());
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -36,20 +50,21 @@ const PalpationListPage = ({ children, setTitle, setChipList }) => {
         return (
           <TableButtons
             onClickDeleteButton={() => {
-              history.push(ROUTES_DICT.palpation.delete);
+              history.push(
+                generatePath(ROUTES_DICT.palpation.delete, {
+                  ...params,
+                  _id: listPalpationControl[dataIndex]._id,
+                })
+              );
             }}
             onClickEditButton={() => {
-              history.push(ROUTES_DICT.palpation.update);
+              history.push(
+                generatePath(ROUTES_DICT.palpation.update, {
+                  ...params,
+                  _id: listPalpationControl[dataIndex]._id,
+                })
+              );
             }}
-            // onClickStarButton={() => {
-            //   // dispatch(
-            //   //   geneticStockActions.updateGeneticStock({
-            //   //     ...geneticStockList[dataIndex],
-            //   //     isFeatured: !Boolean(geneticStockList[dataIndex].isFeatured),
-            //   //   })
-            //   // );
-            // }}
-            // starButtonFeatured={geneticStockList[dataIndex].isFeatured}
           />
         );
       },
@@ -59,7 +74,7 @@ const PalpationListPage = ({ children, setTitle, setChipList }) => {
     <Grid container xs={12}>
       <Grid item xs={12} className={classes.registerContainer}>
         <CustomMuiTable
-          data={[{ _id: "hola" }]}
+          data={listPalpationControl}
           columns={[...columns, actionColumn]}
           options={options}
         />
