@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Grid, Typography } from "@material-ui/core";
 import * as yup from "yup";
 import { Formik } from "formik";
@@ -6,11 +6,17 @@ import ButtonFormik from "../../../../components/Inputs/ButtonFormik";
 import DatePickerFieldFormik from "../../../../components/Inputs/DatePickerFieldFormik";
 import AutocompleteFieldFormik from "../../../../components/Inputs/AutocompleteFieldFormik";
 import SelectFieldFormik from "../../../../components/Inputs/SelectFieldFormik";
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
+import AnimalActions from "../../../../redux/actions/animal.actions";
+import DryingActions from "../../../../redux/actions/drying.actions";
+import TextFieldFormik from "../../../../components/Inputs/TextFieldFormik";
+import { reasonOptions } from "../../../../constants";
 
 const defaultInitValues = {
   animalId: "",
-  date: "",
+  date: new Date(),
   reason: "",
+  observation: "",
 };
 
 const DryingForm = ({
@@ -19,10 +25,43 @@ const DryingForm = ({
   onClickCancelButton,
   onCompleteSubmit = () => {},
 }) => {
-  const validationSchema = yup.object({});
+  const dispatch = useDispatch();
+  const femaleAnimals = useSelector(
+    (state) => state.animal.list.filter((e) => e.gender === "FEMALE"),
+    shallowEqual
+  );
 
-  const handleSubmit = (values, actions) => {
-    console.log(values);
+  useEffect(() => {
+    if (!femaleAnimals || femaleAnimals.length === 0) {
+      dispatch(AnimalActions.list());
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const validationSchema = yup.object({
+    animalId: yup
+      .string("Ingresa la identificacion del animal.")
+      .required("Este campo es requerido."),
+    date: yup
+      .date("Ingresa una fecha correcta.")
+      .max(new Date(), "No puedes poner una fecha futura")
+      .nullable(),
+  });
+
+  const handleSubmit = async (values, actions) => {
+    try {
+      if (type === "create") {
+        const animal = femaleAnimals.find((e) => e._id === values.animalId);
+        await dispatch(DryingActions.create(values, animal));
+      }
+      if (type === "update") {
+        await dispatch(DryingActions.update(values));
+      }
+
+      onCompleteSubmit();
+    } catch {
+      actions.setSubmitting(false);
+    }
   };
 
   return (
@@ -43,11 +82,25 @@ const DryingForm = ({
           </Grid>
           <Grid container spacing={1}>
             <AutocompleteFieldFormik
-              options={[]}
+              options={femaleAnimals}
               name="animalId"
               label="Identificacíon del animal"
               onChange={props.handleChange}
+              defaultValue={type === "create" ? null : props.values.animal}
               xs={12}
+            />
+            <TextFieldFormik
+              label="Nombre"
+              name="name"
+              disabled
+              onChange={props.handleChange}
+              xs={12}
+              value={
+                props.values.animalId
+                  ? femaleAnimals.find((e) => e._id === props.values.animalId)
+                      ?.name
+                  : ""
+              }
             />
             <DatePickerFieldFormik
               label="Fecha"
@@ -58,8 +111,20 @@ const DryingForm = ({
             <SelectFieldFormik
               label="Razón"
               name="reason"
+              options={Object.keys(reasonOptions).map((key) => ({
+                _id: key,
+                name: reasonOptions[key],
+              }))}
               onChange={props.handleChange}
               xs={12}
+            />
+            <TextFieldFormik
+              label="Observaciones"
+              name="observation"
+              onChange={props.handleChange}
+              xs={12}
+              multiline
+              rows={3}
             />
           </Grid>
           <Grid item container xs={12} justifyContent="space-between">

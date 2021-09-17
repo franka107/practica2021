@@ -1,36 +1,45 @@
-// import { useEffect } from "react";
-// import { useDispatch } from "react-redux";
-// import { useSelector } from "react-redux";
-// import { useParams } from "react-router-dom";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 import CustomDialog from "../../../../components/CustomDialog";
-// import geneticStockActions from "../../../redux/actions/geneticStock.actions";
+import AssociationActions from "../../../../redux/actions/association.actions";
 import AssociationForm from "../Forms/AssociationForm";
 
 const AssociationUpdatePage = ({ parentPathname }) => {
-  // const params = useParams();
-  // const dispatch = useDispatch();
+  const params = useParams();
+  const dispatch = useDispatch();
 
-  // const currentGeneticStock = useSelector(
-  //   (state) => state.geneticStock.current
-  // );
+  const currentAssociationControl = useSelector(
+    (state) => state.association.current
+  );
 
-  // useEffect(() => {
-  //   if (!currentGeneticStock || currentGeneticStock._id !== params._id) {
-  //     dispatch(geneticStockActions.getById({ _id: params._id }));
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [dispatch]);
+  useEffect(() => {
+    if (
+      !currentAssociationControl ||
+      currentAssociationControl._id !== params._id
+    ) {
+      dispatch(AssociationActions.get({ _id: params._id }));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch]);
 
   return (
     <>
       <CustomDialog parentPathname={parentPathname} maxWidth="xs">
         {(props) => (
-          <AssociationForm
-            type="update"
-            // initValues={currentGeneticStock}
-            onClickCancelButton={props.handleClose}
-            onCompleteSubmit={props.handleClose}
-          />
+          <>
+            {currentAssociationControl &&
+              currentAssociationControl._id &&
+              currentAssociationControl._id === params._id && (
+                <AssociationForm
+                  type="update"
+                  initValues={currentAssociationControl}
+                  onClickCancelButton={props.handleClose}
+                  onCompleteSubmit={props.handleClose}
+                />
+              )}
+          </>
         )}
       </CustomDialog>
     </>

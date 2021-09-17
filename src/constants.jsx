@@ -155,3 +155,18 @@ export const typeEmbryonOptions = [
   { _id: "MOET", name: "In Vivo (MOET)" },
   { _id: "FIV", name: "In Vitro (FIV)" },
 ];
+
+export const controlTypeOptions = {
+  BIRTH: "Nacimiento",
+  BALANCE: "Balanza",
+  WEANING: "Destete",
+  YEAR: "Al año",
+  PRESALE: "Pre-venta",
+};
+
+export const reasonOptions = {
+  PREGNANCY: "Preñez",
+  HEALTH: " Sanidad",
+  ABORTION: "Aborto",
+  POOR_PRODUCTION: "Pobre producción",
+};

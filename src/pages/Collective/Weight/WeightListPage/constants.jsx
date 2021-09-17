@@ -1,30 +1,46 @@
+import { format } from "date-fns";
+import { stateOptions } from "../../../../constants";
+import { getAgeInYears } from "../../../../helpers/convertDate";
+
 export const columns = [
   {
-    label: "Nro Registro",
-    name: "id",
+    label: "Identificación de animal",
+    name: "animal",
     options: {
-      filter: false,
+      customBodyRender: (value) => (value ? value.identifier : ""),
+      filterType: "textField",
+      searchable: true,
     },
   },
   {
     label: "Nombre",
-    name: "name",
+    name: "animal",
     options: {
       filter: false,
+      customBodyRender: (value) => (value ? value.name : "Sin nombre"),
+      searchable: false,
     },
   },
   {
     label: "Edad",
-    name: "age",
+    name: "animal",
     options: {
       filter: false,
+      customBodyRender: (value) =>
+        value && value.birthDate
+          ? getAgeInYears(new Date(value.birthDate), new Date()) + " años"
+          : null,
+      searchable: false,
     },
   },
   {
     label: "Estado",
-    name: "state",
+    name: "animal",
     options: {
       filter: false,
+      customBodyRender: (value) =>
+        value ? stateOptions[value.reproductiveStatus] : "",
+      searchable: false,
     },
   },
   {
@@ -36,16 +52,11 @@ export const columns = [
   },
   {
     label: "Fecha pesaje",
-    name: "weighingDate",
+    name: "controlDate",
     options: {
       filter: false,
-    },
-  },
-  {
-    label: "Acciones",
-    name: "actions",
-    options: {
-      filter: false,
+      customBodyRender: (value) =>
+        value && format(new Date(value), "yyyy-MM-dd"),
     },
   },
 ];

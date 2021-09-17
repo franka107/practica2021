@@ -4,19 +4,19 @@ import IdeasCloudApi from "../../helpers/ideascloudApi";
 const list = () => async (dispatch, getState) => {
   const agribusiness = getState().agribusiness.current;
   const response = await IdeasCloudApi.fetch(
-    "weightControlListByAgribusiness",
+    "dryingControlListByAgribusiness",
     {
       agribusinessId: agribusiness?._id,
     }
   );
 
-  dispatch({ type: ACTION_TYPES.WEIGHT.RETRIEVE, payload: response });
+  dispatch({ type: ACTION_TYPES.DRYING.RETRIEVE, payload: response });
 };
 
 const get = (data) => async (dispatch) => {
-  const response = await IdeasCloudApi.fetch("weightControlGetById", data);
+  const response = await IdeasCloudApi.fetch("dryingControlGetById", data);
   dispatch({
-    type: ACTION_TYPES.WEIGHT.UPDATE_CURRENT,
+    type: ACTION_TYPES.DRYING.UPDATE_CURRENT,
     payload: response,
   });
 };
@@ -24,55 +24,55 @@ const get = (data) => async (dispatch) => {
 const create = (data, animal) => async (dispatch, getState) => {
   const agribusiness = getState().agribusiness.current;
   const response = await IdeasCloudApi.fetch(
-    "weightControlCreate",
+    "dryingControlCreate",
     {
       ...data,
       agribusinessId: agribusiness._id,
     },
     dispatch,
-    "Colectiva pesaje registrado satisfactoriamente.",
+    "Colectiva secado/destete registrado satisfactoriamente.",
     "Error desconocido, intente nuavamente."
   );
   dispatch({
-    type: ACTION_TYPES.WEIGHT.CREATE,
+    type: ACTION_TYPES.DRYING.CREATE,
     payload: { ...response, animal: animal },
   });
 };
 const update = (data) => async (dispatch) => {
   const response = await IdeasCloudApi.fetch(
-    "weightControlUpdate",
+    "dryingControlUpdate",
     data,
     dispatch,
-    "Colectiva pesaje actualizado satisfactoriamente.",
+    "Colectiva secado/destete actualizado satisfactoriamente.",
     "Error desconocido, intente nuavamente."
   );
   dispatch({
-    type: ACTION_TYPES.WEIGHT.UPDATE_CURRENT,
+    type: ACTION_TYPES.DRYING.UPDATE_CURRENT,
     payload: response,
   });
   dispatch(list());
 };
 
-const deleteWeight = (data) => async (dispatch) => {
+const deleteDrying = (data) => async (dispatch) => {
   const response = await IdeasCloudApi.fetch(
-    "weightControlDelete",
+    "dryingControlDelete",
     {
       ...data,
     },
     dispatch,
-    "Colectiva pesaje eliminado exitosamente.",
+    "Colectiva secado/destete eliminado exitosamente.",
     "Error desconocido, intente nuavamente."
   );
-  dispatch({ type: ACTION_TYPES.WEIGHT.DELETE, payload: response });
+  dispatch({ type: ACTION_TYPES.DRYING.DELETE, payload: response });
   dispatch(list());
 };
 
-const WeightActions = {
+const DryingActions = {
   list,
   get,
   create,
   update,
-  deleteWeight,
+  deleteDrying,
 };
 
-export default WeightActions;
+export default DryingActions;
