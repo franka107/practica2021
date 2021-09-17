@@ -1,7 +1,7 @@
 export const columns = [
   {
-    label: "Nro Registro",
-    name: "id",
+    label: "Identificación de animal",
+    name: "animal",
     options: {
       filter: false,
     },
@@ -21,6 +21,20 @@ export const columns = [
     },
   },
   {
+    label: "Raza",
+    name: "race",
+    options: {
+      filter: false,
+    },
+  },
+  {
+    label: "Nro. de partos",
+    name: "numberBirth",
+    options: {
+      filter: false,
+    },
+  },
+  {
     label: "Estado",
     name: "state",
     options: {
@@ -28,15 +42,15 @@ export const columns = [
     },
   },
   {
-    label: "Peso",
-    name: "weight",
+    label: "Produción lechera",
+    name: "milkProduction",
     options: {
       filter: false,
     },
   },
   {
-    label: "Valor",
-    name: "value",
+    label: "Fecha registro",
+    name: "registerDate",
     options: {
       filter: false,
     },

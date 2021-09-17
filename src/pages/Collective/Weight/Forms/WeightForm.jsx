@@ -6,11 +6,14 @@ import TextFieldFormik from "../../../../components/Inputs/TextFieldFormik";
 import ButtonFormik from "../../../../components/Inputs/ButtonFormik";
 import DatePickerFieldFormik from "../../../../components/Inputs/DatePickerFieldFormik";
 import SelectFieldFormik from "../../../../components/Inputs/SelectFieldFormik";
+import AutocompleteFieldFormik from "../../../../components/Inputs/AutocompleteFieldFormik";
 
 const defaultInitValues = {
+  animalId: "",
   date: "",
-  iec: "",
-  observation: "",
+  controlType: "",
+  weight: "",
+  responsable: "",
 };
 function WeightForm({
   initValues = defaultInitValues,
@@ -20,7 +23,9 @@ function WeightForm({
 }) {
   const validationSchema = yup.object({});
 
-  const handleSubmit = (values, actions) => {};
+  const handleSubmit = (values, actions) => {
+    console.log(values);
+  };
 
   return (
     <Formik
@@ -37,6 +42,13 @@ function WeightForm({
             </Typography>
           </Grid>
           <Grid container spacing={1}>
+            <AutocompleteFieldFormik
+              options={[]}
+              name="animalId"
+              label="Identificacíon del animal"
+              onChange={props.handleChange}
+              xs={12}
+            />
             <DatePickerFieldFormik
               label="Fecha"
               name="date"
@@ -58,16 +70,22 @@ function WeightForm({
             <SelectFieldFormik
               label="Responsable"
               name="responsable"
+              options={[]}
               onChange={props.handleChange}
               xs={12}
             ></SelectFieldFormik>
           </Grid>
           <Grid item container xs={12} justifyContent="space-between">
             <Grid item xs={5}>
-              <ButtonFormik xs={12} label="Cancelar" type="cancel" />
+              <ButtonFormik
+                xs={12}
+                label="Cancelar"
+                type="cancel"
+                onClick={onClickCancelButton}
+              />
             </Grid>
             <Grid item xs={5}>
-              <ButtonFormik xs={12} label="Siguiente" type="submit" />
+              <ButtonFormik xs={12} label="Guardar" type="submit" />
             </Grid>
           </Grid>
         </form>

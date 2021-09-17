@@ -4,18 +4,18 @@ import { Grid } from "@material-ui/core";
 import { columns } from "./constants";
 import { saleRouteOptions } from "../constants";
 import { useStyles } from "../styles";
-import CustomMuiTable from "../../../../components/CustomMuiTable";
-import { ROUTES_DICT } from "../../../../routes/routesDict";
-import TableButtons from "../../../../components/TableButtons";
+import CustomMuiTable from "../../../components/CustomMuiTable";
+import { ROUTES_DICT } from "../../../routes/routesDict";
+import TableButtons from "../../../components/TableButtons";
 
-const SaleListPage = ({ children, setTitle, setChipList }) => {
+const MilkListPage = ({ children, setTitle, setChipList }) => {
   const history = useHistory();
   const location = useLocation();
   const [searchText] = useState();
   const classes = useStyles();
 
   useEffect(() => {
-    setTitle("Colectiva / Ventas");
+    setTitle("Control lechero");
     setChipList(saleRouteOptions(location));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -36,11 +36,20 @@ const SaleListPage = ({ children, setTitle, setChipList }) => {
         return (
           <TableButtons
             onClickDeleteButton={() => {
-              history.push(ROUTES_DICT.collective.sale.delete);
+              history.push(ROUTES_DICT.milk.delete);
             }}
             onClickEditButton={() => {
-              history.push(ROUTES_DICT.collective.sale.update);
+              history.push(ROUTES_DICT.milk.update);
             }}
+            onClickStarButton={() => {
+              // dispatch(
+              //   geneticStockActions.updateGeneticStock({
+              //     ...geneticStockList[dataIndex],
+              //     isFeatured: !Boolean(geneticStockList[dataIndex].isFeatured),
+              //   })
+              // );
+            }}
+            // starButtonFeatured={geneticStockList[dataIndex].isFeatured}
           />
         );
       },
@@ -60,4 +69,4 @@ const SaleListPage = ({ children, setTitle, setChipList }) => {
   );
 };
 
-export default SaleListPage;
+export default MilkListPage;

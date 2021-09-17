@@ -2,19 +2,20 @@ import React from "react";
 import { Grid, Typography } from "@material-ui/core";
 import * as yup from "yup";
 import { Formik } from "formik";
-import TextFieldFormik from "../../../../components/Inputs/TextFieldFormik";
-import ButtonFormik from "../../../../components/Inputs/ButtonFormik";
-import DatePickerFieldFormik from "../../../../components/Inputs/DatePickerFieldFormik";
-import AutocompleteFieldFormik from "../../../../components/Inputs/AutocompleteFieldFormik";
+import TextFieldFormik from "../../../components/Inputs/TextFieldFormik";
+import ButtonFormik from "../../../components/Inputs/ButtonFormik";
+import DatePickerFieldFormik from "../../../components/Inputs/DatePickerFieldFormik";
+import AutocompleteFieldFormik from "../../../components/Inputs/AutocompleteFieldFormik";
 
 const defaultInitValues = {
   animalId: "",
   date: "",
-  iec: "",
-  observation: "",
+  firstSample: "",
+  secondSample: "",
+  thirdSample: "",
 };
 
-const SaleForm = ({
+const MilkForm = ({
   initValues = defaultInitValues,
   type = "create",
   onClickCancelButton,
@@ -37,7 +38,9 @@ const SaleForm = ({
         <form onSubmit={props.handleSubmit}>
           <Grid container spacing={1}>
             <Typography variant={"subtitle1"} gutterBottom>
-              {type === "create" ? "Agregar Venta" : "Editar Venta"}
+              {type === "create"
+                ? "Agregar control lechero"
+                : "Editar control lechero"}
             </Typography>
           </Grid>
           <Grid container spacing={1}>
@@ -48,6 +51,13 @@ const SaleForm = ({
               onChange={props.handleChange}
               xs={12}
             />
+            <TextFieldFormik
+              label="Nombre"
+              name="namme"
+              disabled
+              onChange={props.handleChange}
+              xs={12}
+            />
             <DatePickerFieldFormik
               label="Fecha"
               name="date"
@@ -55,24 +65,25 @@ const SaleForm = ({
               xs={12}
             />
             <TextFieldFormik
-              label="Peso"
-              name="weight"
+              label="Muestra A.M(Kg.)"
+              name="firstSample"
               onChange={props.handleChange}
               xs={12}
+              sm={4}
             />
             <TextFieldFormik
-              label="Valor por Lb./Kg"
-              name="valueWeight"
+              label="Kg.Muestra(P.M)"
+              name="secondSample"
               onChange={props.handleChange}
               xs={12}
+              sm={4}
             />
             <TextFieldFormik
-              label="Obervaciones"
-              name="observation"
+              label="3ra Muestra"
+              name="thirdSample"
               onChange={props.handleChange}
-              multiline
-              rows={4}
               xs={12}
+              sm={4}
             />
           </Grid>
           <Grid item container xs={12} justifyContent="space-between">
@@ -94,4 +105,4 @@ const SaleForm = ({
   );
 };
 
-export default SaleForm;
+export default MilkForm;

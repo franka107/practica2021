@@ -42,12 +42,12 @@ export const menuList = [
       {
         id: "inicio",
         title: "Inicio",
-        // link: routesDictionary.milkControl,
+        link: ROUTES_DICT.milk.list,
       },
       {
         id: "agregar",
         title: "Agregar control lechero",
-        // link: routesDictionary.milkControl,
+        link: ROUTES_DICT.milk.create,
       },
     ],
   },
@@ -70,12 +70,12 @@ export const menuList = [
           {
             id: "inicio",
             title: "Inicio",
-            link: ROUTES_DICT.palpations,
+            link: ROUTES_DICT.palpation.list,
           },
           {
             id: "agregar",
             title: "Agregar palpación",
-            // link: routesDictionary.palpation,
+            link: ROUTES_DICT.palpation.create,
           },
         ],
       },

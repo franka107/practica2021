@@ -63,6 +63,14 @@ import DryingListPage from "../pages/Collective/Drying/DryingListPage";
 import DryingCreatePage from "../pages/Collective/Drying/DryingCreatePage";
 import DryingUpdatePage from "../pages/Collective/Drying/DryingUpdatePage";
 import DryingDeletePage from "../pages/Collective/Drying/DryingDeletePage";
+import MilkListPage from "../pages/MilkControl/MilkListPage";
+import MilkCreatePage from "../pages/MilkControl/MilkCreatePage";
+import MilkUpdatePage from "../pages/MilkControl/MilkUpdatePage";
+import MilkDeletePage from "../pages/MilkControl/MilkDeletePage";
+import PalpationListPage from "../pages/Palpation/PalpationListPage";
+import PalpationCreatePage from "../pages/Palpation/PalpationCreatePage";
+import PalpationUpdatePage from "../pages/Palpation/PalpationUpdatePage";
+import PalpationDeletePage from "../pages/Palpation/PalpationDeletePage";
 
 export const ROUTE_TYPES = {
   public: "public",
@@ -289,6 +297,96 @@ export const RENDER_ROUTES = [
             key: "Eliminar animal",
             exact: true,
             component: (props) => <AnimalDeletePage {...props} />,
+            type: ROUTE_TYPES.private,
+          },
+        ],
+      },
+    ],
+  },
+  /**
+   * Rutas relacionadas al Módulo de control de lechero
+   */
+  {
+    path: ROUTES_DICT.milk.root,
+    key: "Control Lechero",
+    exact: false,
+    component: ({ children }) => (
+      <DefaultPage>{(props) => children(props)}</DefaultPage>
+    ),
+    layout: DashboardLayout,
+    type: ROUTE_TYPES.private,
+    routes: [
+      {
+        path: ROUTES_DICT.milk.list,
+        key: "Lista de control lechero",
+        exact: false,
+        component: (props) => <MilkListPage {...props} />,
+        type: ROUTE_TYPES.private,
+        routes: [
+          {
+            path: ROUTES_DICT.milk.create,
+            key: "Nuevo control lechero",
+            exact: true,
+            component: (props) => <MilkCreatePage {...props} />,
+            type: ROUTE_TYPES.private,
+          },
+          {
+            path: ROUTES_DICT.milk.update,
+            key: "Editar control lechero",
+            exact: true,
+            component: (props) => <MilkUpdatePage {...props} />,
+            type: ROUTE_TYPES.private,
+          },
+          {
+            path: ROUTES_DICT.milk.delete,
+            key: "Eliminar control lechero",
+            exact: true,
+            component: (props) => <MilkDeletePage {...props} />,
+            type: ROUTE_TYPES.private,
+          },
+        ],
+      },
+    ],
+  },
+  /**
+   * Rutas relacionadas al Módulo de palpaciones
+   */
+  {
+    path: ROUTES_DICT.palpation.root,
+    key: "Palpaciones",
+    exact: false,
+    component: ({ children }) => (
+      <DefaultPage>{(props) => children(props)}</DefaultPage>
+    ),
+    layout: DashboardLayout,
+    type: ROUTE_TYPES.private,
+    routes: [
+      {
+        path: ROUTES_DICT.palpation.list,
+        key: "Lista de control lechero",
+        exact: false,
+        component: (props) => <PalpationListPage {...props} />,
+        type: ROUTE_TYPES.private,
+        routes: [
+          {
+            path: ROUTES_DICT.palpation.create,
+            key: "Nuevo control lechero",
+            exact: true,
+            component: (props) => <PalpationCreatePage {...props} />,
+            type: ROUTE_TYPES.private,
+          },
+          {
+            path: ROUTES_DICT.palpation.update,
+            key: "Editar control lechero",
+            exact: true,
+            component: (props) => <PalpationUpdatePage {...props} />,
+            type: ROUTE_TYPES.private,
+          },
+          {
+            path: ROUTES_DICT.palpation.delete,
+            key: "Eliminar control lechero",
+            exact: true,
+            component: (props) => <PalpationDeletePage {...props} />,
             type: ROUTE_TYPES.private,
           },
         ],
@@ -737,17 +835,6 @@ export const RENDER_ROUTES = [
     key: "Celos",
     exact: true,
     component: SetupControlPage,
-    layout: DashboardLayout,
-    type: ROUTE_TYPES.private,
-  },
-  /**
-   * Rutas relacionadas al Módulo de palpaciones
-   */
-  {
-    path: ROUTES_DICT.palpations,
-    key: "Celos",
-    exact: true,
-    component: PalpationPage,
     layout: DashboardLayout,
     type: ROUTE_TYPES.private,
   },

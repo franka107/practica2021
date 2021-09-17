@@ -2,19 +2,21 @@ import React from "react";
 import { Grid, Typography } from "@material-ui/core";
 import * as yup from "yup";
 import { Formik } from "formik";
-import TextFieldFormik from "../../../../components/Inputs/TextFieldFormik";
-import ButtonFormik from "../../../../components/Inputs/ButtonFormik";
-import DatePickerFieldFormik from "../../../../components/Inputs/DatePickerFieldFormik";
-import AutocompleteFieldFormik from "../../../../components/Inputs/AutocompleteFieldFormik";
+import TextFieldFormik from "../../../components/Inputs/TextFieldFormik";
+import ButtonFormik from "../../../components/Inputs/ButtonFormik";
+import DatePickerFieldFormik from "../../../components/Inputs/DatePickerFieldFormik";
+import AutocompleteFieldFormik from "../../../components/Inputs/AutocompleteFieldFormik";
+import SelectFieldFormik from "../../../components/Inputs/SelectFieldFormik";
 
 const defaultInitValues = {
   animalId: "",
-  date: "",
-  iec: "",
-  observation: "",
+  touchDate: "",
+  state: "",
+  pregnancyDate: "",
+  responsable: "",
 };
 
-const SaleForm = ({
+const PalpationForm = ({
   initValues = defaultInitValues,
   type = "create",
   onClickCancelButton,
@@ -37,7 +39,7 @@ const SaleForm = ({
         <form onSubmit={props.handleSubmit}>
           <Grid container spacing={1}>
             <Typography variant={"subtitle1"} gutterBottom>
-              {type === "create" ? "Agregar Venta" : "Editar Venta"}
+              {type === "create" ? "Agregar Palpacion" : "Editar Palpacion"}
             </Typography>
           </Grid>
           <Grid container spacing={1}>
@@ -48,30 +50,37 @@ const SaleForm = ({
               onChange={props.handleChange}
               xs={12}
             />
+            <TextFieldFormik
+              label="Nombre"
+              name="name"
+              disabled
+              onChange={props.handleChange}
+              xs={12}
+            />
             <DatePickerFieldFormik
-              label="Fecha"
-              name="date"
+              label="Fecha de tacto"
+              name="touchDate"
               onChange={props.handleChange}
               xs={12}
             />
-            <TextFieldFormik
-              label="Peso"
-              name="weight"
+            <SelectFieldFormik
+              onChange={props.handleChange}
+              options={[]}
+              label="Estado"
+              name="state"
+              xs={12}
+            />
+            <DatePickerFieldFormik
+              label="Fecha preñez"
+              name="pregnancyDate"
               onChange={props.handleChange}
               xs={12}
             />
-            <TextFieldFormik
-              label="Valor por Lb./Kg"
-              name="valueWeight"
+            <AutocompleteFieldFormik
+              options={[]}
+              name="responsable"
+              label="Responsable"
               onChange={props.handleChange}
-              xs={12}
-            />
-            <TextFieldFormik
-              label="Obervaciones"
-              name="observation"
-              onChange={props.handleChange}
-              multiline
-              rows={4}
               xs={12}
             />
           </Grid>
@@ -94,4 +103,4 @@ const SaleForm = ({
   );
 };
 
-export default SaleForm;
+export default PalpationForm;

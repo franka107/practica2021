@@ -5,10 +5,14 @@ import { Formik } from "formik";
 import TextFieldFormik from "../../../../components/Inputs/TextFieldFormik";
 import ButtonFormik from "../../../../components/Inputs/ButtonFormik";
 import DatePickerFieldFormik from "../../../../components/Inputs/DatePickerFieldFormik";
+import AutocompleteFieldFormik from "../../../../components/Inputs/AutocompleteFieldFormik";
 
 const defaultInitValues = {
+  animalId: "",
+  registrationNumber: "",
   date: "",
-  iec: "",
+  breeder: "",
+  owner: "",
   observation: "",
 };
 
@@ -20,7 +24,9 @@ const AssociationForm = ({
 }) => {
   const validationSchema = yup.object({});
 
-  const handleSubmit = (values, actions) => {};
+  const handleSubmit = (values, actions) => {
+    console.log(values);
+  };
 
   return (
     <Formik
@@ -33,22 +39,43 @@ const AssociationForm = ({
         <form onSubmit={props.handleSubmit}>
           <Grid container spacing={1}>
             <Typography variant={"subtitle1"} gutterBottom>
-              {type === "create" ? "Agregar Celo" : "Editar Celo"}
+              {type === "create"
+                ? "Agregar registro de asociación"
+                : "Editar registro de asociación"}
             </Typography>
           </Grid>
           <Grid container spacing={1}>
+            <AutocompleteFieldFormik
+              options={[]}
+              name="animalId"
+              label="Identificacíon del animal"
+              onChange={props.handleChange}
+              xs={12}
+            />
+            <TextFieldFormik
+              label="Nro. registro"
+              name="registrationNumber"
+              onChange={props.handleChange}
+              xs={12}
+            />
             <DatePickerFieldFormik
               label="Fecha"
               name="date"
               onChange={props.handleChange}
               xs={12}
-            ></DatePickerFieldFormik>
-            <DatePickerFieldFormik
-              label="I.E.C"
-              name="iec"
+            />
+            <TextFieldFormik
+              label="Criador"
+              name="breeder"
               onChange={props.handleChange}
               xs={12}
-            ></DatePickerFieldFormik>
+            />
+            <TextFieldFormik
+              label="Propietario"
+              name="owner"
+              onChange={props.handleChange}
+              xs={12}
+            />
             <TextFieldFormik
               label="Obervaciones"
               name="observation"
@@ -56,14 +83,19 @@ const AssociationForm = ({
               multiline
               rows={4}
               xs={12}
-            ></TextFieldFormik>
+            />
           </Grid>
           <Grid item container xs={12} justifyContent="space-between">
             <Grid item xs={5}>
-              <ButtonFormik xs={12} label="Cancelar" type="cancel" />
+              <ButtonFormik
+                xs={12}
+                label="Cancelar"
+                type="cancel"
+                onClick={onClickCancelButton}
+              />
             </Grid>
             <Grid item xs={5}>
-              <ButtonFormik xs={12} label="Siguiente" type="submit" />
+              <ButtonFormik xs={12} label="Guardar" type="submit" />
             </Grid>
           </Grid>
         </form>
