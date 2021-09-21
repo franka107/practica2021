@@ -1,6 +1,18 @@
 import { makeStyles } from "@material-ui/core";
 
 export const useStyles = makeStyles((theme) => ({
+  loader: {
+    position: "fixed",
+    zIndex: "999",
+    overflow: "show",
+    margin: "auto",
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
+    width: "50px",
+    height: "50px",
+  },
   searchContainer_container: {
     padding: "0 .5rem",
     borderRadius: "25px !important",

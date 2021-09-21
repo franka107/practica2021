@@ -1,6 +1,8 @@
+import { CircularProgress } from "@material-ui/core";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { farmActions } from "../redux/actions/farm.actions";
+import { useStyles } from "../styles";
 
 /**
  * @returns {Component}
@@ -10,20 +12,30 @@ import { farmActions } from "../redux/actions/farm.actions";
 const AuthWrapper = ({ children }) => {
   const dispatch = useDispatch();
   const currentFarm = useSelector((state) => state.farm.current);
+  const classes = useStyles();
 
-  const currentAgribusiness = useSelector(
-    (state) => state.agribusiness.current
+  const { current: currentAgribusiness } = useSelector(
+    (state) => state.agribusiness
   );
 
   const user = useSelector((state) => state.auth.user);
 
   useEffect(() => {
-    console.log("Auth wrapper reload");
-    if (!currentFarm) {
+    if (!currentFarm || !currentAgribusiness) {
       dispatch(farmActions.findFarmByOwnerId(user?._id));
     }
   }, [dispatch, currentFarm, currentAgribusiness, user]);
-  return <>{children}</>;
+  return (
+    <>
+      {!currentAgribusiness ? (
+        <div className={classes.loader}>
+          <CircularProgress color="secondary" />
+        </div>
+      ) : (
+        children
+      )}
+    </>
+  );
 };
 
 export default AuthWrapper;
