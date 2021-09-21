@@ -94,9 +94,14 @@ export const movementOptions = {
 };
 
 export const operationOptions = {
-  ADDITION: "Adición",
-  SUBSTRACTION: "Substracción",
+  ADDITION: "Acreditar",
+  SUBSTRACTION: "Debitar",
 };
+
+// export const operationOptions = {
+//   ADDITION: "Adición",
+//   SUBSTRACTION: "Substracción",
+// };
 
 export const typeServices = [
   { _id: "AR_IN", name: "I.A" },
@@ -169,4 +174,9 @@ export const reasonOptions = {
   HEALTH: " Sanidad",
   ABORTION: "Aborto",
   POOR_PRODUCTION: "Pobre producción",
+};
+
+export const saleTranferOptions = {
+  SALE: "Venta",
+  TRANSFER: "Traslado",
 };

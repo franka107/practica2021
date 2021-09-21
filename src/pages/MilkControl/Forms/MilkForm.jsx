@@ -17,7 +17,7 @@ const defaultInitValues = {
   controlDate: new Date(),
   firstSample: 0,
   secondSample: 0,
-  thirdSample: "",
+  thirdSample: 0,
   observation: "",
 };
 
@@ -137,6 +137,9 @@ const MilkForm = ({
               name="thirdSample"
               type="number"
               onChange={props.handleChange}
+              endAdornment={
+                <InputAdornment position="start">Kg</InputAdornment>
+              }
               xs={12}
               sm={4}
             />

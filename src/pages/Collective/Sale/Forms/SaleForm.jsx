@@ -10,6 +10,8 @@ import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import AnimalActions from "../../../../redux/actions/animal.actions";
 import { useEffect } from "react";
 import SaleActions from "../../../../redux/actions/sale.actions";
+import SelectFieldFormik from "../../../../components/Inputs/SelectFieldFormik";
+import { saleTranferOptions } from "../../../../constants";
 
 const defaultInitValues = {
   animalId: "",
@@ -17,6 +19,7 @@ const defaultInitValues = {
   weight: "",
   valueForUnitWeight: "",
   observation: "",
+  typeAction: "SALE",
 };
 
 const SaleForm = ({
@@ -79,6 +82,16 @@ const SaleForm = ({
             </Typography>
           </Grid>
           <Grid container spacing={1}>
+            <SelectFieldFormik
+              onChange={props.handleChange}
+              options={Object.keys(saleTranferOptions).map((key) => ({
+                _id: key,
+                name: saleTranferOptions[key],
+              }))}
+              label="Tipo de Acción"
+              name="typeAction"
+              xs={12}
+            ></SelectFieldFormik>
             <AutocompleteFieldFormik
               options={femaleAnimals}
               name="animalId"
@@ -106,6 +119,23 @@ const SaleForm = ({
               onChange={props.handleChange}
               xs={12}
             />
+            {props.values.typeAction === "SALE" && (
+              <TextFieldFormik
+                label="A quien"
+                name="client"
+                onChange={props.handleChange}
+                xs={12}
+              />
+            )}
+            {props.values.typeAction === "TRANSFER" && (
+              <AutocompleteFieldFormik
+                options={[]}
+                name="agribussinesId"
+                label="Agronegocio"
+                onChange={props.handleChange}
+                xs={12}
+              />
+            )}
             <TextFieldFormik
               label="Peso"
               name="weight"
