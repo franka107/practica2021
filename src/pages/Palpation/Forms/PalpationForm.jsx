@@ -29,7 +29,8 @@ const PalpationForm = ({
 }) => {
   const dispatch = useDispatch();
   const femaleAnimals = useSelector(
-    (state) => state.animal.list.filter((e) => e.gender === "FEMALE"),
+    (state) =>
+      state.animal.list.filter((e) => e.gender === "FEMALE" && e.serviceId),
     shallowEqual
   );
 
