@@ -1,27 +1,7 @@
-import { faHome } from "@fortawesome/free-solid-svg-icons";
+import { ROUTES_DICT } from "../../routes/routesDict";
 import { IconButton } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { Edit } from "@material-ui/icons";
-
-export const menuList = {
-  id: "gestion-haciendas-establos",
-  title: "Establo Reyes",
-  img: faHome,
-  submenu: [
-    {
-      id: "0",
-      title: "U.A. Pradera",
-      // link: routesDictionary.livestockControl,
-      open: false,
-    },
-    {
-      id: "1",
-      title: "Agregar unidad de agronegocio",
-      // link: routesDictionary.livestockControl,
-      open: true,
-    },
-  ],
-};
 
 export const columnsTable = [
   {
@@ -95,5 +75,17 @@ export const exampleTable = [
         </IconButton>
       </>
     ),
+  },
+];
+
+export const haciendaRouteOptions = (location) => [
+  {
+    key: "Agregar agronegocio",
+    path: {
+      pathname: ROUTES_DICT.hacienda.agribusiness.create,
+      state: {
+        background: location,
+      },
+    },
   },
 ];

@@ -71,6 +71,9 @@ import PalpationListPage from "../pages/Palpation/PalpationListPage";
 import PalpationCreatePage from "../pages/Palpation/PalpationCreatePage";
 import PalpationUpdatePage from "../pages/Palpation/PalpationUpdatePage";
 import PalpationDeletePage from "../pages/Palpation/PalpationDeletePage";
+import FarmUpdatePage from "../pages/HaciendaConfigurationPage/FarmUpdatePage";
+import AgribusinessUpdatePage from "../pages/HaciendaConfigurationPage/AgribusinessUpdatePage";
+import AgribusinessCreatePage from "../pages/HaciendaConfigurationPage/AgribusinessCreatePage";
 
 export const ROUTE_TYPES = {
   public: "public",
@@ -565,170 +568,6 @@ export const RENDER_ROUTES = [
           },
         ],
       },
-      // {
-      //   path: ROUTES_DICT.collective.root,
-      //   key: "Celos",
-      //   exact: false,
-      //   component: ({ children }) => (
-      //     <DefaultPage>{(props) => children(props)}</DefaultPage>
-      //   ),
-      //   type: ROUTE_TYPES.private,
-      //   routes: [
-      //     {
-      //       path: ROUTES_DICT.collective.weight,
-      //       key: "Lista de pesos",
-      //       exact: false,
-      //       component: (props) => <ZealListPage {...props} />,
-      //       type: ROUTE_TYPES.private,
-      //       routes: [
-      //         {
-      //           path: ROUTES_DICT.collective.weight.create,
-      //           key: "Nuevo peso",
-      //           exact: true,
-      //           component: (props) => <AnimalCreatePage {...props} />,
-      //           type: ROUTE_TYPES.private,
-      //         },
-      //         {
-      //           path: ROUTES_DICT.collective.weight.update,
-      //           key: "Editar peso",
-      //           exact: true,
-      //           component: (props) => <AnimalUpdatePage {...props} />,
-      //           type: ROUTE_TYPES.private,
-      //         },
-      //         {
-      //           path: ROUTES_DICT.collective.weight.delete,
-      //           key: "Eliminar peso",
-      //           exact: true,
-      //           component: (props) => <AnimalDeletePage {...props} />,
-      //           type: ROUTE_TYPES.private,
-      //         },
-      //       ],
-      //     },
-      //   ],
-      // },
-      // {
-      //   path: ROUTES_DICT.collective.root,
-      //   key: "Celos",
-      //   exact: false,
-      //   component: ({ children }) => (
-      //     <DefaultPage>{(props) => children(props)}</DefaultPage>
-      //   ),
-      //   type: ROUTE_TYPES.private,
-      //   routes: [
-      //     {
-      //       path: ROUTES_DICT.collective.sale.list,
-      //       key: "Lista de ventas",
-      //       exact: false,
-      //       component: (props) => <ZealListPage {...props} />,
-      //       type: ROUTE_TYPES.private,
-      //       routes: [
-      //         {
-      //           path: ROUTES_DICT.collective.sale.create,
-      //           key: "Nueva venta",
-      //           exact: true,
-      //           component: (props) => <AnimalCreatePage {...props} />,
-      //           type: ROUTE_TYPES.private,
-      //         },
-      //         {
-      //           path: ROUTES_DICT.collective.sale.update,
-      //           key: "Editar venta",
-      //           exact: true,
-      //           component: (props) => <AnimalUpdatePage {...props} />,
-      //           type: ROUTE_TYPES.private,
-      //         },
-      //         {
-      //           path: ROUTES_DICT.collective.sale.delete,
-      //           key: "Eliminar venta",
-      //           exact: true,
-      //           component: (props) => <AnimalDeletePage {...props} />,
-      //           type: ROUTE_TYPES.private,
-      //         },
-      //       ],
-      //     },
-      //   ],
-      // },
-      // {
-      //   path: ROUTES_DICT.collective.root,
-      //   key: "Celos",
-      //   exact: false,
-      //   component: ({ children }) => (
-      //     <DefaultPage>{(props) => children(props)}</DefaultPage>
-      //   ),
-      //   type: ROUTE_TYPES.private,
-      //   routes: [
-      //     {
-      //       path: ROUTES_DICT.collective.association.list,
-      //       key: "Lista de asociacion",
-      //       exact: false,
-      //       component: (props) => <AnimalListPage {...props} />,
-      //       type: ROUTE_TYPES.private,
-      //       routes: [
-      //         {
-      //           path: ROUTES_DICT.collective.association.create,
-      //           key: "Nuevo registro de asociacion",
-      //           exact: true,
-      //           component: (props) => <AnimalCreatePage {...props} />,
-      //           type: ROUTE_TYPES.private,
-      //         },
-      //         {
-      //           path: ROUTES_DICT.collective.association.update,
-      //           key: "Editar registro de asociacion",
-      //           exact: true,
-      //           component: (props) => <AnimalUpdatePage {...props} />,
-      //           type: ROUTE_TYPES.private,
-      //         },
-      //         {
-      //           path: ROUTES_DICT.collective.association.delete,
-      //           key: "Eliminar registro de asociacion",
-      //           exact: true,
-      //           component: (props) => <AnimalDeletePage {...props} />,
-      //           type: ROUTE_TYPES.private,
-      //         },
-      //       ],
-      //     },
-      //   ],
-      // },
-      // {
-      //   path: ROUTES_DICT.collective.root,
-      //   key: "Celos",
-      //   exact: false,
-      //   component: ({ children }) => (
-      //     <DefaultPage>{(props) => children(props)}</DefaultPage>
-      //   ),
-      //   type: ROUTE_TYPES.private,
-      //   routes: [
-      //     {
-      //       path: ROUTES_DICT.collective.drying.list,
-      //       key: "Lista de secado/desteste",
-      //       exact: false,
-      //       component: (props) => <AnimalListPage {...props} />,
-      //       type: ROUTE_TYPES.private,
-      //       routes: [
-      //         {
-      //           path: ROUTES_DICT.collective.drying.create,
-      //           key: "Nuevo secado/desteste",
-      //           exact: true,
-      //           component: (props) => <AnimalCreatePage {...props} />,
-      //           type: ROUTE_TYPES.private,
-      //         },
-      //         {
-      //           path: ROUTES_DICT.collective.drying.update,
-      //           key: "Editar secado/desteste",
-      //           exact: true,
-      //           component: (props) => <AnimalUpdatePage {...props} />,
-      //           type: ROUTE_TYPES.private,
-      //         },
-      //         {
-      //           path: ROUTES_DICT.collective.drying.delete,
-      //           key: "Eliminar secado/desteste",
-      //           exact: true,
-      //           component: (props) => <AnimalDeletePage {...props} />,
-      //           type: ROUTE_TYPES.private,
-      //         },
-      //       ],
-      //     },
-      //   ],
-      // },
     ],
   },
 
@@ -823,6 +662,14 @@ export const RENDER_ROUTES = [
    * Rutas relacionadas al Módulo de gestion de haciendas y agronegocios
    */
   {
+    path: ROUTES_DICT.setup,
+    key: "Celos",
+    exact: true,
+    component: SetupControlPage,
+    layout: DashboardLayout,
+    type: ROUTE_TYPES.private,
+  },
+  {
     path: ROUTES_DICT.hacienda,
     key: "Hacienda",
     exact: true,
@@ -830,13 +677,55 @@ export const RENDER_ROUTES = [
     layout: DashboardLayout,
     type: ROUTE_TYPES.private,
   },
+
   {
-    path: ROUTES_DICT.setup,
-    key: "Celos",
-    exact: true,
-    component: SetupControlPage,
+    path: ROUTES_DICT.hacienda.root,
+    key: "Hacienda",
+    exact: false,
+    component: ({ children }) => (
+      <DefaultPage>{(props) => children(props)}</DefaultPage>
+    ),
     layout: DashboardLayout,
     type: ROUTE_TYPES.private,
+    routes: [
+      {
+        path: ROUTES_DICT.hacienda.root,
+        key: "Configuracion de Hacienda",
+        exact: false,
+        component: (props) => <HaciendaConfigurationPage {...props} />,
+        type: ROUTE_TYPES.private,
+        routes: [
+          {
+            path: ROUTES_DICT.hacienda.farm.update,
+            key: "Editar hacienda",
+            exact: true,
+            component: (props) => <FarmUpdatePage {...props} />,
+            type: ROUTE_TYPES.private,
+          },
+          {
+            path: ROUTES_DICT.hacienda.agribusiness.create,
+            key: "Nuevo agronegocio",
+            exact: true,
+            component: (props) => <AgribusinessCreatePage {...props} />,
+            type: ROUTE_TYPES.private,
+          },
+          {
+            path: ROUTES_DICT.hacienda.agribusiness.update,
+            key: "Editar agronegocio",
+            exact: true,
+            component: (props) => <AgribusinessUpdatePage {...props} />,
+            type: ROUTE_TYPES.private,
+          },
+          {
+            path: ROUTES_DICT.milk.delete,
+            key: "Eliminar control lechero",
+            exact: true,
+            component: (props) => <MilkDeletePage {...props} />,
+            type: ROUTE_TYPES.private,
+          },
+        ],
+      },
+    ],
   },
   /**
    * Rutas relacionadas al Módulo de preñeces

@@ -28,7 +28,37 @@ import AgribusinessActions from "../../../redux/actions/agribusiness.actions";
 import clsx from "clsx";
 import currencyActions from "../../../redux/actions/currency.actions";
 
-export default function RegisterAgribusinessForm({ setRegisterStep }) {
+const defaultInitValues = {
+  countryId: "", // *
+  districtId: "", //*
+  regionId: "", //*
+  address: "", //*
+  averageRainfall: "", //String
+  //ConfigureAnimals ----
+  isBreeding: 7, //Number *
+  isHeifer: 15, //Number *
+  meatCost: 0, //Number *
+  meatPrice: 0, //Number *
+  meatUnit: "KILOGRAMS", //String *
+  milkCost: 0, //Number *
+  milkPrice: 0, //Number *
+  milkUnit: "LITERS", //String *
+  //------
+  milkingNumber: 0, //Number *
+  milkingType: "", //String *
+  name: "", //*
+  phoneNumber: "", //*
+  reproductiveManagement: "", //*
+  system: "", //*
+  objectiveFarmOptions: "",
+};
+
+const RegisterAgribusinessForm = ({
+  initValues = defaultInitValues,
+  type = "create",
+  onClickCancelButton,
+  onCompleteSubmit = () => {},
+}) => {
   const validationSchema = yup.object({
     countryId: yup.string("Ingrese el país").required("El país es requerido"),
     regionId: yup
@@ -41,30 +71,6 @@ export default function RegisterAgribusinessForm({ setRegisterStep }) {
     address: yup.string("Ingrese la dirección"),
   });
 
-  const initValues = {
-    countryId: "", // *
-    districtId: "", //*
-    regionId: "", //*
-    address: "", //*
-    averageRainfall: "", //String
-    //ConfigureAnimals ----
-    isBreeding: 7, //Number *
-    isHeifer: 15, //Number *
-    meatCost: 0, //Number *
-    meatPrice: 0, //Number *
-    meatUnit: "KILOGRAMS", //String *
-    milkCost: 0, //Number *
-    milkPrice: 0, //Number *
-    milkUnit: "LITERS", //String *
-    //------
-    milkingNumber: 0, //Number *
-    milkingType: "", //String *
-    name: "", //*
-    phoneNumber: "", //*
-    reproductiveManagement: "", //*
-    system: "", //*
-    objectiveFarmOptions: "",
-  };
   const classes = useStyles();
   const dispatch = useDispatch();
   const { list: countries } = useSelector((state) => state.country);
@@ -296,18 +302,6 @@ export default function RegisterAgribusinessForm({ setRegisterStep }) {
                           className={classes.animalItem}
                         >
                           <div className={classes.numberInput}>
-                            {/*
-                    <Controls.Select
-                      name={"unitType"}
-                      defaultValue={currentUnit[unit.id]}
-                      value={currentUnit[unit.id]}
-                      options={units[unit.id]}
-                      onChange={(e) => {
-                        setUnit({ ...currentUnit, [unit.id]: e.target.value });
-                        handleChange();
-                      }}
-                    />
-                    */}
                             <SelectFieldFormik
                               name="milkUnit"
                               label="Unidad"
@@ -326,32 +320,6 @@ export default function RegisterAgribusinessForm({ setRegisterStep }) {
                               name="milkCost"
                               label="Precio de venta"
                             />
-                            {/*
-                              <Controls.Input
-                                name={"priceEstimed"}
-                                label={"Precio estimado"}
-                                type={"input"}
-                                defaultValue={""}
-                                value={price[unit.id]}
-                                onBlur={() => {
-                                  setPrice({
-                                    ...price,
-                                    [unit.id]: parseFloat(
-                                      price[unit.id]
-                                    ).toFixed(2),
-                                  });
-                                }}
-                                onChange={({ target: { value } }) => {
-                                  const regex = /^\d+(.\d{0,2})?$/;
-
-                                  if (regex.test(value)) {
-                                    setPrice({ ...price, [unit.id]: value });
-                                    handleChange();
-                                  }
-                                }}
-                                customInputClasses={classes.rightText}
-                              />
-                              */}
                           </div>
                           <div className={classes.input}>
                             <TextFieldFormik
@@ -488,18 +456,41 @@ export default function RegisterAgribusinessForm({ setRegisterStep }) {
                   name="system"
                   options={targetSystemOptions}
                 ></SelectFieldFormik>
+                <TextFieldFormik
+                  label="Promedio de lluvias por año"
+                  name="rainsPerYear"
+                  onChange={props.handleChange}
+                  xs={6}
+                ></TextFieldFormik>
                 <Grid xs={12}>
                   <Typography variant={"subtitle2"} sm={12} xs={12}>
                     Reproducción
                   </Typography>
                 </Grid>
                 <SelectFieldFormik
-                  xs={6}
+                  xs={12}
                   label="Manejo reproductivo"
                   name="reproductiveManagement"
                   options={productionOptions}
                 ></SelectFieldFormik>
-                <ButtonFormik type={"submit"} xs={3} label="Siguiente" />
+                {type === "create" && (
+                  <ButtonFormik type={"submit"} xs={3} label="Siguiente" />
+                )}
+                {type === "update" && (
+                  <Grid item container xs={12} justifyContent="space-between">
+                    <Grid item xs={5}>
+                      <ButtonFormik
+                        xs={12}
+                        label="Cancelar"
+                        type="cancel"
+                        onClick={onClickCancelButton}
+                      />
+                    </Grid>
+                    <Grid item xs={5}>
+                      <ButtonFormik xs={12} label="Guardar" type="submit" />
+                    </Grid>
+                  </Grid>
+                )}
               </Grid>
             </form>
           )}
@@ -507,4 +498,6 @@ export default function RegisterAgribusinessForm({ setRegisterStep }) {
       </Grid>
     </div>
   );
-}
+};
+
+export default RegisterAgribusinessForm;

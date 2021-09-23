@@ -147,7 +147,7 @@ function Sidebar({ openDrawer, setOpenDrawer, options }) {
                     className={classes.margin}
                     size="small"
                     onClick={() => {
-                      history.push(ROUTES_DICT.hacienda);
+                      history.push(ROUTES_DICT.hacienda.root);
                     }}
                   >
                     <Edit className={classes.farmItem} fontSize="inherit" />
