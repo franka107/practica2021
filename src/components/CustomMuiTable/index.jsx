@@ -102,11 +102,7 @@ function CustomMuiTable({ options, ...props }) {
       },
     },
   };
-  return (
-    <ThemeProvider theme={overrideTheme}>
-      <MUIDataTable options={{ ...baseOptions, ...options }} {...props} />
-    </ThemeProvider>
-  );
+  return <MUIDataTable options={{ ...baseOptions, ...options }} {...props} />;
 }
 
 export default CustomMuiTable;

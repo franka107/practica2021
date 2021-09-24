@@ -1,5 +1,5 @@
 import React from "react";
-import { Button as MuiButton, makeStyles } from "@material-ui/core";
+import { alpha, Button as MuiButton, makeStyles } from "@material-ui/core";
 import clsx from "clsx";
 
 const useStyles = makeStyles((theme) => ({
@@ -14,27 +14,18 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     backgroundColor: theme.palette.button.primary.secondary,
     color: "black",
-    "&:hover": {
-      backgroundColor: theme.palette.primary.contrastText,
-    },
   },
   buttonSubmit: {
     marginTop: "2rem",
     width: "100%",
-    backgroundColor: theme.palette.secondary.main,
+    backgroundColor: alpha(theme.palette.primary.main, 0.15),
     color: theme.palette.primary.main,
-    "&:hover": {
-      backgroundColor: theme.palette.secondary.main,
-    },
   },
   buttonCancel: {
     marginTop: "2rem",
     width: "100%",
     backgroundColor: theme.palette.button.primary.secondary,
     color: "black",
-    "&:hover": {
-      backgroundColor: theme.palette.primary.contrastText,
-    },
   },
 }));
 

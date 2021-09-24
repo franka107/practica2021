@@ -1,9 +1,8 @@
-import { makeStyles } from '@material-ui/core';
+import { makeStyles } from "@material-ui/core";
 
-
-export const useStyles = makeStyles(theme => ({
+export const useStyles = makeStyles((theme) => ({
   registerContainer: {
-    padding: '1rem 0',
+    padding: "1rem 0",
   },
   textSecondary: {
     color: theme.palette.secondary.main,
@@ -13,52 +12,53 @@ export const useStyles = makeStyles(theme => ({
   },
   button: {
     borderRadius: 25,
-    padding: 'auto 2rem',
-    height: '100%',
+    padding: "auto 2rem",
+    height: "100%",
+    backgroundColor: theme.palette.primary.main,
   },
   buttonContainer: {
     width: 100,
   },
   closeBtn: {
-    position: 'absolute',
+    position: "absolute",
     right: 10,
     top: 10,
-    cursor: 'pointer',
+    cursor: "pointer",
   },
   menuDropdown: {
-    marginTop: '2.5rem',
-    marginLeft: '1.5rem',
+    marginTop: "2.5rem",
+    marginLeft: "1.5rem",
   },
   searchInputContainer: {
-    padding: '0 .5rem',
-    borderRadius: '25px !important',
-    borderColor: 'rgba(0, 0, 0, 0.24) !important',
+    padding: "0 .5rem",
+    borderRadius: "25px !important",
+    borderColor: "rgba(0, 0, 0, 0.24) !important",
     border: `1px solid !important`,
     backgroundColor: `${theme.palette.primary.light} !important`,
-    '&:hover': {
+    "&:hover": {
       backgroundColor: `${theme.palette.primary.light} !important`,
       borderColor: `${theme.palette.primary.light} !important`,
       border: `1px solid !important`,
     },
-    [theme.breakpoints.down('xs')]: {
-      marginTop: '1rem',
+    [theme.breakpoints.down("xs")]: {
+      marginTop: "1rem",
     },
   },
   searchInput: {
-    width: '100% !important',
-    height: '100% !important',
+    width: "100% !important",
+    height: "100% !important",
     backgroundColor: `inherit !important`,
     border: `0px solid !important`,
-    '&:hover': {
+    "&:hover": {
       backgroundColor: `inherit !important`,
       border: `0px solid !important`,
     },
   },
   advancedSearch: {
-    cursor: 'pointer',
+    cursor: "pointer",
     color: theme.palette.secondary.main,
-    [theme.breakpoints.down('xs')]: {
-      marginTop: '1rem',
+    [theme.breakpoints.down("xs")]: {
+      marginTop: "1rem",
     },
   },
 }));

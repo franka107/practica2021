@@ -8,8 +8,8 @@ import {
 } from "./fontFamily";
 import createBreakpoints from "@material-ui/core/styles/createBreakpoints";
 
-const PRIMARY_COLOR = "#FFFFFF";
-const SECONDARY_COLOR = "#0075C9";
+const PRIMARY_COLOR = "#0075C9";
+const SECONDARY_COLOR = "#FFFFFF";
 const breakpoints = createBreakpoints({
   values: {
     xs: 0,
@@ -124,6 +124,9 @@ const mainTheme = createTheme({
       light: "#F2F9FF",
       dark: "#263947",
     },
+    action: {
+      hoverOpacity: 0.17,
+    },
   },
   overrides: {
     MuiTypography: {
@@ -131,6 +134,9 @@ const mainTheme = createTheme({
         [breakpoints.down("md")]: {
           fontSize: 50,
         },
+      },
+      colorPrimary: {
+        color: SECONDARY_COLOR,
       },
     },
     MuiCssBaseline: {
@@ -145,6 +151,21 @@ const mainTheme = createTheme({
       },
     },
 
+    MUIDataTableHeadCell: {
+      fixedHeader: {
+        backgroundColor: "rgb(250, 250, 250)",
+        color: "rgb(0, 117, 201)",
+      },
+      data: {
+        color: "rgb(0, 117, 201)",
+        fontWeight: "normal",
+      },
+    },
+    MuiSvgIcon: {
+      colorPrimary: {
+        color: SECONDARY_COLOR,
+      },
+    },
     MuiPickersToolbar: {
       toolbar: {
         backgroundColor: "#0075c9",
@@ -189,19 +210,18 @@ const mainTheme = createTheme({
         textAlign: "center",
         fontSize: 15,
         fontWeight: 600,
-        backgroundColor: "#0075C9",
-        "&:hover": {
-          backgroundColor: "#0075C9",
-          webkitBoxShadow: "0 0 0 30px blue inset !important",
-          opacity: 0.5,
-        },
+        //"&:hover": {
+        //  backgroundColor: "#0075C9",
+        //  webkitBoxShadow: "0 0 0 30px blue inset !important",
+        //  opacity: 0.5,
+        //},
       },
       textPrimary: {
-        "&:hover": {
-          backgroundColor: "#0075C9",
-          webkitBoxShadow: "0 0 0 30px blue inset !important",
-          opacity: 0.5,
-        },
+        //"&:hover": {
+        //  backgroundColor: "#0075C9",
+        //  webkitBoxShadow: "0 0 0 30px blue inset !important",
+        //  opacity: 0.5,
+        //},
       },
     },
     MuiPaper: {
@@ -314,6 +334,17 @@ const mainTheme = createTheme({
       root: {
         [breakpoints.down("sm")]: {
           minWidth: "35px",
+        },
+      },
+    },
+    MUIDataTableFilter: {
+      resetLink: {
+        backgroundColor: "rgb(0, 117, 201)",
+        color: "white",
+        "&:hover": {
+          webkitBoxShadow: "0 0 0 30px blue inset !important",
+          backgroundColor: "rgb(0, 117, 201)",
+          opacity: 0.5,
         },
       },
     },

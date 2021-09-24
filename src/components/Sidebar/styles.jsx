@@ -33,7 +33,7 @@ export const useStyles = makeStyles((theme) => ({
   icon: {
     width: 20,
     height: 20,
-    color: theme.palette.primary.main,
+    color: theme.palette.secondary.main,
   },
   text: {
     color: "white",
