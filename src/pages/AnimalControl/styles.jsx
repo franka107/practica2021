@@ -48,12 +48,13 @@ export const useStyles = makeStyles((theme) => ({
     padding: "1rem 0",
   },
   border: {
-    border: `1px solid ${theme.palette.secondary.main}`,
+    border: `1px solid ${theme.palette.primary.main}`,
     padding: "0 1rem",
     marginBottom: "1rem",
     position: "relative",
   },
   addBtn: {
+    color: theme.palette.primary.main,
     position: "absolute",
     right: -12,
     bottom: 7,

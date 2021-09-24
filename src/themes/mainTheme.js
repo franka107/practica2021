@@ -7,9 +7,11 @@ import {
   SpartanRegular,
 } from "./fontFamily";
 import createBreakpoints from "@material-ui/core/styles/createBreakpoints";
+import { alpha } from "@material-ui/core";
 
 const PRIMARY_COLOR = "#0075C9";
 const SECONDARY_COLOR = "#FFFFFF";
+const ACTION_HOVER_OPACITY = 0.17;
 const breakpoints = createBreakpoints({
   values: {
     xs: 0,
@@ -125,7 +127,7 @@ const mainTheme = createTheme({
       dark: "#263947",
     },
     action: {
-      hoverOpacity: 0.17,
+      hoverOpacity: ACTION_HOVER_OPACITY,
     },
   },
   overrides: {
@@ -280,9 +282,9 @@ const mainTheme = createTheme({
     },
     MuiCheckbox: {
       root: {
-        color: `${SECONDARY_COLOR} !important`,
+        color: `${PRIMARY_COLOR} !important`,
         checked: {
-          color: SECONDARY_COLOR,
+          color: PRIMARY_COLOR,
         },
       },
     },
@@ -334,6 +336,22 @@ const mainTheme = createTheme({
       root: {
         [breakpoints.down("sm")]: {
           minWidth: "35px",
+        },
+      },
+    },
+    MuiSwitch: {
+      colorSecondary: {
+        "&.Mui-checked": {
+          color: PRIMARY_COLOR,
+          "&:hover": {
+            backgroundColor: alpha(PRIMARY_COLOR, ACTION_HOVER_OPACITY),
+          },
+        },
+        "&.Mui-checked + .MuiSwitch-track": {
+          backgroundColor: PRIMARY_COLOR,
+          "&:hover": {
+            backgroundColor: alpha(PRIMARY_COLOR, ACTION_HOVER_OPACITY),
+          },
         },
       },
     },

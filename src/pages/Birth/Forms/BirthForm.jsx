@@ -334,7 +334,13 @@ const BirthForm = ({
               disabled
             ></TextFieldFormik>
           </Grid>
-          <Grid item container justifyContent={"flex-end"} xs={12}>
+          <Grid
+            item
+            container
+            justifyContent={"flex-end"}
+            style={{ gap: "0.5rem" }}
+            xs={12}
+          >
             <Grid item xs={3} className={classes.paddingButton}>
               <ButtonFormik xs={3} label="Cancelar" type="cancel" />
             </Grid>
