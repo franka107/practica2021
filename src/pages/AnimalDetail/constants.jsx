@@ -1,6 +1,7 @@
+import { generatePath } from "react-router";
 import { ROUTES_DICT } from "../../routes/routesDict";
 
-export const animalDetailChipOptions = (location) => [
+export const animalDetailChipOptions = (location, params) => [
   {
     key: "Inicio",
     path: {
@@ -24,9 +25,9 @@ export const animalDetailChipOptions = (location) => [
   },
   {
     key: "Eliminar animal",
-    path: {
-      pathname: ROUTES_DICT.birth.create,
-      background: location,
-    },
+    path: generatePath(ROUTES_DICT.animalDetail.delete, {
+      ...params,
+      _id: params._id,
+    }),
   },
 ];

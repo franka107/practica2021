@@ -82,6 +82,7 @@ import ServiceUpdatePage from "../pages/AnimalDetail/ServiceUpdatePage";
 import OtherUpdatePage from "../pages/AnimalDetail/OtherUpdatePage";
 import MilkControlUpdatePage from "../pages/AnimalDetail/MilkControlUpdatePage";
 import WeightControlUpdatePage from "../pages/AnimalDetail/WeightControlUpdatePage";
+import AnimalDetailDeletePage from "../pages/AnimalDetail/AnimalDetailDeletePage";
 
 export const ROUTE_TYPES = {
   public: "public",
@@ -668,10 +669,10 @@ export const RENDER_ROUTES = [
             type: ROUTE_TYPES.private,
           },
           {
-            path: ROUTES_DICT.palpation.delete,
-            key: "Eliminar control lechero",
+            path: ROUTES_DICT.animalDetail.delete,
+            key: "Eliminar animal",
             exact: true,
-            component: (props) => <PalpationDeletePage {...props} />,
+            component: (props) => <AnimalDetailDeletePage {...props} />,
             type: ROUTE_TYPES.private,
           },
         ],

@@ -47,7 +47,7 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
 
   useEffect(() => {
     setTitle("Control ganadero");
-    setChipList(animalDetailChipOptions(location));
+    setChipList(animalDetailChipOptions(location, params));
 
     if (!currentAnimal || currentAnimal._id !== params._id) {
       dispatch(AnimalActions.get({ _id: params._id }));

@@ -163,6 +163,7 @@ export const ROUTES_DICT = {
   pregnancies: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.pregnancies}`,
   animalDetail: {
     root: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animalDetail}/:_id`,
+    delete: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animalDetail}/:_id/${ROUTES_SLUGS.delete}`,
     general: {
       update: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animalDetail}/:_id/general/${ROUTES_SLUGS.update}`,
     },
