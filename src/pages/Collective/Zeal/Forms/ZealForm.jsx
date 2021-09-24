@@ -15,7 +15,7 @@ const defaultInitValues = {
   animalId: "",
   name: "",
   controlDate: new Date(),
-  iecDate: new Date(),
+  iecDate: "",
   observation: "",
 };
 
@@ -106,12 +106,12 @@ const ZealForm = ({
               onChange={props.handleChange}
               xs={12}
             ></DatePickerFieldFormik>
-            <DatePickerFieldFormik
+            <TextFieldFormik
               label="I.E.C"
               name="iecDate"
               onChange={props.handleChange}
               xs={12}
-            ></DatePickerFieldFormik>
+            ></TextFieldFormik>
             <TextFieldFormik
               label="Obervaciones"
               name="observation"
