@@ -8,6 +8,11 @@ export function farmReducer(state = {}, action) {
         ...state,
         current: action.payload,
       };
+    case farmConstants.UPDATE:
+      return {
+        ...state,
+        current: action.payload,
+      };
 
     case ACTION_TYPES.FARM.RETRIEVE_BY_OWNER_ID:
       return {

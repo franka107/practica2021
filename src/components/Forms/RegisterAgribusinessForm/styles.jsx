@@ -22,7 +22,7 @@ export const useStyles = makeStyles((theme) => ({
   },
   container: {
     border: `2px solid ${theme.palette.primary.light}`,
-    padding: "1rem 5rem",
+    padding: "1rem 2rem",
     width: "100%",
     alignItems: "center",
     [theme.breakpoints.down("sm")]: {
@@ -38,7 +38,7 @@ export const useStyles = makeStyles((theme) => ({
   },
   numberInput: {
     minWidth: 60,
-    width: 25,
+    width: 100,
     margin: "0 .25rem",
   },
   numberInputText: {

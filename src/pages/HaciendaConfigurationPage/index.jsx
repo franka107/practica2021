@@ -1,43 +1,51 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
-  Chip,
   Grid,
   Typography,
-  Dialog,
   IconButton,
   Paper,
   Divider,
 } from "@material-ui/core";
-import { useHistory } from "react-router-dom";
+import {
+  useHistory,
+  generatePath,
+  useParams,
+  useLocation,
+} from "react-router-dom";
 import clsx from "clsx";
-import FormCollaborator from "./Forms/FormCollaborator";
-import { Close, Edit, Add, Delete } from "@material-ui/icons";
-import { menuList, columnsTable } from "./constants";
+import { Edit, Add, Delete } from "@material-ui/icons";
+import { columnsTable, haciendaRouteOptions } from "./constants";
 import { useStyles } from "./styles";
 import { useSelector } from "react-redux";
 import QRCode from "qrcode.react";
 import CustomMuiTable from "../../components/CustomMuiTable";
+import { ROUTES_DICT } from "../../routes/routesDict";
 
-function Management() {
+const HaciendaConfigurationPage = ({ children, setTitle, setChipList }) => {
   const [cow] = useState({
     imageSrc:
       "https://autocerrajeros.com/wp-content/uploads/2019/05/home-1110868_960_720.png",
   });
   const classes = useStyles();
   const history = useHistory();
-  const { location = {} } = history;
-  const [activeTab] = useState("inicio");
+  const params = useParams();
+  const location = useLocation();
   const [searchText] = useState();
-  const [open, setOpen] = useState(0);
-  const [section, setSection] = useState(0);
+  const currentUser = useSelector((state) => state.auth.user);
   // const dispatch = useDispatch();
-  const { current: currentFarm } = useSelector((state) => state.farm);
-  const { list: listAgribusiness } = useSelector((state) => state.agribusiness);
+  const currentFarm = useSelector((state) => state.farm.current);
+  const listAgribusiness = useSelector((state) => state.agribusiness.list);
   const options = {
     selectableRows: "none",
     searchText,
     search: false,
   };
+
+  useEffect(() => {
+    setTitle("Configuración de Hacienda");
+    setChipList(haciendaRouteOptions(location));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const actionColumn = {
     label: "Acciones",
@@ -53,9 +61,7 @@ function Management() {
               style={{ color: "#C25560" }}
               size="small"
               aria-label="edit"
-              onClick={() => {
-                setOpen(true);
-              }}
+              onClick={() => {}}
             >
               <Edit fontSize="small" />
             </IconButton>
@@ -63,9 +69,7 @@ function Management() {
               style={{ color: "#C25560" }}
               size="small"
               aria-label="delete"
-              onClick={() => {
-                setOpen(true);
-              }}
+              onClick={() => {}}
             >
               <Delete fontSize="small" />
             </IconButton>
@@ -77,26 +81,6 @@ function Management() {
 
   return (
     <Grid item container xs={12}>
-      <Typography variant={"h6"}>Establo Name</Typography>
-      <Grid container spacing={2} className={classes.optionContainer}>
-        {menuList.submenu.map((menu, index) => (
-          <Grid item key={`option-${menu.id}`}>
-            <Chip
-              label={menu.title}
-              onClick={() => {
-                history.push(`${location.pathname}#${menu.id}`);
-                setOpen(menu.open);
-                setSection(menu.id);
-              }}
-              className={clsx(
-                classes.option,
-                activeTab === menu.id && classes.active,
-                activeTab !== menu.id && classes.inactive
-              )}
-            />
-          </Grid>
-        ))}
-      </Grid>
       <Grid item container xs={12}>
         <Grid item xs={12} lg={4}>
           <Paper elevation={4} className={classes.card}>
@@ -108,7 +92,12 @@ function Management() {
                 className={classes.cardEditIcon}
                 size="small"
                 onClick={() => {
-                  setOpen(true);
+                  history.push(
+                    generatePath(ROUTES_DICT.hacienda.farm.update, {
+                      ...params,
+                      _id: currentUser._id,
+                    })
+                  );
                 }}
               >
                 <Edit fontSize="small"></Edit>
@@ -123,9 +112,7 @@ function Management() {
                       classes.cardEditIcon,
                       classes.cardEditButtonCow
                     )}
-                    onClick={() => {
-                      setOpen(true);
-                    }}
+                    onClick={() => {}}
                     size="small"
                   >
                     <Edit fontSize="small"></Edit>
@@ -143,9 +130,7 @@ function Management() {
                     value={window.location.href}
                     className={classes.qrImage}
                     includeMargin={true}
-                    onClick={() => {
-                      setOpen(true);
-                    }}
+                    onClick={() => {}}
                   />
                 </div>
               </div>
@@ -219,10 +204,7 @@ function Management() {
               <IconButton
                 className={classes.cardEditIcon}
                 size="small"
-                onClick={() => {
-                  setOpen(true);
-                  setSection("Collaborator");
-                }}
+                onClick={() => {}}
               >
                 <Add fontSize="small"></Add>
               </IconButton>
@@ -303,7 +285,12 @@ function Management() {
                     className={classes.cardEditIcon}
                     size="small"
                     onClick={() => {
-                      setOpen(true);
+                      history.push(
+                        generatePath(ROUTES_DICT.hacienda.agribusiness.update, {
+                          ...params,
+                          _id: agribusiness._id,
+                        })
+                      );
                     }}
                   >
                     <Edit fontSize="small"></Edit>
@@ -318,9 +305,7 @@ function Management() {
                           classes.cardEditIcon,
                           classes.cardEditButtonCow
                         )}
-                        onClick={() => {
-                          setOpen(true);
-                        }}
+                        onClick={() => {}}
                         size="small"
                       >
                         <Edit fontSize="small"></Edit>
@@ -338,9 +323,7 @@ function Management() {
                         value={window.location.href}
                         className={classes.qrImage}
                         includeMargin={true}
-                        onClick={() => {
-                          setOpen(true);
-                        }}
+                        onClick={() => {}}
                       />
                     </div>
                   </div>
@@ -410,25 +393,9 @@ function Management() {
           ))}
         </Grid>
       )}
-      <Dialog
-        open={Boolean(open)}
-        fullWidth
-        onClose={() => setOpen(false)}
-        aria-labelledby="alert-dialog-title"
-        maxWidth={section === "3" ? "sm" : "md"}
-        aria-describedby="alert-dialog-description"
-        classes={{ paperFullWidth: classes.modal }}
-      >
-        <Close
-          className={classes.closeBtn}
-          onClick={() => {
-            setOpen(false);
-          }}
-        />
-        {section === "Collaborator" && <FormCollaborator setOpen={setOpen} />}
-      </Dialog>
+      {children()}
     </Grid>
   );
-}
+};
 
-export default Management;
+export default HaciendaConfigurationPage;

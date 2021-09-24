@@ -21,7 +21,28 @@ import { farmActions } from "../../../redux/actions/farm.actions";
 import currencyActions from "../../../redux/actions/currency.actions";
 import { useState } from "react";
 
-export default function RegisterFarmForm({ setRegisterStep }) {
+const defaultInitValues = {
+  name: "",
+  landLord: "",
+  nit: "",
+  countryId: "",
+  regionId: "",
+  districtId: "",
+  address: "",
+  phoneNumber: "",
+  currencyId: "",
+  weightUnit: "",
+  areaUnit: "",
+  capacityUnit: "",
+};
+
+const RegisterFarmForm = ({
+  initValues = defaultInitValues,
+  type = "create",
+  onClickCancelButton,
+  onCompleteSubmit = () => {},
+  setRegisterStep,
+}) => {
   const [currencyListParsed, setCurrencyListParsed] = useState([]);
 
   const validationSchema = yup.object({
@@ -55,21 +76,6 @@ export default function RegisterFarmForm({ setRegisterStep }) {
       .required("El tipo de moneda es requerido"),
   });
 
-  const initValues = {
-    name: "",
-    landLord: "",
-    nit: "",
-    countryId: "",
-    regionId: "",
-    districtId: "",
-    address: "",
-    phoneNumber: "",
-    currencyId: "",
-    weightUnit: "",
-    areaUnit: "",
-    capacityUnit: "",
-  };
-
   const classes = useStyles();
   const dispatch = useDispatch();
   const { list: countries } = useSelector((state) => state.country);
@@ -95,8 +101,18 @@ export default function RegisterFarmForm({ setRegisterStep }) {
   }, [dispatch]);
 
   const handleSubmit = (values, actions) => {
-    dispatch(farmActions.create({ ownerId: user._id, ...values }));
-    setRegisterStep(1);
+    try {
+      if (type === "create") {
+        dispatch(farmActions.create({ ownerId: user._id, ...values }));
+        setRegisterStep(1);
+      }
+      if (type === "update") {
+        dispatch(farmActions.update(values));
+      }
+      onCompleteSubmit();
+    } catch {
+      actions.setSubmitting(false);
+    }
   };
 
   return (
@@ -120,7 +136,7 @@ export default function RegisterFarmForm({ setRegisterStep }) {
                   label="Nombre de la hacienda"
                   name="name"
                   onChange={props.handleChange}
-                ></TextFieldFormik>
+                />
                 <TextFieldFormik
                   label="Nombre del propietario"
                   name="landLord"
@@ -128,7 +144,7 @@ export default function RegisterFarmForm({ setRegisterStep }) {
                   lg={9}
                   sm={6}
                   xs={12}
-                ></TextFieldFormik>
+                />
                 <TextFieldFormik
                   label="RUC/DNI/NIT"
                   name="nit"
@@ -136,31 +152,31 @@ export default function RegisterFarmForm({ setRegisterStep }) {
                   lg={3}
                   sm={6}
                   xs={12}
-                ></TextFieldFormik>
+                />
                 <SelectFieldFormik
                   xs={4}
                   label="Pais"
                   name="countryId"
                   options={countries}
-                ></SelectFieldFormik>
+                />
                 <SelectFieldFormik
                   xs={4}
                   label="Región"
                   name="regionId"
                   options={regionList}
-                ></SelectFieldFormik>
+                />
                 <SelectFieldFormik
                   xs={4}
                   label="Distrito"
                   name="districtId"
                   options={districtList}
-                ></SelectFieldFormik>
+                />
                 <TextFieldFormik
                   label="Dirección"
                   name="address"
                   onChange={props.handleChange}
                   xs={9}
-                ></TextFieldFormik>
+                />
                 <PhoneNumberFieldFormik
                   xs={3}
                   name="phoneNumber"
@@ -179,26 +195,43 @@ export default function RegisterFarmForm({ setRegisterStep }) {
                   label="Unidad de areá"
                   name="areaUnit"
                   options={unitAreaOptions}
-                ></SelectFieldFormik>
+                />
                 <SelectFieldFormik
                   sm={3}
                   label="Unidad de peso"
                   name="weightUnit"
                   options={unitWeightOptions}
-                ></SelectFieldFormik>
+                />
                 <SelectFieldFormik
                   sm={3}
                   label="Unidad de volumen"
                   name="capacityUnit"
                   options={unitCapacityOptions}
-                ></SelectFieldFormik>
+                />
                 <SelectFieldFormik
                   sm={3}
                   label="Moneda"
                   name="currencyId"
                   options={currencyListParsed}
-                ></SelectFieldFormik>
-                <ButtonFormik type={"submit"} xs={3} label="Siguiente" />
+                />
+                {type === "create" && (
+                  <ButtonFormik type={"submit"} xs={3} label="Siguiente" />
+                )}
+                {type === "update" && (
+                  <Grid item container xs={12} justifyContent="space-between">
+                    <Grid item xs={5}>
+                      <ButtonFormik
+                        xs={12}
+                        label="Cancelar"
+                        type="cancel"
+                        onClick={onClickCancelButton}
+                      />
+                    </Grid>
+                    <Grid item xs={5}>
+                      <ButtonFormik xs={12} label="Guardar" type="submit" />
+                    </Grid>
+                  </Grid>
+                )}
               </Grid>
             </form>
           )}
@@ -206,4 +239,6 @@ export default function RegisterFarmForm({ setRegisterStep }) {
       </Grid>
     </div>
   );
-}
+};
+
+export default RegisterFarmForm;
