@@ -107,8 +107,8 @@ const RegisterFarmForm = ({
         setRegisterStep(1);
       }
       if (type === "update") {
+        dispatch(farmActions.update(values));
       }
-
       onCompleteSubmit();
     } catch {
       actions.setSubmitting(false);

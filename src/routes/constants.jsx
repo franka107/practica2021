@@ -670,15 +670,6 @@ export const RENDER_ROUTES = [
     type: ROUTE_TYPES.private,
   },
   {
-    path: ROUTES_DICT.hacienda,
-    key: "Hacienda",
-    exact: true,
-    component: HaciendaConfigurationPage,
-    layout: DashboardLayout,
-    type: ROUTE_TYPES.private,
-  },
-
-  {
     path: ROUTES_DICT.hacienda.root,
     key: "Hacienda",
     exact: false,

@@ -55,7 +55,7 @@ const defaultInitValues = {
 
 const RegisterAgribusinessForm = ({
   initValues = defaultInitValues,
-  type = "create",
+  type = "none",
   onClickCancelButton,
   onCompleteSubmit = () => {},
 }) => {
@@ -93,18 +93,23 @@ const RegisterAgribusinessForm = ({
   }, [currentFarm, dispatch]);
 
   const handleSubmit = (values, actions) => {
-    dispatch(
-      AgribusinessActions.createAgribusiness({
-        farmId: currentFarm._id,
-        ...values,
-      })
-    )
-      .then(() => {
-        history.push(ROUTES_DICT.dashboard);
-      })
-      .catch(() => {
-        actions.setSubmitting(false);
-      });
+    try {
+      if (type === "none") {
+        dispatch(AgribusinessActions.create(values)).then(() => {
+          history.push(ROUTES_DICT.dashboard);
+        });
+      }
+      if (type === "create") {
+        dispatch(AgribusinessActions.create(values));
+      }
+      if (type === "update") {
+        dispatch(AgribusinessActions.update(values));
+      }
+
+      onCompleteSubmit();
+    } catch {
+      actions.setSubmitting(false);
+    }
   };
   return (
     <div className={classes.modal}>
@@ -473,10 +478,25 @@ const RegisterAgribusinessForm = ({
                   name="reproductiveManagement"
                   options={productionOptions}
                 ></SelectFieldFormik>
-                {type === "create" && (
+                {type === "none" && (
                   <ButtonFormik type={"submit"} xs={3} label="Siguiente" />
                 )}
                 {type === "update" && (
+                  <Grid item container xs={12} justifyContent="space-between">
+                    <Grid item xs={5}>
+                      <ButtonFormik
+                        xs={12}
+                        label="Cancelar"
+                        type="cancel"
+                        onClick={onClickCancelButton}
+                      />
+                    </Grid>
+                    <Grid item xs={5}>
+                      <ButtonFormik xs={12} label="Guardar" type="submit" />
+                    </Grid>
+                  </Grid>
+                )}
+                {type === "create" && (
                   <Grid item container xs={12} justifyContent="space-between">
                     <Grid item xs={5}>
                       <ButtonFormik

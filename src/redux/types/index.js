@@ -22,8 +22,10 @@ const ACTION_TYPES = {
   },
   AGRIBUSINESS: {
     RETRIEVE: "agribusiness/RETRIEVE",
+    RETRIEVE_BY_ID: "agribusiness/RETRIEVE_BY_ID",
     CREATE: "agribusiness/CREATE",
     UPDATE_CURRENT: "agribusiness/UPDATE_CURRENT",
+    UPDATE: "agribusiness/UPDATE",
     DELETE: "agribusiness/DELETE",
   },
   MOVEMENT: {

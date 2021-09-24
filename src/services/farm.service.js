@@ -11,6 +11,19 @@ const farmCreate = (data) => {
   });
 };
 
+const update = (data) => {
+  return new Promise((resolve, reject) => {
+    window.icAPI.callService("farmUpdate", data, function (error, response) {
+      if (!error) {
+        localStorage.setItem("farm", JSON.stringify(response.responseJSON));
+        resolve(response.responseJSON);
+      } else {
+        reject(response);
+      }
+    });
+  });
+};
+
 function findByOwnerId(ownerId) {
   return new Promise((resolve, reject) => {
     window.icAPI.callService(
@@ -35,6 +48,7 @@ function findByOwnerId(ownerId) {
 const FarmService = {
   farmCreate,
   findByOwnerId,
+  update,
 };
 
 export default FarmService;

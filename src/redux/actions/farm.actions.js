@@ -3,7 +3,7 @@ import ACTION_TYPES from "../types";
 import { farmConstants } from "../types/farm.constants";
 import { alertActions } from "./alert.actions";
 
-export const farmActions = { create, findFarmByOwnerId, clearAll };
+export const farmActions = { create, findFarmByOwnerId, clearAll, update };
 
 function findFarmByOwnerId(ownerId) {
   return (dispatch) => {
@@ -58,5 +58,24 @@ function create(data) {
   }
   function failure(error) {
     return { type: farmConstants.CREATE_FAILURE, error };
+  }
+}
+
+function update(data) {
+  return (dispatch) => {
+    return FarmService.update(data).then(
+      (response) => {
+        dispatch(success(data));
+        return Promise.resolve();
+      },
+      (error) => {
+        dispatch(alertActions.error());
+        return Promise.reject();
+      }
+    );
+  };
+
+  function success(payload) {
+    return { type: farmConstants.UPDATE, payload };
   }
 }

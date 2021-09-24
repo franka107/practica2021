@@ -19,7 +19,8 @@ export function agribusinessReducer(state = initialState, action) {
         ...state,
         list: action.payload,
       };
-
+    case ACTION_TYPES.AGRIBUSINESS.UPDATE:
+      return state;
     case ACTION_TYPES.AGRIBUSINESS.UPDATE_CURRENT:
       return {
         ...state,
