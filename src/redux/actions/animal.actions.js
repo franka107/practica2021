@@ -34,14 +34,14 @@ const create = (data) => async (dispatch, getState) => {
   return response;
 };
 const update = (data) => async (dispatch) => {
-  const response = await IdeasCloudApi.fetch(
+  await IdeasCloudApi.fetch(
     "animalUpdate",
     data,
     dispatch,
     "Animal actualizado satisfactoriamente.",
     "Error desconocido, intente nuavamente."
   );
-  dispatch({ type: ACTION_TYPES.ANIMAL.UPDATE_CURRENT, payload: response });
+  dispatch({ type: ACTION_TYPES.ANIMAL.UPDATE_CURRENT, payload: data });
   dispatch(list());
 };
 

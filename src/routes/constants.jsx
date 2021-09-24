@@ -10,7 +10,7 @@ import EmailVerifiedPage from "../pages/EmailVerifiedPage";
 import SetupControlPage from "../pages/SetupControlPage";
 
 /* routes with dashboard layout */
-import AnimalDetailPage from "../pages/AnimalDetailPage";
+import AnimalDetailPage from "../pages/AnimalDetail/AnimalDetailPage";
 import ServicePageList from "../pages/Services/ServicePageList";
 import IAMNCreatePage from "../pages/Services/IAMNCreatePage";
 import IAMNUpdatePage from "../pages/Services/IAMNUpdatePage";
@@ -74,6 +74,15 @@ import PalpationDeletePage from "../pages/Palpation/PalpationDeletePage";
 import FarmUpdatePage from "../pages/HaciendaConfigurationPage/FarmUpdatePage";
 import AgribusinessUpdatePage from "../pages/HaciendaConfigurationPage/AgribusinessUpdatePage";
 import AgribusinessCreatePage from "../pages/HaciendaConfigurationPage/AgribusinessCreatePage";
+import GeneralUpdatePage from "../pages/AnimalDetail/GeneralUpdatePage";
+import RaceUpdatePage from "../pages/AnimalDetail/RaceUpdatePage";
+import BirthControlUpdatePage from "../pages/AnimalDetail/BirthControlUpdatePage";
+import CalendarUpdatePage from "../pages/AnimalDetail/CalendarUpdatePage";
+import ServiceUpdatePage from "../pages/AnimalDetail/ServiceUpdatePage";
+import OtherUpdatePage from "../pages/AnimalDetail/OtherUpdatePage";
+import MilkControlUpdatePage from "../pages/AnimalDetail/MilkControlUpdatePage";
+import WeightControlUpdatePage from "../pages/AnimalDetail/WeightControlUpdatePage";
+import AnimalDetailDeletePage from "../pages/AnimalDetail/AnimalDetailDeletePage";
 
 export const ROUTE_TYPES = {
   public: "public",
@@ -570,15 +579,6 @@ export const RENDER_ROUTES = [
       },
     ],
   },
-
-  // {
-  //   path: ROUTES_DICT.animal.list,
-  //   key: "Control Animal",
-  //   exact: true,
-  //   component: AnimalControlPage,
-  //   layout: DashboardLayout,
-  //   type: ROUTE_TYPES.private,
-  // },
   {
     path: ROUTES_DICT.pedigree,
     key: "Control Animal",
@@ -587,13 +587,97 @@ export const RENDER_ROUTES = [
     layout: DashboardLayout,
     type: ROUTE_TYPES.private,
   },
+  // {
+  //   path: ROUTES_DICT.animalDetail + "/:animalId",
+  //   key: "Detalles de animal",
+  //   exact: true,
+  //   component: AnimalDetailPage,
+  //   layout: DashboardLayout,
+  //   type: ROUTE_TYPES.private,
+  // },
   {
-    path: ROUTES_DICT.animalDetail + "/:animalId",
+    path: ROUTES_DICT.animalDetail.root,
     key: "Detalles de animal",
-    exact: true,
-    component: AnimalDetailPage,
+    exact: false,
+    component: ({ children }) => (
+      <DefaultPage>{(props) => children(props)}</DefaultPage>
+    ),
     layout: DashboardLayout,
     type: ROUTE_TYPES.private,
+    routes: [
+      {
+        path: ROUTES_DICT.animalDetail.root,
+        key: "Detalle de animal",
+        exact: false,
+        component: (props) => <AnimalDetailPage {...props} />,
+        type: ROUTE_TYPES.private,
+        routes: [
+          {
+            path: ROUTES_DICT.animalDetail.general.update,
+            key: "Editar Datos Generales",
+            exact: true,
+            component: (props) => <GeneralUpdatePage {...props} />,
+            type: ROUTE_TYPES.private,
+          },
+          {
+            path: ROUTES_DICT.animalDetail.race.update,
+            key: "Editar Datos Razas",
+            exact: true,
+            component: (props) => <RaceUpdatePage {...props} />,
+            type: ROUTE_TYPES.private,
+          },
+          {
+            path: ROUTES_DICT.animalDetail.birth.update,
+            key: "Editar Datos Partos",
+            exact: true,
+            component: (props) => <BirthControlUpdatePage {...props} />,
+            type: ROUTE_TYPES.private,
+          },
+          {
+            path: ROUTES_DICT.animalDetail.calendar.update,
+            key: "Editar Datos Calendario",
+            exact: true,
+            component: (props) => <CalendarUpdatePage {...props} />,
+            type: ROUTE_TYPES.private,
+          },
+          {
+            path: ROUTES_DICT.animalDetail.service.update,
+            key: "Editar Datos Servicios",
+            exact: true,
+            component: (props) => <ServiceUpdatePage {...props} />,
+            type: ROUTE_TYPES.private,
+          },
+          {
+            path: ROUTES_DICT.animalDetail.other.update,
+            key: "Editar Datos Extra",
+            exact: true,
+            component: (props) => <OtherUpdatePage {...props} />,
+            type: ROUTE_TYPES.private,
+          },
+          {
+            path: ROUTES_DICT.animalDetail.milk.update,
+            key: "Editar Datos Leche",
+            exact: true,
+            component: (props) => <MilkControlUpdatePage {...props} />,
+            type: ROUTE_TYPES.private,
+          },
+          {
+            path: ROUTES_DICT.animalDetail.weight.update,
+            key: "Editar Datos Leche",
+            exact: true,
+            component: (props) => <WeightControlUpdatePage {...props} />,
+            type: ROUTE_TYPES.private,
+          },
+          {
+            path: ROUTES_DICT.animalDetail.delete,
+            key: "Eliminar animal",
+            exact: true,
+            component: (props) => <AnimalDetailDeletePage {...props} />,
+            type: ROUTE_TYPES.private,
+          },
+        ],
+      },
+    ],
   },
   /**
    * Rutas relacionadas al Módulo de usuarios y planes

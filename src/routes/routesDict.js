@@ -161,7 +161,34 @@ export const ROUTES_DICT = {
   },
   emailVerified: `/${ROUTES_SLUGS.emailVerified}`,
   pregnancies: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.pregnancies}`,
-  animalDetail: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animalDetail}`,
+  animalDetail: {
+    root: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animalDetail}/:_id`,
+    delete: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animalDetail}/:_id/${ROUTES_SLUGS.delete}`,
+    general: {
+      update: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animalDetail}/:_id/general/${ROUTES_SLUGS.update}`,
+    },
+    race: {
+      update: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animalDetail}/:_id/race/${ROUTES_SLUGS.update}`,
+    },
+    birth: {
+      update: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animalDetail}/:_id/birth/${ROUTES_SLUGS.update}`,
+    },
+    calendar: {
+      update: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animalDetail}/:_id/calendar/${ROUTES_SLUGS.update}`,
+    },
+    service: {
+      update: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animalDetail}/:_id/service/${ROUTES_SLUGS.update}`,
+    },
+    other: {
+      update: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animalDetail}/:_id/other/${ROUTES_SLUGS.update}`,
+    },
+    milk: {
+      update: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animalDetail}/:_id/milk/${ROUTES_SLUGS.update}`,
+    },
+    weight: {
+      update: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animalDetail}/:_id/weight/${ROUTES_SLUGS.update}`,
+    },
+  },
   pedigree: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animalDetail}/:animalId/${ROUTES_SLUGS.pedigree}`,
   recoverPassword: `/${ROUTES_SLUGS.recoverPassword}`,
   setup: `/${ROUTES_SLUGS.setup}`,
