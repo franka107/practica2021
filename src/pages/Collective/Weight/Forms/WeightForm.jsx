@@ -11,6 +11,7 @@ import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import AnimalActions from "../../../../redux/actions/animal.actions";
 import WeightActions from "../../../../redux/actions/weight.actions";
 import { controlTypeOptions } from "../../../../constants";
+import CollaboratorActions from "../../../../redux/actions/collaborator.actions";
 
 const defaultInitValues = {
   animalId: "",
@@ -31,8 +32,12 @@ function WeightForm({
     (state) => state.animal.list.filter((e) => e.gender === "FEMALE"),
     shallowEqual
   );
+  const listCollaborator = useSelector((state) => state.collaborator.list);
 
   useEffect(() => {
+    if (!listCollaborator || listCollaborator.length === 0) {
+      dispatch(CollaboratorActions.list());
+    }
     if (!femaleAnimals || femaleAnimals.length === 0) {
       dispatch(AnimalActions.list());
     }
@@ -106,7 +111,7 @@ function WeightForm({
               name="controlDate"
               onChange={props.handleChange}
               xs={12}
-            ></DatePickerFieldFormik>
+            />
             <SelectFieldFormik
               label="Tipo de Control"
               name="controlType"
@@ -116,21 +121,21 @@ function WeightForm({
               }))}
               onChange={props.handleChange}
               xs={12}
-            ></SelectFieldFormik>
+            />
             <TextFieldFormik
               label="Peso"
               name="weight"
               type="number"
               onChange={props.handleChange}
               xs={12}
-            ></TextFieldFormik>
+            />
             <SelectFieldFormik
+              onChange={props.handleChange}
+              options={listCollaborator}
               label="Responsable"
               name="userId"
-              options={[]}
-              onChange={props.handleChange}
               xs={12}
-            ></SelectFieldFormik>
+            />
           </Grid>
           <Grid item container xs={12} justifyContent="space-between">
             <Grid item xs={5}>

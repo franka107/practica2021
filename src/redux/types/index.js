@@ -134,11 +134,19 @@ const ACTION_TYPES = {
     RETRIEVE_BY_CURRENCY: "service/RETRIEVE_BY_CURRENCY",
     RETRIEVE_BY_ID: "service/RETRIEVE_BY_ID",
     UPDATE: "service/UPDATE",
-
     RETRIEVE: "service/RETRIEVE",
     UPDATE_CURRENT: "service/UPDATE_CURRENT",
     DELETE: "service/DELETE",
     CREATE: "service/CREATE",
+  },
+  COLLABORATOR: {
+    RETRIEVE_BY_CURRENCY: "collaborator/RETRIEVE_BY_CURRENCY",
+    RETRIEVE_BY_ID: "collaborator/RETRIEVE_BY_ID",
+    UPDATE: "collaborator/UPDATE",
+    RETRIEVE: "collaborator/RETRIEVE",
+    UPDATE_CURRENT: "collaborator/UPDATE_CURRENT",
+    DELETE: "collaborator/DELETE",
+    CREATE: "collaborator/CREATE",
   },
 };
 

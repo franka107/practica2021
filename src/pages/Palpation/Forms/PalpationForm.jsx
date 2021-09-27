@@ -11,6 +11,7 @@ import { stateOptions } from "../../../constants";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import AnimalActions from "../../../redux/actions/animal.actions";
 import PalpationActions from "../../../redux/actions/palpation.actions";
+import CollaboratorActions from "../../../redux/actions/collaborator.actions";
 
 const defaultInitValues = {
   animalId: "",
@@ -33,8 +34,12 @@ const PalpationForm = ({
       state.animal.list.filter((e) => e.gender === "FEMALE" && e.serviceId),
     shallowEqual
   );
+  const listCollaborator = useSelector((state) => state.collaborator.list);
 
   useEffect(() => {
+    if (!listCollaborator || listCollaborator.length === 0) {
+      dispatch(CollaboratorActions.list());
+    }
     if (!femaleAnimals || femaleAnimals.length === 0) {
       dispatch(AnimalActions.list());
     }
@@ -121,11 +126,11 @@ const PalpationForm = ({
               onChange={props.handleChange}
               xs={12}
             />
-            <AutocompleteFieldFormik
-              options={[]}
-              name="userId"
-              label="Responsable"
+            <SelectFieldFormik
               onChange={props.handleChange}
+              options={listCollaborator}
+              label="Responsable"
+              name="userId"
               xs={12}
             />
             <TextFieldFormik

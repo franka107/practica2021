@@ -14,6 +14,7 @@ import { ROUTES_DICT } from "../../../../routes/routesDict";
 import TableButtons from "../../../../components/TableButtons";
 import { useDispatch, useSelector } from "react-redux";
 import SaleActions from "../../../../redux/actions/sale.actions";
+import SearchContainer from "../../../../components/SearchContainer";
 
 const SaleListPage = ({ children, setTitle, setChipList }) => {
   const history = useHistory();
@@ -21,7 +22,7 @@ const SaleListPage = ({ children, setTitle, setChipList }) => {
   const params = useParams();
   const dispatch = useDispatch();
   const classes = useStyles();
-  const [searchText] = useState();
+  const [searchText, setSearchText] = useState();
 
   const listSaleControl = useSelector((state) => state.sale.list);
 
@@ -72,6 +73,8 @@ const SaleListPage = ({ children, setTitle, setChipList }) => {
   };
   return (
     <Grid container xs={12}>
+      <SearchContainer searchText={searchText} setSearchText={setSearchText} />
+
       <Grid item xs={12} className={classes.registerContainer}>
         <CustomMuiTable
           data={listSaleControl}

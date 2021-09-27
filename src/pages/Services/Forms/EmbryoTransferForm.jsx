@@ -21,6 +21,7 @@ import {
   typeEmbryonOptions,
 } from "../../../constants";
 import AnimalActions from "../../../redux/actions/animal.actions";
+import CollaboratorActions from "../../../redux/actions/collaborator.actions";
 
 const defaultInitValues = {
   agribusinessId: "",
@@ -64,6 +65,8 @@ const EmbryoTransferForm = ({
       ),
     shallowEqual
   );
+  const listCollaborator = useSelector((state) => state.collaborator.list);
+
   const validationSchema = () =>
     yup.lazy((values) =>
       yup.object({
@@ -88,6 +91,9 @@ const EmbryoTransferForm = ({
     );
 
   useEffect(() => {
+    if (!listCollaborator || listCollaborator.length === 0) {
+      dispatch(CollaboratorActions.list());
+    }
     dispatch(serviceActions.listByAgribusiness());
 
     dispatch(AnimalActions.list());
@@ -290,7 +296,7 @@ const EmbryoTransferForm = ({
               sm={4}
               name="userId"
               label="Inseminador"
-              options={[]}
+              options={listCollaborator}
             />
             <TextFieldFormik
               onChange={props.handleChange}

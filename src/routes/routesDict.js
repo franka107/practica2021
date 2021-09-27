@@ -42,6 +42,7 @@ export const ROUTES_SLUGS = {
   milk: "milk",
   farm: "farm",
   agribusiness: "agribusiness",
+  collaborator: "collaborator",
 };
 
 export const ROUTES_DICT = {
@@ -157,6 +158,12 @@ export const ROUTES_DICT = {
       root: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.hacienda}/${ROUTES_SLUGS.agribusiness}`,
       create: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.hacienda}/${ROUTES_SLUGS.agribusiness}/${ROUTES_SLUGS.create}`,
       update: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.hacienda}/${ROUTES_SLUGS.agribusiness}/:_id/${ROUTES_SLUGS.update}`,
+    },
+    collaborator: {
+      root: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.hacienda}/${ROUTES_SLUGS.collaborator}`,
+      create: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.hacienda}/${ROUTES_SLUGS.collaborator}/${ROUTES_SLUGS.create}`,
+      update: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.hacienda}/${ROUTES_SLUGS.collaborator}/:_id/${ROUTES_SLUGS.update}`,
+      delete: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.hacienda}/${ROUTES_SLUGS.collaborator}/:_id/${ROUTES_SLUGS.delete}`,
     },
   },
   emailVerified: `/${ROUTES_SLUGS.emailVerified}`,

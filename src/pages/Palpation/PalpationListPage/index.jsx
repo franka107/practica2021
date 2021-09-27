@@ -14,6 +14,7 @@ import { ROUTES_DICT } from "../../../routes/routesDict";
 import TableButtons from "../../../components/TableButtons";
 import { useDispatch, useSelector } from "react-redux";
 import PalpationActions from "../../../redux/actions/palpation.actions";
+import SearchContainer from "../../../components/SearchContainer";
 
 const PalpationListPage = ({ children, setTitle, setChipList }) => {
   const history = useHistory();
@@ -21,7 +22,7 @@ const PalpationListPage = ({ children, setTitle, setChipList }) => {
   const classes = useStyles();
   const params = useParams();
   const dispatch = useDispatch();
-  const [searchText] = useState();
+  const [searchText, setSearchText] = useState();
 
   const listPalpationControl = useSelector((state) => state.palpation.list);
 
@@ -72,6 +73,8 @@ const PalpationListPage = ({ children, setTitle, setChipList }) => {
   };
   return (
     <Grid container xs={12}>
+      <SearchContainer searchText={searchText} setSearchText={setSearchText} />
+
       <Grid item xs={12} className={classes.registerContainer}>
         <CustomMuiTable
           data={listPalpationControl}
