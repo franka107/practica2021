@@ -20,6 +20,7 @@ import {
 } from "../../../constants";
 import AnimalActions from "../../../redux/actions/animal.actions";
 import BirthActions from "../../../redux/actions/birth.actions";
+import geneticStockActions from "../../../redux/actions/geneticStock.actions";
 import { useStyles } from "../../../styles";
 const defaultInitValues = {
   children: [],
@@ -28,6 +29,9 @@ const defaultInitValues = {
   birthType: birthTypeOptions.SIMPLE,
   difficulty: birthDifficulyOptions.CEASAREAN,
   retainedPlacenta: false,
+  father: "",
+  semen: "",
+  embryo: "",
 };
 
 const BirthForm = ({
@@ -37,9 +41,22 @@ const BirthForm = ({
   onCompleteSubmit = () => {},
 }) => {
   const dispatch = useDispatch();
+  const maleAnimals = useSelector(
+    (state) => state.animal.list.filter((e) => e.gender === "MALE"),
+    shallowEqual
+  );
   const femaleAnimals = useSelector(
     (state) =>
       state.animal.list.filter((e) => e.gender === "FEMALE" && e.isPregnant),
+    shallowEqual
+  );
+  const listSemen = useSelector(
+    (state) => state.geneticStock.list.filter((e) => e.geneticType === "SEMEN"),
+    shallowEqual
+  );
+  const listEmbryo = useSelector(
+    (state) =>
+      state.geneticStock.list.filter((e) => e.geneticType === "EMBRYO"),
     shallowEqual
   );
   const validationSchema = () =>
@@ -66,6 +83,9 @@ const BirthForm = ({
   const classes = useStyles();
 
   useEffect(() => {
+    if (!listSemen || listSemen.length === 0) {
+      dispatch(geneticStockActions.listGeneticStockByAgribusiness());
+    }
     if (!femaleAnimals || femaleAnimals.length === 0) {
       dispatch(AnimalActions.list());
     }
@@ -218,15 +238,78 @@ const BirthForm = ({
               label="Retuvo placenta"
               onChange={props.handleChange}
             />
-            <TextFieldFormik
-              label="Padre"
-              name="fatherId"
-              disabled
-              onChange={props.handleChange}
-              lg={6}
-              sm={6}
-              xs={12}
-            ></TextFieldFormik>
+            {props.values.animalId &&
+              femaleAnimals.find((e) => e._id === props.values.animalId)
+                ?.activeService.serviceType === "NA_MO" && (
+                <TextFieldFormik
+                  label="Padre"
+                  name="father"
+                  disabled
+                  onChange={props.handleChange}
+                  value={
+                    props.values.animalId
+                      ? maleAnimals.find(
+                          (e) =>
+                            e._id ===
+                            femaleAnimals.find(
+                              (e) => e._id === props.values.animalId
+                            )?.activeService.reproductorAnimalId
+                        )?.identifier
+                      : ""
+                  }
+                  lg={6}
+                  sm={6}
+                  xs={12}
+                />
+              )}
+            {props.values.animalId &&
+              femaleAnimals.find((e) => e._id === props.values.animalId)
+                ?.activeService.serviceType === "EM_TR" && (
+                <TextFieldFormik
+                  label="Embrión"
+                  name="embryo"
+                  disabled
+                  onChange={props.handleChange}
+                  value={
+                    props.values.animalId
+                      ? listEmbryo.find(
+                          (e) =>
+                            e._id ===
+                            femaleAnimals.find(
+                              (e) => e._id === props.values.animalId
+                            )?.activeService.geneticStockId
+                        )?.identifier
+                      : ""
+                  }
+                  lg={6}
+                  sm={6}
+                  xs={12}
+                />
+              )}
+            {props.values.animalId &&
+              femaleAnimals.find((e) => e._id === props.values.animalId)
+                ?.activeService.serviceType === "AR_IN" && (
+                <TextFieldFormik
+                  label="Semen"
+                  name="semen"
+                  disabled
+                  onChange={props.handleChange}
+                  value={
+                    props.values.animalId
+                      ? listSemen.find(
+                          (e) =>
+                            e._id ===
+                            femaleAnimals.find(
+                              (e) => e._id === props.values.animalId
+                            )?.activeService.geneticStockId
+                        )?.identifier
+                      : ""
+                  }
+                  lg={6}
+                  sm={6}
+                  xs={12}
+                />
+              )}
           </Grid>
 
           {(birthTypeOptions[props.values.birthType] ===
