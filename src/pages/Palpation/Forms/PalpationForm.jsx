@@ -129,7 +129,6 @@ const PalpationForm = ({
               onChange={props.handleChange}
               xs={12}
             />
-<<<<<<< HEAD
             <Grid item container xs={12}>
               <SelectFieldFormik
                 onChange={props.handleChange}
@@ -152,32 +151,10 @@ const PalpationForm = ({
               />
             )}
             <AutocompleteFieldFormik
-              options={[]}
               name="userId"
               label="Responsable"
-=======
-            <SelectFieldFormik
-              onChange={props.handleChange}
-              options={Object.keys(stateOptions).map((key) => ({
-                _id: key,
-                name: stateOptions[key],
-              }))}
-              label="Estado"
-              name="state"
-              xs={12}
-            />
-            <DatePickerFieldFormik
-              label="Fecha preñez"
-              name="pregnancyDate"
-              onChange={props.handleChange}
-              xs={12}
-            />
-            <SelectFieldFormik
->>>>>>> origin/feature/implement-send-image
               onChange={props.handleChange}
               options={listCollaborator}
-              label="Responsable"
-              name="userId"
               xs={12}
             />
             <TextFieldFormik
