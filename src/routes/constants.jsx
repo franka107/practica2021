@@ -86,6 +86,7 @@ import AnimalDetailDeletePage from "../pages/AnimalDetail/AnimalDetailDeletePage
 import CollaboratorCreatePage from "../pages/HaciendaConfigurationPage/CollaboratorCreatePage";
 import CollaboratorUpdatePage from "../pages/HaciendaConfigurationPage/CollaboratorUpdatePage";
 import CollaboratorDeletePage from "../pages/HaciendaConfigurationPage/CollaboratorDeletePage";
+import ImageUploadPage from "../pages/AnimalDetail/ImageUploadPage";
 
 export const ROUTE_TYPES = {
   public: "public",
@@ -676,6 +677,13 @@ export const RENDER_ROUTES = [
             key: "Eliminar animal",
             exact: true,
             component: (props) => <AnimalDetailDeletePage {...props} />,
+            type: ROUTE_TYPES.private,
+          },
+          {
+            path: ROUTES_DICT.animalDetail.image.upload,
+            key: "Subir imagen",
+            exact: true,
+            component: (props) => <ImageUploadPage {...props} />,
             type: ROUTE_TYPES.private,
           },
         ],

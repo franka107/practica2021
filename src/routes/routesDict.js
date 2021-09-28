@@ -5,6 +5,7 @@ export const ROUTES_SLUGS = {
   create: "create",
   update: "update",
   delete: "delete",
+  upload: "upload",
   /**
    * General routes slugs
    */
@@ -194,6 +195,9 @@ export const ROUTES_DICT = {
     },
     weight: {
       update: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animalDetail}/:_id/weight/${ROUTES_SLUGS.update}`,
+    },
+    image: {
+      upload: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animalDetail}/:_id/image/${ROUTES_SLUGS.upload}`,
     },
   },
   pedigree: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animalDetail}/:animalId/${ROUTES_SLUGS.pedigree}`,
