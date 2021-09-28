@@ -327,11 +327,11 @@ const mainTheme = createTheme({
         },
       },
     },
-    MuiSelect: {
-      iconFilled: {
-        color: SECONDARY_COLOR,
-      },
-    },
+    //MuiSelect: {
+    //  iconFilled: {
+    //    color: PRIMARY_COLOR,
+    //  },
+    //},
     MuiListItemIcon: {
       root: {
         [breakpoints.down("sm")]: {

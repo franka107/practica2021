@@ -1,6 +1,10 @@
 import { makeStyles } from "@material-ui/core";
 
 export const useStyles = makeStyles((theme) => ({
+  grid__center: {
+    alignSelf: "center",
+    textAlign: "center",
+  },
   loader: {
     position: "fixed",
     zIndex: "999",

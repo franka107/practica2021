@@ -38,7 +38,8 @@ const BirthForm = ({
 }) => {
   const dispatch = useDispatch();
   const femaleAnimals = useSelector(
-    (state) => state.animal.list.filter((e) => e.gender === "FEMALE"),
+    (state) =>
+      state.animal.list.filter((e) => e.gender === "FEMALE" && e.isPregnant),
     shallowEqual
   );
   const validationSchema = () =>

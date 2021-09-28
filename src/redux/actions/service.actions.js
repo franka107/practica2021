@@ -1,5 +1,6 @@
 import ServiceService from "../../services/service.service";
 import ACTION_TYPES from "../types";
+import AnimalActions from "./animal.actions";
 import UiActions from "./ui.actions";
 
 class ServiceActions {
@@ -48,6 +49,7 @@ class ServiceActions {
             payload: response,
           });
           dispatch(UiActions.showSnackbar("El registro de creo exitosamente"));
+          dispatch(AnimalActions.list());
           return Promise.resolve();
         },
         (error) => {

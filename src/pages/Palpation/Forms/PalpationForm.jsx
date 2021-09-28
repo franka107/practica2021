@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Grid, Typography } from "@material-ui/core";
+import { Grid, IconButton, Tooltip, Typography } from "@material-ui/core";
 import * as yup from "yup";
 import { Formik } from "formik";
 import TextFieldFormik from "../../../components/Inputs/TextFieldFormik";
@@ -11,6 +11,9 @@ import { stateOptions } from "../../../constants";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import AnimalActions from "../../../redux/actions/animal.actions";
 import PalpationActions from "../../../redux/actions/palpation.actions";
+import { Info } from "@material-ui/icons";
+import { useStyles } from "../../../styles";
+import CustomInfoIcon from "../../../components/CustomInfoIcon";
 
 const defaultInitValues = {
   animalId: "",
@@ -27,10 +30,21 @@ const PalpationForm = ({
   onClickCancelButton,
   onCompleteSubmit = () => {},
 }) => {
+  const classes = useStyles();
+  const stateTitle =
+    'Una vez que se declare el estado del animal como "Preñada" o "Vacía" ya no estará disponible en este módulo hasta que se realize un nuevo servicio del animal.';
+  const animalTitle =
+    "Los animales listados en este módulo tienen que registrar un servicio previo relacionado.";
   const dispatch = useDispatch();
   const femaleAnimals = useSelector(
     (state) =>
-      state.animal.list.filter((e) => e.gender === "FEMALE" && e.serviceId),
+      state.animal.list.filter(
+        (e) =>
+          e.gender === "FEMALE" &&
+          !e.isPregnant &&
+          e.isServed &&
+          e.activeServiceId
+      ),
     shallowEqual
   );
 
@@ -44,7 +58,9 @@ const PalpationForm = ({
   const validationSchema = yup.object({
     animalId: yup
       .string("Ingresa la identificacion del animal.")
-      .required("Este campo es requerido."),
+      .required("Este campo es requerido.")
+      .nullable(),
+    state: yup.string().required("Este campo es requerido"),
   });
 
   const handleSubmit = async (values, actions) => {
@@ -78,14 +94,17 @@ const PalpationForm = ({
             </Typography>
           </Grid>
           <Grid container spacing={1}>
-            <AutocompleteFieldFormik
-              options={femaleAnimals}
-              name="animalId"
-              label="Identificacíon del animal"
-              onChange={props.handleChange}
-              defaultValue={type === "create" ? null : props.values.animal}
-              xs={12}
-            />
+            <Grid item container xs={12}>
+              <AutocompleteFieldFormik
+                options={femaleAnimals}
+                name="animalId"
+                label="Identificación del animal"
+                onChange={props.handleChange}
+                defaultValue={type === "create" ? null : props.values.animal}
+                xs={11}
+              />
+              <CustomInfoIcon title={animalTitle} />
+            </Grid>
             <TextFieldFormik
               label="Nombre"
               name="name"
@@ -105,22 +124,27 @@ const PalpationForm = ({
               onChange={props.handleChange}
               xs={12}
             />
-            <SelectFieldFormik
-              onChange={props.handleChange}
-              options={Object.keys(stateOptions).map((key) => ({
-                _id: key,
-                name: stateOptions[key],
-              }))}
-              label="Estado"
-              name="state"
-              xs={12}
-            />
-            <DatePickerFieldFormik
-              label="Fecha preñez"
-              name="pregnancyDate"
-              onChange={props.handleChange}
-              xs={12}
-            />
+            <Grid item container xs={12}>
+              <SelectFieldFormik
+                onChange={props.handleChange}
+                options={Object.keys(stateOptions).map((key) => ({
+                  _id: key,
+                  name: stateOptions[key],
+                }))}
+                label="Estado"
+                name="state"
+                xs={11}
+              />
+              <CustomInfoIcon title={stateTitle} />
+            </Grid>
+            {stateOptions[props.values.state] === stateOptions.PREGNANT && (
+              <DatePickerFieldFormik
+                label="Fecha preñez"
+                name="pregnancyDate"
+                onChange={props.handleChange}
+                xs={12}
+              />
+            )}
             <AutocompleteFieldFormik
               options={[]}
               name="userId"

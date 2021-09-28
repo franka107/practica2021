@@ -44,7 +44,10 @@ const IAMNForm = ({
   const dispatch = useDispatch();
 
   const femaleAnimals = useSelector(
-    (state) => state.animal.list.filter((e) => e.gender === "FEMALE"),
+    (state) =>
+      state.animal.list.filter(
+        (e) => e.gender === "FEMALE" && !e.isPregnant && !e.isServed
+      ),
     shallowEqual
   );
 
@@ -114,13 +117,18 @@ const IAMNForm = ({
         values.agribusinessId = currentAgribusiness._id;
         if (values.serviceType === "AR_IN") {
           await dispatch(
-            serviceActions.create(_.omit(values, "reproductorAnimalId"))
+            serviceActions.create(
+              _.omit(
+                { ...values, quantity: -1 * values.quantity },
+                "reproductorAnimalId"
+              )
+            )
           );
         } else {
           await dispatch(
             serviceActions.create(
               _.omit(
-                values,
+                { ...values, quantity: -1 * values.quantity },
                 "quantity",
                 "genetickStockId",
                 "strawGender",
