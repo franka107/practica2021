@@ -14,25 +14,16 @@ const AnimalImageForm = ({
   const currentFarm = useSelector((state) => state.farm.current);
 
   const handleSubmit = async (values, actions) => {
-    console.log(values);
     const response = await IdeasCloudApi.fetch("uploadImage", {
       farmId: currentFarm._id,
     });
 
-    var myHeaders = new Headers();
+    const myHeaders = new Headers();
     myHeaders.append("Content-Type", values.imageUpload.type);
-
-    // var file = await toBase64(values.imageUpload);
-
-    // const file = new Buffer(values.imageUpload, "binary").toString("base64");
-
-    const fileReader = new FileReader();
-    const file = fileReader.readAsArrayBuffer(values.imageUpload);
-
-    var requestOptions = {
+    const requestOptions = {
       method: "PUT",
       headers: myHeaders,
-      body: file,
+      body: values.imageUpload,
       redirect: "follow",
     };
 
@@ -47,28 +38,6 @@ const AnimalImageForm = ({
   const initValues = {
     imageUpload: null,
   };
-
-  // const toBase64 = (file) =>
-  //   new Promise((resolve, reject) => {
-  //     const reader = new FileReader();
-  //     reader.readAsDataURL(file);
-  //     reader.onload = () => resolve(reader.result);
-  //     reader.onerror = (error) => reject(error);
-  //   });
-
-  // const convertDataURIToBinary = (dataURI) => {
-  //   var BASE64_MARKER = ";base64,";
-  //   var base64Index = dataURI.indexOf(BASE64_MARKER) + BASE64_MARKER.length;
-  //   var base64 = dataURI.substring(base64Index);
-  //   var raw = window.atob(base64);
-  //   var rawLength = raw.length;
-  //   var array = new Uint8Array(new ArrayBuffer(rawLength));
-
-  //   for (let i = 0; i < rawLength; i++) {
-  //     array[i] = raw.charCodeAt(i);
-  //   }
-  //   return array;
-  // };
 
   const fileData = (values) => {
     if (values.imageUpload) {
