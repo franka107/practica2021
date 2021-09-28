@@ -16,10 +16,11 @@ import clsx from "clsx";
 import { Edit, Add, Delete } from "@material-ui/icons";
 import { columnsTable, haciendaRouteOptions } from "./constants";
 import { useStyles } from "./styles";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import QRCode from "qrcode.react";
 import CustomMuiTable from "../../components/CustomMuiTable";
 import { ROUTES_DICT } from "../../routes/routesDict";
+import CollaboratorActions from "../../redux/actions/collaborator.actions";
 
 const HaciendaConfigurationPage = ({ children, setTitle, setChipList }) => {
   const [cow] = useState({
@@ -30,10 +31,12 @@ const HaciendaConfigurationPage = ({ children, setTitle, setChipList }) => {
   const history = useHistory();
   const params = useParams();
   const location = useLocation();
+  const dispatch = useDispatch();
   const [searchText] = useState();
   const currentUser = useSelector((state) => state.auth.user);
   // const dispatch = useDispatch();
   const currentFarm = useSelector((state) => state.farm.current);
+  const listCollaborator = useSelector((state) => state.collaborator.list);
   const listAgribusiness = useSelector((state) => state.agribusiness.list);
   const options = {
     selectableRows: "none",
@@ -44,6 +47,9 @@ const HaciendaConfigurationPage = ({ children, setTitle, setChipList }) => {
   useEffect(() => {
     setTitle("Configuración de Hacienda");
     setChipList(haciendaRouteOptions(location));
+    if (!listCollaborator || listCollaborator.length === 0) {
+      dispatch(CollaboratorActions.list());
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -61,7 +67,14 @@ const HaciendaConfigurationPage = ({ children, setTitle, setChipList }) => {
               style={{ color: "#C25560" }}
               size="small"
               aria-label="edit"
-              onClick={() => {}}
+              onClick={() => {
+                history.push(
+                  generatePath(ROUTES_DICT.hacienda.collaborator.update, {
+                    ...params,
+                    _id: listCollaborator[dataIndex]._id,
+                  })
+                );
+              }}
             >
               <Edit fontSize="small" />
             </IconButton>
@@ -69,7 +82,14 @@ const HaciendaConfigurationPage = ({ children, setTitle, setChipList }) => {
               style={{ color: "#C25560" }}
               size="small"
               aria-label="delete"
-              onClick={() => {}}
+              onClick={() => {
+                history.push(
+                  generatePath(ROUTES_DICT.hacienda.collaborator.delete, {
+                    ...params,
+                    _id: listCollaborator[dataIndex]._id,
+                  })
+                );
+              }}
             >
               <Delete fontSize="small" />
             </IconButton>
@@ -204,7 +224,9 @@ const HaciendaConfigurationPage = ({ children, setTitle, setChipList }) => {
               <IconButton
                 className={classes.cardEditIcon}
                 size="small"
-                onClick={() => {}}
+                onClick={() => {
+                  history.push(ROUTES_DICT.hacienda.collaborator.create);
+                }}
               >
                 <Add fontSize="small"></Add>
               </IconButton>
@@ -213,7 +235,7 @@ const HaciendaConfigurationPage = ({ children, setTitle, setChipList }) => {
             <br />
             <div className="">
               <CustomMuiTable
-                data={[]}
+                data={listCollaborator}
                 columns={[...columnsTable, actionColumn]}
                 options={options}
               />
@@ -271,6 +293,9 @@ const HaciendaConfigurationPage = ({ children, setTitle, setChipList }) => {
             </div>
           </Paper>
         </Grid>
+      </Grid>
+      <Grid item container xs={12} style={{ padding: "1rem 0 1rem 0" }}>
+        <Typography variant="h6">Agronegocios</Typography>
       </Grid>
       {listAgribusiness && (
         <Grid item container xs={12}>

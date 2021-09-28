@@ -20,6 +20,7 @@ import { weightReducer } from "./weight.reducer";
 import { saleReducer } from "./sale.reducer";
 import { associationReducer } from "./association.reducer";
 import { dryingReducer } from "./drying.reducer";
+import { collaboratorReducer } from "./collaborator.reducer";
 
 const rootReducer = combineReducers({
   auth: authReducer,
@@ -43,6 +44,7 @@ const rootReducer = combineReducers({
   sale: saleReducer,
   association: associationReducer,
   drying: dryingReducer,
+  collaborator: collaboratorReducer,
 });
 
 //const rootReducer = (state, action) => {

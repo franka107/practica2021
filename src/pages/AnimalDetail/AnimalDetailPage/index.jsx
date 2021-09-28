@@ -96,7 +96,17 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
                               classes.cardEditIcon,
                               classes.cardEditButtonCow
                             )}
-                            onClick={() => {}}
+                            onClick={() => {
+                              history.push(
+                                generatePath(
+                                  ROUTES_DICT.animalDetail.image.upload,
+                                  {
+                                    ...params,
+                                    _id: params._id,
+                                  }
+                                )
+                              );
+                            }}
                             size="small"
                           >
                             <Edit fontSize="small"></Edit>

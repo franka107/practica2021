@@ -18,6 +18,7 @@ import AnimalActions from "../../../redux/actions/animal.actions";
 import GeneticStockActions from "../../../redux/actions/geneticStock.actions";
 import { sexOptions } from "../../../constants";
 import _ from "lodash";
+import CollaboratorActions from "../../../redux/actions/collaborator.actions";
 
 const defaultInitValues = {
   agribusinessId: "",
@@ -68,6 +69,7 @@ const IAMNForm = ({
       ),
     shallowEqual
   );
+  const listCollaborator = useSelector((state) => state.collaborator.list);
 
   const validationSchema = () =>
     yup.lazy((values) =>
@@ -93,6 +95,9 @@ const IAMNForm = ({
     );
 
   useEffect(() => {
+    if (!listCollaborator || listCollaborator.length === 0) {
+      dispatch(CollaboratorActions.list());
+    }
     if (
       !femaleAnimals ||
       femaleAnimals.length === 0 ||
@@ -273,16 +278,13 @@ const IAMNForm = ({
               />
             )}
             {props.values.serviceType !== typeServices[1]._id && (
-              <AutocompleteFieldFormik
-                defaultValue={
-                  type === "create" ? null : props.values.reproductor
-                }
+              <SelectFieldFormik
                 onChange={props.handleChange}
                 xs={12}
                 sm={6}
                 name="userId"
                 label="Inseminador"
-                options={[]}
+                options={listCollaborator}
               />
             )}
             {props.values.serviceType !== typeServices[1]._id && (

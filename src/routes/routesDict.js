@@ -5,6 +5,7 @@ export const ROUTES_SLUGS = {
   create: "create",
   update: "update",
   delete: "delete",
+  upload: "upload",
   /**
    * General routes slugs
    */
@@ -42,6 +43,7 @@ export const ROUTES_SLUGS = {
   milk: "milk",
   farm: "farm",
   agribusiness: "agribusiness",
+  collaborator: "collaborator",
 };
 
 export const ROUTES_DICT = {
@@ -158,6 +160,12 @@ export const ROUTES_DICT = {
       create: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.hacienda}/${ROUTES_SLUGS.agribusiness}/${ROUTES_SLUGS.create}`,
       update: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.hacienda}/${ROUTES_SLUGS.agribusiness}/:_id/${ROUTES_SLUGS.update}`,
     },
+    collaborator: {
+      root: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.hacienda}/${ROUTES_SLUGS.collaborator}`,
+      create: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.hacienda}/${ROUTES_SLUGS.collaborator}/${ROUTES_SLUGS.create}`,
+      update: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.hacienda}/${ROUTES_SLUGS.collaborator}/:_id/${ROUTES_SLUGS.update}`,
+      delete: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.hacienda}/${ROUTES_SLUGS.collaborator}/:_id/${ROUTES_SLUGS.delete}`,
+    },
   },
   emailVerified: `/${ROUTES_SLUGS.emailVerified}`,
   pregnancies: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.pregnancies}`,
@@ -187,6 +195,9 @@ export const ROUTES_DICT = {
     },
     weight: {
       update: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animalDetail}/:_id/weight/${ROUTES_SLUGS.update}`,
+    },
+    image: {
+      upload: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animalDetail}/:_id/image/${ROUTES_SLUGS.upload}`,
     },
   },
   pedigree: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animalDetail}/:animalId/${ROUTES_SLUGS.pedigree}`,

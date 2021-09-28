@@ -180,3 +180,8 @@ export const saleTranferOptions = {
   SALE: "Venta",
   TRANSFER: "Traslado",
 };
+
+export const positionOptions = {
+  ADMIN: "Administrador",
+  VET: "Veterinario",
+};

@@ -14,6 +14,7 @@ import TableButtons from "../../../../components/TableButtons";
 import { ROUTES_DICT } from "../../../../routes/routesDict";
 import WeightActions from "../../../../redux/actions/weight.actions";
 import { useDispatch, useSelector } from "react-redux";
+import SearchContainer from "../../../../components/SearchContainer";
 
 function WeightListPage({ children, setTitle, setChipList }) {
   const history = useHistory();
@@ -21,7 +22,7 @@ function WeightListPage({ children, setTitle, setChipList }) {
   const params = useParams();
   const dispatch = useDispatch();
   const classes = useStyles();
-  const [searchText] = useState();
+  const [searchText, setSearchText] = useState();
 
   const listWeightControl = useSelector((state) => state.weight.list);
 
@@ -71,6 +72,8 @@ function WeightListPage({ children, setTitle, setChipList }) {
   };
   return (
     <Grid container xs={12}>
+      <SearchContainer searchText={searchText} setSearchText={setSearchText} />
+
       <Grid item xs={12} className={classes.registerContainer}>
         <CustomMuiTable
           data={listWeightControl}

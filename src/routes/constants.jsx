@@ -83,6 +83,10 @@ import OtherUpdatePage from "../pages/AnimalDetail/OtherUpdatePage";
 import MilkControlUpdatePage from "../pages/AnimalDetail/MilkControlUpdatePage";
 import WeightControlUpdatePage from "../pages/AnimalDetail/WeightControlUpdatePage";
 import AnimalDetailDeletePage from "../pages/AnimalDetail/AnimalDetailDeletePage";
+import CollaboratorCreatePage from "../pages/HaciendaConfigurationPage/CollaboratorCreatePage";
+import CollaboratorUpdatePage from "../pages/HaciendaConfigurationPage/CollaboratorUpdatePage";
+import CollaboratorDeletePage from "../pages/HaciendaConfigurationPage/CollaboratorDeletePage";
+import ImageUploadPage from "../pages/AnimalDetail/ImageUploadPage";
 
 export const ROUTE_TYPES = {
   public: "public",
@@ -675,6 +679,13 @@ export const RENDER_ROUTES = [
             component: (props) => <AnimalDetailDeletePage {...props} />,
             type: ROUTE_TYPES.private,
           },
+          {
+            path: ROUTES_DICT.animalDetail.image.upload,
+            key: "Subir imagen",
+            exact: true,
+            component: (props) => <ImageUploadPage {...props} />,
+            type: ROUTE_TYPES.private,
+          },
         ],
       },
     ],
@@ -796,6 +807,27 @@ export const RENDER_ROUTES = [
             key: "Eliminar control lechero",
             exact: true,
             component: (props) => <MilkDeletePage {...props} />,
+            type: ROUTE_TYPES.private,
+          },
+          {
+            path: ROUTES_DICT.hacienda.collaborator.create,
+            key: "Nuevo colaborador",
+            exact: true,
+            component: (props) => <CollaboratorCreatePage {...props} />,
+            type: ROUTE_TYPES.private,
+          },
+          {
+            path: ROUTES_DICT.hacienda.collaborator.update,
+            key: "Editar colaborador",
+            exact: true,
+            component: (props) => <CollaboratorUpdatePage {...props} />,
+            type: ROUTE_TYPES.private,
+          },
+          {
+            path: ROUTES_DICT.hacienda.collaborator.delete,
+            key: "Eliminar colaborador",
+            exact: true,
+            component: (props) => <CollaboratorDeletePage {...props} />,
             type: ROUTE_TYPES.private,
           },
         ],

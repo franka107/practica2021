@@ -1,80 +1,39 @@
 import { ROUTES_DICT } from "../../routes/routesDict";
-import { IconButton } from "@material-ui/core";
-import DeleteIcon from "@material-ui/icons/Delete";
-import { Edit } from "@material-ui/icons";
+import { positionOptions } from "../../constants";
+import { format } from "date-fns";
 
 export const columnsTable = [
   {
-    label: "Cod. registro",
-    name: "cod",
+    label: "Nombres",
+    name: "name",
     options: {
       filter: false,
     },
   },
   {
-    label: "Nombres y Apellidos",
-    name: "fullname",
+    label: "Apellidos",
+    name: "lastName",
     options: {
       filter: false,
     },
   },
   {
     label: "Fecha de Ingreso",
-    name: "date",
+    name: "dateAdmission",
     options: {
       filter: false,
+      customBodyRender: (value) => {
+        return value ? format(new Date(value), "yyyy-MM-dd") : "-";
+      },
     },
   },
   {
     label: "Cargo",
-    name: "carge",
+    name: "position",
     options: {
       filter: false,
+      customBodyRender: (value) => positionOptions[value],
     },
-  },
-  {
-    label: "Estado",
-    name: "state",
-    options: {
-      filter: false,
-    },
-  },
-];
-
-export const exampleTable = [
-  {
-    cod: 1,
-    fullname: "Sara",
-    date: "12-02-2021",
-    carge: "Administrador",
-    state: "Activo",
-    actions: (
-      <>
-        <IconButton aria-label="edit">
-          <Edit />
-        </IconButton>
-        <IconButton aria-label="delete">
-          <DeleteIcon />
-        </IconButton>
-      </>
-    ),
-  },
-  {
-    cod: 2,
-    fullname: "Pepe",
-    date: "12-02-2022",
-    carge: "Veterinario",
-    state: "Inactivo",
-    actions: (
-      <>
-        <IconButton aria-label="edit">
-          <Edit />
-        </IconButton>
-        <IconButton aria-label="delete">
-          <DeleteIcon />
-        </IconButton>
-      </>
-    ),
   },
 ];
 

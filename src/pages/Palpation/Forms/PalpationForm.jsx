@@ -14,6 +14,7 @@ import PalpationActions from "../../../redux/actions/palpation.actions";
 import { Info } from "@material-ui/icons";
 import { useStyles } from "../../../styles";
 import CustomInfoIcon from "../../../components/CustomInfoIcon";
+import CollaboratorActions from "../../../redux/actions/collaborator.actions";
 
 const defaultInitValues = {
   animalId: "",
@@ -47,8 +48,12 @@ const PalpationForm = ({
       ),
     shallowEqual
   );
+  const listCollaborator = useSelector((state) => state.collaborator.list);
 
   useEffect(() => {
+    if (!listCollaborator || listCollaborator.length === 0) {
+      dispatch(CollaboratorActions.list());
+    }
     if (!femaleAnimals || femaleAnimals.length === 0) {
       dispatch(AnimalActions.list());
     }
@@ -124,6 +129,7 @@ const PalpationForm = ({
               onChange={props.handleChange}
               xs={12}
             />
+<<<<<<< HEAD
             <Grid item container xs={12}>
               <SelectFieldFormik
                 onChange={props.handleChange}
@@ -149,7 +155,29 @@ const PalpationForm = ({
               options={[]}
               name="userId"
               label="Responsable"
+=======
+            <SelectFieldFormik
               onChange={props.handleChange}
+              options={Object.keys(stateOptions).map((key) => ({
+                _id: key,
+                name: stateOptions[key],
+              }))}
+              label="Estado"
+              name="state"
+              xs={12}
+            />
+            <DatePickerFieldFormik
+              label="Fecha preñez"
+              name="pregnancyDate"
+              onChange={props.handleChange}
+              xs={12}
+            />
+            <SelectFieldFormik
+>>>>>>> origin/feature/implement-send-image
+              onChange={props.handleChange}
+              options={listCollaborator}
+              label="Responsable"
+              name="userId"
               xs={12}
             />
             <TextFieldFormik

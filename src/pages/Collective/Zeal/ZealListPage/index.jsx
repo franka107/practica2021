@@ -14,6 +14,7 @@ import { ROUTES_DICT } from "../../../../routes/routesDict";
 import CustomMuiTable from "../../../../components/CustomMuiTable";
 import { useDispatch, useSelector } from "react-redux";
 import ZealActions from "../../../../redux/actions/zeal.actions";
+import SearchContainer from "../../../../components/SearchContainer";
 
 function ZealListPage({ children, setTitle, setChipList }) {
   const history = useHistory();
@@ -21,7 +22,7 @@ function ZealListPage({ children, setTitle, setChipList }) {
   const params = useParams();
   const dispatch = useDispatch();
   const classes = useStyles();
-  const [searchText] = useState();
+  const [searchText, setSearchText] = useState();
 
   const listZealControl = useSelector((state) => state.zeal.list);
 
@@ -71,6 +72,8 @@ function ZealListPage({ children, setTitle, setChipList }) {
   };
   return (
     <Grid container xs={12}>
+      <SearchContainer searchText={searchText} setSearchText={setSearchText} />
+
       <Grid item xs={12} className={classes.registerContainer}>
         <CustomMuiTable
           data={listZealControl}
