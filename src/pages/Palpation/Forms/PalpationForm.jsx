@@ -150,12 +150,12 @@ const PalpationForm = ({
                 xs={12}
               />
             )}
-            <AutocompleteFieldFormik
+            <SelectFieldFormik
+              onChange={props.handleChange}
+              xs={12}
               name="userId"
               label="Responsable"
-              onChange={props.handleChange}
               options={listCollaborator}
-              xs={12}
             />
             <TextFieldFormik
               label="Observaciones"
