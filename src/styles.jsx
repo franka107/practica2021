@@ -117,7 +117,7 @@ export const useStyles = makeStyles((theme) => ({
     color: theme.palette.primary.main,
   },
   dataContainer__container: {
-    padding: theme.spacing(3),
+    padding: "0 24px 30px 24px",
     height: "100%",
     display: "flex",
     flexDirection: "column",

@@ -132,14 +132,25 @@ const HaciendaConfigurationPage = ({ children, setTitle, setChipList }) => {
                       classes.cardEditIcon,
                       classes.cardEditButtonCow
                     )}
-                    onClick={() => {}}
+                    onClick={() => {
+                      history.push(
+                        generatePath(ROUTES_DICT.hacienda.farm.image.upload, {
+                          ...params,
+                          _id: currentUser._id,
+                        })
+                      );
+                    }}
                     size="small"
                   >
                     <Edit fontSize="small"></Edit>
                   </IconButton>
                 </div>
                 <img
-                  src={cow.imageSrc}
+                  src={
+                    currentFarm && currentFarm.imageUrl
+                      ? currentFarm.imageUrl
+                      : cow.imageSrc
+                  }
                   className={classes.cowImage}
                   alt=""
                   srcset=""
@@ -330,14 +341,28 @@ const HaciendaConfigurationPage = ({ children, setTitle, setChipList }) => {
                           classes.cardEditIcon,
                           classes.cardEditButtonCow
                         )}
-                        onClick={() => {}}
+                        onClick={() => {
+                          history.push(
+                            generatePath(
+                              ROUTES_DICT.hacienda.agribusiness.image.upload,
+                              {
+                                ...params,
+                                _id: agribusiness._id,
+                              }
+                            )
+                          );
+                        }}
                         size="small"
                       >
                         <Edit fontSize="small"></Edit>
                       </IconButton>
                     </div>
                     <img
-                      src={cow.imageSrc}
+                      src={
+                        agribusiness && agribusiness.imageUrl
+                          ? agribusiness.imageUrl
+                          : cow.imageSrc
+                      }
                       className={classes.cowImage}
                       alt=""
                       srcset=""

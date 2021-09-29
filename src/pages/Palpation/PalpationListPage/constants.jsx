@@ -22,18 +22,6 @@ export const columns = [
     },
   },
   {
-    label: "Edad",
-    name: "animal",
-    options: {
-      filter: false,
-      customBodyRender: (value) =>
-        value.birthDate
-          ? getAgeInYears(new Date(value.birthDate), new Date()) + " años"
-          : null,
-      searchable: false,
-    },
-  },
-  {
     label: "Estado",
     name: "state",
     options: {
@@ -43,19 +31,21 @@ export const columns = [
     },
   },
   {
-    label: "Produción lechera",
-    name: "milkProduction",
-    options: {
-      filter: false,
-    },
-  },
-  {
-    label: "Fecha registro",
+    label: "Fecha de Palapación",
     name: "touchDate",
     options: {
       filter: false,
       customBodyRender: (value) =>
         value && format(new Date(value), "yyyy-MM-dd"),
+    },
+  },
+  {
+    label: "Responsable",
+    name: "user",
+    options: {
+      searchable: false,
+      customBodyRender: (value) =>
+        value ? `${value.name} ${value.lastName} ` : "Sin responsable",
     },
   },
 ];

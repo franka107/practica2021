@@ -1,23 +1,29 @@
-import { Grid, Typography, InputAdornment } from "@material-ui/core";
+import {
+  Grid,
+  Typography,
+  InputAdornment,
+  Button,
+  CardMedia,
+  IconButton,
+} from "@material-ui/core";
 import { Formik } from "formik";
 import * as yup from "yup";
 import SelectFieldFormik from "../../../components/Inputs/SelectFieldFormik";
 import TextFieldFormik from "../../../components/Inputs/TextFieldFormik";
 import PropTypes from "prop-types";
-import DatePickerFieldFormik from "../../../components/Inputs/DatePickerFieldFormik";
 import ButtonFormik from "../../../components/Inputs/ButtonFormik";
-import { movementOptions } from "../../../constants";
 import { useDispatch } from "react-redux";
-import MovementActions from "../../../redux/actions/movement.actions";
 import { useEffect, useState } from "react";
 import { useSelector, shallowEqual } from "react-redux";
 import geneticStockActions from "../../../redux/actions/geneticStock.actions";
-import AutocompleteFieldFormik from "../../../components/Inputs/AutocompleteFieldFormik";
 import raceActions from "../../../redux/actions/race.actions";
 import CheckboxFormik from "../../../components/Inputs/CheckboxFormik";
 import { useStyles } from "../../../styles";
-import { AddCircle, Delete } from "@material-ui/icons";
+import { AddCircle, Close, Delete } from "@material-ui/icons";
 import DeleteIcon from "@material-ui/icons/Delete";
+import IdeasCloudApi from "../../../helpers/ideascloudApi";
+import CustomPaper from "../../../components/CustomPaper";
+import _ from "lodash";
 
 const defaultInitValues = {
   identifier: "",
@@ -36,6 +42,7 @@ const defaultInitValues = {
   percentageRace3: 0,
   race4Id: "",
   percentageRace4: 0,
+  images: null,
 };
 const GeneticStockForm = ({
   initValues = defaultInitValues,
@@ -79,18 +86,81 @@ const GeneticStockForm = ({
   const onSubmit = async (values, actions) => {
     try {
       if (type === "create") {
-        await dispatch(
-          geneticStockActions.createGenticStock({ ...values, geneticType })
-        );
+        const arrayImages = [];
+        if (values.imageURL || values.imageURL.length !== 0) {
+          for (let index = 0; index <= values.imageURL.length - 1; index++) {
+            const response = await IdeasCloudApi.fetch("uploadImage", {
+              farmId: currentFarm._id,
+            });
+            const myHeaders = new Headers();
+            myHeaders.append("Content-Type", values.imageURL[`${index}`].type);
+            const requestOptions = {
+              method: "PUT",
+              headers: myHeaders,
+              body: values.imageURL[`${index}`],
+              redirect: "follow",
+            };
+
+            const iO = response.url.indexOf("?X");
+            const newURL = response.url.substring(0, iO);
+
+            await fetch(response.url, requestOptions).then((response) => {
+              arrayImages.push(newURL);
+            });
+          }
+          await dispatch(
+            geneticStockActions.createGenticStock({
+              ...values,
+              geneticType,
+              images: arrayImages,
+            })
+          );
+        }
       }
       if (type === "update") {
+        let finalArray = [];
+        const arrayImages = [];
+
+        if (values.imageURL && values.imageURL.length !== 0) {
+          for (let index = 0; index <= values.imageURL.length - 1; index++) {
+            const response = await IdeasCloudApi.fetch("uploadImage", {
+              farmId: currentFarm._id,
+            });
+            const myHeaders = new Headers();
+            myHeaders.append("Content-Type", values.imageURL[`${index}`].type);
+            const requestOptions = {
+              method: "PUT",
+              headers: myHeaders,
+              body: values.imageURL[`${index}`],
+              redirect: "follow",
+            };
+
+            const iO = response.url.indexOf("?X");
+            const newURL = response.url.substring(0, iO);
+
+            await fetch(response.url, requestOptions).then((response) => {
+              arrayImages.push(newURL);
+            });
+          }
+        }
+        console.log("bien");
+        if (values.images && values.images.length !== 0) {
+          finalArray = _.concat(values.images, arrayImages);
+        } else {
+          finalArray = arrayImages;
+        }
+
         await dispatch(
-          geneticStockActions.updateGeneticStock({ ...values, geneticType })
+          geneticStockActions.updateGeneticStock({
+            ...values,
+            geneticType,
+            images: finalArray,
+          })
         );
       }
-
       onCompleteSubmit();
     } catch {
+      console.log("mal");
       actions.setSubmitting(false);
     }
   };
@@ -131,6 +201,28 @@ const GeneticStockForm = ({
     values[`percentageRace${index + 1}`] = 0;
     values[`race${index + 1}Id`] = "";
     setAnimalRace(races);
+  };
+
+  const fileData = (values) => {
+    if (values.imageURL) {
+      return (
+        <Grid container justifyContent="center" item xs={8}>
+          <h4>{values.imageURL.length} archivos seleccionados.</h4>
+        </Grid>
+      );
+    } else {
+      return (
+        <Grid container justifyContent="center" item xs={8}>
+          <h4> 0 archivos seleccionados.</h4>
+        </Grid>
+      );
+    }
+  };
+
+  const deleteImage = (values = [], index, setField = () => {}) => {
+    values.splice(index, 1);
+    setField("images", values);
+    // console.log(values[index]);
   };
 
   return (
@@ -322,6 +414,72 @@ const GeneticStockForm = ({
               label="Activo"
               onChange={props.handleChange}
             />
+            {type === "update" && (
+              <Grid item container xs={12} spacing={1}>
+                {props.values.images &&
+                  props.values.images.length !== 0 &&
+                  props.values.images.map((image, i) => (
+                    <CustomPaper xs={4} key={i}>
+                      <Grid container justifyContent="flex-end">
+                        <Grid item xs={1}>
+                          <IconButton
+                            size="small"
+                            onClick={() => {
+                              deleteImage(
+                                props.values.images,
+                                i,
+                                props.setFieldValue
+                              );
+                            }}
+                          >
+                            <Close fontSize="small" />
+                          </IconButton>
+                        </Grid>
+                      </Grid>
+                      <img
+                        src={image}
+                        alt={`image${i}`}
+                        style={{
+                          maxWidth: "100%",
+                          maxHeight: "150px",
+                          display: "block",
+                          left: "0",
+                          right: "0",
+                          top: "0",
+                          bottom: "0",
+                          margin: "auto",
+                        }}
+                        border="0"
+                        alt="Null"
+                      />
+                    </CustomPaper>
+                  ))}
+              </Grid>
+            )}
+            <Grid item xs={12} container>
+              <Grid item xs={4} container alignItems="center">
+                <Button
+                  variant="contained"
+                  component="label"
+                  style={{ boxShadow: "none" }}
+                >
+                  Cargar Imagen
+                  <input
+                    type="file"
+                    hidden
+                    multiple
+                    name="imageURL"
+                    onChange={(event) => {
+                      props.setFieldValue(
+                        "imageURL",
+                        event.currentTarget.files
+                      );
+                    }}
+                  />
+                </Button>
+              </Grid>
+              {fileData(props.values)}
+            </Grid>
           </Grid>
 
           <Grid
