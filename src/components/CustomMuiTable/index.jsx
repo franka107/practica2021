@@ -33,6 +33,9 @@ function CustomMuiTable({ options, ...props }) {
           },
         },
       },
+      MUIDataTableHeadCell: {
+        toolButton: {},
+      },
       MuiSwitch: {
         root: {
           color: "#00A796",
@@ -59,16 +62,6 @@ function CustomMuiTable({ options, ...props }) {
 
         track: {
           backgroundColor: "#00A796 !important",
-        },
-      },
-      MUIDataTableHeadCell: {
-        fixedHeader: {
-          backgroundColor: "rgb(250, 250, 250)",
-          color: "rgb(0, 117, 201)",
-        },
-        data: {
-          color: "rgb(0, 117, 201)",
-          fontWeight: "normal",
         },
       },
     },

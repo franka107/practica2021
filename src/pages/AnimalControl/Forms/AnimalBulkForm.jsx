@@ -1,41 +1,67 @@
-import { Button, CircularProgress, Typography } from "@material-ui/core";
+import { Button, CircularProgress, Grid, Typography } from "@material-ui/core";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import uiActions from "../../../redux/actions/ui.actions";
 import { useStyles } from "../../../styles";
 
 const AnimalBulkForm = () => {
   const classes = useStyles();
+  const [csvFile, setCsvFile] = useState();
+  const dispatch = useDispatch();
+
+  const fileData = (csvFile) => {
+    if (csvFile) {
+      return (
+        <div style={{ paddingLeft: "0.5rem" }}>
+          <p>File Name: {csvFile.name}</p>
+        </div>
+      );
+    } else {
+      return (
+        <div style={{ paddingLeft: "0.5rem" }}>
+          <h4>Elija antes de presionar el botón Cargar</h4>
+        </div>
+      );
+    }
+  };
   return (
     <>
       <Typography variant={"subtitle1"}>Registro masivo</Typography>
       <Typography variant={"subtitle2"}>
-        Para registro masivo de animales, descargar el siguiente documento.
+        Para registro masivo de animales, <a href="#">descargue</a> el siguiente
+        documento.
       </Typography>
-      <div className={classes.alignBtn}>
-        <div className={classes.root}>
+      <Grid container spacing={1}>
+        <Button
+          component="label"
+          className={classes.baseBtn}
+          endIcon={false && <CircularProgress size={20} />}
+          variant="contained"
+        >
+          Subir CSV
           <input
-            accept="xlsx/*"
-            className={classes.input}
-            id="contained-button-file"
+            accept=".csv"
+            hidden
+            name="csvFile"
+            className={classes.fileInput}
+            onChange={(e) => {
+              if (e.currentTarget.files[0].type === "text/csv") {
+                setCsvFile(e.currentTarget.files[0]);
+              } else {
+                dispatch(
+                  uiActions.showSnackbar(
+                    "El formato del archivo no es compatible",
+                    "error",
+                    4000
+                  )
+                );
+              }
+            }}
             type="file"
           />
-          <label htmlFor="contained-button-file">
-            <Button
-              variant="contained"
-              color="primary"
-              component="span"
-              className={classes.btn}
-              endIcon={<CircularProgress size={20} />}
-            >
-              Registro masivo.xlsx
-            </Button>
-          </label>
-          <input
-            accept="xlsx/*"
-            className={classes.input}
-            id="icon-button-file"
-            type="file"
-          />
-        </div>
-      </div>
+        </Button>
+        {fileData(csvFile)}
+      </Grid>
     </>
   );
 };

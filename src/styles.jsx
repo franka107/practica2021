@@ -1,6 +1,18 @@
-import { makeStyles } from "@material-ui/core";
+import { alpha, makeStyles } from "@material-ui/core";
 
 export const useStyles = makeStyles((theme) => ({
+  fileInput: {
+    display: "none",
+  },
+
+  baseBtn: {
+    backgroundColor: alpha(
+      theme.palette.primary.main,
+      theme.palette.action.hoverOpacity
+    ),
+    color: theme.palette.primary.main,
+    boxShadow: "none",
+  },
   grid__center: {
     alignSelf: "center",
     textAlign: "center",

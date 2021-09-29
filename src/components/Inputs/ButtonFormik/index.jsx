@@ -18,7 +18,10 @@ const useStyles = makeStyles((theme) => ({
   buttonSubmit: {
     marginTop: "2rem",
     width: "100%",
-    backgroundColor: alpha(theme.palette.primary.main, 0.15),
+    backgroundColor: alpha(
+      theme.palette.primary.main,
+      theme.palette.action.hoverOpacity
+    ),
     color: theme.palette.primary.main,
   },
   buttonCancel: {
