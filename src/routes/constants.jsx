@@ -87,6 +87,8 @@ import CollaboratorCreatePage from "../pages/HaciendaConfigurationPage/Collabora
 import CollaboratorUpdatePage from "../pages/HaciendaConfigurationPage/CollaboratorUpdatePage";
 import CollaboratorDeletePage from "../pages/HaciendaConfigurationPage/CollaboratorDeletePage";
 import ImageUploadPage from "../pages/AnimalDetail/ImageUploadPage";
+import FarmImageUploadPage from "../pages/HaciendaConfigurationPage/FarmImageUploadPage";
+import AgribusinessImageUploadPage from "../pages/HaciendaConfigurationPage/AgribusinessImageUploadPage";
 
 export const ROUTE_TYPES = {
   public: "public",
@@ -828,6 +830,20 @@ export const RENDER_ROUTES = [
             key: "Eliminar colaborador",
             exact: true,
             component: (props) => <CollaboratorDeletePage {...props} />,
+            type: ROUTE_TYPES.private,
+          },
+          {
+            path: ROUTES_DICT.hacienda.farm.image.upload,
+            key: "Subir imagen granja",
+            exact: true,
+            component: (props) => <FarmImageUploadPage {...props} />,
+            type: ROUTE_TYPES.private,
+          },
+          {
+            path: ROUTES_DICT.hacienda.agribusiness.image.upload,
+            key: "Subir imagen agronegocio",
+            exact: true,
+            component: (props) => <AgribusinessImageUploadPage {...props} />,
             type: ROUTE_TYPES.private,
           },
         ],

@@ -74,6 +74,7 @@ export const useStyles = makeStyles((theme) => ({
   },
   cowImage: {
     width: "100%",
+    height: "370px",
     margin: "auto",
     borderRadius: "100%",
   },

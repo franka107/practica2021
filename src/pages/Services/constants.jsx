@@ -22,15 +22,6 @@ export const columnsToMuiTable = [
     },
   },
   {
-    label: "Estado",
-    name: "animal",
-    options: {
-      searchable: false,
-      customBodyRender: (value) =>
-        value ? stateOptions[value.reproductiveStatus] : "",
-    },
-  },
-  {
     label: "Tipo de Servicio",
     name: "serviceType",
     options: {
@@ -39,7 +30,7 @@ export const columnsToMuiTable = [
     },
   },
   {
-    label: "Fecha Registro",
+    label: "Fecha del Servicio",
     name: "serviceDate",
     options: {
       searchable: false,
@@ -50,10 +41,11 @@ export const columnsToMuiTable = [
   },
   {
     label: "Responsable",
-    name: "userId",
+    name: "user",
     options: {
       searchable: false,
-      customBodyRender: (value) => (value ? value.name : "Sin responsable"),
+      customBodyRender: (value) =>
+        value ? `${value.name} ${value.lastName} ` : "Sin responsable",
     },
   },
 ];
