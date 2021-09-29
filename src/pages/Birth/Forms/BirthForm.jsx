@@ -41,10 +41,14 @@ const BirthForm = ({
   onCompleteSubmit = () => {},
 }) => {
   const dispatch = useDispatch();
+  const currentAgribusiness = useSelector(
+    (state) => state.agribusiness.current
+  );
   const maleAnimals = useSelector(
     (state) => state.animal.list.filter((e) => e.gender === "MALE"),
     shallowEqual
   );
+  const allAnimals = useSelector((state) => state.animal.list);
   const femaleAnimals = useSelector(
     (state) =>
       state.animal.list.filter((e) => e.gender === "FEMALE" && e.isPregnant),
@@ -96,6 +100,7 @@ const BirthForm = ({
     try {
       if (type === "create") {
         //await dispatch(MovementActions.create(transformedValues, geneticType));
+        let childs = [];
         if (
           birthTypeOptions[values.birthType] === birthTypeOptions.SIMPLE ||
           birthTypeOptions[values.birthType] === birthTypeOptions.TWIN
@@ -110,7 +115,9 @@ const BirthForm = ({
               herdDate: values.birthDate,
             })
           );
+          childs.push(firstChild);
           values.children.push(firstChild._id);
+          values.child1Id = firstChild._id;
           if (birthTypeOptions[values.birthType] === birthTypeOptions.TWIN) {
             const secondChild = await dispatch(
               AnimalActions.create({
@@ -122,9 +129,19 @@ const BirthForm = ({
                 herdDate: values.birthDate,
               })
             );
+            childs.push(secondChild);
             values.children.push(secondChild._id);
+            values.child2Id = secondChild._id;
           }
           await dispatch(BirthActions.create(values));
+          await dispatch(
+            AnimalActions.update({
+              _id: values.animalId,
+              agribusinessId: currentAgribusiness._id,
+              lastMaleChildId: childs.find((e) => e.gender === "MALE")?._id,
+              lastFemaleChildId: childs.find((e) => e.gender === "FEMALE")?._id,
+            })
+          );
         }
       }
       if (type === "update") {
@@ -215,9 +232,15 @@ const BirthForm = ({
             ></TextFieldFormik>
             <DatePickerFieldFormik
               label="Fecha de Preñez"
-              name="pregnancyDate"
+              name="pregnantDate"
               onChange={props.handleChange}
               lg={6}
+              value={
+                props.values.animalId
+                  ? femaleAnimals.find((e) => e._id === props.values.animalId)
+                      ?.pregnantDate
+                  : null
+              }
               sm={6}
               disabled
               xs={12}
@@ -228,6 +251,12 @@ const BirthForm = ({
               onChange={props.handleChange}
               lg={6}
               disabled
+              value={
+                props.values.animalId
+                  ? femaleAnimals.find((e) => e._id === props.values.animalId)
+                      ?.palpations[0].touchDate
+                  : null
+              }
               sm={6}
               xs={12}
             ></DatePickerFieldFormik>
@@ -401,8 +430,15 @@ const BirthForm = ({
           <Grid container spacing={1}>
             <TextFieldFormik
               label="Ult. cria macho"
-              name="paddock"
+              name="lastNameChildId"
               onChange={props.handleChange}
+              value={
+                null
+                //props.values.animalId
+                //  ? allAnimals.find((e) => e._id === props.values.animalId)
+                //      ?.births[0].touchDate
+                //  : null
+              }
               lg={6}
               sm={6}
               xs={12}
@@ -410,7 +446,7 @@ const BirthForm = ({
             ></TextFieldFormik>
             <TextFieldFormik
               label="Ult. cria hembra"
-              name="group"
+              name="lastFemaleChildId"
               onChange={props.handleChange}
               lg={6}
               sm={6}
