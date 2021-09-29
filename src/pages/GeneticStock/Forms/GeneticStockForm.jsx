@@ -143,7 +143,7 @@ const GeneticStockForm = ({
             });
           }
         }
-        console.log("bien");
+
         if (values.images && values.images.length !== 0) {
           finalArray = _.concat(values.images, arrayImages);
         } else {

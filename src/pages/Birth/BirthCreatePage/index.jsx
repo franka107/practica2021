@@ -5,7 +5,13 @@ const BirthCreatePage = ({ parentPathname }) => {
   return (
     <>
       <CustomDialog maxWidth="md" parentPathname={parentPathname}>
-        {(props) => <BirthForm type="create" />}
+        {(props) => (
+          <BirthForm
+            type="create"
+            onClickCancelButton={props.handleClose}
+            onCompleteSubmit={props.handleClose}
+          />
+        )}
       </CustomDialog>
     </>
   );
