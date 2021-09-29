@@ -8,7 +8,12 @@ import SelectFieldFormik from "../../../components/Inputs/SelectFieldFormik";
 import ButtonFormik from "../../../components/Inputs/ButtonFormik";
 import { useDispatch } from "react-redux";
 import AnimalActions from "../../../redux/actions/animal.actions";
-import { categoryOptions, sexOptions, stateOptions } from "../../../constants";
+import {
+  categoryOptions,
+  sexDictionary,
+  sexOptions,
+  stateOptions,
+} from "../../../constants";
 import CheckboxFormik from "../../../components/Inputs/CheckboxFormik";
 
 /**
@@ -133,8 +138,15 @@ const GeneralForm = ({
               label="Sexo"
               name="gender"
               onChange={props.handleChange}
-              options={sexOptions}
-              xs={6}
+              // options={sexDictionary}
+              options={Object.keys(sexDictionary)
+                .filter((key) => key === "MALE" || key === "FEMALE")
+                .map((key) => ({
+                  _id: key,
+                  name: sexDictionary[key],
+                }))}
+              xs={12}
+              sm={6}
             />
             {props.values.gender === "MALE" && (
               <Grid
@@ -164,6 +176,7 @@ const GeneralForm = ({
                 }))}
                 label="Estado"
                 name="reproductiveStatus"
+                disabled
                 lg={6}
                 sm={6}
                 xs={12}

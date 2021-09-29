@@ -3,7 +3,6 @@ import {
   Typography,
   InputAdornment,
   Button,
-  CardMedia,
   IconButton,
 } from "@material-ui/core";
 import { Formik } from "formik";

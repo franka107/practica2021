@@ -249,12 +249,13 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
                       >
                         <Grid item xs={4}>
                           <Typography className={classes.cardFeature}>
-                            Fecha
+                            Fecha de nacimiento
                           </Typography>
                         </Grid>
                         <Grid item xs={8}>
                           <Typography>
                             {currentAnimal &&
+                              currentAnimal.birthDate &&
                               formatDate(new Date(currentAnimal.birthDate))}
                             {/* {animals && animals.birthDate} */}
                           </Typography>
