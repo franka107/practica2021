@@ -5,13 +5,16 @@ import * as yup from "yup";
 // import TextFieldFormik from "../../../../components/Inputs/TextFieldFormik";
 import ButtonFormik from "../../../components/Inputs/ButtonFormik";
 import IdeasCloudApi from "../../../helpers/ideascloudApi";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import AnimalActions from "../../../redux/actions/animal.actions";
 
 const AnimalImageForm = ({
   onClickCancelButton,
   onCompleteSubmit = () => {},
 }) => {
   const currentFarm = useSelector((state) => state.farm.current);
+  const currentAnimal = useSelector((state) => state.animal.current);
+  const dispatch = useDispatch();
 
   const handleSubmit = async (values, actions) => {
     const response = await IdeasCloudApi.fetch("uploadImage", {
@@ -27,10 +30,13 @@ const AnimalImageForm = ({
       redirect: "follow",
     };
 
-    fetch(response.url, requestOptions)
-      .then((response) => response.text())
-      .then((result) => console.log(result))
-      .catch((error) => console.log("error", error));
+    const iO = response.url.indexOf("?X");
+    const newURL = response.url.substring(0, iO);
+
+    await fetch(response.url, requestOptions).then((response) => {
+      dispatch(AnimalActions.update({ ...currentAnimal, imageURL: newURL }));
+      onCompleteSubmit();
+    });
   };
 
   const validationSchema = yup.object({});

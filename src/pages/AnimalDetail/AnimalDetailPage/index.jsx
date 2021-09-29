@@ -113,7 +113,11 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
                           </IconButton>
                         </div>
                         <img
-                          src={cow.imageSrc}
+                          src={
+                            currentAnimal && currentAnimal.imageURL
+                              ? currentAnimal.imageURL
+                              : cow.imageSrc
+                          }
                           className={classes.cowImage}
                           alt=""
                           srcset=""
