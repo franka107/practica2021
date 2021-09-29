@@ -4,6 +4,7 @@ import {
   InputAdornment,
   Button,
   CardMedia,
+  IconButton,
 } from "@material-ui/core";
 import { Formik } from "formik";
 import * as yup from "yup";
@@ -18,10 +19,11 @@ import geneticStockActions from "../../../redux/actions/geneticStock.actions";
 import raceActions from "../../../redux/actions/race.actions";
 import CheckboxFormik from "../../../components/Inputs/CheckboxFormik";
 import { useStyles } from "../../../styles";
-import { AddCircle, Delete } from "@material-ui/icons";
+import { AddCircle, Close, Delete } from "@material-ui/icons";
 import DeleteIcon from "@material-ui/icons/Delete";
 import IdeasCloudApi from "../../../helpers/ideascloudApi";
 import CustomPaper from "../../../components/CustomPaper";
+import _ from "lodash";
 
 const defaultInitValues = {
   identifier: "",
@@ -116,8 +118,10 @@ const GeneticStockForm = ({
         }
       }
       if (type === "update") {
+        let finalArray = [];
         const arrayImages = [];
-        if (values.imageURL || values.imageURL.length !== 0) {
+
+        if (values.imageURL && values.imageURL.length !== 0) {
           for (let index = 0; index <= values.imageURL.length - 1; index++) {
             const response = await IdeasCloudApi.fetch("uploadImage", {
               farmId: currentFarm._id,
@@ -138,17 +142,25 @@ const GeneticStockForm = ({
               arrayImages.push(newURL);
             });
           }
-          await dispatch(
-            geneticStockActions.updateGeneticStock({
-              ...values,
-              geneticType,
-              images: arrayImages.length === 0 ? values.images : arrayImages,
-            })
-          );
         }
+        console.log("bien");
+        if (values.images && values.images.length !== 0) {
+          finalArray = _.concat(values.images, arrayImages);
+        } else {
+          finalArray = arrayImages;
+        }
+
+        await dispatch(
+          geneticStockActions.updateGeneticStock({
+            ...values,
+            geneticType,
+            images: finalArray,
+          })
+        );
       }
       onCompleteSubmit();
     } catch {
+      console.log("mal");
       actions.setSubmitting(false);
     }
   };
@@ -205,6 +217,12 @@ const GeneticStockForm = ({
         </Grid>
       );
     }
+  };
+
+  const deleteImage = (values = [], index, setField = () => {}) => {
+    values.splice(index, 1);
+    setField("images", values);
+    // console.log(values[index]);
   };
 
   return (
@@ -396,28 +414,46 @@ const GeneticStockForm = ({
               label="Activo"
               onChange={props.handleChange}
             />
-            {!props.values.imageURL && (
+            {type === "update" && (
               <Grid item container xs={12} spacing={1}>
-                {props.values.images.map((image, i) => (
-                  <CustomPaper xs={4}>
-                    <img
-                      src={image}
-                      alt={`image${i}`}
-                      style={{
-                        maxWidth: "100%",
-                        maxHeight: "150px",
-                        display: "block",
-                        left: "0",
-                        right: "0",
-                        top: "0",
-                        bottom: "0",
-                        margin: "auto",
-                      }}
-                      border="0"
-                      alt="Null"
-                    />
-                  </CustomPaper>
-                ))}
+                {props.values.images &&
+                  props.values.images.length !== 0 &&
+                  props.values.images.map((image, i) => (
+                    <CustomPaper xs={4} key={i}>
+                      <Grid container justifyContent="flex-end">
+                        <Grid item xs={1}>
+                          <IconButton
+                            size="small"
+                            onClick={() => {
+                              deleteImage(
+                                props.values.images,
+                                i,
+                                props.setFieldValue
+                              );
+                            }}
+                          >
+                            <Close fontSize="small" />
+                          </IconButton>
+                        </Grid>
+                      </Grid>
+                      <img
+                        src={image}
+                        alt={`image${i}`}
+                        style={{
+                          maxWidth: "100%",
+                          maxHeight: "150px",
+                          display: "block",
+                          left: "0",
+                          right: "0",
+                          top: "0",
+                          bottom: "0",
+                          margin: "auto",
+                        }}
+                        border="0"
+                        alt="Null"
+                      />
+                    </CustomPaper>
+                  ))}
               </Grid>
             )}
             <Grid item xs={12} container>
