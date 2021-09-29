@@ -97,11 +97,7 @@ function LoginPage(props) {
               className={classes.googleBtn}
               startIcon={<img src={googleBtn} alt={"Google"} />}
             >
-              <Typography
-                color={"secondary"}
-                align={"center"}
-                className={classes.googleBtnText}
-              >
+              <Typography align={"center"} className={classes.googleBtnText}>
                 Iniciar sesión con Google
               </Typography>
             </Button>
@@ -109,15 +105,9 @@ function LoginPage(props) {
           <Grid item xs={12}>
             <Button
               className={classes.googleBtn}
-              startIcon={
-                <Facebook color={"secondary"} className={classes.fbIcon} />
-              }
+              startIcon={<Facebook className={classes.fbIcon} />}
             >
-              <Typography
-                color={"secondary"}
-                align={"center"}
-                className={classes.googleBtnText}
-              >
+              <Typography align={"center"} className={classes.googleBtnText}>
                 Iniciar sesión con Facebook
               </Typography>
             </Button>
