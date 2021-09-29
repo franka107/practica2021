@@ -19,6 +19,7 @@ const AuthWrapper = ({ children }) => {
   );
 
   const user = useSelector((state) => state.auth.user);
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
 
   useEffect(() => {
     if (!currentFarm || !currentAgribusiness) {
@@ -27,9 +28,9 @@ const AuthWrapper = ({ children }) => {
   }, [dispatch, currentFarm, currentAgribusiness, user]);
   return (
     <>
-      {!currentAgribusiness ? (
+      {!currentAgribusiness && isLoggedIn ? (
         <div className={classes.loader}>
-          <CircularProgress color="secondary" />
+          <CircularProgress />
         </div>
       ) : (
         children

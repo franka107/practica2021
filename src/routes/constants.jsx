@@ -743,7 +743,7 @@ export const RENDER_ROUTES = [
     path: ROUTES_DICT.login,
     key: "Login",
     exact: true,
-    component: LoginPage,
+    component: (props) => <LoginPage />,
     layout: AuthLayout,
     type: ROUTE_TYPES.public,
   },

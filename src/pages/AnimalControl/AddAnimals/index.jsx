@@ -1,5 +1,5 @@
-import React from "react";
-import { Button, Grid } from "@material-ui/core";
+import React, { useState } from "react";
+import { Button, Grid, Menu, MenuItem } from "@material-ui/core";
 import { useStyles } from "./styles";
 import addAnimals from "../../../assets/icons/addAnimal.svg";
 import SearchAnimals from "../SearchAnimals";
@@ -8,10 +8,14 @@ import { ROUTES_DICT } from "../../../routes/routesDict";
 
 function AddAnimals({ searchText, setSearchText }) {
   const classes = useStyles();
+  const [openMenu, setOpenMenu] = useState(false);
   const history = useHistory();
   const handleClick = (event) => {
-    // setOpenMenu(event.currentTarget);
-    history.push(ROUTES_DICT.animal.create);
+    setOpenMenu(event.currentTarget);
+    //history.push(ROUTES_DICT.animal.create);
+  };
+  const handleClose = (e) => {
+    setOpenMenu(false);
   };
 
   return (
@@ -41,7 +45,7 @@ function AddAnimals({ searchText, setSearchText }) {
           >
             Nuevo Registro
           </Button>
-          {/* <Menu
+          <Menu
             id="simple-menu"
             anchorEl={openMenu}
             keepMounted
@@ -49,18 +53,23 @@ function AddAnimals({ searchText, setSearchText }) {
             onClose={handleClose}
             classes={{ paper: classes.menuDropdown }}
           >
-            {menuList.map((item) => (
-              <MenuItem
-                key={item.id}
-                onClick={() => {
-                  setOpenMenu(false);
-                  setOpen(item.id);
-                }}
-              >
-                {item.title}
-              </MenuItem>
-            ))}
-          </Menu> */}
+            <MenuItem
+              onClick={() => {
+                setOpenMenu(false);
+                history.push(ROUTES_DICT.animal.create);
+              }}
+            >
+              Individual
+            </MenuItem>
+            <MenuItem
+              onClick={() => {
+                setOpenMenu(false);
+                history.push(ROUTES_DICT.animal.createBulk);
+              }}
+            >
+              Masivo
+            </MenuItem>
+          </Menu>
         </Grid>
         <Grid
           item

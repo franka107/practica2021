@@ -69,7 +69,7 @@ const BirthForm = ({
         animalId: yup
           .string("Ingresa vaca")
           .nullable(true)
-          .required("Esta campo es requerido."),
+          .required("Este campo es requerido."),
         birthDate: yup
           .date("Ingresa una fecha")
           .required("Este campo es requerido."),

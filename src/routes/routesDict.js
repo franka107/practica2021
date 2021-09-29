@@ -90,6 +90,7 @@ export const ROUTES_DICT = {
     root: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animal}`,
     list: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animal}/list`,
     create: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animal}/list/${ROUTES_SLUGS.create}`,
+    createBulk: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animal}/list/${ROUTES_SLUGS.create}-bulk`,
     update: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animal}/list/:_id/${ROUTES_SLUGS.update}`,
     delete: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animal}/list/:_id/${ROUTES_SLUGS.delete}`,
   },
