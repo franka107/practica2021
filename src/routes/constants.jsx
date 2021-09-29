@@ -89,6 +89,7 @@ import CollaboratorDeletePage from "../pages/HaciendaConfigurationPage/Collabora
 import ImageUploadPage from "../pages/AnimalDetail/ImageUploadPage";
 import FarmImageUploadPage from "../pages/HaciendaConfigurationPage/FarmImageUploadPage";
 import AgribusinessImageUploadPage from "../pages/HaciendaConfigurationPage/AgribusinessImageUploadPage";
+import AnimalCreateBulkPage from "../pages/AnimalControl/AnimalCreateBulkPage";
 
 export const ROUTE_TYPES = {
   public: "public",
@@ -301,6 +302,13 @@ export const RENDER_ROUTES = [
             key: "Nuevo animal",
             exact: true,
             component: (props) => <AnimalCreatePage {...props} />,
+            type: ROUTE_TYPES.private,
+          },
+          {
+            path: ROUTES_DICT.animal.createBulk,
+            key: "Nuevo animal",
+            exact: true,
+            component: (props) => <AnimalCreateBulkPage {...props} />,
             type: ROUTE_TYPES.private,
           },
           {

@@ -305,61 +305,53 @@ function AnimalForm({
             )}
 
             {type === "create" ? (
-              <SearchFieldFormik
+              <TextFieldFormik
                 options={maleAnimals}
                 label="Padre"
                 type="text"
-                name="fatherId"
-                onChange={(e, value) => {
-                  props.setFieldValue("father", value);
-                }}
+                name="fatherRef"
+                onChange={props.handleChange}
                 lg={6}
                 sm={6}
                 xs={12}
-              ></SearchFieldFormik>
+              ></TextFieldFormik>
             ) : (
-              <SearchFieldFormik
+              <TextFieldFormik
                 options={maleAnimals}
                 label="Padre"
                 type="text"
-                name="fatherId"
-                onChange={(e, value) => {
-                  props.setFieldValue("father", value);
-                }}
+                name="fatherRef"
+                onChange={props.handleChange}
                 defaultValue={props.values.father || null}
                 lg={6}
                 sm={6}
                 xs={12}
-              ></SearchFieldFormik>
+              ></TextFieldFormik>
             )}
 
             {type === "create" ? (
-              <SearchFieldFormik
+              <TextFieldFormik
                 options={femaleAnimals}
                 label="Madre"
                 type="text"
-                name="motherId"
-                onChange={(e, value) => {
-                  props.setFieldValue("mother", value);
-                }}
+                name="motherRef"
+                onChange={props.handleChange}
                 lg={6}
                 sm={6}
                 xs={12}
-              ></SearchFieldFormik>
+              ></TextFieldFormik>
             ) : (
-              <SearchFieldFormik
+              <TextFieldFormik
                 options={femaleAnimals}
                 label="Madre"
                 type="text"
-                name="motherId"
-                onChange={(e, value) => {
-                  props.setFieldValue("mother", value);
-                }}
+                name="motherRef"
+                onChange={props.handleChange}
                 defaultValue={props.values.mother || null}
                 lg={6}
                 sm={6}
                 xs={12}
-              ></SearchFieldFormik>
+              ></TextFieldFormik>
             )}
           </Grid>
           <Grid container spacing={1} className={classes.formStyle}>
