@@ -32,6 +32,7 @@ import "react-calendar/dist/Calendar.css";
 import { animalDetailChipOptions } from "../constants";
 import { ROUTES_DICT } from "../../../routes/routesDict";
 import { stateOptions } from "../../../constants";
+import { differenceInDays, format } from "date-fns";
 
 const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
   const classes = useStyles();
@@ -44,6 +45,27 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
   const dispatch = useDispatch();
   const params = useParams();
   const currentAnimal = useSelector((state) => state.animal.current);
+
+  const calculateLastAbortion = (values = []) => {
+    values.map((birth) => {
+      if (birth.birthType === "ABORTION") {
+        return birth.birthDate;
+      }
+    });
+    return "Ninguno";
+  };
+
+  const calculateIEP = (values = []) => {
+    if (values.length > 1) {
+      const result = differenceInDays(
+        new Date(values[0].birthDate),
+        new Date(values[1].birthDate)
+      );
+      return result + " dias";
+    } else {
+      return "Datos insuficientes";
+    }
+  };
 
   useEffect(() => {
     setTitle("Control ganadero");
@@ -385,17 +407,23 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
                               </Typography>
                             </Grid>
                             <Grid item xs={7}>
-                              {currentAnimal && (
-                                <Typography>
-                                  {currentAnimal &&
-                                    currentAnimal.race1 &&
-                                    currentAnimal.race1.name}{" "}
-                                  -{" "}
-                                  {currentAnimal &&
-                                    currentAnimal.percentageRace1 &&
-                                    currentAnimal.percentageRace1}
-                                  %
-                                </Typography>
+                              {currentAnimal && currentAnimal.race1 ? (
+                                <>
+                                  {currentAnimal && currentAnimal.race1 && (
+                                    <Typography>
+                                      {currentAnimal &&
+                                        currentAnimal.race1 &&
+                                        currentAnimal.race1.name}{" "}
+                                      -{" "}
+                                      {currentAnimal &&
+                                        currentAnimal.percentageRace1 &&
+                                        currentAnimal.percentageRace1}
+                                      %
+                                    </Typography>
+                                  )}
+                                </>
+                              ) : (
+                                <Typography>No especificado</Typography>
                               )}
                             </Grid>
                           </Grid>
@@ -498,7 +526,10 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
                             <Grid item xs={7}>
                               <Typography>
                                 {currentAnimal &&
-                                  currentAnimal.childBirthNumber}
+                                currentAnimal.births &&
+                                currentAnimal.births.length !== 0
+                                  ? currentAnimal.births.length
+                                  : "Ningun parto"}
                               </Typography>
                             </Grid>
                           </Grid>
@@ -515,9 +546,15 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
                             <Grid item xs={7}>
                               <Typography>
                                 {currentAnimal &&
-                                  formatDate(
-                                    new Date(currentAnimal.lastChildBirthDate)
-                                  )}
+                                currentAnimal.births &&
+                                currentAnimal.births.length !== 0
+                                  ? format(
+                                      new Date(
+                                        currentAnimal.births[0].birthDate
+                                      ),
+                                      "yyyy-MM-dd"
+                                    )
+                                  : "Este animal aun no tiene ningun parto"}
                               </Typography>
                             </Grid>
                           </Grid>
@@ -528,14 +565,18 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
                           >
                             <Grid item xs={5}>
                               <Typography className={classes.cardFeature}>
-                                IEPT
+                                IEP
                               </Typography>
                             </Grid>
                             <Grid item xs={7}>
-                              <Typography>No especificado</Typography>
+                              {currentAnimal && currentAnimal.births && (
+                                <Typography>
+                                  {calculateIEP(currentAnimal.births)}
+                                </Typography>
+                              )}
                             </Grid>
                           </Grid>
-                          <Grid
+                          {/* <Grid
                             container
                             className={classes.generalFeature}
                             xs={12}
@@ -548,7 +589,7 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
                             <Grid item xs={7}>
                               <Typography>No especificado</Typography>
                             </Grid>
-                          </Grid>
+                          </Grid> */}
                           <Grid
                             container
                             className={classes.generalFeature}
@@ -556,11 +597,15 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
                           >
                             <Grid item xs={5}>
                               <Typography className={classes.cardFeature}>
-                                uLt. aborto
+                                Ult. aborto
                               </Typography>
                             </Grid>
                             <Grid item xs={7}>
-                              <Typography>Ninguno</Typography>
+                              {currentAnimal && currentAnimal.births && (
+                                <Typography>
+                                  {calculateLastAbortion(currentAnimal.births)}
+                                </Typography>
+                              )}
                             </Grid>
                           </Grid>
                         </div>
