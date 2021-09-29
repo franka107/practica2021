@@ -57,6 +57,7 @@ export const productionOptions = [
 export const sexDictionary = {
   MALE: "Macho",
   FEMALE: "Hembra",
+  INDETERMINATE: "Indeterminado",
 };
 
 export const sexOptions = [
