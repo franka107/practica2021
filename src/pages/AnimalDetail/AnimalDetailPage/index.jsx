@@ -32,7 +32,7 @@ import "react-calendar/dist/Calendar.css";
 import { animalDetailChipOptions } from "../constants";
 import { ROUTES_DICT } from "../../../routes/routesDict";
 import { stateOptions } from "../../../constants";
-import { differenceInDays, format } from "date-fns";
+import { add, differenceInDays, format } from "date-fns";
 
 const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
   const classes = useStyles();
@@ -47,12 +47,68 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
   const currentAnimal = useSelector((state) => state.animal.current);
 
   const calculateLastAbortion = (values = []) => {
-    values.map((birth) => {
-      if (birth.birthType === "ABORTION") {
-        return birth.birthDate;
+    for (let index = 0; index < values.length; index++) {
+      if (values[index].birthType === "ABORTION") {
+        return format(new Date(values[index].birthDate), "yyyy-MM-dd");
       }
-    });
+    }
     return "Ninguno";
+  };
+
+  const calculatePregnancy = (values = []) => {
+    for (let index = 0; index < values.length; index++) {
+      if (values[index].state === "PREGNANT") {
+        return format(new Date(values[index].pregnancyDate), "yyyy-MM-dd");
+      }
+    }
+    return "Ninguno";
+  };
+
+  const calculateDaysPregnancy = (values = []) => {
+    if (values[0].state === "PREGNANT") {
+      const result = differenceInDays(
+        new Date(),
+        new Date(values[0].pregnancyDate)
+      );
+      const days = result > 1 ? " dias" : " dia";
+      return result + days;
+    }
+  };
+
+  const totalMilk = (values = []) => {
+    let total = 0;
+    for (let index = 0; index < values.length; index++) {
+      total =
+        total +
+        values[index].firstSample +
+        values[index].secondSample +
+        values[index].thirdSample;
+    }
+    return total + " Kg.";
+  };
+
+  const totalDaysMilk = (values = []) => {
+    const result = differenceInDays(
+      new Date(),
+      new Date(values[0].controlDate)
+    );
+    const days = result > 1 ? " dias" : " dia";
+    return result + days;
+  };
+
+  const expectedBirth = (values = []) => {
+    if (values[0].state === "PREGNANT") {
+      const result = add(new Date(values[0].pregnancyDate), {
+        years: 0,
+        months: 9,
+        weeks: 1,
+        days: 0,
+        hours: 0,
+        minutes: 0,
+        seconds: 0,
+      });
+      return format(new Date(result), "yyyy-MM-dd");
+    }
   };
 
   const calculateIEP = (values = []) => {
@@ -428,6 +484,7 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
                             </Grid>
                           </Grid>
                           {currentAnimal &&
+                          currentAnimal.percentageRace1 !== null &&
                           currentAnimal.percentageRace1 !== 100 ? (
                             <Grid
                               container
@@ -645,7 +702,7 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
                         </div>
                         <Divider className={classes.divider}></Divider>
                         <Grid container className="">
-                          <Grid item xs={6}>
+                          <Grid item xs={8}>
                             <Grid
                               container
                               className={classes.generalFeature}
@@ -653,31 +710,16 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
                             >
                               <Grid item xs={5}>
                                 <Typography className={classes.cardFeature}>
-                                  Peso
-                                </Typography>
-                              </Grid>
-                              <Grid item xs={7}>
-                                <Typography>
-                                  {currentAnimal && currentAnimal.lastWeight}
-                                </Typography>
-                              </Grid>
-                            </Grid>
-                            <Grid
-                              container
-                              className={classes.generalFeature}
-                              xs={12}
-                            >
-                              <Grid item xs={5}>
-                                <Typography className={classes.cardFeature}>
-                                  Fecha de pesaje
+                                  Últ. Celo
                                 </Typography>
                               </Grid>
                               <Grid item xs={7}>
                                 <Typography>
                                   {currentAnimal &&
-                                    formatDate(
-                                      new Date(currentAnimal.lastWeightDate)
-                                    )}
+                                  currentAnimal.zealControl &&
+                                  currentAnimal.zealControl.length !== 0
+                                    ? currentAnimal.zealControl[0].controlDate
+                                    : "No tiene ningun celo registrado"}
                                 </Typography>
                               </Grid>
                             </Grid>
@@ -688,11 +730,11 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
                             >
                               <Grid item xs={5}>
                                 <Typography className={classes.cardFeature}>
-                                  Gr./Día
+                                  I.E.C
                                 </Typography>
                               </Grid>
                               <Grid item xs={7}>
-                                <Typography>No especificado</Typography>
+                                <Typography>0</Typography>
                               </Grid>
                             </Grid>
                             <Grid
@@ -702,11 +744,45 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
                             >
                               <Grid item xs={5}>
                                 <Typography className={classes.cardFeature}>
-                                  C. Corp
+                                  Últ. palpación
                                 </Typography>
                               </Grid>
                               <Grid item xs={7}>
-                                <Typography>No especificado</Typography>
+                                <Typography>
+                                  {currentAnimal &&
+                                  currentAnimal.palpations &&
+                                  currentAnimal.palpations.length !== 0
+                                    ? format(
+                                        new Date(
+                                          currentAnimal.palpations[0].pregnancyDate
+                                        ),
+                                        "yyyy-MM-dd"
+                                      )
+                                    : "No tiene ninguna palpación registrada"}
+                                </Typography>
+                              </Grid>
+                            </Grid>
+
+                            <Grid
+                              container
+                              className={classes.generalFeature}
+                              xs={12}
+                            >
+                              <Grid item xs={5}>
+                                <Typography className={classes.cardFeature}>
+                                  Estado de palpación
+                                </Typography>
+                              </Grid>
+                              <Grid item xs={7}>
+                                <Typography>
+                                  {currentAnimal &&
+                                  currentAnimal.palpations &&
+                                  currentAnimal.palpations.length !== 0
+                                    ? stateOptions[
+                                        currentAnimal.palpations[0].state
+                                      ]
+                                    : "No tiene ninguna palpación registrada"}
+                                </Typography>
                               </Grid>
                             </Grid>
                             <Grid
@@ -716,15 +792,103 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
                             >
                               <Grid item xs={5}>
                                 <Typography className={classes.cardFeature}>
-                                  Alzada
+                                  Observaciones de palpación
                                 </Typography>
                               </Grid>
                               <Grid item xs={7}>
-                                <Typography>No especificado</Typography>
+                                <Typography>
+                                  {currentAnimal &&
+                                  currentAnimal.palpations &&
+                                  currentAnimal.palpations.length !== 0
+                                    ? currentAnimal.palpations[0]
+                                        .observation !== ""
+                                      ? currentAnimal.palpations[0]
+                                          .observation !== ""
+                                      : "No hay observaciones"
+                                    : "No tiene ninguna palpación registrada"}
+                                </Typography>
                               </Grid>
                             </Grid>
+                            {currentAnimal &&
+                            currentAnimal.palpations &&
+                            currentAnimal.isPregnant ? (
+                              <>
+                                <Grid
+                                  container
+                                  className={classes.generalFeature}
+                                  style={{ marginTop: "20px" }}
+                                  xs={12}
+                                >
+                                  <Grid item xs={5}>
+                                    <Typography className={classes.cardFeature}>
+                                      Fecha Preñez
+                                    </Typography>
+                                  </Grid>
+                                  <Grid item xs={7}>
+                                    <Typography>
+                                      {calculatePregnancy(
+                                        currentAnimal.palpations
+                                      )}
+                                    </Typography>
+                                  </Grid>
+                                </Grid>
+                                <Grid
+                                  container
+                                  className={classes.generalFeature}
+                                  xs={12}
+                                >
+                                  <Grid item xs={5}>
+                                    <Typography className={classes.cardFeature}>
+                                      Días de preñez
+                                    </Typography>
+                                  </Grid>
+                                  <Grid item xs={7}>
+                                    <Typography>
+                                      {calculateDaysPregnancy(
+                                        currentAnimal.palpations
+                                      )}
+                                    </Typography>
+                                  </Grid>
+                                </Grid>
+                                <Grid
+                                  container
+                                  className={classes.generalFeature}
+                                  xs={12}
+                                >
+                                  <Grid item xs={5}>
+                                    <Typography className={classes.cardFeature}>
+                                      Parto esperado
+                                    </Typography>
+                                  </Grid>
+                                  <Grid item xs={7}>
+                                    <Typography>
+                                      {expectedBirth(currentAnimal.palpations)}
+                                    </Typography>
+                                  </Grid>
+                                </Grid>
+                              </>
+                            ) : (
+                              <Grid
+                                container
+                                className={classes.generalFeature}
+                                style={{ marginTop: "20px" }}
+                                xs={12}
+                              >
+                                <Grid item xs={5}>
+                                  <Typography className={classes.cardFeature}>
+                                    Preñez
+                                  </Typography>
+                                </Grid>
+                                <Grid item xs={7}>
+                                  <Typography>
+                                    El animal no esta actualmente en estado de
+                                    preñez
+                                  </Typography>
+                                </Grid>
+                              </Grid>
+                            )}
                           </Grid>
-                          <Grid item xs={6}>
+                          {/* <Grid item xs={6}>
                             <HighchartsReact
                               highcharts={Highcharts}
                               options={{
@@ -803,7 +967,7 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
                                 ],
                               }}
                             />
-                          </Grid>
+                          </Grid> */}
                         </Grid>
                       </Paper>
                     </Grid>
@@ -995,7 +1159,13 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
                             </Typography>
                           </Grid>
                           <Grid item xs={7}>
-                            <Typography>2</Typography>
+                            <Typography>
+                              {currentAnimal &&
+                              currentAnimal.milkControls &&
+                              currentAnimal.milkControls.length > 0
+                                ? totalMilk(currentAnimal.milkControls)
+                                : "0 Kg"}
+                            </Typography>
                           </Grid>
                         </Grid>
                         <Grid
@@ -1009,7 +1179,12 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
                             </Typography>
                           </Grid>
                           <Grid item xs={7}>
-                            <Typography>23 de Junio del 2018</Typography>
+                            <Typography>
+                              {currentAnimal &&
+                                currentAnimal.milkControls &&
+                                currentAnimal.milkControls.length >= 0 &&
+                                currentAnimal.milkControls.length}
+                            </Typography>
                           </Grid>
                         </Grid>
                         <Grid
@@ -1023,7 +1198,13 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
                             </Typography>
                           </Grid>
                           <Grid item xs={7}>
-                            <Typography>675</Typography>
+                            <Typography>
+                              {currentAnimal &&
+                              currentAnimal.milkControls &&
+                              currentAnimal.milkControls.length > 0
+                                ? totalDaysMilk(currentAnimal.milkControls)
+                                : "0 días"}
+                            </Typography>
                           </Grid>
                         </Grid>
                       </div>
@@ -1073,7 +1254,11 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
                         </Grid>
                         <Grid item xs={7}>
                           <Typography>
-                            {currentAnimal && currentAnimal.lastWeight}
+                            {currentAnimal &&
+                            currentAnimal.weightControls &&
+                            currentAnimal.weightControls.length > 0
+                              ? currentAnimal.weightControls[0].weight + " Kg."
+                              : "No se han registrado pesos"}
                           </Typography>
                         </Grid>
                       </Grid>
@@ -1090,13 +1275,19 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
                         <Grid item xs={7}>
                           <Typography>
                             {currentAnimal &&
-                              formatDate(
-                                new Date(currentAnimal.lastWeightDate)
-                              )}
+                            currentAnimal.weightControls &&
+                            currentAnimal.weightControls.length > 0
+                              ? format(
+                                  new Date(
+                                    currentAnimal.weightControls[0].controlDate
+                                  ),
+                                  "yyyy-MM-dd"
+                                )
+                              : "No se han registrado pesos"}
                           </Typography>
                         </Grid>
                       </Grid>
-                      <Grid
+                      {/* <Grid
                         container
                         className={classes.generalFeature}
                         xs={12}
@@ -1137,7 +1328,7 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
                         <Grid item xs={7}>
                           <Typography>No especificado</Typography>
                         </Grid>
-                      </Grid>
+                      </Grid> */}
                     </div>
                   </Paper>
                 </Grid>
@@ -1193,8 +1384,7 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
                     </div>
                   </Paper>
                 </Grid>
-                <Grid item xs={12}>
-                  {/* Linea de tiempo */}
+                {/* <Grid item xs={12}>
                   <Paper
                     style={{ height: "96%" }}
                     elevation={4}
@@ -1236,7 +1426,6 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
                     <Typography variant="body1" className={classes.cardTitle}>
                       Last Week
                     </Typography>
-                    {/* <div style={{ position: "relative", left: "-40%" }}> */}
                     <div>
                       <Timeline>
                         <TimelineItem>
@@ -1256,7 +1445,7 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
                       </Timeline>
                     </div>
                   </Paper>
-                </Grid>
+                </Grid> */}
               </Grid>
             </Grid>
           </Grid>

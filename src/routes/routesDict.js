@@ -146,9 +146,15 @@ export const ROUTES_DICT = {
       delete: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.colective}/${ROUTES_SLUGS.weight}/list/:_id/${ROUTES_SLUGS.delete}`,
     },
   },
-  account: `/${ROUTES_SLUGS.account}`,
+  account: `/${ROUTES_SLUGS.account}/${ROUTES_SLUGS.update}`,
   profile: `/${ROUTES_SLUGS.profile}`,
-  users: `/${ROUTES_SLUGS.user}`,
+  users: {
+    root: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.user}`,
+    list: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.user}/list`,
+    create: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.user}/list/${ROUTES_SLUGS.create}`,
+    update: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.user}/list/:_id/${ROUTES_SLUGS.update}`,
+    delete: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.user}/list/:_id/${ROUTES_SLUGS.delete}`,
+  },
   plan: `/${ROUTES_SLUGS.plan}`,
   hacienda: {
     root: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.hacienda}`,

@@ -21,6 +21,11 @@ export function authReducer(state = initialState, action) {
         isLoggedIn: true,
         user: payload,
       };
+    case ACTION_TYPES.AUTH.UPDATE:
+      return {
+        ...state,
+        user: payload,
+      };
     case ACTION_TYPES.AUTH.LOGIN_FAIL:
       return {
         ...state,

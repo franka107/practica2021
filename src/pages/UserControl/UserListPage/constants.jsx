@@ -9,8 +9,15 @@ export const usersExampleData = [
 
 export const userColumns = [
   {
-    label: "Nombre Completo",
-    name: "fullName",
+    label: "Nombres",
+    name: "firstName",
+    options: {
+      filter: false,
+    },
+  },
+  {
+    label: "Apellidos",
+    name: "lastName",
     options: {
       filter: false,
     },
@@ -19,6 +26,7 @@ export const userColumns = [
     label: "Perfil",
     name: "perfil",
     options: {
+      customBodyRender: (value) => "Básico",
       filter: false,
     },
   },

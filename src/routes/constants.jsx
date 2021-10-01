@@ -29,9 +29,9 @@ import AnimalCreatePage from "../pages/AnimalControl/AnimalCreatePage";
 
 /* routes with config layout */
 import ProfilesControlPage from "../pages/ProfilesControlPage";
-import UserControlPage from "../pages/UserControlPage";
+import UserListPage from "../pages/UserControl/UserListPage";
 import PlanPage from "../pages/PlanPage";
-import AccountControlPage from "../pages/AccountControlPage";
+import AccountUpdatePage from "../pages/AccountPage/AccountUpdatePage";
 import GeneticStockCreatePage from "../pages/GeneticStock/GeneticStockCreatePage";
 import GeneticStockUpdatePage from "../pages/GeneticStock/GeneticStockUpdatePage";
 import GeneticStockDeletePage from "../pages/GeneticStock/GeneticStockDeletePage";
@@ -90,6 +90,9 @@ import ImageUploadPage from "../pages/AnimalDetail/ImageUploadPage";
 import FarmImageUploadPage from "../pages/HaciendaConfigurationPage/FarmImageUploadPage";
 import AgribusinessImageUploadPage from "../pages/HaciendaConfigurationPage/AgribusinessImageUploadPage";
 import AnimalCreateBulkPage from "../pages/AnimalControl/AnimalCreateBulkPage";
+import UserCreatePage from "../pages/UserControl/UserCreatePage";
+import UserUpdatePage from "../pages/UserControl/UserUpdatePage";
+import UserDeletePage from "../pages/UserControl/UserDeletePage";
 
 export const ROUTE_TYPES = {
   public: "public",
@@ -712,12 +715,46 @@ export const RENDER_ROUTES = [
     type: ROUTE_TYPES.private,
   },
   {
-    path: ROUTES_DICT.users,
+    path: ROUTES_DICT.users.root,
     key: "Usuarios",
-    exact: true,
-    component: UserControlPage,
+    exact: false,
     layout: ConfigLayout,
     type: ROUTE_TYPES.private,
+    component: ({ children }) => (
+      <DefaultPage>{(props) => children(props)}</DefaultPage>
+    ),
+    routes: [
+      {
+        path: ROUTES_DICT.users.list,
+        key: "Lista de usuarios",
+        exact: false,
+        component: (props) => <UserListPage {...props} />,
+        type: ROUTE_TYPES.private,
+        routes: [
+          {
+            path: ROUTES_DICT.users.create,
+            key: "Nuevo usuario",
+            exact: true,
+            component: (props) => <UserCreatePage {...props} />,
+            type: ROUTE_TYPES.private,
+          },
+          {
+            path: ROUTES_DICT.users.update,
+            key: "Actualizar usuario",
+            exact: true,
+            component: (props) => <UserUpdatePage {...props} />,
+            type: ROUTE_TYPES.private,
+          },
+          {
+            path: ROUTES_DICT.users.delete,
+            key: "Eliminar usuario",
+            exact: true,
+            component: (props) => <UserDeletePage {...props} />,
+            type: ROUTE_TYPES.private,
+          },
+        ],
+      },
+    ],
   },
   {
     path: ROUTES_DICT.profile,
@@ -731,7 +768,7 @@ export const RENDER_ROUTES = [
     path: ROUTES_DICT.account,
     key: "Cuenta",
     exact: true,
-    component: AccountControlPage,
+    component: AccountUpdatePage,
     layout: ConfigLayout,
     type: ROUTE_TYPES.private,
   },

@@ -14,8 +14,8 @@ import { useStyles } from "./styles";
 import { ROUTES_DICT } from "../../../routes/routesDict";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { userActions } from "../../../redux/actions/user.actions";
 import authService from "../../../services/auth.service";
+import authActions from "../../../redux/actions/auth.actions";
 
 function UserType({ onClick }) {
   const classes = useStyles();
@@ -28,7 +28,7 @@ function UserType({ onClick }) {
   };
 
   const handleSubmit = () => {
-    dispatch(userActions.setType({ type: value, ...currentUser }));
+    dispatch(authActions.setType({ type: value, ...currentUser }));
     authService.sendVerificationEmail(currentUser, window.location.href);
     onClick();
   };
