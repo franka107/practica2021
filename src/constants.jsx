@@ -67,8 +67,8 @@ export const sexOptions = [
 ];
 
 export const racialTypeOptions = [
-  { _id: "BULLFIGHTING", name: "Toreo" },
-  { _id: "ZEBU", name: "Zebu" },
+  { _id: "BULLFIGHTING", name: "Taurino" },
+  { _id: "ZEBU", name: "Cebuino" },
   { _id: "HALF_BLOOD", name: "Media Sangre" },
 ];
 

@@ -47,14 +47,19 @@ const IAMNForm = ({
   const femaleAnimals = useSelector(
     (state) =>
       state.animal.list.filter(
-        (e) => e.gender === "FEMALE" && !e.isPregnant && !e.isServed
+        (e) =>
+          e.gender === "FEMALE" &&
+          !e.reproductiveStatus === "PREGNANT" &&
+          !e.isServed
       ),
     shallowEqual
   );
 
   const maleAnimals = useSelector(
     (state) =>
-      state.animal.list.filter((e) => e.gender === "MALE" && e.isReproductive),
+      state.animal.list.filter(
+        (e) => e.gender === "MALE" && e.category === "REPRODUCTOR"
+      ),
     shallowEqual
   );
 

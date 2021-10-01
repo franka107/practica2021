@@ -9,7 +9,12 @@ const AnimalCreateBulkPage = ({ parentPathname }) => {
   return (
     <>
       <CustomDialog parentPathname={parentPathname}>
-        {(props) => <AnimalBulkForm />}
+        {(props) => (
+          <AnimalBulkForm
+            onClickCancelButton={props.handleClose}
+            onCompleteSubmit={props.handleClose}
+          />
+        )}
       </CustomDialog>
     </>
   );

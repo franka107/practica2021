@@ -51,7 +51,9 @@ const BirthForm = ({
   const allAnimals = useSelector((state) => state.animal.list);
   const femaleAnimals = useSelector(
     (state) =>
-      state.animal.list.filter((e) => e.gender === "FEMALE" && e.isPregnant),
+      state.animal.list.filter(
+        (e) => e.gender === "FEMALE" && e.reproductiveStatus === "PREGNANT"
+      ),
     shallowEqual
   );
   const listSemen = useSelector(
@@ -155,8 +157,6 @@ const BirthForm = ({
             AnimalActions.update({
               _id: values.animalId,
               agribusinessId: currentAgribusiness._id,
-              lastMaleChildId: childs.find((e) => e.gender === "MALE")?._id,
-              lastFemaleChildId: childs.find((e) => e.gender === "FEMALE")?._id,
             })
           );
         }

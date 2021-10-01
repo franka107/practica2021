@@ -34,8 +34,7 @@ const defaultInitValues = {
   herdDate: new Date(),
   registerNumber: "",
   gender: "MALE",
-  isReproductive: false,
-  category: "",
+  category: null,
   father: null,
   mother: null,
   fatherId: "",
@@ -171,14 +170,13 @@ function AnimalForm({
       if (values.isReproductive) {
         values.category = "REPRODUCTOR";
       } else {
-        values.category = "";
+        values.category = null;
       }
       values.reproductiveStatus = null;
     }
 
     if (values.gender === "FEMALE") {
-      values.isReproductive = null;
-      values.category = "";
+      values.category = null;
     }
 
     if (values.father) {

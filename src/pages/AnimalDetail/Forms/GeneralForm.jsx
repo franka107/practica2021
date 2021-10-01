@@ -35,7 +35,7 @@ const GeneralForm = ({
         if (values.isReproductive) {
           values.category = "REPRODUCTOR";
         } else {
-          values.category = "";
+          values.category = null;
         }
         values.reproductiveStatus = null;
       }

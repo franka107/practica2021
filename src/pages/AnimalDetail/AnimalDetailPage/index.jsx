@@ -233,11 +233,7 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
                           {currentAnimal && (
                             <Typography>
                               {currentAnimal.gender === "MALE" && (
-                                <>
-                                  {currentAnimal.isReproductive === true
-                                    ? "REPRODUCTOR"
-                                    : "NO REPRODUCTOR"}
-                                </>
+                                <>{currentAnimal.category}</>
                               )}
                               {currentAnimal.gender === "FEMALE" &&
                                 stateOptions[currentAnimal.reproductiveStatus]}

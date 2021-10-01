@@ -54,16 +54,16 @@ export const columns = [
   },
   {
     label: "Categoría",
-    name: "isReproductive",
+    name: "category",
     options: {
       filter: true,
-      filterType: "checkbox",
-      filterOptions: {
-        names: ["Reproductor", "No Reproductor"],
-      },
-      searchable: false,
-      customBodyRender: (value) =>
-        value ? "Reproductor" : typeof value === "boolean" && "No Reproductor",
+      //filterType: "checkbox",
+      //filterOptions: {
+      //  names: ["Reproductor", "No Reproductor"],
+      //},
+      //searchable: false,
+      //customBodyRender: (value) =>
+      //  value ? "Reproductor" : typeof value === "boolean" && "No Reproductor",
     },
   },
   {

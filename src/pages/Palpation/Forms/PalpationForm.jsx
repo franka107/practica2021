@@ -42,7 +42,7 @@ const PalpationForm = ({
       state.animal.list.filter(
         (e) =>
           e.gender === "FEMALE" &&
-          !e.isPregnant &&
+          !e.reproductiveStatus === "PREGNANT" &&
           e.isServed &&
           e.activeServiceId
       ),
