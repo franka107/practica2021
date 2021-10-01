@@ -1,8 +1,25 @@
 import { alpha, makeStyles } from "@material-ui/core";
 
 export const useStyles = makeStyles((theme) => ({
+  largeChip: {
+    width: "100%",
+    justifyContent: "flex-start",
+    color: theme.palette.secondary.main,
+    "&__icon": {
+      color: theme.palette.secondary.main,
+    },
+    "&--danger": {
+      backgroundColor: theme.palette.error.main,
+    },
+    "&--success": {
+      backgroundColor: theme.palette.success.main,
+    },
+  },
   fileInput: {
     display: "none",
+  },
+  chipContainer: {
+    marginTop: "0.5rem",
   },
 
   baseBtn: {

@@ -20,7 +20,8 @@ export const useStyles = makeStyles((theme) => ({
     marginTop: "1rem",
     width: "100%",
     border: `1px solid ${theme.palette.button.primary}`,
-    backgroundColor: theme.palette.primary.main,
+    backgroundColor: theme.palette.secondary.main,
+    color: theme.palette.button.primary,
     padding: ".2rem",
     borderRadius: 0,
   },
@@ -30,8 +31,6 @@ export const useStyles = makeStyles((theme) => ({
     fontWeight: 800,
   },
   logo: {
-    cursor: "pointer",
-    width: "15rem",
     margin: "auto",
     textAlign: "center",
     [theme.breakpoints.down("xs")]: {

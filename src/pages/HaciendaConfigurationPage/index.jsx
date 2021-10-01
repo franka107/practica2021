@@ -13,7 +13,14 @@ import {
   useLocation,
 } from "react-router-dom";
 import clsx from "clsx";
-import { Edit, Add, Delete } from "@material-ui/icons";
+import {
+  Edit,
+  Add,
+  Delete,
+  Camera,
+  Photo,
+  CameraAlt,
+} from "@material-ui/icons";
 import { columnsTable, haciendaRouteOptions } from "./constants";
 import { useStyles } from "./styles";
 import { useDispatch, useSelector } from "react-redux";
@@ -142,7 +149,7 @@ const HaciendaConfigurationPage = ({ children, setTitle, setChipList }) => {
                     }}
                     size="small"
                   >
-                    <Edit fontSize="small"></Edit>
+                    <CameraAlt fontSize="small"></CameraAlt>
                   </IconButton>
                 </div>
                 <img
@@ -212,6 +219,7 @@ const HaciendaConfigurationPage = ({ children, setTitle, setChipList }) => {
                 </Grid>
               </Grid>
               <Grid container className={classes.generalFeature} xs={12}>
+                {/* 
                 <Grid item xs={4}>
                   <Typography className={classes.cardFeature}>
                     Criador
@@ -219,9 +227,10 @@ const HaciendaConfigurationPage = ({ children, setTitle, setChipList }) => {
                 </Grid>
                 <Grid item xs={8}>
                   <Typography>
-                    {/* {currentFarm && currentFarm.nit} */}
+                    {/* {currentFarm && currentFarm.nit} 
                   </Typography>
                 </Grid>
+                */}
               </Grid>
             </div>
           </Paper>
@@ -354,7 +363,7 @@ const HaciendaConfigurationPage = ({ children, setTitle, setChipList }) => {
                         }}
                         size="small"
                       >
-                        <Edit fontSize="small"></Edit>
+                        <CameraAlt fontSize="small"></CameraAlt>
                       </IconButton>
                     </div>
                     <img
@@ -426,6 +435,8 @@ const HaciendaConfigurationPage = ({ children, setTitle, setChipList }) => {
                     </Grid>
                   </Grid>
                   <Grid container className={classes.generalFeature} xs={12}>
+                    {/*
+
                     <Grid item xs={4}>
                       <Typography className={classes.cardFeature}>
                         Criador
@@ -433,9 +444,9 @@ const HaciendaConfigurationPage = ({ children, setTitle, setChipList }) => {
                     </Grid>
                     <Grid item xs={8}>
                       <Typography>
-                        {/* {currentFarm && currentFarm.nit} */}
                       </Typography>
                     </Grid>
+                    */}
                   </Grid>
                 </div>
               </Paper>

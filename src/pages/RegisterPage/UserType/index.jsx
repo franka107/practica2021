@@ -91,7 +91,7 @@ function UserType({ onClick }) {
             <Grid key={`radio-btn-${userType._id}`} item md={6} xs={12}>
               <FormControlLabel
                 value={userType._id}
-                control={<Radio />}
+                control={<Radio color="primary" />}
                 label={
                   <Typography className={classes.label}>
                     {userType.title}

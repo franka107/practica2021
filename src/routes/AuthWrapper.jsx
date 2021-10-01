@@ -1,8 +1,10 @@
 import { CircularProgress } from "@material-ui/core";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { useLocation } from "react-router";
 import { farmActions } from "../redux/actions/farm.actions";
 import { useStyles } from "../styles";
+import { ROUTES_DICT } from "./routesDict";
 
 /**
  * @returns {Component}
@@ -13,6 +15,7 @@ const AuthWrapper = ({ children }) => {
   const dispatch = useDispatch();
   const currentFarm = useSelector((state) => state.farm.current);
   const classes = useStyles();
+  const location = useLocation();
 
   const { current: currentAgribusiness } = useSelector(
     (state) => state.agribusiness
@@ -28,7 +31,9 @@ const AuthWrapper = ({ children }) => {
   }, [dispatch, currentFarm, currentAgribusiness, user]);
   return (
     <>
-      {!currentAgribusiness && isLoggedIn ? (
+      {!currentAgribusiness &&
+      isLoggedIn &&
+      location.pathname !== ROUTES_DICT.setup ? (
         <div className={classes.loader}>
           <CircularProgress />
         </div>

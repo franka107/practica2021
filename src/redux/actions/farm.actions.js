@@ -2,6 +2,7 @@ import FarmService from "../../services/farm.service";
 import ACTION_TYPES from "../types";
 import { farmConstants } from "../types/farm.constants";
 import { alertActions } from "./alert.actions";
+import uiActions from "./ui.actions";
 
 export const farmActions = { create, findFarmByOwnerId, clearAll, update };
 
@@ -66,6 +67,7 @@ function update(data) {
     return FarmService.update(data).then(
       (response) => {
         dispatch(success(data));
+        dispatch(uiActions.showSnackbar("Actualizado correctamente"));
         return Promise.resolve();
       },
       (error) => {

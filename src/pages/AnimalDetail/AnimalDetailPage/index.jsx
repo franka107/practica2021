@@ -4,7 +4,7 @@ import { Checkbox } from "@material-ui/core";
 import { Divider } from "@material-ui/core";
 import { IconButton } from "@material-ui/core";
 import { Grid } from "@material-ui/core";
-import { Edit } from "@material-ui/icons";
+import { CameraAlt, Edit } from "@material-ui/icons";
 import clsx from "clsx";
 import HighchartsReact from "highcharts-react-official";
 import { useState, useEffect } from "react";
@@ -131,7 +131,7 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
                             }}
                             size="small"
                           >
-                            <Edit fontSize="small"></Edit>
+                            <CameraAlt fontSize="small"></CameraAlt>
                           </IconButton>
                         </div>
                         <img
@@ -369,6 +369,18 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
                                   : "No especificado"}
                               </Typography>
                             </Grid>
+                            <Grid item xs={5}>
+                              <Typography className={classes.cardFeature}>
+                                Ref. Padre
+                              </Typography>
+                            </Grid>
+                            <Grid item xs={7}>
+                              <Typography>
+                                {currentAnimal && currentAnimal.fatherRef
+                                  ? currentAnimal.fatherRef
+                                  : "No especificado"}
+                              </Typography>
+                            </Grid>
                           </Grid>
                           <Grid
                             container
@@ -384,6 +396,18 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
                               <Typography>
                                 {currentAnimal && currentAnimal.mother
                                   ? currentAnimal.mother.identifier
+                                  : "No especificado"}
+                              </Typography>
+                            </Grid>
+                            <Grid item xs={5}>
+                              <Typography className={classes.cardFeature}>
+                                Ref. Madre
+                              </Typography>
+                            </Grid>
+                            <Grid item xs={7}>
+                              <Typography>
+                                {currentAnimal && currentAnimal.motherRef
+                                  ? currentAnimal.motherRef
                                   : "No especificado"}
                               </Typography>
                             </Grid>
@@ -670,10 +694,12 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
                               </Grid>
                               <Grid item xs={7}>
                                 <Typography>
+                                  {/*
                                   {currentAnimal &&
                                     formatDate(
                                       new Date(currentAnimal.lastWeightDate)
                                     )}
+                                    */}
                                 </Typography>
                               </Grid>
                             </Grid>
@@ -1085,10 +1111,13 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
                         </Grid>
                         <Grid item xs={7}>
                           <Typography>
+                            {/*
+                            
                             {currentAnimal &&
                               formatDate(
                                 new Date(currentAnimal.lastWeightDate)
                               )}
+                            */}
                           </Typography>
                         </Grid>
                       </Grid>

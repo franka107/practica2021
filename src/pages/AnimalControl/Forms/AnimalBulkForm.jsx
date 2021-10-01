@@ -1,4 +1,14 @@
-import { Button, CircularProgress, Grid, Typography } from "@material-ui/core";
+import {
+  Box,
+  Button,
+  Chip,
+  CircularProgress,
+  Grid,
+  LinearProgress,
+  Typography,
+} from "@material-ui/core";
+import { Check, Error } from "@material-ui/icons";
+import clsx from "clsx";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
@@ -9,11 +19,29 @@ import uiActions from "../../../redux/actions/ui.actions";
 import WeightActions from "../../../redux/actions/weight.actions";
 import { useStyles } from "../../../styles";
 
+function LinearProgressWithLabel(props) {
+  return (
+    <Box sx={{ display: "flex", alignItems: "center" }}>
+      <Box sx={{ width: "100%", mr: 1 }}>
+        <LinearProgress variant="determinate" {...props} />
+      </Box>
+      <Box sx={{ minWidth: 35 }}>
+        <Typography variant="body2" color="text.secondary">{`${Math.round(
+          props.value
+        )}%`}</Typography>
+      </Box>
+    </Box>
+  );
+}
+
 const AnimalBulkForm = ({ onClickCancelButton }) => {
   const classes = useStyles();
   const [csvFile, setCsvFile] = useState();
   const dispatch = useDispatch();
   const raceList = useSelector((state) => state.race.list);
+  const [animalListUploadInfo, setAnimalListUploadInfo] = useState([]);
+  const [isUploading, setIsUploading] = useState(false);
+  const [csvListLength, setCsvListLength] = useState(0);
 
   useEffect(() => {
     if (!raceList || raceList.length === 0) {
@@ -24,12 +52,14 @@ const AnimalBulkForm = ({ onClickCancelButton }) => {
   const handleSubmit = () => {
     if (csvFile) {
       console.log(csvFile);
+      setAnimalListUploadInfo([]);
+      setIsUploading(true);
 
       const reader = new FileReader();
       reader.onload = (e) => {
         const text = e.target.result;
         const data = csvToArray(text);
-        console.log(data);
+        setCsvListLength(data.length);
 
         const getRaceId = (raceName) => {
           const raceFinded = raceList.find(
@@ -41,10 +71,36 @@ const AnimalBulkForm = ({ onClickCancelButton }) => {
             return null;
           }
         };
+        const getDate = (dateString) => {
+          const dateParts = dateString.split("/");
+          const dateObject = new Date(
+            +dateParts[2],
+            dateParts[1] - 1,
+            +dateParts[0]
+          );
+          return dateObject;
+        };
         data.forEach(async (animal) => {
           /**
            * Validacion dinamíca de razas
            */
+          animal.percentageRace1 = Number(animal.percentageRace1);
+          animal.percentageRace2 = Number(animal.percentageRace2);
+          animal.percentageRace3 = Number(animal.percentageRace3);
+          animal.percentageRace4 = Number(animal.percentageRace4);
+          animal.birthsQuantity = Number(animal.birthsQuantity);
+          animal.childrenQuantity = Number(animal.childrenQuantity);
+          animal.birthDate = animal.birthDate && getDate(animal.birthDate);
+          animal.herdDate = animal.herdDate && getDate(animal.herdDate);
+          animal.category =
+            animal.category.length === 0 ? null : animal.category;
+          animal.pregnantType =
+            animal.pregnantType.length === 0 ? null : animal.pregnantType;
+          animal.reproductiveStatus =
+            animal.reproductiveStatus.length === 0
+              ? null
+              : animal.reproductiveStatus;
+          animal.bornBy = animal.bornBy.length === 0 ? null : animal.bornBy;
           if (animal.race1) {
             animal.race1Id = getRaceId(animal.race1);
           }
@@ -57,20 +113,27 @@ const AnimalBulkForm = ({ onClickCancelButton }) => {
           if (animal.race4) {
             animal.race4Id = getRaceId(animal.race4);
           }
-          const animalCreated = await dispatch(AnimalActions.create(animal));
-          console.log(animal);
-          /**
-           * Creacion de registro de pesos si hay informacion
-           */
-          if (animal.lastWeight && animal.lastWeightDate) {
-            const weightData = {
-              animalId: animalCreated._id,
-              controlDate: animal.lastWeightDate,
-              controlType: "BALANCE",
-              weight: animal.lastWeight,
-              observation: "",
-            };
-            dispatch(WeightActions.create(weightData));
+          try {
+            const animalCreated = await dispatch(AnimalActions.create(animal));
+            console.log(animalCreated);
+            setAnimalListUploadInfo((oldArray) => [...oldArray, animalCreated]);
+            /**
+             * Creacion de registro de pesos si hay informacion
+             */
+            if (animal.lastWeight && animal.lastWeightDate) {
+              const weightData = {
+                animalId: animalCreated._id,
+                controlDate: getDate(animal.lastWeightDate),
+                controlType: "BALANCE",
+                weight: Number(animal.lastWeight),
+                observation: "",
+              };
+              dispatch(WeightActions.create(weightData));
+            }
+          } catch (e) {
+            setAnimalListUploadInfo((oldArray) => [...oldArray, animal]);
+
+            console.log(animalListUploadInfo);
           }
         });
       };
@@ -161,6 +224,39 @@ const AnimalBulkForm = ({ onClickCancelButton }) => {
           />
         </Button>
         {fileData(csvFile)}
+      </Grid>
+      <Grid container xs={12} spacing={1} className={classes.chipContainer}>
+        {isUploading && (
+          <Grid item xs={12}>
+            <LinearProgressWithLabel
+              value={(animalListUploadInfo.length / csvListLength) * 100}
+            />
+          </Grid>
+        )}
+        {animalListUploadInfo.map((animal, index) => (
+          <Grid item xs={12} key={index}>
+            <Chip
+              icon={
+                animal?._id ? (
+                  <Check className={`${classes.largeChip}__icon`} />
+                ) : (
+                  <Error className={`${classes.largeChip}__icon`} />
+                )
+              }
+              className={clsx(
+                classes.largeChip,
+                animal?._id
+                  ? `${classes.largeChip}--success`
+                  : `${classes.largeChip}--danger`
+              )}
+              label={
+                animal?._id
+                  ? `${animal.identifier}: Exitoso`
+                  : `${animal.identifier}: Error al momento de subir`
+              }
+            />
+          </Grid>
+        ))}
       </Grid>
       <Grid
         container

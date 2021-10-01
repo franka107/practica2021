@@ -262,7 +262,7 @@ function AnimalForm({
             ></TextFieldFormik>
             <SelectFieldFormik
               onChange={props.handleChange}
-              options={sexOptions}
+              options={sexOptions.slice(1)}
               label="Sexo"
               name="gender"
               lg={6}

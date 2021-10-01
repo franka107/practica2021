@@ -96,7 +96,7 @@ const RegisterAgribusinessForm = ({
     try {
       if (type === "none") {
         dispatch(AgribusinessActions.create(values)).then(() => {
-          history.push(ROUTES_DICT.dashboard);
+          history.push(ROUTES_DICT.animal.list);
         });
       }
       if (type === "create") {
@@ -323,7 +323,7 @@ const RegisterAgribusinessForm = ({
                           <div className={classes.input}>
                             <TextFieldFormik
                               name="milkCost"
-                              label="Precio de venta"
+                              label="Precio de costo"
                             />
                           </div>
                           <div className={classes.input}>
@@ -392,7 +392,7 @@ const RegisterAgribusinessForm = ({
                           <div className={classes.input}>
                             <TextFieldFormik
                               name="meatCost"
-                              label="Precio de venta"
+                              label="Precio de costo"
                             />
                           </div>
                           <div className={classes.input}>
@@ -446,7 +446,7 @@ const RegisterAgribusinessForm = ({
                 ></SelectFieldFormik>
                 <SelectFieldFormik
                   xs={6}
-                  label="Numero de ordeño"
+                  label="Número de ordeños"
                   name="milkingNumber"
                   options={numberOptions}
                 ></SelectFieldFormik>
