@@ -7,13 +7,13 @@ export const menuItems = [
     id: 1,
     title: "Inicio",
     img: faHome,
-    link: ROUTES_DICT.test1,
+    link: ROUTES_DICT.animal.list,
   },
   {
     id: 2,
     title: "Configuración",
     img: faCog,
-    link: ROUTES_DICT.users,
+    link: ROUTES_DICT.users.list,
   },
   {
     id: 3,

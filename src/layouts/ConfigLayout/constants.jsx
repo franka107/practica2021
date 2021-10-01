@@ -10,12 +10,12 @@ export const menuList = [
       {
         id: "inicio",
         title: "Inicio",
-        link: ROUTES_DICT.users,
+        link: ROUTES_DICT.users.list,
       },
       {
         id: "agregar-nuevo-usuario",
         title: "Agregar nuevo usuario",
-        // link: routesDictionary.userManagement,
+        link: ROUTES_DICT.users.create,
       },
     ],
   },

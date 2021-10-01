@@ -1,69 +1,64 @@
-import UserService from "../../services/user.service";
-import { userConstants } from "../types/user.constants";
-import { alertActions } from "./alert.actions";
-import UiActions from "./ui.actions";
+import IdeasCloudApi from "../../helpers/ideascloudApi";
+import ACTION_TYPES from "../types";
 
-export const userActions = { login, register, setType };
+const list = () => async (dispatch, getState) => {
+  const farm = getState().farm.current;
+  const response = await IdeasCloudApi.fetch("userListByFarm", {
+    farmId: farm?._id,
+  });
 
-function register(userData) {
-  return (dispatch) => {
-    return UserService.userRegister(userData).then(
-      (response) => {
-        dispatch(success(response));
-        return Promise.resolve();
-      },
-      (error) => {
-        dispatch(failure(error));
-        dispatch(alertActions.error());
-        dispatch(UiActions.showSnackbar(error.message, "error"));
-        return Promise.reject();
-      }
-    );
-  };
-  function success(user) {
-    return { type: userConstants.USER_REGISTER_SUCCESS, user };
-  }
-  function failure(error) {
-    return { type: userConstants.USER_REGISTER_FAILURE, error };
-  }
-}
-function setType(data) {
-  return (dispatch) => {
-    return UserService.userUpdate(data).then(
-      (response) => {
-        return Promise.resolve();
-      },
-      (error) => {
-        dispatch(UiActions.showSnackbar(error.message, "error"));
-        return Promise.reject();
-      }
-    );
-  };
-}
+  dispatch({ type: ACTION_TYPES.USER.RETRIEVE, payload: response });
+};
 
-function login(email, password) {
-  return (dispatch) => {
-    dispatch(request({ email }));
-    return UserService.userLogin(email, password).then(
-      (response) => {
-        dispatch(success(response));
-        return Promise.resolve();
-      },
-      (error) => {
-        dispatch(failure(error));
-        dispatch(alertActions.error());
-        return Promise.reject();
-      }
-    );
-  };
+const create = (data) => async (dispatch, getState) => {
+  const farm = getState().farm.current;
 
-  function request(user) {
-    return { type: userConstants.LOGIN_REQUEST, user };
-  }
-  function success(user) {
-    return { type: userConstants.LOGIN_SUCCESS, user };
-  }
-  function failure(error) {
-    return { type: userConstants.LOGIN_FAILURE, error };
-  }
-}
+  const response = await IdeasCloudApi.fetch(
+    "userCreate",
+    {
+      ...data,
+      farmId: farm._id,
+    },
+    dispatch,
+    "Usuario registrado satisfactoriamente.",
+    "Error desconocido, intente nuavamente."
+  );
+  dispatch({
+    type: ACTION_TYPES.USER.CREATE,
+    payload: response,
+  });
+};
+const update = (data) => async (dispatch) => {
+  await IdeasCloudApi.fetch(
+    "userUpdate",
+    data,
+    dispatch,
+    "Usuario actualizado satisfactoriamente.",
+    "Error desconocido, intente nuavamente."
+  );
+  dispatch({ type: ACTION_TYPES.USER.UPDATE_CURRENT, payload: data });
+
+  dispatch(list());
+};
+
+const get = (data) => async (dispatch) => {
+  const response = await IdeasCloudApi.fetch("userGetById", data);
+  dispatch({ type: ACTION_TYPES.USER.UPDATE_CURRENT, payload: response });
+};
+
+const deleteUser = (data) => async (dispatch) => {
+  const response = await IdeasCloudApi.fetch("userDelete", data, dispatch);
+  dispatch({ type: ACTION_TYPES.USER.DELETE, payload: response });
+
+  dispatch(list());
+};
+
+const UserActions = {
+  create,
+  list,
+  update,
+  get,
+  deleteUser,
+};
+
+export default UserActions;

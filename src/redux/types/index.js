@@ -5,6 +5,7 @@ const ACTION_TYPES = {
     LOGIN_SUCESS: "auth/LOGIN_SUCCESS",
     LOGIN_FAIL: "auth/LOGIN_FAIL",
     LOGOUT: "auth/LOGIN_LOGOUT",
+    UPDATE: "auth/UPDATE",
   },
   UI: {
     SNACKBAR_SHOW: "ui/SNACKBAR_SHOW",
@@ -147,6 +148,14 @@ const ACTION_TYPES = {
     UPDATE_CURRENT: "collaborator/UPDATE_CURRENT",
     DELETE: "collaborator/DELETE",
     CREATE: "collaborator/CREATE",
+  },
+  USER: {
+    RETRIEVE_BY_ID: "user/RETRIEVE_BY_ID",
+    UPDATE: "user/UPDATE",
+    RETRIEVE: "user/RETRIEVE",
+    UPDATE_CURRENT: "user/UPDATE_CURRENT",
+    DELETE: "user/DELETE",
+    CREATE: "user/CREATE",
   },
 };
 

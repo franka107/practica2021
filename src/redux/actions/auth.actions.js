@@ -1,4 +1,5 @@
 import AuthService from "../../services/auth.service";
+import UserService from "../../services/user.service";
 import ACTION_TYPES from "../types";
 import { farmActions } from "./farm.actions";
 import UiActions from "./ui.actions";
@@ -17,6 +18,20 @@ class AuthActions {
         },
         (error) => {
           dispatch({ type: ACTION_TYPES.AUTH.REGISTER_FAIL });
+          dispatch(UiActions.showSnackbar(error.message, "error"));
+          return Promise.reject();
+        }
+      );
+    };
+  }
+
+  setType(data) {
+    return (dispatch) => {
+      return UserService.userUpdate(data).then(
+        (response) => {
+          return Promise.resolve();
+        },
+        (error) => {
           dispatch(UiActions.showSnackbar(error.message, "error"));
           return Promise.reject();
         }

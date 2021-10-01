@@ -186,3 +186,9 @@ export const positionOptions = {
   ADMIN: "Administrador",
   VET: "Veterinario",
 };
+
+export const planOptions = {
+  BASIC: "Básico",
+  INTERMEDIATE: "Intermedio",
+  PREMIUM: "Premium",
+};

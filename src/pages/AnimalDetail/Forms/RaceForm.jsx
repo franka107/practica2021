@@ -58,9 +58,21 @@ const RaceForm = ({
     ) {
       dispatch(AnimalActions.list());
     }
-    if (currentAnimal.percentageRace2 !== 0) handleAddRace();
-    if (currentAnimal.percentageRace3 !== 0) handleAddRace();
-    if (currentAnimal.percentageRace4 !== 0) handleAddRace();
+    if (
+      currentAnimal.percentageRace2 !== 0 &&
+      currentAnimal.percentageRace2 !== null
+    )
+      handleAddRace();
+    if (
+      currentAnimal.percentageRace4 !== 0 &&
+      currentAnimal.percentageRace2 !== null
+    )
+      handleAddRace();
+    if (
+      currentAnimal.percentageRace3 !== 0 &&
+      currentAnimal.percentageRace2 !== null
+    )
+      handleAddRace();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -110,10 +122,22 @@ const RaceForm = ({
   const handleSubmit = async (values, actions) => {
     try {
       const validPercentages = handleCheckPercentage({
-        percentageRace1: values.percentageRace1,
-        percentageRace2: values.percentageRace2,
-        percentageRace3: values.percentageRace3,
-        percentageRace4: values.percentageRace4,
+        percentageRace1:
+          values.percentageRace1 && values.percentageRace1 !== 0
+            ? values.percentageRace1
+            : 0,
+        percentageRace2:
+          values.percentageRace2 && values.percentageRace2 !== 0
+            ? values.percentageRace2
+            : 0,
+        percentageRace3:
+          values.percentageRace3 && values.percentageRace3 !== 0
+            ? values.percentageRace3
+            : 0,
+        percentageRace4:
+          values.percentageRace4 && values.percentageRace4 !== 0
+            ? values.percentageRace4
+            : 0,
       });
 
       let cont = 1;
