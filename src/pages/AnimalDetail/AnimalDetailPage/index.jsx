@@ -52,17 +52,17 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
         return format(new Date(values[index].birthDate), "yyyy-MM-dd");
       }
     }
-    return "Ninguno";
+    return "Sin información";
   };
 
-  const calculatePregnancy = (values = []) => {
-    for (let index = 0; index < values.length; index++) {
-      if (values[index].state === "PREGNANT") {
-        return format(new Date(values[index].pregnancyDate), "yyyy-MM-dd");
-      }
-    }
-    return "Ninguno";
-  };
+  // const calculatePregnancy = (values = []) => {
+  //   for (let index = 0; index < values.length; index++) {
+  //     if (values[index].state === "PREGNANT") {
+  //       return format(new Date(values[index].pregnancyDate), "yyyy-MM-dd");
+  //     }
+  //   }
+  //   return "Sin información";
+  // };
 
   const calculateDaysPregnancy = (values = []) => {
     if (values[0].state === "PREGNANT") {
@@ -119,7 +119,7 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
       );
       return result + " dias";
     } else {
-      return "Datos insuficientes";
+      return "Sin información";
     }
   };
 
@@ -131,7 +131,7 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
       dispatch(AnimalActions.get({ _id: params._id }));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch, currentAnimal]);
+  }, [dispatch, currentAnimal, params._id]);
 
   return (
     <Grid container xs={12}>
@@ -298,6 +298,25 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
                           {/* <Typography>Vaca seca, 276 dias de preñez</Typography> */}
                         </Grid>
                       </Grid>
+                      <Grid
+                        container
+                        className={classes.generalFeature}
+                        xs={12}
+                      >
+                        <Grid item xs={4}>
+                          <Typography className={classes.cardFeature}>
+                            Nacido por
+                          </Typography>
+                        </Grid>
+                        <Grid item xs={8}>
+                          {currentAnimal && currentAnimal.bornBy ? (
+                            <Typography>{currentAnimal.bornBy}</Typography>
+                          ) : (
+                            <Typography>Sin información</Typography>
+                          )}
+                          {/* <Typography>Vaca seca, 276 dias de preñez</Typography> */}
+                        </Grid>
+                      </Grid>
                       <div className={classes.borderLinearProgress}>
                         {currentAnimal && currentAnimal.gender === "FEMALE" && (
                           <BorderLinearProgress
@@ -374,7 +393,15 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
                 </Grid>
                 <Grid item xs={12} lg={8}>
                   <Grid container style={{ height: "100%" }} xs={12}>
-                    <Grid item xs={12} lg={6}>
+                    <Grid
+                      item
+                      xs={12}
+                      lg={
+                        currentAnimal && currentAnimal.gender === "FEMALE"
+                          ? 6
+                          : 12
+                      }
+                    >
                       {/* Race card */}
                       <Paper
                         style={{ height: "96%" }}
@@ -413,60 +440,112 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
                             className={classes.generalFeature}
                             xs={12}
                           >
-                            <Grid item xs={5}>
-                              <Typography className={classes.cardFeature}>
-                                Padre
-                              </Typography>
-                            </Grid>
-                            <Grid item xs={7}>
-                              <Typography>
-                                {currentAnimal && currentAnimal.father
-                                  ? currentAnimal.father.identifier
-                                  : "No especificado"}
-                              </Typography>
-                            </Grid>
-                            <Grid item xs={5}>
-                              <Typography className={classes.cardFeature}>
-                                Ref. Padre
-                              </Typography>
-                            </Grid>
-                            <Grid item xs={7}>
-                              <Typography>
-                                {currentAnimal && currentAnimal.fatherRef
-                                  ? currentAnimal.fatherRef
-                                  : "No especificado"}
-                              </Typography>
-                            </Grid>
+                            {currentAnimal && currentAnimal.fatherId !== null && (
+                              <>
+                                <Grid item xs={5}>
+                                  <Typography className={classes.cardFeature}>
+                                    Padre
+                                  </Typography>
+                                </Grid>
+                                <Grid item xs={6}>
+                                  <Typography>
+                                    {currentAnimal && currentAnimal.father
+                                      ? currentAnimal.father.identifier
+                                      : "Sin información"}
+                                  </Typography>
+                                </Grid>
+                                <Grid item xs={1}>
+                                  <IconButton
+                                    size="small"
+                                    onClick={() => {
+                                      history.push(
+                                        generatePath(
+                                          ROUTES_DICT.animalDetail.root,
+                                          {
+                                            ...params,
+                                            _id: currentAnimal.fatherId,
+                                          }
+                                        )
+                                      );
+                                    }}
+                                  >
+                                    <Edit fontSize="small"></Edit>
+                                  </IconButton>
+                                </Grid>
+                              </>
+                            )}
+                            {currentAnimal && currentAnimal.fatherRef !== null && (
+                              <>
+                                <Grid item xs={5}>
+                                  <Typography className={classes.cardFeature}>
+                                    Ref. Padre
+                                  </Typography>
+                                </Grid>
+                                <Grid item xs={7}>
+                                  <Typography>
+                                    {currentAnimal && currentAnimal.fatherRef
+                                      ? currentAnimal.fatherRef
+                                      : "Sin información"}
+                                  </Typography>
+                                </Grid>
+                              </>
+                            )}
                           </Grid>
                           <Grid
                             container
                             className={classes.generalFeature}
                             xs={12}
                           >
-                            <Grid item xs={5}>
-                              <Typography className={classes.cardFeature}>
-                                Madre
-                              </Typography>
-                            </Grid>
-                            <Grid item xs={7}>
-                              <Typography>
-                                {currentAnimal && currentAnimal.mother
-                                  ? currentAnimal.mother.identifier
-                                  : "No especificado"}
-                              </Typography>
-                            </Grid>
-                            <Grid item xs={5}>
-                              <Typography className={classes.cardFeature}>
-                                Ref. Madre
-                              </Typography>
-                            </Grid>
-                            <Grid item xs={7}>
-                              <Typography>
-                                {currentAnimal && currentAnimal.motherRef
-                                  ? currentAnimal.motherRef
-                                  : "No especificado"}
-                              </Typography>
-                            </Grid>
+                            {currentAnimal && currentAnimal.motherId !== null && (
+                              <>
+                                <Grid item xs={5}>
+                                  <Typography className={classes.cardFeature}>
+                                    Madre
+                                  </Typography>
+                                </Grid>
+                                <Grid item xs={6}>
+                                  <Typography>
+                                    {currentAnimal && currentAnimal.mother
+                                      ? currentAnimal.mother.identifier
+                                      : "Sin información"}
+                                  </Typography>
+                                </Grid>
+                                <Grid item xs={1}>
+                                  <IconButton
+                                    size="small"
+                                    onClick={() => {
+                                      history.push(
+                                        generatePath(
+                                          ROUTES_DICT.animalDetail.root,
+                                          {
+                                            ...params,
+                                            _id: currentAnimal.motherId,
+                                          }
+                                        )
+                                      );
+                                    }}
+                                  >
+                                    <Edit fontSize="small"></Edit>
+                                  </IconButton>
+                                </Grid>
+                              </>
+                            )}
+                            {currentAnimal && currentAnimal.motherRef !== null && (
+                              <>
+                                <Grid item xs={5}>
+                                  <Typography className={classes.cardFeature}>
+                                    Ref. Madre
+                                  </Typography>
+                                </Grid>
+                                <Grid item xs={7}>
+                                  <Typography>
+                                    {currentAnimal && currentAnimal.motherRef
+                                      ? currentAnimal.motherRef
+                                      : "Sin información"}
+                                  </Typography>
+                                </Grid>
+                              </>
+                            )}
                           </Grid>
                           <Grid
                             container
@@ -553,107 +632,116 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
                         </div>
                       </Paper>
                     </Grid>
-                    <Grid item xs={12} lg={6}>
-                      {/* Parts Card */}
-                      <Paper
-                        style={{ height: "96%" }}
-                        elevation={4}
-                        className={classes.card}
-                      >
-                        <div className={classes.cardHeader}>
-                          <Typography
-                            variant="body1"
-                            className={classes.cardTitle}
+                    {currentAnimal && currentAnimal.gender === "FEMALE" && (
+                      <>
+                        <Grid item xs={12} lg={6}>
+                          {/* Parts Card */}
+                          <Paper
+                            style={{ height: "96%" }}
+                            elevation={4}
+                            className={classes.card}
                           >
-                            Partos
-                          </Typography>
-                          <IconButton
-                            className={classes.cardEditIcon}
-                            size="small"
-                            onClick={() => {
-                              history.push(
-                                generatePath(
-                                  ROUTES_DICT.animalDetail.birth.update,
-                                  {
-                                    ...params,
-                                    _id: params._id,
-                                  }
-                                )
-                              );
-                            }}
-                          >
-                            <Edit fontSize="small"></Edit>
-                          </IconButton>
-                        </div>
-                        <Divider></Divider>
-                        <a className={clsx(classes.link)} href="/#">
-                          Grafica Reproductiva
-                        </a>
-                        <div className="">
-                          <Grid
-                            container
-                            className={classes.generalFeature}
-                            xs={12}
-                          >
-                            <Grid item xs={5}>
-                              <Typography className={classes.cardFeature}>
-                                Nro. de partos
+                            <div className={classes.cardHeader}>
+                              <Typography
+                                variant="body1"
+                                className={classes.cardTitle}
+                              >
+                                Partos
                               </Typography>
-                            </Grid>
-                            <Grid item xs={7}>
-                              <Typography>
-                                {currentAnimal &&
-                                currentAnimal.births &&
-                                currentAnimal.births.length !== 0
-                                  ? currentAnimal.births.length
-                                  : "Ningun parto"}
-                              </Typography>
-                            </Grid>
-                          </Grid>
-                          <Grid
-                            container
-                            className={classes.generalFeature}
-                            xs={12}
-                          >
-                            <Grid item xs={5}>
-                              <Typography className={classes.cardFeature}>
-                                Ultimo parto
-                              </Typography>
-                            </Grid>
-                            <Grid item xs={7}>
-                              <Typography>
-                                {currentAnimal &&
-                                currentAnimal.births &&
-                                currentAnimal.births.length !== 0
-                                  ? format(
-                                      new Date(
-                                        currentAnimal.births[0].birthDate
-                                      ),
-                                      "yyyy-MM-dd"
+                              <IconButton
+                                className={classes.cardEditIcon}
+                                size="small"
+                                onClick={() => {
+                                  history.push(
+                                    generatePath(
+                                      ROUTES_DICT.animalDetail.birth.update,
+                                      {
+                                        ...params,
+                                        _id: params._id,
+                                      }
                                     )
-                                  : "Este animal aun no tiene ningun parto"}
-                              </Typography>
-                            </Grid>
-                          </Grid>
-                          <Grid
-                            container
-                            className={classes.generalFeature}
-                            xs={12}
-                          >
-                            <Grid item xs={5}>
-                              <Typography className={classes.cardFeature}>
-                                IEP
-                              </Typography>
-                            </Grid>
-                            <Grid item xs={7}>
-                              {currentAnimal && currentAnimal.births && (
-                                <Typography>
-                                  {calculateIEP(currentAnimal.births)}
-                                </Typography>
-                              )}
-                            </Grid>
-                          </Grid>
-                          {/* <Grid
+                                  );
+                                }}
+                              >
+                                <Edit fontSize="small"></Edit>
+                              </IconButton>
+                            </div>
+                            <Divider></Divider>
+                            <a className={clsx(classes.link)} href="/#">
+                              Grafica Reproductiva
+                            </a>
+                            <div className="">
+                              <Grid
+                                container
+                                className={classes.generalFeature}
+                                xs={12}
+                              >
+                                <Grid item xs={5}>
+                                  <Typography className={classes.cardFeature}>
+                                    Nro. de partos
+                                  </Typography>
+                                </Grid>
+                                <Grid item xs={7}>
+                                  <Typography>
+                                    {currentAnimal &&
+                                    currentAnimal.births &&
+                                    currentAnimal.births.length !== 0
+                                      ? currentAnimal.birthsQuantity
+                                        ? currentAnimal.births.length +
+                                          currentAnimal.birthsQuantity
+                                        : currentAnimal.births.length
+                                      : currentAnimal.birthsQuantity
+                                      ? currentAnimal.birthsQuantity
+                                      : "Sin informacíon"}
+                                  </Typography>
+                                </Grid>
+                              </Grid>
+                              <Grid
+                                container
+                                className={classes.generalFeature}
+                                xs={12}
+                              >
+                                <Grid item xs={5}>
+                                  <Typography className={classes.cardFeature}>
+                                    Ultimo parto
+                                  </Typography>
+                                </Grid>
+                                <Grid item xs={7}>
+                                  <Typography>
+                                    {currentAnimal &&
+                                    currentAnimal.lastBirthDate
+                                      ? currentAnimal.lastBirthDate
+                                      : currentAnimal.births &&
+                                        currentAnimal.births.length !== 0
+                                      ? format(
+                                          new Date(
+                                            currentAnimal.births[0].birthDate
+                                          ),
+                                          "yyyy-MM-dd"
+                                        )
+                                      : "Sin información"}
+                                  </Typography>
+                                </Grid>
+                              </Grid>
+                              <Grid
+                                container
+                                className={classes.generalFeature}
+                                xs={12}
+                              >
+                                <Grid item xs={5}>
+                                  <Typography className={classes.cardFeature}>
+                                    IEP
+                                  </Typography>
+                                </Grid>
+                                <Grid item xs={7}>
+                                  {currentAnimal && currentAnimal.births && (
+                                    <Typography>
+                                      {calculateIEP(currentAnimal.births)}
+                                    </Typography>
+                                  )}
+                                </Grid>
+                              </Grid>
+                              {/* <Grid
                             container
                             className={classes.generalFeature}
                             xs={12}
@@ -667,248 +755,253 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
                               <Typography>No especificado</Typography>
                             </Grid>
                           </Grid> */}
-                          <Grid
-                            container
-                            className={classes.generalFeature}
-                            xs={12}
-                          >
-                            <Grid item xs={5}>
-                              <Typography className={classes.cardFeature}>
-                                Ult. aborto
-                              </Typography>
-                            </Grid>
-                            <Grid item xs={7}>
-                              {currentAnimal && currentAnimal.births && (
-                                <Typography>
-                                  {calculateLastAbortion(currentAnimal.births)}
-                                </Typography>
-                              )}
-                            </Grid>
-                          </Grid>
-                        </div>
-                      </Paper>
-                    </Grid>
-                    <Grid item xs={12} lg={12}>
-                      {/* Servicios y palpacion*/}
-                      <Paper
-                        style={{ height: "96%" }}
-                        elevation={4}
-                        className={classes.card}
-                      >
-                        <div className={classes.cardHeader}>
-                          <Typography
-                            variant="body1"
-                            className={classes.cardTitle}
-                          >
-                            Servicios y palpación
-                          </Typography>
-                          <IconButton
-                            className={classes.cardEditIcon}
-                            size="small"
-                            onClick={() => {
-                              history.push(
-                                generatePath(
-                                  ROUTES_DICT.animalDetail.service.update,
-                                  {
-                                    ...params,
-                                    _id: params._id,
-                                  }
-                                )
-                              );
-                            }}
-                          >
-                            <Edit fontSize="small"></Edit>
-                          </IconButton>
-                        </div>
-                        <Divider className={classes.divider}></Divider>
-                        <Grid container className="">
-                          <Grid item xs={8}>
-                            <Grid
-                              container
-                              className={classes.generalFeature}
-                              xs={12}
-                            >
-                              <Grid item xs={5}>
-                                <Typography className={classes.cardFeature}>
-                                  Últ. Celo
-                                </Typography>
-                              </Grid>
-                              <Grid item xs={7}>
-                                <Typography>
-                                  {currentAnimal &&
-                                  currentAnimal.zealControl &&
-                                  currentAnimal.zealControl.length !== 0
-                                    ? currentAnimal.zealControl[0].controlDate
-                                    : "No tiene ningun celo registrado"}
-                                </Typography>
-                              </Grid>
-                            </Grid>
-                            <Grid
-                              container
-                              className={classes.generalFeature}
-                              xs={12}
-                            >
-                              <Grid item xs={5}>
-                                <Typography className={classes.cardFeature}>
-                                  I.E.C
-                                </Typography>
-                              </Grid>
-                              <Grid item xs={7}>
-                                <Typography>0</Typography>
-                              </Grid>
-                            </Grid>
-                            <Grid
-                              container
-                              className={classes.generalFeature}
-                              xs={12}
-                            >
-                              <Grid item xs={5}>
-                                <Typography className={classes.cardFeature}>
-                                  Últ. palpación
-                                </Typography>
-                              </Grid>
-                              <Grid item xs={7}>
-                                <Typography>
-                                  {currentAnimal &&
-                                  currentAnimal.palpations &&
-                                  currentAnimal.palpations.length !== 0
-                                    ? format(
-                                        new Date(
-                                          currentAnimal.palpations[0].pregnancyDate
-                                        ),
-                                        "yyyy-MM-dd"
-                                      )
-                                    : "No tiene ninguna palpación registrada"}
-                                </Typography>
-                              </Grid>
-                            </Grid>
-
-                            <Grid
-                              container
-                              className={classes.generalFeature}
-                              xs={12}
-                            >
-                              <Grid item xs={5}>
-                                <Typography className={classes.cardFeature}>
-                                  Estado de palpación
-                                </Typography>
-                              </Grid>
-                              <Grid item xs={7}>
-                                <Typography>
-                                  {currentAnimal &&
-                                  currentAnimal.palpations &&
-                                  currentAnimal.palpations.length !== 0
-                                    ? stateOptions[
-                                        currentAnimal.palpations[0].state
-                                      ]
-                                    : "No tiene ninguna palpación registrada"}
-                                </Typography>
-                              </Grid>
-                            </Grid>
-                            <Grid
-                              container
-                              className={classes.generalFeature}
-                              xs={12}
-                            >
-                              <Grid item xs={5}>
-                                <Typography className={classes.cardFeature}>
-                                  Observaciones de palpación
-                                </Typography>
-                              </Grid>
-                              <Grid item xs={7}>
-                                <Typography>
-                                  {currentAnimal &&
-                                  currentAnimal.palpations &&
-                                  currentAnimal.palpations.length !== 0
-                                    ? currentAnimal.palpations[0]
-                                        .observation !== ""
-                                      ? currentAnimal.palpations[0]
-                                          .observation !== ""
-                                      : "No hay observaciones"
-                                    : "No tiene ninguna palpación registrada"}
-                                </Typography>
-                              </Grid>
-                            </Grid>
-                            {currentAnimal &&
-                            currentAnimal.palpations &&
-                            currentAnimal.isPregnant ? (
-                              <>
-                                <Grid
-                                  container
-                                  className={classes.generalFeature}
-                                  style={{ marginTop: "20px" }}
-                                  xs={12}
-                                >
-                                  <Grid item xs={5}>
-                                    <Typography className={classes.cardFeature}>
-                                      Fecha Preñez
-                                    </Typography>
-                                  </Grid>
-                                  <Grid item xs={7}>
-                                    <Typography>
-                                      {calculatePregnancy(
-                                        currentAnimal.palpations
-                                      )}
-                                    </Typography>
-                                  </Grid>
-                                </Grid>
-                                <Grid
-                                  container
-                                  className={classes.generalFeature}
-                                  xs={12}
-                                >
-                                  <Grid item xs={5}>
-                                    <Typography className={classes.cardFeature}>
-                                      Días de preñez
-                                    </Typography>
-                                  </Grid>
-                                  <Grid item xs={7}>
-                                    <Typography>
-                                      {calculateDaysPregnancy(
-                                        currentAnimal.palpations
-                                      )}
-                                    </Typography>
-                                  </Grid>
-                                </Grid>
-                                <Grid
-                                  container
-                                  className={classes.generalFeature}
-                                  xs={12}
-                                >
-                                  <Grid item xs={5}>
-                                    <Typography className={classes.cardFeature}>
-                                      Parto esperado
-                                    </Typography>
-                                  </Grid>
-                                  <Grid item xs={7}>
-                                    <Typography>
-                                      {expectedBirth(currentAnimal.palpations)}
-                                    </Typography>
-                                  </Grid>
-                                </Grid>
-                              </>
-                            ) : (
                               <Grid
                                 container
                                 className={classes.generalFeature}
-                                style={{ marginTop: "20px" }}
                                 xs={12}
                               >
                                 <Grid item xs={5}>
                                   <Typography className={classes.cardFeature}>
-                                    Preñez
+                                    Ult. aborto
                                   </Typography>
                                 </Grid>
                                 <Grid item xs={7}>
-                                  <Typography>
-                                    El animal no esta actualmente en estado de
-                                    preñez
-                                  </Typography>
+                                  {currentAnimal && currentAnimal.births && (
+                                    <Typography>
+                                      {calculateLastAbortion(
+                                        currentAnimal.births
+                                      )}
+                                    </Typography>
+                                  )}
                                 </Grid>
                               </Grid>
-                            )}
-                          </Grid>
-                          {/* <Grid item xs={6}>
+                            </div>
+                          </Paper>
+                        </Grid>
+                        <Grid item xs={12} lg={12}>
+                          {/* Servicios y palpacion*/}
+                          <Paper
+                            style={{ height: "96%" }}
+                            elevation={4}
+                            className={classes.card}
+                          >
+                            <div className={classes.cardHeader}>
+                              <Typography
+                                variant="body1"
+                                className={classes.cardTitle}
+                              >
+                                Servicios y palpación
+                              </Typography>
+                              <IconButton
+                                className={classes.cardEditIcon}
+                                size="small"
+                                onClick={() => {
+                                  history.push(
+                                    generatePath(
+                                      ROUTES_DICT.animalDetail.service.update,
+                                      {
+                                        ...params,
+                                        _id: params._id,
+                                      }
+                                    )
+                                  );
+                                }}
+                              >
+                                <Edit fontSize="small"></Edit>
+                              </IconButton>
+                            </div>
+                            <Divider className={classes.divider}></Divider>
+                            <Grid container className="">
+                              <Grid item xs={8}>
+                                <Grid
+                                  container
+                                  className={classes.generalFeature}
+                                  xs={12}
+                                >
+                                  <Grid item xs={5}>
+                                    <Typography className={classes.cardFeature}>
+                                      Últ. Celo
+                                    </Typography>
+                                  </Grid>
+                                  <Grid item xs={7}>
+                                    <Typography>
+                                      {currentAnimal &&
+                                      currentAnimal.zealControl &&
+                                      currentAnimal.zealControl.length !== 0
+                                        ? format(
+                                            new Date(
+                                              currentAnimal.zealControl[0].controlDate
+                                            ),
+                                            "yyyy-MM-dd"
+                                          )
+                                        : "Sin información"}
+                                    </Typography>
+                                  </Grid>
+                                </Grid>
+                                <Grid
+                                  container
+                                  className={classes.generalFeature}
+                                  xs={12}
+                                >
+                                  <Grid item xs={5}>
+                                    <Typography className={classes.cardFeature}>
+                                      I.E.C
+                                    </Typography>
+                                  </Grid>
+                                  <Grid item xs={7}>
+                                    <Typography>0</Typography>
+                                  </Grid>
+                                </Grid>
+                                <Grid
+                                  container
+                                  className={classes.generalFeature}
+                                  xs={12}
+                                >
+                                  <Grid item xs={5}>
+                                    <Typography className={classes.cardFeature}>
+                                      Últ. palpación
+                                    </Typography>
+                                  </Grid>
+                                  <Grid item xs={7}>
+                                    <Typography>
+                                      {currentAnimal &&
+                                      currentAnimal.palpations &&
+                                      currentAnimal.palpations.length !== 0
+                                        ? format(
+                                            new Date(
+                                              currentAnimal.palpations[0].pregnancyDate
+                                            ),
+                                            "yyyy-MM-dd"
+                                          )
+                                        : "Sin información"}
+                                    </Typography>
+                                  </Grid>
+                                </Grid>
+
+                                <Grid
+                                  container
+                                  className={classes.generalFeature}
+                                  xs={12}
+                                >
+                                  <Grid item xs={5}>
+                                    <Typography className={classes.cardFeature}>
+                                      Estado de palpación
+                                    </Typography>
+                                  </Grid>
+                                  <Grid item xs={7}>
+                                    <Typography>
+                                      {currentAnimal &&
+                                      currentAnimal.palpations &&
+                                      currentAnimal.palpations.length !== 0
+                                        ? stateOptions[
+                                            currentAnimal.palpations[0].state
+                                          ]
+                                        : "Sin información"}
+                                    </Typography>
+                                  </Grid>
+                                </Grid>
+                                <Grid
+                                  container
+                                  className={classes.generalFeature}
+                                  xs={12}
+                                >
+                                  <Grid item xs={5}>
+                                    <Typography className={classes.cardFeature}>
+                                      Observaciones de palpación
+                                    </Typography>
+                                  </Grid>
+                                  <Grid item xs={7}>
+                                    <Typography>
+                                      {currentAnimal &&
+                                      currentAnimal.palpations &&
+                                      currentAnimal.palpations.length !== 0
+                                        ? currentAnimal.palpations[0]
+                                            .observation !== ""
+                                          ? currentAnimal.palpations[0]
+                                              .observation !== ""
+                                          : "Sin información"
+                                        : "Sin información"}
+                                    </Typography>
+                                  </Grid>
+                                </Grid>
+                                {currentAnimal &&
+                                  currentAnimal.reproductiveStatus ===
+                                    "PREGNANT" && (
+                                    <>
+                                      <Grid
+                                        container
+                                        className={classes.generalFeature}
+                                        style={{ marginTop: "20px" }}
+                                        xs={12}
+                                      >
+                                        <Grid item xs={5}>
+                                          <Typography
+                                            className={classes.cardFeature}
+                                          >
+                                            Fecha Preñez
+                                          </Typography>
+                                        </Grid>
+                                        <Grid item xs={7}>
+                                          <Typography>
+                                            {currentAnimal.palpations &&
+                                            currentAnimal.palpations.length !==
+                                              0
+                                              ? format(
+                                                  new Date(
+                                                    currentAnimal.palpations[0].pregnancyDate
+                                                  ),
+                                                  "yyyy-MM-dd"
+                                                )
+                                              : currentAnimal.pregnantDate
+                                              ? currentAnimal.pregnantDate
+                                              : "Sin información"}
+                                          </Typography>
+                                        </Grid>
+                                      </Grid>
+                                      <Grid
+                                        container
+                                        className={classes.generalFeature}
+                                        xs={12}
+                                      >
+                                        <Grid item xs={5}>
+                                          <Typography
+                                            className={classes.cardFeature}
+                                          >
+                                            Días de preñez
+                                          </Typography>
+                                        </Grid>
+                                        <Grid item xs={7}>
+                                          <Typography>
+                                            {calculateDaysPregnancy(
+                                              currentAnimal.palpations
+                                            )}
+                                          </Typography>
+                                        </Grid>
+                                      </Grid>
+                                      <Grid
+                                        container
+                                        className={classes.generalFeature}
+                                        xs={12}
+                                      >
+                                        <Grid item xs={5}>
+                                          <Typography
+                                            className={classes.cardFeature}
+                                          >
+                                            Parto esperado
+                                          </Typography>
+                                        </Grid>
+                                        <Grid item xs={7}>
+                                          <Typography>
+                                            {expectedBirth(
+                                              currentAnimal.palpations
+                                            )}
+                                          </Typography>
+                                        </Grid>
+                                      </Grid>
+                                    </>
+                                  )}
+                              </Grid>
+                              {/* <Grid item xs={6}>
                             <HighchartsReact
                               highcharts={Highcharts}
                               options={{
@@ -988,9 +1081,137 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
                               }}
                             />
                           </Grid> */}
+                            </Grid>
+                          </Paper>
                         </Grid>
-                      </Paper>
-                    </Grid>
+                      </>
+                    )}
+                    {currentAnimal && currentAnimal.gender === "MALE" && (
+                      <Grid item xs={12} lg={12}>
+                        {/* Pesos */}
+                        <Paper
+                          style={{ height: "94%" }}
+                          elevation={4}
+                          className={classes.card}
+                        >
+                          <div className={classes.cardHeader}>
+                            <Typography
+                              variant="body1"
+                              className={classes.cardTitle}
+                            >
+                              Pesos
+                            </Typography>
+                            <IconButton
+                              className={classes.cardEditIcon}
+                              size="small"
+                              onClick={() => {
+                                history.push(
+                                  generatePath(
+                                    ROUTES_DICT.animalDetail.weight.update,
+                                    {
+                                      ...params,
+                                      _id: params._id,
+                                    }
+                                  )
+                                );
+                              }}
+                            >
+                              <Edit fontSize="small"></Edit>
+                            </IconButton>
+                          </div>
+                          <Divider className={classes.divider}></Divider>
+                          <div className="">
+                            <Grid
+                              container
+                              className={classes.generalFeature}
+                              xs={12}
+                            >
+                              <Grid item xs={5}>
+                                <Typography className={classes.cardFeature}>
+                                  Peso
+                                </Typography>
+                              </Grid>
+                              <Grid item xs={7}>
+                                <Typography>
+                                  {currentAnimal &&
+                                  currentAnimal.weightControls &&
+                                  currentAnimal.weightControls.length > 0
+                                    ? currentAnimal.weightControls[0].weight +
+                                      " Kg."
+                                    : "Sin información"}
+                                </Typography>
+                              </Grid>
+                            </Grid>
+                            <Grid
+                              container
+                              className={classes.generalFeature}
+                              xs={12}
+                            >
+                              <Grid item xs={5}>
+                                <Typography className={classes.cardFeature}>
+                                  Fecha de pesaje
+                                </Typography>
+                              </Grid>
+                              <Grid item xs={7}>
+                                <Typography>
+                                  {currentAnimal.weightControls &&
+                                  currentAnimal.weightControls.length > 0
+                                    ? format(
+                                        new Date(
+                                          currentAnimal.weightControls[0].controlDate
+                                        ),
+                                        "yyyy-MM-dd"
+                                      )
+                                    : "No se han registrado pesos"}
+                                </Typography>
+                              </Grid>
+                            </Grid>
+                            {/* <Grid
+                          container
+                          className={classes.generalFeature}
+                          xs={12}
+                        >
+                          <Grid item xs={5}>
+                            <Typography className={classes.cardFeature}>
+                              Gr./Día
+                            </Typography>
+                          </Grid>
+                          <Grid item xs={7}>
+                            <Typography>No especificado</Typography>
+                          </Grid>
+                        </Grid>
+                        <Grid
+                          container
+                          className={classes.generalFeature}
+                          xs={12}
+                        >
+                          <Grid item xs={5}>
+                            <Typography className={classes.cardFeature}>
+                              C. Corp
+                            </Typography>
+                          </Grid>
+                          <Grid item xs={7}>
+                            <Typography>No especificado</Typography>
+                          </Grid>
+                        </Grid>
+                        <Grid
+                          container
+                          className={classes.generalFeature}
+                          xs={12}
+                        >
+                          <Grid item xs={5}>
+                            <Typography className={classes.cardFeature}>
+                              Alzada
+                            </Typography>
+                          </Grid>
+                          <Grid item xs={7}>
+                            <Typography>No especificado</Typography>
+                          </Grid>
+                        </Grid> */}
+                          </div>
+                        </Paper>
+                      </Grid>
+                    )}
                   </Grid>
                 </Grid>
               </Grid>
@@ -1231,82 +1452,87 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
                     </Paper>
                   </Grid>
                 )}
-                <Grid item xs={12} lg={4}>
-                  {/* Pesos */}
-                  <Paper
-                    style={{ height: "94%" }}
-                    elevation={4}
-                    className={classes.card}
-                  >
-                    <div className={classes.cardHeader}>
-                      <Typography variant="body1" className={classes.cardTitle}>
-                        Pesos
-                      </Typography>
-                      <IconButton
-                        className={classes.cardEditIcon}
-                        size="small"
-                        onClick={() => {
-                          history.push(
-                            generatePath(
-                              ROUTES_DICT.animalDetail.weight.update,
-                              {
-                                ...params,
-                                _id: params._id,
-                              }
-                            )
-                          );
-                        }}
-                      >
-                        <Edit fontSize="small"></Edit>
-                      </IconButton>
-                    </div>
-                    <Divider className={classes.divider}></Divider>
-                    <div className="">
-                      <Grid
-                        container
-                        className={classes.generalFeature}
-                        xs={12}
-                      >
-                        <Grid item xs={5}>
-                          <Typography className={classes.cardFeature}>
-                            Peso
-                          </Typography>
+                {currentAnimal && currentAnimal.gender === "FEMALE" && (
+                  <Grid item xs={12} lg={4}>
+                    {/* Pesos */}
+                    <Paper
+                      style={{ height: "94%" }}
+                      elevation={4}
+                      className={classes.card}
+                    >
+                      <div className={classes.cardHeader}>
+                        <Typography
+                          variant="body1"
+                          className={classes.cardTitle}
+                        >
+                          Pesos
+                        </Typography>
+                        <IconButton
+                          className={classes.cardEditIcon}
+                          size="small"
+                          onClick={() => {
+                            history.push(
+                              generatePath(
+                                ROUTES_DICT.animalDetail.weight.update,
+                                {
+                                  ...params,
+                                  _id: params._id,
+                                }
+                              )
+                            );
+                          }}
+                        >
+                          <Edit fontSize="small"></Edit>
+                        </IconButton>
+                      </div>
+                      <Divider className={classes.divider}></Divider>
+                      <div className="">
+                        <Grid
+                          container
+                          className={classes.generalFeature}
+                          xs={12}
+                        >
+                          <Grid item xs={5}>
+                            <Typography className={classes.cardFeature}>
+                              Peso
+                            </Typography>
+                          </Grid>
+                          <Grid item xs={7}>
+                            <Typography>
+                              {currentAnimal &&
+                              currentAnimal.weightControls &&
+                              currentAnimal.weightControls.length > 0
+                                ? currentAnimal.weightControls[0].weight +
+                                  " Kg."
+                                : "No se han registrado pesos"}
+                            </Typography>
+                          </Grid>
                         </Grid>
-                        <Grid item xs={7}>
-                          <Typography>
-                            {currentAnimal &&
-                            currentAnimal.weightControls &&
-                            currentAnimal.weightControls.length > 0
-                              ? currentAnimal.weightControls[0].weight + " Kg."
-                              : "No se han registrado pesos"}
-                          </Typography>
+                        <Grid
+                          container
+                          className={classes.generalFeature}
+                          xs={12}
+                        >
+                          <Grid item xs={5}>
+                            <Typography className={classes.cardFeature}>
+                              Fecha de pesaje
+                            </Typography>
+                          </Grid>
+                          <Grid item xs={7}>
+                            <Typography>
+                              {currentAnimal.weightControls &&
+                              currentAnimal.weightControls.length > 0
+                                ? format(
+                                    new Date(
+                                      currentAnimal.weightControls[0].controlDate
+                                    ),
+                                    "yyyy-MM-dd"
+                                  )
+                                : "No se han registrado pesos"}
+                            </Typography>
+                          </Grid>
                         </Grid>
-                      </Grid>
-                      <Grid
-                        container
-                        className={classes.generalFeature}
-                        xs={12}
-                      >
-                        <Grid item xs={5}>
-                          <Typography className={classes.cardFeature}>
-                            Fecha de pesaje
-                          </Typography>
-                        </Grid>
-                        <Grid item xs={7}>
-                          <Typography>
-                            {currentAnimal.weightControls &&
-                            currentAnimal.weightControls.length > 0
-                              ? format(
-                                  new Date(
-                                    currentAnimal.weightControls[0].controlDate
-                                  ),
-                                  "yyyy-MM-dd"
-                                )
-                              : "No se han registrado pesos"}
-                          </Typography>
-                        </Grid>
-                      </Grid>
-                      {/* <Grid
+                        {/* <Grid
                         container
                         className={classes.generalFeature}
                         xs={12}
@@ -1348,9 +1574,10 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
                           <Typography>No especificado</Typography>
                         </Grid>
                       </Grid> */}
-                    </div>
-                  </Paper>
-                </Grid>
+                      </div>
+                    </Paper>
+                  </Grid>
+                )}
               </Grid>
             </Grid>
             <Grid item xs={12} lg={3}>

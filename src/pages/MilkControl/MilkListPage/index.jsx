@@ -66,14 +66,14 @@ const MilkListPage = ({ children, setTitle, setChipList }) => {
                 })
               );
             }}
-            onClickStarButton={() => {
-              // dispatch(
-              //   geneticStockActions.updateGeneticStock({
-              //     ...geneticStockList[dataIndex],
-              //     isFeatured: !Boolean(geneticStockList[dataIndex].isFeatured),
-              //   })
-              // );
-            }}
+            // onClickStarButton={() => {
+            //   dispatch(
+            //     geneticStockActions.updateGeneticStock({
+            //       ...geneticStockList[dataIndex],
+            //       isFeatured: !Boolean(geneticStockList[dataIndex].isFeatured),
+            //     })
+            //   );
+            // }}
             // starButtonFeatured={geneticStockList[dataIndex].isFeatured}
           />
         );
