@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid, Typography, Button } from "@material-ui/core";
+import { Grid, Typography, Button, IconButton } from "@material-ui/core";
 import { Formik } from "formik";
 import * as yup from "yup";
 // import TextFieldFormik from "../../../../components/Inputs/TextFieldFormik";
@@ -7,8 +7,16 @@ import ButtonFormik from "../../../components/Inputs/ButtonFormik";
 import IdeasCloudApi from "../../../helpers/ideascloudApi";
 import { useDispatch, useSelector } from "react-redux";
 import AnimalActions from "../../../redux/actions/animal.actions";
+import CustomPaper from "../../../components/CustomPaper";
+import { Close } from "@material-ui/icons";
+import _ from "lodash";
+
+const defaultInitValues = {
+  imageUrl: null,
+};
 
 const AnimalImageForm = ({
+  initValues = defaultInitValues,
   onClickCancelButton,
   onCompleteSubmit = () => {},
 }) => {
@@ -17,48 +25,70 @@ const AnimalImageForm = ({
   const dispatch = useDispatch();
 
   const handleSubmit = async (values, actions) => {
-    const response = await IdeasCloudApi.fetch("uploadImage", {
-      farmId: currentFarm._id,
-    });
+    let finalArray = [];
+    const arrayImages = [];
 
-    const myHeaders = new Headers();
-    myHeaders.append("Content-Type", values.imageUpload.type);
-    const requestOptions = {
-      method: "PUT",
-      headers: myHeaders,
-      body: values.imageUpload,
-      redirect: "follow",
-    };
+    if (values.imageUrl && values.imageUrl.length !== 0) {
+      for (let index = 0; index <= values.imageUrl.length - 1; index++) {
+        const response = await IdeasCloudApi.fetch("uploadImage", {
+          farmId: currentFarm._id,
+        });
+        const myHeaders = new Headers();
+        myHeaders.append("Content-Type", values.imageUrl[`${index}`].type);
+        const requestOptions = {
+          method: "PUT",
+          headers: myHeaders,
+          body: values.imageUrl[`${index}`],
+          redirect: "follow",
+        };
 
-    const iO = response.url.indexOf("?X");
-    const newURL = response.url.substring(0, iO);
+        const iO = response.url.indexOf("?X");
+        const newURL = response.url.substring(0, iO);
 
-    await fetch(response.url, requestOptions).then((response) => {
-      dispatch(AnimalActions.update({ ...currentAnimal, imageURL: newURL }));
-      onCompleteSubmit();
-    });
+        await fetch(response.url, requestOptions).then((response) => {
+          arrayImages.push(newURL);
+        });
+      }
+    }
+
+    if (values.images && values.images.length !== 0) {
+      finalArray = _.concat(values.images, arrayImages);
+    } else {
+      finalArray = arrayImages;
+    }
+
+    dispatch(
+      AnimalActions.update({
+        ...currentAnimal,
+        imageURL: finalArray[0],
+        images: finalArray,
+      })
+    );
+    onCompleteSubmit();
   };
 
   const validationSchema = yup.object({});
 
-  const initValues = {
-    imageUpload: null,
-  };
-
   const fileData = (values) => {
-    if (values.imageUpload) {
+    if (values.imageUrl) {
       return (
-        <div style={{ paddingLeft: "0.5rem" }}>
-          <p>File Name: {values.imageUpload.name}</p>
-        </div>
+        <Grid container justifyContent="center" item xs={8}>
+          <h4>{values.imageUrl.length} archivos seleccionados.</h4>
+        </Grid>
       );
     } else {
       return (
-        <div style={{ paddingLeft: "0.5rem" }}>
-          <h4>Choose before Pressing the Upload button</h4>
-        </div>
+        <Grid container justifyContent="center" item xs={8}>
+          <h4> 0 archivos seleccionados.</h4>
+        </Grid>
       );
     }
+  };
+
+  const deleteImage = (values = [], index, setField = () => {}) => {
+    values.splice(index, 1);
+    setField("images", values);
+    // console.log(values[index]);
   };
 
   return (
@@ -72,6 +102,54 @@ const AnimalImageForm = ({
           <Typography variant={"subtitle1"} gutterBottom>
             Subir Imagen
           </Typography>
+          {props.values.images && (
+            <Grid
+              item
+              container
+              xs={12}
+              spacing={1}
+              style={{ paddingBottom: "1rem" }}
+            >
+              {props.values.images &&
+                props.values.images.length !== 0 &&
+                props.values.images.map((image, i) => (
+                  <CustomPaper xs={4} key={i}>
+                    <Grid container justifyContent="flex-end">
+                      <Grid item xs={1}>
+                        <IconButton
+                          size="small"
+                          onClick={() => {
+                            deleteImage(
+                              props.values.images,
+                              i,
+                              props.setFieldValue
+                            );
+                          }}
+                        >
+                          <Close fontSize="small" />
+                        </IconButton>
+                      </Grid>
+                    </Grid>
+                    <img
+                      src={image}
+                      alt={`image${i}`}
+                      style={{
+                        maxWidth: "100%",
+                        maxHeight: "150px",
+                        display: "block",
+                        left: "0",
+                        right: "0",
+                        top: "0",
+                        bottom: "0",
+                        margin: "auto",
+                      }}
+                      border="0"
+                      alt="Null"
+                    />
+                  </CustomPaper>
+                ))}
+            </Grid>
+          )}
           <Grid container spacing={1}>
             <Button
               variant="contained"
@@ -82,12 +160,10 @@ const AnimalImageForm = ({
               <input
                 type="file"
                 hidden
-                name="imageUpload"
+                name="imageUrl"
+                multiple
                 onChange={(event) => {
-                  props.setFieldValue(
-                    "imageUpload",
-                    event.currentTarget.files[0]
-                  );
+                  props.setFieldValue("imageUrl", event.currentTarget.files);
                 }}
               />
             </Button>

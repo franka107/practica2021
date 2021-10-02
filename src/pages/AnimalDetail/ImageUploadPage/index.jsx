@@ -19,11 +19,17 @@ const ImageUploadPage = ({ parentPathname }) => {
     <>
       <CustomDialog parentPathname={parentPathname} maxWidth="sm">
         {(props) => (
-          <AnimalImageForm
-            initValues={currentAnimal}
-            onClickCancelButton={props.handleClose}
-            onCompleteSubmit={props.handleClose}
-          />
+          <>
+            {currentAnimal &&
+              currentAnimal._id &&
+              currentAnimal._id === params._id && (
+                <AnimalImageForm
+                  initValues={currentAnimal}
+                  onClickCancelButton={props.handleClose}
+                  onCompleteSubmit={props.handleClose}
+                />
+              )}
+          </>
         )}
       </CustomDialog>
     </>
