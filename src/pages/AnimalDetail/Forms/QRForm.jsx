@@ -1,12 +1,10 @@
 import React from "react";
 import { Grid, Typography, CardMedia } from "@material-ui/core";
-import { useStyles } from "./QRData/styles";
+import QRCode from "qrcode.react";
 
-function QRData({ setOpen, setAnimalsList, agribusinessId }) {
-  const classes = useStyles();
-
+const QrForm = () => {
   return (
-    <Grid className={classes.modal}>
+    <Grid>
       <Typography variant={"h6"} gutterBottom>
         Codigo QR
       </Typography>
@@ -17,16 +15,15 @@ function QRData({ setOpen, setAnimalsList, agribusinessId }) {
         xs={5}
         style={{ margin: "auto" }}
       >
-        <CardMedia
-          component="img"
-          alt="Contemplative Reptile"
-          image="https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Codigo_QR.svg/1200px-Codigo_QR.svg.png"
-          title="Contemplative Reptile"
-          className={classes.imageFather}
+        <QRCode
+          renderAs="svg"
+          value={window.location.href}
+          style={{ width: "100%", height: "100%" }}
+          includeMargin={true}
         />
       </Grid>
     </Grid>
   );
-}
+};
 
-export default QRData;
+export default QrForm;

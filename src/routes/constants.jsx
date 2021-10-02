@@ -93,6 +93,7 @@ import AnimalCreateBulkPage from "../pages/AnimalControl/AnimalCreateBulkPage";
 import UserCreatePage from "../pages/UserControl/UserCreatePage";
 import UserUpdatePage from "../pages/UserControl/UserUpdatePage";
 import UserDeletePage from "../pages/UserControl/UserDeletePage";
+import QrViewPage from "../pages/AnimalDetail/QrViewPage";
 
 export const ROUTE_TYPES = {
   public: "public",
@@ -697,6 +698,13 @@ export const RENDER_ROUTES = [
             key: "Subir imagen",
             exact: true,
             component: (props) => <ImageUploadPage {...props} />,
+            type: ROUTE_TYPES.private,
+          },
+          {
+            path: ROUTES_DICT.animalDetail.qr.view,
+            key: "Ver código Qr",
+            exact: true,
+            component: (props) => <QrViewPage {...props} />,
             type: ROUTE_TYPES.private,
           },
         ],

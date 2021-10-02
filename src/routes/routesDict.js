@@ -6,6 +6,7 @@ export const ROUTES_SLUGS = {
   update: "update",
   delete: "delete",
   upload: "upload",
+  view: "view",
   /**
    * General routes slugs
    */
@@ -211,6 +212,9 @@ export const ROUTES_DICT = {
     },
     image: {
       upload: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animalDetail}/:_id/image/${ROUTES_SLUGS.upload}`,
+    },
+    qr: {
+      view: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animalDetail}/:_id/qr/${ROUTES_SLUGS.view}`,
     },
   },
   pedigree: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animalDetail}/:animalId/${ROUTES_SLUGS.pedigree}`,

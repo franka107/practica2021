@@ -206,7 +206,14 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
                             value={window.location.href}
                             className={classes.qrImage}
                             includeMargin={true}
-                            onClick={() => {}}
+                            onClick={() => {
+                              history.push(
+                                generatePath(ROUTES_DICT.animalDetail.qr.view, {
+                                  ...params,
+                                  _id: params._id,
+                                })
+                              );
+                            }}
                           />
                         </div>
                       </div>
