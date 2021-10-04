@@ -31,7 +31,7 @@ import QRCode from "qrcode.react";
 import "react-calendar/dist/Calendar.css";
 import { animalDetailChipOptions } from "../constants";
 import { ROUTES_DICT } from "../../../routes/routesDict";
-import { stateOptions } from "../../../constants";
+import { stateOptions, typeServicesTest } from "../../../constants";
 import { add, differenceInDays, format } from "date-fns";
 
 const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
@@ -317,7 +317,9 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
                         </Grid>
                         <Grid item xs={8}>
                           {currentAnimal && currentAnimal.bornBy ? (
-                            <Typography>{currentAnimal.bornBy}</Typography>
+                            <Typography>
+                              {typeServicesTest[currentAnimal.bornBy]}
+                            </Typography>
                           ) : (
                             <Typography>Sin información</Typography>
                           )}
