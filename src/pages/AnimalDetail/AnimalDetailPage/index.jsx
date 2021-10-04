@@ -719,7 +719,10 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
                                   <Typography>
                                     {currentAnimal &&
                                     currentAnimal.lastBirthDate
-                                      ? currentAnimal.lastBirthDate
+                                      ? format(
+                                          new Date(currentAnimal.lastBirthDate),
+                                          "yyyy-MM-dd"
+                                        )
                                       : currentAnimal.births &&
                                         currentAnimal.births.length !== 0
                                       ? format(
