@@ -13,6 +13,7 @@ import { useDispatch } from "react-redux";
 import PasswordFieldFormik from "../../components/Inputs/PasswordFieldFormik";
 import { ROUTES_DICT } from "../../routes/routesDict";
 import AuthActions from "../../redux/actions/auth.actions";
+import { useGoogleLogin } from "react-google-login";
 
 function LoginPage(props) {
   const classes = useStyles();
@@ -28,6 +29,22 @@ function LoginPage(props) {
       .string("Ingresa tu contraseña")
 
       .required("La contraseña es requerida."),
+  });
+
+  const onSuccess = (res) => {
+    console.log(res);
+  };
+
+  const onFailure = (res) => {
+    console.log("Login failed: res:", res);
+  };
+
+  const clientId = process.env.REACT_APP_GOOGLE_ENV;
+  const { signIn } = useGoogleLogin({
+    onSuccess,
+    onFailure,
+    clientId,
+    accessType: "offline",
   });
 
   const onSubmitForm = (values, actions) => {
@@ -96,6 +113,10 @@ function LoginPage(props) {
             <Button
               className={classes.googleBtn}
               startIcon={<img src={googleBtn} alt={"Google"} />}
+              onClick={() => {
+                console.log("prueba login");
+                signIn();
+              }}
             >
               <Typography align={"center"} className={classes.googleBtnText}>
                 Iniciar sesión con Google

@@ -17,9 +17,9 @@
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
+    "better-docs": "^2.3.2",
     "clsx": "^1.1.1",
     "date-fns": "^2.23.0",
-    "better-docs": "^2.3.2",
     "date-fns-tz": "^1.1.6",
     "formik": "^2.2.9",
     "highcharts": "^9.0.1",
@@ -33,6 +33,8 @@
     "react-calendar": "^3.4.0",
     "react-d3-tree": "^3.1.1",
     "react-dom": "^17.0.2",
+    "react-facebook-login": "^4.1.1",
+    "react-google-login": "^5.2.2",
     "react-redux": "^7.2.4",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
@@ -48,7 +50,6 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "docs": "jsdoc -c jsdoc.conf.json"
-
   },
   "eslintConfig": {
     "extends": [
