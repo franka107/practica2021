@@ -11,7 +11,7 @@ export const useStyles = makeStyles((theme) => ({
     color: `${theme.palette.secondary.main} !important`,
   },
   tableHeader: {
-    color: `${theme.palette.secondary.main} !important`,
+    color: `${theme.palette.primary.main} !important`,
     backgroundColor: "#fafafa",
     position: "sticky",
     top: 0,
@@ -197,7 +197,7 @@ export const useStyles = makeStyles((theme) => ({
     padding: "1rem 0",
   },
   border: {
-    border: `1px solid ${theme.palette.secondary.main}`,
+    border: `1px solid ${theme.palette.primary.main}`,
     padding: "0 1rem",
     marginBottom: "1rem",
     position: "relative",
@@ -207,6 +207,7 @@ export const useStyles = makeStyles((theme) => ({
     right: -12,
     bottom: 7,
     backgroundColor: "white",
+    color: theme.palette.primary.main,
     cursor: "pointer",
   },
   hidden: {
@@ -215,6 +216,7 @@ export const useStyles = makeStyles((theme) => ({
   deleteIcon: {
     cursor: "pointer",
     marginLeft: theme.spacing(1),
+    color: theme.palette.primary.main,
   },
   errorMessage: {
     color: "red",

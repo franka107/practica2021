@@ -265,7 +265,6 @@ const RaceForm = ({
                   <Grid item xs={1}>
                     {Boolean(index) && (
                       <DeleteIcon
-                        color={"secondary"}
                         className={classes.deleteIcon}
                         onClick={() =>
                           handleRemoveRace(raceItem, index, props.values)
@@ -281,11 +280,7 @@ const RaceForm = ({
                 {errorPercentage}
               </Typography>
             </Grid>
-            <AddCircle
-              color={"secondary"}
-              className={classes.addBtn}
-              onClick={handleAddRace}
-            />
+            <AddCircle className={classes.addBtn} onClick={handleAddRace} />
           </Grid>
           <Grid container spacing={1}>
             <SelectFieldFormik

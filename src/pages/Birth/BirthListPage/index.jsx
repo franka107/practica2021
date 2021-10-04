@@ -15,6 +15,7 @@ import SearchContainer from "../../../components/SearchContainer";
 import BirthActions from "../../../redux/actions/birth.actions";
 import { useDispatch } from "react-redux";
 import { columns } from "./constants";
+import { useLocation, useParams } from "react-router";
 
 function BirthListPage({ children }) {
   const classes = useStyles();
@@ -28,6 +29,14 @@ function BirthListPage({ children }) {
   const dispatch = useDispatch();
 
   const birthList = useSelector((state) => state.birth.list);
+
+  //const params = useParams();
+
+  //const birthList = useSelector((state) =>
+  //  state.birth.list.filter((e) =>
+  //    params._id ? (e.animalId === params._id ? true : false) : true
+  //  )
+  //);
 
   useEffect(() => {
     if (!birthList || birthList.length === 0) {
