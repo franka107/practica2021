@@ -208,7 +208,11 @@ const AnimalBulkForm = ({ onClickCancelButton }) => {
             name="csvFile"
             className={classes.fileInput}
             onChange={(e) => {
-              if (e.currentTarget.files[0]?.type === "text/csv") {
+              console.log(e.currentTarget.files[0]);
+              if (
+                e.currentTarget.files[0]?.type === "text/csv" ||
+                e.currentTarget.files[0]?.type === ""
+              ) {
                 setCsvFile(e.currentTarget.files[0]);
               } else {
                 dispatch(
