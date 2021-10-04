@@ -65,7 +65,7 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
   // };
 
   const calculateDaysPregnancy = (values = []) => {
-    if (values[0].state === "PREGNANT") {
+    if (values[0]?.state === "PREGNANT") {
       const result = differenceInDays(
         new Date(),
         new Date(values[0].pregnancyDate)
@@ -97,7 +97,7 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
   };
 
   const expectedBirth = (values = []) => {
-    if (values[0].state === "PREGNANT") {
+    if (values[0]?.state === "PREGNANT") {
       const result = add(new Date(values[0].pregnancyDate), {
         years: 0,
         months: 9,

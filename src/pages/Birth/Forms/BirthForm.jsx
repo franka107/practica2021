@@ -283,7 +283,7 @@ const BirthForm = ({
                 value={
                   props.values.animalId
                     ? femaleAnimals.find((e) => e._id === props.values.animalId)
-                        ?.palpations[0].touchDate
+                        ?.palpations[0]?.touchDate
                     : null
                 }
                 sm={6}
@@ -298,7 +298,7 @@ const BirthForm = ({
               />
               {props.values.animalId &&
                 femaleAnimals.find((e) => e._id === props.values.animalId)
-                  ?.activeService.serviceType === "NA_MO" && (
+                  ?.activeService?.serviceType === "NA_MO" && (
                   <TextFieldFormik
                     label="Padre"
                     name="father"
@@ -322,7 +322,7 @@ const BirthForm = ({
                 )}
               {props.values.animalId &&
                 femaleAnimals.find((e) => e._id === props.values.animalId)
-                  ?.activeService.serviceType === "EM_TR" && (
+                  ?.activeService?.serviceType === "EM_TR" && (
                   <TextFieldFormik
                     label="Embrión"
                     name="embryo"
@@ -346,7 +346,7 @@ const BirthForm = ({
                 )}
               {props.values.animalId &&
                 femaleAnimals.find((e) => e._id === props.values.animalId)
-                  ?.activeService.serviceType === "AR_IN" && (
+                  ?.activeService?.serviceType === "AR_IN" && (
                   <TextFieldFormik
                     label="Semen"
                     name="semen"
