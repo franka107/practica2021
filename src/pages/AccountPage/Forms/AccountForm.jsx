@@ -26,6 +26,8 @@ const AccountForm = ({ initValues = defaultInitValues }) => {
     try {
       dispatch(UserActions.update(values));
       dispatch({ type: ACTION_TYPES.AUTH.UPDATE, payload: values });
+      const oldUser = JSON.parse(localStorage.getItem("user"));
+      localStorage.setItem("user", JSON.stringify({ ...oldUser, ...values }));
     } catch {
       actions.setSubmitting(false);
     }
