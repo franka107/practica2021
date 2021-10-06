@@ -880,31 +880,35 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
                                 >
                                   <ViewList fontSize="small"></ViewList>
                                 </IconButton>
-                                <Button
-                                  className={classes.cardEditIcon}
-                                  size="small"
-                                  style={{ marginRight: "0.5rem" }}
-                                  onClick={() => {
-                                    history.push(
-                                      generatePath(
-                                        ROUTES_DICT.animalDetail.service
-                                          .transfer.create,
-                                        {
-                                          ...params,
-                                          _id: params._id,
-                                        }
-                                      )
-                                    );
-                                  }}
+                                {currentAgribusiness &&
+                                  currentAgribusiness.reproductiveManagement ===
+                                    "DM_&_AI_&_ET" && (
+                                    <Button
+                                      className={classes.cardEditIcon}
+                                      size="small"
+                                      style={{ marginRight: "0.5rem" }}
+                                      onClick={() => {
+                                        history.push(
+                                          generatePath(
+                                            ROUTES_DICT.animalDetail.service
+                                              .transfer.create,
+                                            {
+                                              ...params,
+                                              _id: params._id,
+                                            }
+                                          )
+                                        );
+                                      }}
+                                    >
+                                      <Add fontSize="small"></Add>T.E
+                                      {/* <Typography
+                                  variant="caption"
+                                  className={classes.cardTitle}
                                 >
-                                  <Add fontSize="small"></Add>T.E
-                                  {/* <Typography
-                                    variant="caption"
-                                    className={classes.cardTitle}
-                                  >
-                                    Trans.E
-                                  </Typography> */}
-                                </Button>
+                                  Trans.E
+                                </Typography> */}
+                                    </Button>
+                                  )}
                                 <Button
                                   className={classes.cardEditIcon}
                                   size="small"
