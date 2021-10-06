@@ -174,7 +174,8 @@ const BirthForm = ({
             values.children.push(secondChild._id);
             values.child2Id = secondChild._id;
           }
-          await dispatch(BirthActions.create(values));
+          const animal = femaleAnimals.find((e) => e._id === values.animalId);
+          await dispatch(BirthActions.create(values, animal));
 
           const cowData = await IdeasCloudApi.fetch("animalGetById", {
             _id: values.animalId,

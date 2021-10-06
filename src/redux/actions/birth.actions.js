@@ -10,10 +10,10 @@ const list = () => async (dispatch, getState) => {
   dispatch({ type: ACTION_TYPES.BIRTH.RETRIEVE_LIST, payload: response });
 };
 
-const create = (data) => async (dispatch, getState) => {
+const create = (data, animal) => async (dispatch, getState) => {
   const agribusiness = getState().agribusiness.current;
 
-  const response = await IdeasCloudApi.fetch(
+  await IdeasCloudApi.fetch(
     "birthControlCreate",
     {
       ...data,
@@ -25,7 +25,7 @@ const create = (data) => async (dispatch, getState) => {
   );
   dispatch({
     type: ACTION_TYPES.BIRTH.CREATE,
-    payload: response,
+    payload: { ...data, animal: animal },
   });
 };
 const update = (data, geneticType) => async (dispatch, getState) => {

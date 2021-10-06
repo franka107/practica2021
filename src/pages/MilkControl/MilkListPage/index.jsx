@@ -90,7 +90,7 @@ const MilkListPage = ({ children, setTitle, setChipList }) => {
       <Grid item xs={12} className={classes.registerContainer}>
         <CustomMuiTable
           data={listMilkControl}
-          columns={[...columns, actionColumn]}
+          columns={[...columns(listMilkControl), actionColumn]}
           options={options}
         />
       </Grid>

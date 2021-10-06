@@ -113,6 +113,10 @@ const RegisterAgribusinessForm = ({
             type: ACTION_TYPES.AGRIBUSINESS.UPDATE_CURRENT,
             payload: values,
           });
+          localStorage.setItem(
+            "reproductiveManagement",
+            values.reproductiveManagement
+          );
         }
       }
 

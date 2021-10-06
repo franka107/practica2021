@@ -68,6 +68,7 @@ const deleteAgribusiness = (data) => async (dispatch) => {
 const setCurrentAgribusiness = (data) => {
   return (dispatch) => {
     localStorage.setItem("agribusiness", JSON.stringify(data));
+    localStorage.setItem("reproductiveManagement", data.reproductiveManagement);
     dispatch({
       type: ACTION_TYPES.AGRIBUSINESS.UPDATE_CURRENT,
       payload: data,
