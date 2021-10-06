@@ -627,13 +627,15 @@ export const RENDER_ROUTES = [
     key: "Detalles de animal",
     exact: false,
     component: ({ children }) => (
-      <DefaultPage>{(props) => children(props)}</DefaultPage>
+      <DefaultPage title="gaaa" chipList={[]}>
+        {(props) => children(props)}
+      </DefaultPage>
     ),
     layout: DashboardLayout,
     type: ROUTE_TYPES.private,
     routes: [
       {
-        path: ROUTES_DICT.animalDetail.root,
+        path: ROUTES_DICT.animalDetail.detail,
         key: "Detalle de animal",
         exact: false,
         component: (props) => <AnimalDetailPage {...props} />,
