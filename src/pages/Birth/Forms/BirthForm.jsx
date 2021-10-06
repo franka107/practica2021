@@ -169,7 +169,7 @@ const BirthForm = ({
             AnimalActions.update({
               ...cowData,
               agribusinessId: currentAgribusiness._id,
-              isPregnant: false,
+              reproductiveStatus: "EMPTY",
             })
           );
         }
