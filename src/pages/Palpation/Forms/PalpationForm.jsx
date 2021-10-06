@@ -83,7 +83,9 @@ const PalpationForm = ({
       if (type === "update") {
         await dispatch(PalpationActions.update(values));
       }
-
+      if (hideAnimal) {
+        await dispatch(AnimalActions.get({ _id: params._id }));
+      }
       onCompleteSubmit();
     } catch {
       actions.setSubmitting(false);

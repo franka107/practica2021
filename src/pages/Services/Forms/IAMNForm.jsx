@@ -26,7 +26,7 @@ const defaultInitValues = {
   animalId: "",
   name: "",
   serviceDate: new Date(),
-  serviceTime: "",
+  serviceTime: new Date(),
   serviceType: "",
   reproductorAnimalId: null,
   geneticStockId: null,
@@ -173,6 +173,9 @@ const IAMNForm = ({
         }
       }
       await dispatch(serviceActions.listByAgribusiness());
+      if (hideAnimal) {
+        await dispatch(AnimalActions.get({ _id: params._id }));
+      }
       onCompleteSubmit();
     } catch {
       actions.setSubmitting(false);
@@ -234,7 +237,7 @@ const IAMNForm = ({
             <TimePickerFormik
               label="Fecha"
               onChange={props.handleChange}
-              name="serviceDate"
+              name="serviceTime"
               xs={12}
               sm={6}
             />

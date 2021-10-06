@@ -1,4 +1,4 @@
-import { Paper } from "@material-ui/core";
+import { Button, Paper } from "@material-ui/core";
 import { Typography } from "@material-ui/core";
 import { Checkbox } from "@material-ui/core";
 import { Divider } from "@material-ui/core";
@@ -144,13 +144,10 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
   };
 
   useEffect(() => {
-    setTitle("Control ganadero");
     setChipList(animalDetailChipOptions(location, params));
-
     if (!currentAnimal || currentAnimal._id !== params._id) {
       dispatch(AnimalActions.get({ _id: params._id }));
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    } // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, currentAnimal, params._id]);
 
   return (
@@ -867,7 +864,7 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
                                 >
                                   <ViewList fontSize="small"></ViewList>
                                 </IconButton>
-                                <IconButton
+                                <Button
                                   className={classes.cardEditIcon}
                                   size="small"
                                   style={{ marginRight: "0.5rem" }}
@@ -884,9 +881,15 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
                                     );
                                   }}
                                 >
-                                  T.E
-                                </IconButton>
-                                <IconButton
+                                  <Add fontSize="small"></Add>T.E
+                                  {/* <Typography
+                                    variant="caption"
+                                    className={classes.cardTitle}
+                                  >
+                                    Trans.E
+                                  </Typography> */}
+                                </Button>
+                                <Button
                                   className={classes.cardEditIcon}
                                   size="small"
                                   onClick={() => {
@@ -902,8 +905,14 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
                                     );
                                   }}
                                 >
-                                  I.A
-                                </IconButton>
+                                  <Add fontSize="small"></Add>I.A
+                                  {/* <Typography
+                                    variant="caption"
+                                    className={classes.cardTitle}
+                                  >
+                                    I.A
+                                  </Typography> */}
+                                </Button>
                               </div>
                             </div>
                             <Divider className={classes.divider}></Divider>
@@ -916,17 +925,17 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
                                 >
                                   <Grid item xs={5}>
                                     <Typography className={classes.cardFeature}>
-                                      Últ. Celo
+                                      Últ. Servicio
                                     </Typography>
                                   </Grid>
                                   <Grid item xs={7}>
                                     <Typography>
                                       {currentAnimal &&
-                                      currentAnimal.zealControl &&
-                                      currentAnimal.zealControl.length !== 0
+                                      currentAnimal.services &&
+                                      currentAnimal.services.length !== 0
                                         ? format(
                                             new Date(
-                                              currentAnimal.zealControl[0].controlDate
+                                              currentAnimal.services[0].serviceDate
                                             ),
                                             "yyyy-MM-dd"
                                           )
@@ -941,12 +950,66 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
                                 >
                                   <Grid item xs={5}>
                                     <Typography className={classes.cardFeature}>
-                                      I.E.C
+                                      Hora
                                     </Typography>
                                   </Grid>
                                   <Grid item xs={7}>
                                     <Typography>
-                                      {calculateIEC(currentAnimal.zealControl)}
+                                      {currentAnimal &&
+                                      currentAnimal.services &&
+                                      currentAnimal.services.length !== 0
+                                        ? currentAnimal.services[0].serviceTime
+                                          ? format(
+                                              new Date(
+                                                currentAnimal.services[0].serviceTime
+                                              ),
+                                              "ppp"
+                                            )
+                                          : "Sin información"
+                                        : "Sin información"}
+                                    </Typography>
+                                  </Grid>
+                                </Grid>
+                                <Grid
+                                  container
+                                  className={classes.generalFeature}
+                                  xs={12}
+                                >
+                                  <Grid item xs={5}>
+                                    <Typography className={classes.cardFeature}>
+                                      Tipo de servicio
+                                    </Typography>
+                                  </Grid>
+                                  <Grid item xs={7}>
+                                    <Typography>
+                                      {currentAnimal &&
+                                      currentAnimal.services &&
+                                      currentAnimal.services.length !== 0
+                                        ? typeServicesTest[
+                                            currentAnimal.services[0]
+                                              .serviceType
+                                          ]
+                                        : "Sin información"}
+                                    </Typography>
+                                  </Grid>
+                                </Grid>
+                                <Grid
+                                  container
+                                  className={classes.generalFeature}
+                                  xs={12}
+                                >
+                                  <Grid item xs={5}>
+                                    <Typography className={classes.cardFeature}>
+                                      Observaciones
+                                    </Typography>
+                                  </Grid>
+                                  <Grid item xs={7}>
+                                    <Typography>
+                                      {currentAnimal &&
+                                      currentAnimal.services &&
+                                      currentAnimal.services.length !== 0
+                                        ? currentAnimal.services[0].observation
+                                        : "Sin información"}
                                     </Typography>
                                   </Grid>
                                 </Grid>

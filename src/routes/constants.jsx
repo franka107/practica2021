@@ -627,7 +627,7 @@ export const RENDER_ROUTES = [
     key: "Detalles de animal",
     exact: false,
     component: ({ children }) => (
-      <DefaultPage title="gaaa" chipList={[]}>
+      <DefaultPage title="Control Ganadero">
         {(props) => children(props)}
       </DefaultPage>
     ),
