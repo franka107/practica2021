@@ -19,6 +19,7 @@ import {
   categoryOptions,
   sexOptions,
 } from "../../../constants";
+import IdeasCloudApi from "../../../helpers/ideascloudApi";
 import AnimalActions from "../../../redux/actions/animal.actions";
 import BirthActions from "../../../redux/actions/birth.actions";
 import geneticStockActions from "../../../redux/actions/geneticStock.actions";
@@ -68,6 +69,7 @@ const BirthForm = ({
       state.geneticStock.list.filter((e) => e.geneticType === "EMBRYO"),
     shallowEqual
   );
+
   const validationSchema = () =>
     yup.lazy((values) =>
       yup.object({
@@ -159,10 +161,15 @@ const BirthForm = ({
             values.child2Id = secondChild._id;
           }
           await dispatch(BirthActions.create(values));
+
+          const cowData = await IdeasCloudApi.fetch("animalGetById", {
+            _id: values.animalId,
+          });
           await dispatch(
             AnimalActions.update({
-              _id: values.animalId,
+              ...cowData,
               agribusinessId: currentAgribusiness._id,
+              isPregnant: false,
             })
           );
         }

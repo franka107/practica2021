@@ -393,7 +393,11 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
                         <Grid item xs={8}>
                           <Typography>
                             {currentAnimal &&
-                              formatDate(new Date(currentAnimal.herdDate))}
+                              currentAnimal.herdDate &&
+                              format(
+                                new Date(currentAnimal.herdDate),
+                                "yyyy-MM-dd"
+                              )}
                             {/* {animals && animals.herdDate} */}
                           </Typography>
                         </Grid>

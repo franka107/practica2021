@@ -48,15 +48,7 @@ function LoginPage(props) {
     });
   };
 
-  const onFailure = (res) => {
-    console.log("onFailure =>", res);
-    dispatch(
-      uiActions.showSnackbar(
-        "Un error ocurrio al intentar iniciar sesión",
-        "error"
-      )
-    );
-  };
+  const onFailure = (res) => {};
 
   const clientId = process.env.REACT_APP_GOOGLE_ENV;
   const { signIn } = useGoogleLogin({
