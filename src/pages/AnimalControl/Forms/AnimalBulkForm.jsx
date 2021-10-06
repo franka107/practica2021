@@ -191,8 +191,11 @@ const AnimalBulkForm = ({ onClickCancelButton }) => {
     <>
       <Typography variant={"subtitle1"}>Registro masivo</Typography>
       <Typography variant={"subtitle2"}>
-        Para registro masivo de animales, <a href="#">descargue</a> el siguiente
-        documento.
+        Para registro masivo de animales,{" "}
+        <a href="https://60e347443ea9e50009072aa0.projects.ideascloud.io/file-uploads/615e2fef25570e0007126c6a">
+          descargue
+        </a>{" "}
+        el siguiente documento.
       </Typography>
       <Grid container spacing={1}>
         <Button

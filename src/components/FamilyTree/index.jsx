@@ -1,6 +1,6 @@
 import React from "react";
 import Tree from "react-d3-tree";
-import { generatePath } from "react-router";
+import { generatePath, useHistory } from "react-router";
 import { ROUTES_DICT } from "../../routes/routesDict";
 import CustomInfoIcon from "../CustomInfoIcon";
 
@@ -83,58 +83,63 @@ const orgChart = {
   ],
 };
 
-const renderForeignObjectNode = ({
-  nodeDatum,
-  toggleNode,
-  foreignObjectProps,
-}) => (
-  <g>
-    <circle style={{ color: "#0175CA" }} r={15}></circle>
-    {/* `foreignObject` requires width & height to be explicitly set. */}
-    <foreignObject {...foreignObjectProps}>
-      <div
-        className="
-			"
-      >
+export default function Familytree({ animal }) {
+  const nodeSize = { x: 100, y: 150 };
+  const foreignObjectProps = { width: nodeSize.x, height: nodeSize.y, x: 20 };
+  const history = useHistory();
+  const renderForeignObjectNode = ({
+    nodeDatum,
+    toggleNode,
+    foreignObjectProps,
+  }) => (
+    <g>
+      <circle style={{ color: "#0175CA" }} r={15}></circle>
+      {/* `foreignObject` requires width & height to be explicitly set. */}
+      <foreignObject {...foreignObjectProps}>
         <div
-          style={{
-            border: `3px solid ${
-              nodeDatum.gender === "MALE"
-                ? "#0270BF"
-                : nodeDatum.gender === "FEMALE"
-                ? "#EC59A4"
-                : "#777"
-            } `,
-            borderRadius: "0.5rem",
-            backgroundColor: "#F2F2F2",
-          }}
-          onClick={() => {
-            console.log(nodeDatum._id);
-          }}
+          className="
+			"
         >
-          <h3 style={{ textAlign: "center", marginBottom: "5px" }}>
-            {nodeDatum.name}
-          </h3>
-          <p style={{ textAlign: "center", marginTop: "0px" }}>
-            {nodeDatum.key}
-          </p>
+          <div
+            style={{
+              border: `3px solid ${
+                nodeDatum.gender === "MALE"
+                  ? "#0270BF"
+                  : nodeDatum.gender === "FEMALE"
+                  ? "#EC59A4"
+                  : "#777"
+              } `,
+              borderRadius: "0.5rem",
+              backgroundColor: "#F2F2F2",
+            }}
+            onClick={() => {
+              console.log(nodeDatum._id);
+              history.push(
+                generatePath(ROUTES_DICT.animalDetail.detail, {
+                  _id: nodeDatum._id ? nodeDatum._id : "",
+                })
+              );
+            }}
+          >
+            <h3 style={{ textAlign: "center", marginBottom: "5px" }}>
+              {nodeDatum.name}
+            </h3>
+            <p style={{ textAlign: "center", marginTop: "0px" }}>
+              {nodeDatum.key}
+            </p>
 
-          {/* 
+            {/* 
         {nodeDatum.children && (
           <button style={{ width: "100%" }} onClick={toggleNode}>
             {nodeDatum.__rd3t.collapsed ? "Expand" : "Collapse"}
           </button>
         )}
 				*/}
+          </div>
         </div>
-      </div>
-    </foreignObject>
-  </g>
-);
-
-export default function Familytree({ animal }) {
-  const nodeSize = { x: 100, y: 150 };
-  const foreignObjectProps = { width: nodeSize.x, height: nodeSize.y, x: 20 };
+      </foreignObject>
+    </g>
+  );
 
   const data = {
     name: animal.name,

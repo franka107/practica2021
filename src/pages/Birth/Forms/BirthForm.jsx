@@ -138,8 +138,8 @@ const BirthForm = ({
               name: values.firstChildName,
               gender: values.firstChildGender,
               color: values.firstChildColor,
-              birthDate: values.birthDate,
-              herdDate: values.birthDate,
+              birthDate: new Date(),
+              herdDate: new Date(),
               motherId: values.animalId,
               fatherId: maleAnimals.find(
                 (e) =>
@@ -159,8 +159,8 @@ const BirthForm = ({
                 name: values.secondChildName,
                 gender: values.secondChildGender,
                 color: values.secondChildColor,
-                birthDate: values.birthDate,
-                herdDate: values.birthDate,
+                birthDate: new Date(),
+                herdDate: new Date(),
                 motherId: values.animalId,
                 fatherId: maleAnimals.find(
                   (e) =>
