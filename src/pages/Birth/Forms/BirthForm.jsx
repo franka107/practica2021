@@ -187,6 +187,18 @@ const BirthForm = ({
               reproductiveStatus: "EMPTY",
             })
           );
+        } else {
+          await dispatch(BirthActions.create(values));
+          const cowData = await IdeasCloudApi.fetch("animalGetById", {
+            _id: values.animalId,
+          });
+          await dispatch(
+            AnimalActions.update({
+              ...cowData,
+              agribusinessId: currentAgribusiness._id,
+              reproductiveStatus: "EMPTY",
+            })
+          );
         }
       }
       if (type === "update") {

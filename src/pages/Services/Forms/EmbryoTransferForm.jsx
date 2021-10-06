@@ -55,7 +55,13 @@ const EmbryoTransferForm = ({
   const dispatch = useDispatch();
   const params = useParams();
   const femaleAnimals = useSelector(
-    (state) => state.animal.list.filter((animal) => animal.gender === "FEMALE"),
+    (state) =>
+      state.animal.list.filter(
+        (e) =>
+          e.gender === "FEMALE" &&
+          e.reproductiveStatus !== "PREGNANT" &&
+          !e.isServed
+      ),
     shallowEqual
   );
   const { current: currentAgribusiness } = useSelector(
