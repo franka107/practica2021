@@ -15,6 +15,8 @@ import { ROUTES_DICT } from "../../routes/routesDict";
 import AuthActions from "../../redux/actions/auth.actions";
 import { useGoogleLogin } from "react-google-login";
 import uiActions from "../../redux/actions/ui.actions";
+import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props";
+import ReactFacebookLogin from "react-facebook-login";
 
 function LoginPage(props) {
   const classes = useStyles();
@@ -57,6 +59,21 @@ function LoginPage(props) {
     clientId,
     accessType: "offline",
   });
+
+  const onResponseFB = (res) => {
+    const values = {
+      email: res.email,
+      firstName: res.name,
+      lastName: "",
+    };
+    dispatch(AuthActions.loginWithGoogle(values)).then((farm) => {
+      if (farm) {
+        history.push(ROUTES_DICT.animal.list);
+      } else {
+        history.push(ROUTES_DICT.setup);
+      }
+    });
+  };
 
   const onSubmitForm = (values, actions) => {
     dispatch(AuthActions.login(values))
@@ -135,14 +152,25 @@ function LoginPage(props) {
             </Button>
           </Grid>
           <Grid item xs={12}>
-            <Button
-              className={classes.googleBtn}
-              startIcon={<Facebook className={classes.fbIcon} />}
-            >
-              <Typography align={"center"} className={classes.googleBtnText}>
-                Iniciar sesión con Facebook
-              </Typography>
-            </Button>
+            <FacebookLogin
+              appId="1286554848458675"
+              fields="name,email,picture"
+              callback={onResponseFB}
+              render={(renderProps) => (
+                <Button
+                  className={classes.googleBtn}
+                  startIcon={<Facebook className={classes.fbIcon} />}
+                  onClick={renderProps.onClick}
+                >
+                  <Typography
+                    align={"center"}
+                    className={classes.googleBtnText}
+                  >
+                    Iniciar sesión con Facebook
+                  </Typography>
+                </Button>
+              )}
+            />
           </Grid>
         </Grid>
       </form>
