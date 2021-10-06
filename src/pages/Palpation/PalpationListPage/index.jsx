@@ -12,7 +12,7 @@ import { useStyles } from "../styles";
 import CustomMuiTable from "../../../components/CustomMuiTable";
 import { ROUTES_DICT } from "../../../routes/routesDict";
 import TableButtons from "../../../components/TableButtons";
-import { useDispatch, useSelector } from "react-redux";
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import PalpationActions from "../../../redux/actions/palpation.actions";
 import SearchContainer from "../../../components/SearchContainer";
 
@@ -24,11 +24,17 @@ const PalpationListPage = ({ children, setTitle, setChipList }) => {
   const dispatch = useDispatch();
   const [searchText, setSearchText] = useState();
 
-  const listPalpationControl = useSelector((state) => state.palpation.list);
+  const listPalpationControl = useSelector(
+    (state) =>
+      state.palpation.list.filter((e) =>
+        params._id ? e.animalId === params._id : e.animalId
+      ),
+    shallowEqual
+  );
 
   useEffect(() => {
-    setTitle("Palpaciones");
-    setChipList(palpationRouteOptions(location));
+    // setTitle("Palpaciones");
+    // setChipList(palpationRouteOptions(location));
     if (!listPalpationControl || listPalpationControl.length === 0) {
       dispatch(PalpationActions.list());
     }

@@ -4,9 +4,19 @@ export const unitAreaOptions = [
 ];
 
 export const unitWeightOptions = [
-  { _id: "POUNDS", name: "Libras" },
-  { _id: "KILOGRAMS", name: "Kilogramos" },
+  { _id: "POUNDS", name: "Libras", short: "Lb." },
+  { _id: "KILOGRAMS", name: "Kilogramos", short: "Kg." },
 ];
+
+export const unitWeightTestOptions = {
+  POUNDS: "Lb.",
+  KILOGRAMS: "Kg.",
+};
+
+export const unitCapacityTestOptions = {
+  LITERS: "L.",
+  KILOGRAMS: "Kg.",
+};
 
 export const unitCapacityOptions = [
   { _id: "LITERS", name: "Litros" },

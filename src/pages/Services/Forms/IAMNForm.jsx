@@ -19,6 +19,7 @@ import GeneticStockActions from "../../../redux/actions/geneticStock.actions";
 import { sexOptions } from "../../../constants";
 import _ from "lodash";
 import CollaboratorActions from "../../../redux/actions/collaborator.actions";
+import { useParams } from "react-router";
 
 const defaultInitValues = {
   agribusinessId: "",
@@ -39,11 +40,12 @@ const defaultInitValues = {
 const IAMNForm = ({
   initValues = defaultInitValues,
   type = "create",
+  hideAnimal = false,
   onClickCancelButton,
   onCompleteSubmit = () => {},
 }) => {
   const dispatch = useDispatch();
-
+  const params = useParams();
   const femaleAnimals = useSelector(
     (state) =>
       state.animal.list.filter(
@@ -118,6 +120,9 @@ const IAMNForm = ({
         })
       );
     }
+    if (hideAnimal) {
+      initValues.animalId = params._id;
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch]);
 
@@ -190,30 +195,35 @@ const IAMNForm = ({
                 {type === "update" && "Editar servicio"}
               </Typography>
             </Grid>
-            <AutocompleteFieldFormik
-              options={femaleAnimals}
-              name="animalId"
-              label="Identificación de hembra"
-              onChange={props.handleChange}
-              defaultValue={type === "create" ? null : props.values.animal}
-              disabled={type === "create" ? false : true}
-              xs={12}
-              sm={6}
-            />
-            <TextFieldFormik
-              onChange={props.handleChange}
-              name="name"
-              label="Nombre"
-              disabled
-              value={
-                props.values.animalId
-                  ? femaleAnimals.find((e) => e._id === props.values.animalId)
-                      ?.name
-                  : ""
-              }
-              xs={12}
-              sm={6}
-            />
+            {!hideAnimal && (
+              <>
+                <AutocompleteFieldFormik
+                  options={femaleAnimals}
+                  name="animalId"
+                  label="Identificación de hembra"
+                  onChange={props.handleChange}
+                  defaultValue={type === "create" ? null : props.values.animal}
+                  disabled={type === "create" ? false : true}
+                  xs={12}
+                  sm={6}
+                />
+                <TextFieldFormik
+                  onChange={props.handleChange}
+                  name="name"
+                  label="Nombre"
+                  disabled
+                  value={
+                    props.values.animalId
+                      ? femaleAnimals.find(
+                          (e) => e._id === props.values.animalId
+                        )?.name
+                      : ""
+                  }
+                  xs={12}
+                  sm={6}
+                />
+              </>
+            )}
             <DatePickerFieldFormik
               label="Fecha"
               onChange={props.handleChange}

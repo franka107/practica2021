@@ -1,6 +1,6 @@
 import { ROUTES_DICT } from "../../routes/routesDict";
 
-export const saleRouteOptions = (location) => [
+export const milkRouteOptions = (location) => [
   {
     key: "Inicio",
     path: ROUTES_DICT.milk.list,

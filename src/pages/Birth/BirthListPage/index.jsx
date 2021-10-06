@@ -10,7 +10,7 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import { useStyles } from "../../../styles";
 import CustomMuiTable from "../../../components/CustomMuiTable";
-import { useSelector } from "react-redux";
+import { shallowEqual, useSelector } from "react-redux";
 import SearchContainer from "../../../components/SearchContainer";
 import BirthActions from "../../../redux/actions/birth.actions";
 import { useDispatch } from "react-redux";
@@ -28,15 +28,17 @@ function BirthListPage({ children }) {
   };
   const dispatch = useDispatch();
 
-  const birthList = useSelector((state) => state.birth.list);
+  // const birthList = useSelector((state) => state.birth.list);
 
-  //const params = useParams();
+  const params = useParams();
 
-  //const birthList = useSelector((state) =>
-  //  state.birth.list.filter((e) =>
-  //    params._id ? (e.animalId === params._id ? true : false) : true
-  //  )
-  //);
+  const birthList = useSelector(
+    (state) =>
+      state.birth.list.filter((e) =>
+        params._id ? e.animalId === params._id : e.animalId
+      ),
+    shallowEqual
+  );
 
   useEffect(() => {
     if (!birthList || birthList.length === 0) {

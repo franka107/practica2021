@@ -15,6 +15,7 @@ import { Info } from "@material-ui/icons";
 import { useStyles } from "../../../styles";
 import CustomInfoIcon from "../../../components/CustomInfoIcon";
 import CollaboratorActions from "../../../redux/actions/collaborator.actions";
+import { useParams } from "react-router";
 
 const defaultInitValues = {
   animalId: "",
@@ -28,10 +29,12 @@ const defaultInitValues = {
 const PalpationForm = ({
   initValues = defaultInitValues,
   type = "create",
+  hideAnimal = false,
   onClickCancelButton,
   onCompleteSubmit = () => {},
 }) => {
   const classes = useStyles();
+  const params = useParams();
   const stateTitle =
     'Una vez que se declare el estado del animal como "Preñada" o "Vacía" ya no estará disponible en este módulo hasta que se realize un nuevo servicio del animal.';
   const animalTitle =
@@ -70,6 +73,9 @@ const PalpationForm = ({
 
   const handleSubmit = async (values, actions) => {
     try {
+      if (hideAnimal) {
+        values.animalId = params._id;
+      }
       if (type === "create") {
         const animal = femaleAnimals.find((e) => e._id === values.animalId);
         await dispatch(PalpationActions.create(values, animal));
@@ -99,30 +105,37 @@ const PalpationForm = ({
             </Typography>
           </Grid>
           <Grid container spacing={1}>
-            <Grid item container xs={12}>
-              <AutocompleteFieldFormik
-                options={femaleAnimals}
-                name="animalId"
-                label="Identificación del animal"
-                onChange={props.handleChange}
-                defaultValue={type === "create" ? null : props.values.animal}
-                xs={11}
-              />
-              <CustomInfoIcon title={animalTitle} />
-            </Grid>
-            <TextFieldFormik
-              label="Nombre"
-              name="name"
-              disabled
-              onChange={props.handleChange}
-              xs={12}
-              value={
-                props.values.animalId
-                  ? femaleAnimals.find((e) => e._id === props.values.animalId)
-                      ?.name
-                  : ""
-              }
-            />
+            {!hideAnimal && (
+              <>
+                <Grid item container xs={12}>
+                  <AutocompleteFieldFormik
+                    options={femaleAnimals}
+                    name="animalId"
+                    label="Identificación del animal"
+                    onChange={props.handleChange}
+                    defaultValue={
+                      type === "create" ? null : props.values.animal
+                    }
+                    xs={11}
+                  />
+                  <CustomInfoIcon title={animalTitle} />
+                </Grid>
+                <TextFieldFormik
+                  label="Nombre"
+                  name="name"
+                  disabled
+                  onChange={props.handleChange}
+                  xs={12}
+                  value={
+                    props.values.animalId
+                      ? femaleAnimals.find(
+                          (e) => e._id === props.values.animalId
+                        )?.name
+                      : ""
+                  }
+                />
+              </>
+            )}
             <DatePickerFieldFormik
               label="Fecha de tacto"
               name="touchDate"
