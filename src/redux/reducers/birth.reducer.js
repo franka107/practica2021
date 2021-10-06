@@ -1,6 +1,7 @@
 import ACTION_TYPES from "../types";
+const initialState = { list: [], current: null };
 
-export function birthReducer(state = {}, action) {
+export function birthReducer(state = initialState, action) {
   switch (action.type) {
     case ACTION_TYPES.BIRTH.CREATE:
       return {

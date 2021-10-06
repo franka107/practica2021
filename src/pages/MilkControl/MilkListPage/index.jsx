@@ -7,12 +7,11 @@ import {
 } from "react-router-dom";
 import { Grid } from "@material-ui/core";
 import { columns } from "./constants";
-import { saleRouteOptions } from "../constants";
 import { useStyles } from "../styles";
 import CustomMuiTable from "../../../components/CustomMuiTable";
 import { ROUTES_DICT } from "../../../routes/routesDict";
 import TableButtons from "../../../components/TableButtons";
-import { useDispatch, useSelector } from "react-redux";
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import MilkActions from "../../../redux/actions/milkControl.actions";
 import SearchContainer from "../../../components/SearchContainer";
 
@@ -24,11 +23,15 @@ const MilkListPage = ({ children, setTitle, setChipList }) => {
   const classes = useStyles();
   const [searchText, setSearchText] = useState();
 
-  const listMilkControl = useSelector((state) => state.milk.list);
+  const listMilkControl = useSelector(
+    (state) =>
+      state.milk.list.filter((e) =>
+        params._id ? e.animalId === params._id : e.animalId
+      ),
+    shallowEqual
+  );
 
   useEffect(() => {
-    setTitle("Control lechero");
-    setChipList(saleRouteOptions(location));
     if (!listMilkControl || listMilkControl.length === 0) {
       dispatch(MilkActions.list());
     }

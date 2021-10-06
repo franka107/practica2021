@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { shallowEqual, useSelector } from "react-redux";
+import { useParams } from "react-router";
 import * as yup from "yup";
 import AutocompleteFieldFormik from "../../../components/Inputs/AutocompleteFieldFormik";
 import ButtonFormik from "../../../components/Inputs/ButtonFormik";
@@ -37,9 +38,11 @@ const defaultInitValues = {
 const BirthForm = ({
   initValues = defaultInitValues,
   type = "create",
+  hideAnimal = false,
   onClickCancelButton,
   onCompleteSubmit = () => {},
 }) => {
+  const params = useParams();
   const dispatch = useDispatch();
   const currentAgribusiness = useSelector(
     (state) => state.agribusiness.current
@@ -111,6 +114,9 @@ const BirthForm = ({
     }
     if (!femaleAnimals || femaleAnimals.length === 0) {
       dispatch(AnimalActions.list());
+    }
+    if (hideAnimal) {
+      initValues.animalId = params._id;
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -194,33 +200,47 @@ const BirthForm = ({
           <form onSubmit={props.handleSubmit} className={classes.formStyle}>
             <Grid container spacing={1}>
               <Grid item>
+                <Typography variant={"subtitle1"}>
+                  {type === "create" ? "Nuevo nacimiento" : "Editar nacimiento"}
+                </Typography>
+              </Grid>
+            </Grid>
+            <Grid container spacing={1}>
+              <Grid item>
                 <Typography variant={"subtitle2"}>Datos Generales</Typography>
               </Grid>
             </Grid>
             <Grid container spacing={1}>
-              <AutocompleteFieldFormik
-                options={femaleAnimals}
-                name="animalId"
-                label="Identificacíon del animal"
-                onChange={props.handleChange}
-                defaultValue={type === "create" ? null : props.values.animal}
-                md={6}
-                xs={12}
-              />
-              <TextFieldFormik
-                label="Nombre"
-                name="name"
-                disabled
-                onChange={props.handleChange}
-                xs={12}
-                md={6}
-                value={
-                  props.values.animalId
-                    ? femaleAnimals.find((e) => e._id === props.values.animalId)
-                        ?.name
-                    : ""
-                }
-              />
+              {!hideAnimal && (
+                <>
+                  <AutocompleteFieldFormik
+                    options={femaleAnimals}
+                    name="animalId"
+                    label="Identificacíon del animal"
+                    onChange={props.handleChange}
+                    defaultValue={
+                      type === "create" ? null : props.values.animal
+                    }
+                    md={6}
+                    xs={12}
+                  />
+                  <TextFieldFormik
+                    label="Nombre"
+                    name="name"
+                    disabled
+                    onChange={props.handleChange}
+                    xs={12}
+                    md={6}
+                    value={
+                      props.values.animalId
+                        ? femaleAnimals.find(
+                            (e) => e._id === props.values.animalId
+                          )?.name
+                        : ""
+                    }
+                  />
+                </>
+              )}
               <DatePickerFieldFormik
                 label="Fecha "
                 name="birthDate"

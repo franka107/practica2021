@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Grid, Typography, IconButton } from "@material-ui/core";
 import { Edit, Delete } from "@material-ui/icons";
-import { useLocation } from "react-router";
+import { useLocation, useParams } from "react-router";
 import { useHistory } from "react-router";
-import { useDispatch } from "react-redux";
+import { shallowEqual, useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import ChipList from "../../../components/ChipList";
 import CustomMuiTable from "../../../components/CustomMuiTable";
@@ -22,8 +22,15 @@ import SearchContainer from "../../../components/SearchContainer";
 const ServicePageList = (props) => {
   const location = useLocation();
   const dispatch = useDispatch();
+  const params = useParams();
   const history = useHistory();
-  const serviceList = useSelector((state) => state.service.list);
+  const serviceList = useSelector(
+    (state) =>
+      state.service.list.filter((e) =>
+        params._id ? e.animalId === params._id : e.animalId
+      ),
+    shallowEqual
+  );
   const animalList = useSelector((state) => state.animal.list);
   const [searchText, setSearchText] = useState();
   const options = {

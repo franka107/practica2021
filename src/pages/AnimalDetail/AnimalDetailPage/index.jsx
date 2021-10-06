@@ -4,20 +4,20 @@ import { Checkbox } from "@material-ui/core";
 import { Divider } from "@material-ui/core";
 import { IconButton } from "@material-ui/core";
 import { Grid } from "@material-ui/core";
-import { CameraAlt, Edit } from "@material-ui/icons";
+import { CameraAlt, Edit, ViewList, Add } from "@material-ui/icons";
 import clsx from "clsx";
-import HighchartsReact from "highcharts-react-official";
+// import HighchartsReact from "highcharts-react-official";
 import { useState, useEffect } from "react";
 import { BorderLinearProgress } from "../../../components/BorderLinearProgress";
 import { useStyles } from "../styles";
-import Highcharts from "highcharts";
+// import Highcharts from "highcharts";
 import Calendar from "react-calendar";
-import Timeline from "@material-ui/lab/Timeline";
-import TimelineItem from "@material-ui/lab/TimelineItem";
-import TimelineSeparator from "@material-ui/lab/TimelineSeparator";
-import TimelineConnector from "@material-ui/lab/TimelineConnector";
-import TimelineContent from "@material-ui/lab/TimelineContent";
-import TimelineDot from "@material-ui/lab/TimelineDot";
+// import Timeline from "@material-ui/lab/Timeline";
+// import TimelineItem from "@material-ui/lab/TimelineItem";
+// import TimelineSeparator from "@material-ui/lab/TimelineSeparator";
+// import TimelineConnector from "@material-ui/lab/TimelineConnector";
+// import TimelineContent from "@material-ui/lab/TimelineContent";
+// import TimelineDot from "@material-ui/lab/TimelineDot";
 import {
   useParams,
   useLocation,
@@ -31,7 +31,12 @@ import QRCode from "qrcode.react";
 import "react-calendar/dist/Calendar.css";
 import { animalDetailChipOptions } from "../constants";
 import { ROUTES_DICT } from "../../../routes/routesDict";
-import { stateOptions, typeServicesTest } from "../../../constants";
+import {
+  stateOptions,
+  typeServicesTest,
+  unitWeightTestOptions,
+  unitCapacityTestOptions,
+} from "../../../constants";
 import { add, differenceInDays, format } from "date-fns";
 
 const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
@@ -45,6 +50,9 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
   const dispatch = useDispatch();
   const params = useParams();
   const currentAnimal = useSelector((state) => state.animal.current);
+  const currentAgribusiness = useSelector(
+    (state) => state.agribusiness.current
+  );
 
   const calculateLastAbortion = (values = []) => {
     for (let index = 0; index < values.length; index++) {
@@ -84,13 +92,13 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
         values[index].secondSample +
         values[index].thirdSample;
     }
-    return total + " Kg.";
+    return total + ` ${unitCapacityTestOptions[currentAgribusiness.milkUnit]} `;
   };
 
   const totalDaysMilk = (values = []) => {
     const result = differenceInDays(
       new Date(),
-      new Date(values[0].controlDate)
+      new Date(values[values.length - 1].controlDate)
     );
     const days = result > 1 ? " dias" : " dia";
     return result + days;
@@ -116,6 +124,18 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
       const result = differenceInDays(
         new Date(values[0].birthDate),
         new Date(values[1].birthDate)
+      );
+      return result + " dias";
+    } else {
+      return "Sin información";
+    }
+  };
+
+  const calculateIEC = (values = []) => {
+    if (values.length > 1) {
+      const result = differenceInDays(
+        new Date(values[0].controlDate),
+        new Date(values[1].controlDate)
       );
       return result + " dias";
     } else {
@@ -657,23 +677,47 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
                               >
                                 Partos
                               </Typography>
-                              <IconButton
-                                className={classes.cardEditIcon}
-                                size="small"
-                                onClick={() => {
-                                  history.push(
-                                    generatePath(
-                                      ROUTES_DICT.animalDetail.birth.update,
-                                      {
-                                        ...params,
-                                        _id: params._id,
-                                      }
-                                    )
-                                  );
-                                }}
-                              >
-                                <Edit fontSize="small"></Edit>
-                              </IconButton>
+                              <div>
+                                {currentAnimal &&
+                                  currentAnimal.births &&
+                                  currentAnimal.births.length !== 0 && (
+                                    <IconButton
+                                      className={classes.cardEditIcon}
+                                      size="small"
+                                      style={{ marginRight: "0.5rem" }}
+                                      onClick={() => {
+                                        history.push(
+                                          generatePath(
+                                            ROUTES_DICT.animalDetail.birth.list,
+                                            {
+                                              ...params,
+                                              _id: params._id,
+                                            }
+                                          )
+                                        );
+                                      }}
+                                    >
+                                      <ViewList fontSize="small"></ViewList>
+                                    </IconButton>
+                                  )}
+                                <IconButton
+                                  className={classes.cardEditIcon}
+                                  size="small"
+                                  onClick={() => {
+                                    history.push(
+                                      generatePath(
+                                        ROUTES_DICT.animalDetail.birth.create,
+                                        {
+                                          ...params,
+                                          _id: params._id,
+                                        }
+                                      )
+                                    );
+                                  }}
+                                >
+                                  <Add fontSize="small"></Add>
+                                </IconButton>
+                              </div>
                             </div>
                             <Divider></Divider>
                             <a className={clsx(classes.link)} href="/#">
@@ -790,8 +834,8 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
                             </div>
                           </Paper>
                         </Grid>
-                        <Grid item xs={12} lg={12}>
-                          {/* Servicios y palpacion*/}
+                        <Grid item xs={12} lg={6}>
+                          {/* Servicios*/}
                           <Paper
                             style={{ height: "96%" }}
                             elevation={4}
@@ -802,29 +846,250 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
                                 variant="body1"
                                 className={classes.cardTitle}
                               >
-                                Servicios y palpación
+                                Servicios
                               </Typography>
-                              <IconButton
-                                className={classes.cardEditIcon}
-                                size="small"
-                                onClick={() => {
-                                  history.push(
-                                    generatePath(
-                                      ROUTES_DICT.animalDetail.service.update,
-                                      {
-                                        ...params,
-                                        _id: params._id,
-                                      }
-                                    )
-                                  );
-                                }}
-                              >
-                                <Edit fontSize="small"></Edit>
-                              </IconButton>
+                              <div>
+                                <IconButton
+                                  className={classes.cardEditIcon}
+                                  size="small"
+                                  style={{ marginRight: "0.5rem" }}
+                                  onClick={() => {
+                                    history.push(
+                                      generatePath(
+                                        ROUTES_DICT.animalDetail.service.list,
+                                        {
+                                          ...params,
+                                          _id: params._id,
+                                        }
+                                      )
+                                    );
+                                  }}
+                                >
+                                  <ViewList fontSize="small"></ViewList>
+                                </IconButton>
+                                <IconButton
+                                  className={classes.cardEditIcon}
+                                  size="small"
+                                  style={{ marginRight: "0.5rem" }}
+                                  onClick={() => {
+                                    history.push(
+                                      generatePath(
+                                        ROUTES_DICT.animalDetail.service
+                                          .transfer.create,
+                                        {
+                                          ...params,
+                                          _id: params._id,
+                                        }
+                                      )
+                                    );
+                                  }}
+                                >
+                                  T.E
+                                </IconButton>
+                                <IconButton
+                                  className={classes.cardEditIcon}
+                                  size="small"
+                                  onClick={() => {
+                                    history.push(
+                                      generatePath(
+                                        ROUTES_DICT.animalDetail.service.ia
+                                          .create,
+                                        {
+                                          ...params,
+                                          _id: params._id,
+                                        }
+                                      )
+                                    );
+                                  }}
+                                >
+                                  I.A
+                                </IconButton>
+                              </div>
                             </div>
                             <Divider className={classes.divider}></Divider>
                             <Grid container className="">
-                              <Grid item xs={8}>
+                              <Grid item xs={12}>
+                                <Grid
+                                  container
+                                  className={classes.generalFeature}
+                                  xs={12}
+                                >
+                                  <Grid item xs={5}>
+                                    <Typography className={classes.cardFeature}>
+                                      Últ. Celo
+                                    </Typography>
+                                  </Grid>
+                                  <Grid item xs={7}>
+                                    <Typography>
+                                      {currentAnimal &&
+                                      currentAnimal.zealControl &&
+                                      currentAnimal.zealControl.length !== 0
+                                        ? format(
+                                            new Date(
+                                              currentAnimal.zealControl[0].controlDate
+                                            ),
+                                            "yyyy-MM-dd"
+                                          )
+                                        : "Sin información"}
+                                    </Typography>
+                                  </Grid>
+                                </Grid>
+                                <Grid
+                                  container
+                                  className={classes.generalFeature}
+                                  xs={12}
+                                >
+                                  <Grid item xs={5}>
+                                    <Typography className={classes.cardFeature}>
+                                      I.E.C
+                                    </Typography>
+                                  </Grid>
+                                  <Grid item xs={7}>
+                                    <Typography>
+                                      {calculateIEC(currentAnimal.zealControl)}
+                                    </Typography>
+                                  </Grid>
+                                </Grid>
+                              </Grid>
+                              {/* <Grid item xs={6}>
+                            <HighchartsReact
+                              highcharts={Highcharts}
+                              options={{
+                                chart: {
+                                  type: "scatter",
+                                  margin: [70, 50, 60, 80],
+                                  events: {
+                                    click: function (e) {
+                                      // find the clicked values and the series
+                                      var x = Math.round(e.xAxis[0].value),
+                                        y = Math.round(e.yAxis[0].value),
+                                        series = this.series[0];
+
+                                      // Add it
+                                      series.addPoint([x, y]);
+                                    },
+                                  },
+                                },
+                                title: {
+                                  text: "",
+                                },
+
+                                accessibility: {
+                                  announceNewData: {
+                                    enabled: true,
+                                  },
+                                },
+                                xAxis: {
+                                  gridLineWidth: 1,
+                                  minPadding: 0.2,
+                                  maxPadding: 0.2,
+                                  maxZoom: 20,
+                                },
+                                yAxis: {
+                                  title: {
+                                    text: "Value",
+                                  },
+                                  minPadding: 0.2,
+                                  maxPadding: 0.2,
+                                  maxZoom: 20,
+                                  plotLines: [
+                                    {
+                                      value: 0,
+                                      width: 1,
+                                      color: "#808080",
+                                    },
+                                  ],
+                                },
+                                legend: {
+                                  enabled: false,
+                                },
+                                exporting: {
+                                  enabled: false,
+                                },
+                                plotOptions: {
+                                  series: {
+                                    lineWidth: 1,
+                                    point: {
+                                      events: {
+                                        click: function () {
+                                          if (this.series.data.length > 1) {
+                                            this.remove();
+                                          }
+                                        },
+                                      },
+                                    },
+                                  },
+                                },
+                                series: [
+                                  {
+                                    data: [
+                                      [20, 20],
+                                      [105, 40],
+                                    ],
+                                  },
+                                ],
+                              }}
+                            />
+                          </Grid> */}
+                            </Grid>
+                          </Paper>
+                        </Grid>
+                        <Grid item xs={12} lg={6}>
+                          {/* Palpacion*/}
+                          <Paper
+                            style={{ height: "96%" }}
+                            elevation={4}
+                            className={classes.card}
+                          >
+                            <div className={classes.cardHeader}>
+                              <Typography
+                                variant="body1"
+                                className={classes.cardTitle}
+                              >
+                                Palpación
+                              </Typography>
+                              <div>
+                                <IconButton
+                                  className={classes.cardEditIcon}
+                                  size="small"
+                                  style={{ marginRight: "0.5rem" }}
+                                  onClick={() => {
+                                    history.push(
+                                      generatePath(
+                                        ROUTES_DICT.animalDetail.palpation.list,
+                                        {
+                                          ...params,
+                                          _id: params._id,
+                                        }
+                                      )
+                                    );
+                                  }}
+                                >
+                                  <ViewList fontSize="small"></ViewList>
+                                </IconButton>
+                                <IconButton
+                                  className={classes.cardEditIcon}
+                                  size="small"
+                                  onClick={() => {
+                                    history.push(
+                                      generatePath(
+                                        ROUTES_DICT.animalDetail.palpation
+                                          .create,
+                                        {
+                                          ...params,
+                                          _id: params._id,
+                                        }
+                                      )
+                                    );
+                                  }}
+                                >
+                                  <Add fontSize="small"></Add>
+                                </IconButton>
+                              </div>
+                            </div>
+                            <Divider className={classes.divider}></Divider>
+                            <Grid container className="">
+                              <Grid item xs={12}>
                                 <Grid
                                   container
                                   className={classes.generalFeature}
@@ -1149,7 +1414,9 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
                                   currentAnimal.weightControls &&
                                   currentAnimal.weightControls.length > 0
                                     ? currentAnimal.weightControls[0].weight +
-                                      " Kg."
+                                      unitWeightTestOptions[
+                                        currentAgribusiness.meatUnit
+                                      ]
                                     : "Sin información"}
                                 </Typography>
                               </Grid>
@@ -1381,23 +1648,43 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
                         >
                           Producción Lechera
                         </Typography>
-                        <IconButton
-                          className={classes.cardEditIcon}
-                          size="small"
-                          onClick={() => {
-                            history.push(
-                              generatePath(
-                                ROUTES_DICT.animalDetail.milk.update,
-                                {
-                                  ...params,
-                                  _id: params._id,
-                                }
-                              )
-                            );
-                          }}
-                        >
-                          <Edit fontSize="small"></Edit>
-                        </IconButton>
+                        <div>
+                          <IconButton
+                            className={classes.cardEditIcon}
+                            size="small"
+                            style={{ marginRight: "0.5rem" }}
+                            onClick={() => {
+                              history.push(
+                                generatePath(
+                                  ROUTES_DICT.animalDetail.milk.list,
+                                  {
+                                    ...params,
+                                    _id: params._id,
+                                  }
+                                )
+                              );
+                            }}
+                          >
+                            <ViewList fontSize="small"></ViewList>
+                          </IconButton>
+                          <IconButton
+                            className={classes.cardEditIcon}
+                            size="small"
+                            onClick={() => {
+                              history.push(
+                                generatePath(
+                                  ROUTES_DICT.animalDetail.milk.create,
+                                  {
+                                    ...params,
+                                    _id: params._id,
+                                  }
+                                )
+                              );
+                            }}
+                          >
+                            <Add fontSize="small"></Add>
+                          </IconButton>
+                        </div>
                       </div>
                       <Divider className={classes.divider}></Divider>
                       <div className="">
@@ -1417,7 +1704,11 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
                               currentAnimal.milkControls &&
                               currentAnimal.milkControls.length > 0
                                 ? totalMilk(currentAnimal.milkControls)
-                                : "0 Kg"}
+                                : `0 ${
+                                    unitCapacityTestOptions[
+                                      currentAgribusiness.milkUnit
+                                    ]
+                                  }`}
                             </Typography>
                           </Grid>
                         </Grid>
@@ -1479,23 +1770,43 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
                         >
                           Pesos
                         </Typography>
-                        <IconButton
-                          className={classes.cardEditIcon}
-                          size="small"
-                          onClick={() => {
-                            history.push(
-                              generatePath(
-                                ROUTES_DICT.animalDetail.weight.update,
-                                {
-                                  ...params,
-                                  _id: params._id,
-                                }
-                              )
-                            );
-                          }}
-                        >
-                          <Edit fontSize="small"></Edit>
-                        </IconButton>
+                        <div>
+                          <IconButton
+                            className={classes.cardEditIcon}
+                            size="small"
+                            style={{ marginRight: "0.5rem" }}
+                            onClick={() => {
+                              history.push(
+                                generatePath(
+                                  ROUTES_DICT.animalDetail.weight.list,
+                                  {
+                                    ...params,
+                                    _id: params._id,
+                                  }
+                                )
+                              );
+                            }}
+                          >
+                            <ViewList fontSize="small"></ViewList>
+                          </IconButton>
+                          <IconButton
+                            className={classes.cardEditIcon}
+                            size="small"
+                            onClick={() => {
+                              history.push(
+                                generatePath(
+                                  ROUTES_DICT.animalDetail.weight.create,
+                                  {
+                                    ...params,
+                                    _id: params._id,
+                                  }
+                                )
+                              );
+                            }}
+                          >
+                            <Add fontSize="small"></Add>
+                          </IconButton>
+                        </div>
                       </div>
                       <Divider className={classes.divider}></Divider>
                       <div className="">
@@ -1515,7 +1826,11 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
                               currentAnimal.weightControls &&
                               currentAnimal.weightControls.length > 0
                                 ? currentAnimal.weightControls[0].weight +
-                                  " Kg."
+                                  ` ${
+                                    unitWeightTestOptions[
+                                      currentAgribusiness.meatUnit
+                                    ]
+                                  }`
                                 : "No se han registrado pesos"}
                             </Typography>
                           </Grid>
@@ -1544,48 +1859,6 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
                             </Typography>
                           </Grid>
                         </Grid>
-                        {/* <Grid
-                        container
-                        className={classes.generalFeature}
-                        xs={12}
-                      >
-                        <Grid item xs={5}>
-                          <Typography className={classes.cardFeature}>
-                            Gr./Día
-                          </Typography>
-                        </Grid>
-                        <Grid item xs={7}>
-                          <Typography>No especificado</Typography>
-                        </Grid>
-                      </Grid>
-                      <Grid
-                        container
-                        className={classes.generalFeature}
-                        xs={12}
-                      >
-                        <Grid item xs={5}>
-                          <Typography className={classes.cardFeature}>
-                            C. Corp
-                          </Typography>
-                        </Grid>
-                        <Grid item xs={7}>
-                          <Typography>No especificado</Typography>
-                        </Grid>
-                      </Grid>
-                      <Grid
-                        container
-                        className={classes.generalFeature}
-                        xs={12}
-                      >
-                        <Grid item xs={5}>
-                          <Typography className={classes.cardFeature}>
-                            Alzada
-                          </Typography>
-                        </Grid>
-                        <Grid item xs={7}>
-                          <Typography>No especificado</Typography>
-                        </Grid>
-                      </Grid> */}
                       </div>
                     </Paper>
                   </Grid>
@@ -1605,13 +1878,14 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
                       <Typography variant="body1" className={classes.cardTitle}>
                         Calendario
                       </Typography>
+
                       <IconButton
                         className={classes.cardEditIcon}
                         size="small"
                         onClick={() => {
                           history.push(
                             generatePath(
-                              ROUTES_DICT.animalDetail.calendar.update,
+                              ROUTES_DICT.animalDetail.birth.update,
                               {
                                 ...params,
                                 _id: params._id,

@@ -76,12 +76,12 @@ import AgribusinessUpdatePage from "../pages/HaciendaConfigurationPage/Agribusin
 import AgribusinessCreatePage from "../pages/HaciendaConfigurationPage/AgribusinessCreatePage";
 import GeneralUpdatePage from "../pages/AnimalDetail/GeneralUpdatePage";
 import RaceUpdatePage from "../pages/AnimalDetail/RaceUpdatePage";
-import BirthControlUpdatePage from "../pages/AnimalDetail/BirthControlUpdatePage";
+import BirthControlCreatePage from "../pages/AnimalDetail/BirthControlCreatePage";
 import CalendarUpdatePage from "../pages/AnimalDetail/CalendarUpdatePage";
-import ServiceUpdatePage from "../pages/AnimalDetail/ServiceUpdatePage";
+import IAServiceCreatePage from "../pages/AnimalDetail/IAServiceCreatePage";
 import OtherUpdatePage from "../pages/AnimalDetail/OtherUpdatePage";
-import MilkControlUpdatePage from "../pages/AnimalDetail/MilkControlUpdatePage";
-import WeightControlUpdatePage from "../pages/AnimalDetail/WeightControlUpdatePage";
+import MilkControlCreatePage from "../pages/AnimalDetail/MilkControlCreatePage";
+import WeightControlUpdatePage from "../pages/AnimalDetail/WeightControlCreatePage";
 import AnimalDetailDeletePage from "../pages/AnimalDetail/AnimalDetailDeletePage";
 import CollaboratorCreatePage from "../pages/HaciendaConfigurationPage/CollaboratorCreatePage";
 import CollaboratorUpdatePage from "../pages/HaciendaConfigurationPage/CollaboratorUpdatePage";
@@ -94,6 +94,11 @@ import UserCreatePage from "../pages/UserControl/UserCreatePage";
 import UserUpdatePage from "../pages/UserControl/UserUpdatePage";
 import UserDeletePage from "../pages/UserControl/UserDeletePage";
 import QrViewPage from "../pages/AnimalDetail/QrViewPage";
+import TransferServiceCreatePage from "../pages/AnimalDetail/TransferServiceCreatePage";
+import PalapationControlCreatePage from "../pages/AnimalDetail/PalapationControlCreatePage";
+import { palpationRouteOptions } from "../pages/Palpation/constants";
+import { milkRouteOptions } from "../pages/MilkControl/constants";
+import WeightControlCreatePage from "../pages/AnimalDetail/WeightControlCreatePage";
 
 export const ROUTE_TYPES = {
   public: "public",
@@ -341,7 +346,9 @@ export const RENDER_ROUTES = [
     key: "Control Lechero",
     exact: false,
     component: ({ children }) => (
-      <DefaultPage>{(props) => children(props)}</DefaultPage>
+      <DefaultPage title="Control Lechero" chipList={milkRouteOptions()}>
+        {(props) => children(props)}
+      </DefaultPage>
     ),
     layout: DashboardLayout,
     type: ROUTE_TYPES.private,
@@ -386,7 +393,9 @@ export const RENDER_ROUTES = [
     key: "Palpaciones",
     exact: false,
     component: ({ children }) => (
-      <DefaultPage>{(props) => children(props)}</DefaultPage>
+      <DefaultPage title="Palpaciones" chipList={palpationRouteOptions()}>
+        {(props) => children(props)}
+      </DefaultPage>
     ),
     layout: DashboardLayout,
     type: ROUTE_TYPES.private,
@@ -645,10 +654,10 @@ export const RENDER_ROUTES = [
             type: ROUTE_TYPES.private,
           },
           {
-            path: ROUTES_DICT.animalDetail.birth.update,
-            key: "Editar Datos Partos",
+            path: ROUTES_DICT.animalDetail.birth.create,
+            key: "Crear Datos Partos",
             exact: true,
-            component: (props) => <BirthControlUpdatePage {...props} />,
+            component: (props) => <BirthControlCreatePage {...props} />,
             type: ROUTE_TYPES.private,
           },
           {
@@ -659,10 +668,24 @@ export const RENDER_ROUTES = [
             type: ROUTE_TYPES.private,
           },
           {
-            path: ROUTES_DICT.animalDetail.service.update,
-            key: "Editar Datos Servicios",
+            path: ROUTES_DICT.animalDetail.service.ia.create,
+            key: "Crear Datos Servicios IA",
             exact: true,
-            component: (props) => <ServiceUpdatePage {...props} />,
+            component: (props) => <IAServiceCreatePage {...props} />,
+            type: ROUTE_TYPES.private,
+          },
+          {
+            path: ROUTES_DICT.animalDetail.service.transfer.create,
+            key: "Crear Datos Servicios TE",
+            exact: true,
+            component: (props) => <TransferServiceCreatePage {...props} />,
+            type: ROUTE_TYPES.private,
+          },
+          {
+            path: ROUTES_DICT.animalDetail.palpation.create,
+            key: "Crear Datos Palpacion",
+            exact: true,
+            component: (props) => <PalapationControlCreatePage {...props} />,
             type: ROUTE_TYPES.private,
           },
           {
@@ -673,17 +696,17 @@ export const RENDER_ROUTES = [
             type: ROUTE_TYPES.private,
           },
           {
-            path: ROUTES_DICT.animalDetail.milk.update,
-            key: "Editar Datos Leche",
+            path: ROUTES_DICT.animalDetail.milk.create,
+            key: "Crear Datos Control Lechero",
             exact: true,
-            component: (props) => <MilkControlUpdatePage {...props} />,
+            component: (props) => <MilkControlCreatePage {...props} />,
             type: ROUTE_TYPES.private,
           },
           {
-            path: ROUTES_DICT.animalDetail.weight.update,
-            key: "Editar Datos Leche",
+            path: ROUTES_DICT.animalDetail.weight.create,
+            key: "Crear Datos Pesos",
             exact: true,
-            component: (props) => <WeightControlUpdatePage {...props} />,
+            component: (props) => <WeightControlCreatePage {...props} />,
             type: ROUTE_TYPES.private,
           },
           {
@@ -708,6 +731,41 @@ export const RENDER_ROUTES = [
             type: ROUTE_TYPES.private,
           },
         ],
+      },
+      {
+        path: ROUTES_DICT.animalDetail.birth.list,
+        key: "Listar Datos Partos",
+        exact: true,
+        component: (props) => <BirthListPage {...props} />,
+        type: ROUTE_TYPES.private,
+      },
+      {
+        path: ROUTES_DICT.animalDetail.service.list,
+        key: "List Datos Servicios",
+        exact: true,
+        component: (props) => <ServicePageList {...props} />,
+        type: ROUTE_TYPES.private,
+      },
+      {
+        path: ROUTES_DICT.animalDetail.palpation.list,
+        key: "Listar Datos Palpacion",
+        exact: true,
+        component: (props) => <PalpationListPage {...props} />,
+        type: ROUTE_TYPES.private,
+      },
+      {
+        path: ROUTES_DICT.animalDetail.milk.list,
+        key: "Listar Datos Control Lechero",
+        exact: true,
+        component: (props) => <MilkListPage {...props} />,
+        type: ROUTE_TYPES.private,
+      },
+      {
+        path: ROUTES_DICT.animalDetail.weight.list,
+        key: "Listar Datos Pesos",
+        exact: true,
+        component: (props) => <WeightListPage {...props} />,
+        type: ROUTE_TYPES.private,
       },
     ],
   },

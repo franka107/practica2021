@@ -13,7 +13,7 @@ import CustomMuiTable from "../../../../components/CustomMuiTable";
 import TableButtons from "../../../../components/TableButtons";
 import { ROUTES_DICT } from "../../../../routes/routesDict";
 import WeightActions from "../../../../redux/actions/weight.actions";
-import { useDispatch, useSelector } from "react-redux";
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import SearchContainer from "../../../../components/SearchContainer";
 
 function WeightListPage({ children, setTitle, setChipList }) {
@@ -24,11 +24,17 @@ function WeightListPage({ children, setTitle, setChipList }) {
   const classes = useStyles();
   const [searchText, setSearchText] = useState();
 
-  const listWeightControl = useSelector((state) => state.weight.list);
+  const listWeightControl = useSelector(
+    (state) =>
+      state.weight.list.filter((e) =>
+        params._id ? e.animalId === params._id : e.animalId
+      ),
+    shallowEqual
+  );
 
   useEffect(() => {
-    setTitle("Colectiva / Peso");
-    setChipList(weightRouteOptions(location));
+    // setTitle("Colectiva / Peso");
+    // setChipList(weightRouteOptions(location));
     if (!listWeightControl || listWeightControl.length === 0) {
       dispatch(WeightActions.list());
     }
