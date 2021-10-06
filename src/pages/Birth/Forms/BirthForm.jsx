@@ -141,6 +141,12 @@ const BirthForm = ({
               birthDate: values.birthDate,
               herdDate: values.birthDate,
               motherId: values.animalId,
+              fatherId: maleAnimals.find(
+                (e) =>
+                  e._id ===
+                  femaleAnimals.find((e) => e._id === values.animalId)
+                    ?.activeService.reproductorAnimalId
+              )?._id,
             })
           );
           childs.push(firstChild);
@@ -156,6 +162,12 @@ const BirthForm = ({
                 birthDate: values.birthDate,
                 herdDate: values.birthDate,
                 motherId: values.animalId,
+                fatherId: maleAnimals.find(
+                  (e) =>
+                    e._id ===
+                    femaleAnimals.find((e) => e._id === values.animalId)
+                      ?.activeService.reproductorAnimalId
+                )?._id,
               })
             );
             childs.push(secondChild);

@@ -84,6 +84,7 @@ export default function PedigreePage() {
   return (
     <Grid container xs={12}>
       <Grid container spacing={2}>
+        {/*
         <Grid item xs={12} lg={3}>
           <Paper elevation={4} className={classes.card}>
             <div className={classes.cardHeader}>
@@ -188,7 +189,7 @@ export default function PedigreePage() {
                       ? "REPRODUCTOR"
                       : "NO REPRODUCTOR"}
                   </Typography>
-                  {/* <Typography>Vaca seca, 276 dias de preñez</Typography> */}
+                  { <Typography>Vaca seca, 276 dias de preñez</Typography> }
                 </Grid>
               </Grid>
               <div className={classes.borderLinearProgress}>
@@ -214,7 +215,7 @@ export default function PedigreePage() {
                   <Typography>
                     {currentAnimal &&
                       formatDate(new Date(currentAnimal.birthDate))}
-                    {/* {animals && animals.birthDate} */}
+                    {/* {animals && animals.birthDate} }
                   </Typography>
                 </Grid>
               </Grid>
@@ -228,7 +229,7 @@ export default function PedigreePage() {
                   <Typography>
                     {currentAnimal &&
                       formatDate(new Date(currentAnimal.herdDate))}
-                    {/* {animals && animals.herdDate} */}
+                    {/* {animals && animals.herdDate} }
                   </Typography>
                 </Grid>
               </Grid>
@@ -256,7 +257,8 @@ export default function PedigreePage() {
             <HighchartsReact highcharts={Highcharts} options={chartOptions} />
           </Paper>
         </Grid>
-        <Grid item xs={12} lg={9}>
+        */}
+        <Grid item xs={12} lg={12}>
           <Paper
             elevation={4}
             className={classes.card}
@@ -268,7 +270,7 @@ export default function PedigreePage() {
               </Typography>
             </div>
             <Divider></Divider>
-            <Familytree />
+            {currentAnimal && <Familytree animal={currentAnimal} />}
           </Paper>
         </Grid>
       </Grid>

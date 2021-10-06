@@ -99,6 +99,7 @@ import PalapationControlCreatePage from "../pages/AnimalDetail/PalapationControl
 import { palpationRouteOptions } from "../pages/Palpation/constants";
 import { milkRouteOptions } from "../pages/MilkControl/constants";
 import WeightControlCreatePage from "../pages/AnimalDetail/WeightControlCreatePage";
+import RecoverPasswordPage from "../pages/RecoverPasswordPage";
 
 export const ROUTE_TYPES = {
   public: "public",
@@ -865,6 +866,14 @@ export const RENDER_ROUTES = [
     key: "Registro",
     exact: true,
     component: RegisterPage,
+    layout: AuthLayout,
+    type: ROUTE_TYPES.public,
+  },
+  {
+    path: ROUTES_DICT.recoverPassword,
+    key: "Recover password",
+    exact: true,
+    component: RecoverPasswordPage,
     layout: AuthLayout,
     type: ROUTE_TYPES.public,
   },

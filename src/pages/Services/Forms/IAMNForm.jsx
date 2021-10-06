@@ -51,7 +51,7 @@ const IAMNForm = ({
       state.animal.list.filter(
         (e) =>
           e.gender === "FEMALE" &&
-          !e.reproductiveStatus === "PREGNANT" &&
+          e.reproductiveStatus !== "PREGNANT" &&
           !e.isServed
       ),
     shallowEqual
