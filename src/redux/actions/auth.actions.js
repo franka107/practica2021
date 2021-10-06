@@ -62,6 +62,29 @@ class AuthActions {
     };
   }
 
+  loginWithGoogle(data) {
+    return (dispatch) => {
+      return AuthService.loginWithGoogle(data).then(
+        async (response) => {
+          localStorage.setItem("user", JSON.stringify(response));
+          const farm = await dispatch(
+            farmActions.findFarmByOwnerId(response._id)
+          );
+          dispatch({
+            type: ACTION_TYPES.AUTH.LOGIN_SUCESS,
+            payload: response,
+          });
+          return Promise.resolve(farm);
+        },
+        (error) => {
+          dispatch({ type: ACTION_TYPES.AUTH.LOGIN_FAIL, error: error });
+          dispatch(UiActions.showSnackbar(error.message, "error"));
+          return Promise.reject();
+        }
+      );
+    };
+  }
+
   logout() {
     return (dispatch) => {
       localStorage.clear();

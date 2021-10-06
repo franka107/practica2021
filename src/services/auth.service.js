@@ -17,6 +17,28 @@ class AuthService {
     });
   }
 
+  loginWithGoogle(data) {
+    return new Promise((resolve, reject) => {
+      window.icAPI.callService(
+        "userLoginWithGoogle",
+        data,
+        function (error, response) {
+          if (!error) {
+            localStorage.setItem("user", JSON.stringify(response.responseJSON));
+            resolve(response.responseJSON);
+          } else {
+            const rejectBody = {
+              message:
+                (error.responseJSON && error.responseJSON.body) ||
+                "Error desconocido",
+            };
+            reject(rejectBody);
+          }
+        }
+      );
+    });
+  }
+
   register(userData) {
     return new Promise((resolve, reject) => {
       window.icAPI.callService("userRegister", userData, (error, response) => {

@@ -14,6 +14,7 @@ import PasswordFieldFormik from "../../components/Inputs/PasswordFieldFormik";
 import { ROUTES_DICT } from "../../routes/routesDict";
 import AuthActions from "../../redux/actions/auth.actions";
 import { useGoogleLogin } from "react-google-login";
+import uiActions from "../../redux/actions/ui.actions";
 
 function LoginPage(props) {
   const classes = useStyles();
@@ -33,10 +34,28 @@ function LoginPage(props) {
 
   const onSuccess = (res) => {
     console.log(res);
+    const values = {
+      email: res.profileObj.email,
+      firstName: res.profileObj.givenName,
+      lastName: res.profileObj.familyName,
+    };
+    dispatch(AuthActions.loginWithGoogle(values)).then((farm) => {
+      if (farm) {
+        history.push(ROUTES_DICT.animal.list);
+      } else {
+        history.push(ROUTES_DICT.setup);
+      }
+    });
   };
 
   const onFailure = (res) => {
-    console.log("Login failed: res:", res);
+    console.log("onFailure =>", res);
+    dispatch(
+      uiActions.showSnackbar(
+        "Un error ocurrio al intentar iniciar sesión",
+        "error"
+      )
+    );
   };
 
   const clientId = process.env.REACT_APP_GOOGLE_ENV;
