@@ -7,11 +7,14 @@ import MenuOpenIcon from "@material-ui/icons/MenuOpen";
 import { useStyles } from "./styles";
 import Logo from "../../components/Logo";
 import { menuList } from "./constants";
+import { useSelector } from "react-redux";
 
 export const DashboardLayout = ({ children }) => {
   const classes = useStyles();
   const [openDrawer, setOpenDrawer] = useState(false);
-
+  const currentAgribusiness = useSelector(
+    (state) => state.agribusiness.current
+  );
   return (
     <div>
       <Grid
@@ -42,7 +45,7 @@ export const DashboardLayout = ({ children }) => {
           <Sidebar
             openDrawer={openDrawer}
             setOpenDrawer={setOpenDrawer}
-            options={menuList}
+            options={menuList(currentAgribusiness)}
           />
         </Grid>
         <Grid item xs={12} sm={10} md={10} className={classes.content}>
