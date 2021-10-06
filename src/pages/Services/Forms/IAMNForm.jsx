@@ -9,7 +9,7 @@ import TimePickerFormik from "../../../components/Inputs/TimePickerFormik";
 import AutocompleteFieldFormik from "../../../components/Inputs/AutocompleteFieldFormik";
 import ButtonFormik from "../../../components/Inputs/ButtonFormik";
 import CheckboxFormik from "../../../components/Inputs/CheckboxFormik";
-import { typeServices } from "../../../constants";
+import { typeServices, typeServicesTest } from "../../../constants";
 import { useEffect } from "react";
 import { useSelector, shallowEqual } from "react-redux";
 import { useDispatch } from "react-redux";
@@ -122,6 +122,19 @@ const IAMNForm = ({
     }
     if (hideAnimal) {
       initValues.animalId = params._id;
+    }
+    if (type === "create") {
+      if (
+        currentAgribusiness.reproductiveManagement &&
+        currentAgribusiness.reproductiveManagement === "ARTIFICIAL_INSEMINATION"
+      ) {
+        initValues.serviceType = "AR_IN";
+      } else if (
+        currentAgribusiness.reproductiveManagement &&
+        currentAgribusiness.reproductiveManagement === "DIRECT_MOUNT"
+      ) {
+        initValues.serviceType = "NA_MO";
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch]);
@@ -248,7 +261,23 @@ const IAMNForm = ({
               name="serviceType"
               label="Tipo de servicio"
               disabled={type === "update"}
-              options={typeServices}
+              // options={typeServices}
+              options={Object.keys(typeServicesTest)
+                .filter((key) =>
+                  currentAgribusiness &&
+                  currentAgribusiness.reproductiveManagement &&
+                  currentAgribusiness.reproductiveManagement ===
+                    "ARTIFICIAL_INSEMINATION"
+                    ? key === "AR_IN"
+                    : currentAgribusiness.reproductiveManagement ===
+                      "DIRECT_MOUNT"
+                    ? key === "NA_MO"
+                    : key === "AR_IN" || key === "NA_MO"
+                )
+                .map((key) => ({
+                  _id: key,
+                  name: typeServicesTest[key],
+                }))}
               // options={Object.keys(movementOptions).map((key) => ({
               //   _id: key,
               //   name: movementOptions[key],

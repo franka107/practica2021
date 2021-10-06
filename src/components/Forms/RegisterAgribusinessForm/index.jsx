@@ -27,6 +27,7 @@ import {
 import AgribusinessActions from "../../../redux/actions/agribusiness.actions";
 import clsx from "clsx";
 import currencyActions from "../../../redux/actions/currency.actions";
+import ACTION_TYPES from "../../../redux/types";
 
 const defaultInitValues = {
   countryId: "", // *
@@ -77,6 +78,9 @@ const RegisterAgribusinessForm = ({
   const { list: regions } = useSelector((state) => state.region);
   const { list: districts } = useSelector((state) => state.district);
   const { current: currentFarm } = useSelector((state) => state.farm);
+  const { current: currentAgribusiness } = useSelector(
+    (state) => state.agribusiness
+  );
   const { current: currentCurrency } = useSelector((state) => state.currency);
 
   const history = useHistory();
@@ -104,6 +108,12 @@ const RegisterAgribusinessForm = ({
       }
       if (type === "update") {
         dispatch(AgribusinessActions.update(values));
+        if (currentAgribusiness._id === values._id) {
+          dispatch({
+            type: ACTION_TYPES.AGRIBUSINESS.UPDATE_CURRENT,
+            payload: values,
+          });
+        }
       }
 
       onCompleteSubmit();
