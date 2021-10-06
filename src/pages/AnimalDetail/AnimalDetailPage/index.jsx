@@ -1297,7 +1297,12 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
                                                   "yyyy-MM-dd"
                                                 )
                                               : currentAnimal.pregnantDate
-                                              ? currentAnimal.pregnantDate
+                                              ? format(
+                                                  new Date(
+                                                    currentAnimal.pregnantDate
+                                                  ),
+                                                  "yyyy-MM-dd"
+                                                )
                                               : "Sin información"}
                                           </Typography>
                                         </Grid>

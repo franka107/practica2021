@@ -60,6 +60,9 @@ const PalpationForm = ({
     if (!femaleAnimals || femaleAnimals.length === 0) {
       dispatch(AnimalActions.list());
     }
+    if (hideAnimal) {
+      initValues.animalId = params._id;
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
