@@ -172,6 +172,9 @@ const BirthForm = ({
 
         //await dispatch(MovementActions.update(transformedValues, geneticType));
       }
+      if (hideAnimal) {
+        await dispatch(AnimalActions.get({ _id: params._id }));
+      }
       onCompleteSubmit();
     } catch {
       actions.setSubmitting(false);

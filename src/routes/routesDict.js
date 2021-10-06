@@ -8,6 +8,7 @@ export const ROUTES_SLUGS = {
   delete: "delete",
   upload: "upload",
   view: "view",
+  detail: "detail",
   /**
    * General routes slugs
    */
@@ -186,50 +187,50 @@ export const ROUTES_DICT = {
   pregnancies: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.pregnancies}`,
   animalDetail: {
     root: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animalDetail}`,
-    detail: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animalDetail}/:_id/detail`,
-    delete: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animalDetail}/:_id/${ROUTES_SLUGS.delete}`,
+    detail: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animalDetail}/:_id/${ROUTES_SLUGS.detail}`,
+    delete: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animalDetail}/:_id/${ROUTES_SLUGS.detail}/${ROUTES_SLUGS.delete}`,
     general: {
-      update: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animalDetail}/:_id/general/${ROUTES_SLUGS.update}`,
+      update: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animalDetail}/:_id/${ROUTES_SLUGS.detail}/general/${ROUTES_SLUGS.update}`,
     },
     race: {
-      update: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animalDetail}/:_id/race/${ROUTES_SLUGS.update}`,
+      update: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animalDetail}/:_id/${ROUTES_SLUGS.detail}/race/${ROUTES_SLUGS.update}`,
     },
     birth: {
       list: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animalDetail}/:_id/birth/${ROUTES_SLUGS.list}`,
-      create: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animalDetail}/:_id/birth/${ROUTES_SLUGS.create}`,
+      create: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animalDetail}/:_id/${ROUTES_SLUGS.detail}/birth/${ROUTES_SLUGS.create}`,
     },
     calendar: {
-      update: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animalDetail}/:_id/calendar/${ROUTES_SLUGS.update}`,
+      update: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animalDetail}/:_id/${ROUTES_SLUGS.detail}/calendar/${ROUTES_SLUGS.update}`,
     },
     service: {
       list: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animalDetail}/:_id/ia/${ROUTES_SLUGS.list}`,
       ia: {
-        create: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animalDetail}/:_id/ia/${ROUTES_SLUGS.create}`,
+        create: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animalDetail}/:_id/${ROUTES_SLUGS.detail}/ia/${ROUTES_SLUGS.create}`,
       },
       transfer: {
-        create: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animalDetail}/:_id/transfer/${ROUTES_SLUGS.create}`,
+        create: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animalDetail}/:_id/${ROUTES_SLUGS.detail}/transfer/${ROUTES_SLUGS.create}`,
       },
     },
     palpation: {
       list: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animalDetail}/:_id/${ROUTES_SLUGS.palpation}/${ROUTES_SLUGS.list}`,
-      create: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animalDetail}/:_id/${ROUTES_SLUGS.palpation}/${ROUTES_SLUGS.create}`,
+      create: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animalDetail}/:_id/${ROUTES_SLUGS.detail}/${ROUTES_SLUGS.palpation}/${ROUTES_SLUGS.create}`,
     },
     other: {
-      update: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animalDetail}/:_id/other/${ROUTES_SLUGS.update}`,
+      update: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animalDetail}/:_id/${ROUTES_SLUGS.detail}/other/${ROUTES_SLUGS.update}`,
     },
     milk: {
       list: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animalDetail}/:_id/${ROUTES_SLUGS.milk}/${ROUTES_SLUGS.list}`,
-      create: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animalDetail}/:_id/${ROUTES_SLUGS.milk}/${ROUTES_SLUGS.create}`,
+      create: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animalDetail}/:_id/${ROUTES_SLUGS.detail}/${ROUTES_SLUGS.milk}/${ROUTES_SLUGS.create}`,
     },
     weight: {
       list: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animalDetail}/:_id/${ROUTES_SLUGS.weight}/${ROUTES_SLUGS.list}`,
-      create: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animalDetail}/:_id/${ROUTES_SLUGS.weight}/${ROUTES_SLUGS.create}`,
+      create: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animalDetail}/:_id/${ROUTES_SLUGS.detail}/${ROUTES_SLUGS.weight}/${ROUTES_SLUGS.create}`,
     },
     image: {
-      upload: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animalDetail}/:_id/image/${ROUTES_SLUGS.upload}`,
+      upload: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animalDetail}/:_id/${ROUTES_SLUGS.detail}/image/${ROUTES_SLUGS.upload}`,
     },
     qr: {
-      view: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animalDetail}/:_id/qr/${ROUTES_SLUGS.view}`,
+      view: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animalDetail}/:_id/${ROUTES_SLUGS.detail}/qr/${ROUTES_SLUGS.view}`,
     },
   },
   pedigree: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animalDetail}/:animalId/${ROUTES_SLUGS.pedigree}`,

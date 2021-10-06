@@ -65,7 +65,9 @@ const MilkForm = ({
       if (type === "update") {
         await dispatch(MilkActions.update(values));
       }
-
+      if (hideAnimal) {
+        await dispatch(AnimalActions.get({ _id: params._id }));
+      }
       onCompleteSubmit();
     } catch {
       actions.setSubmitting(false);

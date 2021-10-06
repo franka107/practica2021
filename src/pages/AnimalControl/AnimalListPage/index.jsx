@@ -58,7 +58,7 @@ const AnimalPageList = ({ children, setTitle, setChipList }) => {
           <TableButtons
             onClickEyeButton={() => {
               history.push(
-                generatePath(ROUTES_DICT.animalDetail.root, {
+                generatePath(ROUTES_DICT.animalDetail.detail, {
                   ...params,
                   _id: listAnimal[dataIndex]._id,
                 })

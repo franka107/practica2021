@@ -69,7 +69,9 @@ function WeightForm({
       if (type === "update") {
         await dispatch(WeightActions.update(values));
       }
-
+      if (hideAnimal) {
+        await dispatch(AnimalActions.get({ _id: params._id }));
+      }
       onCompleteSubmit();
     } catch {
       actions.setSubmitting(false);
