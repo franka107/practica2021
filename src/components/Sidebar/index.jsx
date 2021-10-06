@@ -47,6 +47,12 @@ function Sidebar({ openDrawer, setOpenDrawer, options }) {
 
   useEffect(() => {
     verifyLocation();
+    if (localStorage.getItem("reproductiveManagement")) {
+      localStorage.setItem(
+        "reproductiveManagement",
+        currentAgribusiness.reproductiveManagement
+      );
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

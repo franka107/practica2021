@@ -1,6 +1,7 @@
 import { ROUTES_DICT } from "../../routes/routesDict";
 import { format } from "date-fns";
 import { typeServicesTest, stateOptions } from "../../constants";
+import { values } from "lodash-es";
 
 export const columnsToMuiTable = [
   {
@@ -50,7 +51,22 @@ export const columnsToMuiTable = [
   },
 ];
 
-export const serviceRouteOptions = (location) => [
+export const serviceRouteOptions = () => {
+  const validator = localStorage.getItem("reproductiveManagement");
+  if (validator !== "DM_&_AI_&_ET") {
+    list.splice(2, 1);
+    return list;
+  } else {
+    const newObject = {
+      key: "Agregar Tranferencia de embriones",
+      path: ROUTES_DICT.service.createET,
+    };
+    list.splice(2, 1, newObject);
+    return list;
+  }
+};
+
+export const list = [
   {
     key: "Inicio",
     path: ROUTES_DICT.service.list,

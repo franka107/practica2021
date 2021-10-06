@@ -2,7 +2,7 @@ import { format } from "date-fns";
 import { stateOptions } from "../../../constants";
 import { getAgeInYears } from "../../../helpers/convertDate";
 
-export const columns = [
+export const columns = (list) => [
   {
     label: "Identificación de animal",
     name: "animal",
@@ -66,9 +66,17 @@ export const columns = [
   },
   {
     label: "Produción lechera",
-    name: "milkProduction",
+    name: "_id",
     options: {
       filter: false,
+      customBodyRender: (value) => {
+        const r = list.find((e) => e._id === value);
+        return (
+          parseFloat(r.firstSample + r.secondSample + r.thirdSample).toFixed(
+            2
+          ) + ""
+        );
+      },
     },
   },
   {

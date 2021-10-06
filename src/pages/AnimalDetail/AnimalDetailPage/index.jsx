@@ -4,7 +4,7 @@ import { Checkbox } from "@material-ui/core";
 import { Divider } from "@material-ui/core";
 import { IconButton } from "@material-ui/core";
 import { Grid } from "@material-ui/core";
-import { CameraAlt, Edit, ViewList, Add } from "@material-ui/icons";
+import { CameraAlt, Edit, ViewList, Add, Visibility } from "@material-ui/icons";
 import clsx from "clsx";
 // import HighchartsReact from "highcharts-react-official";
 import { useState, useEffect } from "react";
@@ -344,13 +344,13 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
                         </Grid>
                       </Grid>
                       <div className={classes.borderLinearProgress}>
-                        {currentAnimal && currentAnimal.gender === "FEMALE" && (
+                        {/* {currentAnimal && currentAnimal.gender === "FEMALE" && (
                           <BorderLinearProgress
                             variant="determinate"
                             value="50"
                             about="asd"
                           ></BorderLinearProgress>
-                        )}
+                        )} */}
                       </div>
                       <div className={classes.cardHeader}>
                         <Typography
@@ -470,40 +470,42 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
                             className={classes.generalFeature}
                             xs={12}
                           >
-                            {currentAnimal && currentAnimal.fatherId !== null && (
-                              <>
-                                <Grid item xs={5}>
-                                  <Typography className={classes.cardFeature}>
-                                    Padre
-                                  </Typography>
-                                </Grid>
-                                <Grid item xs={6}>
-                                  <Typography>
-                                    {currentAnimal && currentAnimal.father
-                                      ? currentAnimal.father.identifier
-                                      : "Sin información"}
-                                  </Typography>
-                                </Grid>
-                                <Grid item xs={1}>
-                                  <IconButton
-                                    size="small"
-                                    onClick={() => {
-                                      history.push(
-                                        generatePath(
-                                          ROUTES_DICT.animalDetail.root,
-                                          {
-                                            ...params,
-                                            _id: currentAnimal.fatherId,
-                                          }
-                                        )
-                                      );
-                                    }}
-                                  >
-                                    <Edit fontSize="small"></Edit>
-                                  </IconButton>
-                                </Grid>
-                              </>
-                            )}
+                            {currentAnimal &&
+                              currentAnimal.fatherId !== null &&
+                              currentAnimal.fatherId !== "" && (
+                                <>
+                                  <Grid item xs={5}>
+                                    <Typography className={classes.cardFeature}>
+                                      Padre
+                                    </Typography>
+                                  </Grid>
+                                  <Grid item xs={7}>
+                                    <Typography>
+                                      {currentAnimal && currentAnimal.father
+                                        ? currentAnimal.father.identifier
+                                        : "Sin información"}
+                                      <IconButton
+                                        className={classes.cardEditIcon}
+                                        style={{ marginLeft: "1rem" }}
+                                        size="small"
+                                        onClick={() => {
+                                          history.push(
+                                            generatePath(
+                                              ROUTES_DICT.animalDetail.detail,
+                                              {
+                                                ...params,
+                                                _id: currentAnimal.fatherId,
+                                              }
+                                            )
+                                          );
+                                        }}
+                                      >
+                                        <Visibility fontSize="small"></Visibility>
+                                      </IconButton>
+                                    </Typography>
+                                  </Grid>
+                                </>
+                              )}
                             {currentAnimal && currentAnimal.fatherRef !== null && (
                               <>
                                 <Grid item xs={5}>
@@ -526,40 +528,42 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
                             className={classes.generalFeature}
                             xs={12}
                           >
-                            {currentAnimal && currentAnimal.motherId !== null && (
-                              <>
-                                <Grid item xs={5}>
-                                  <Typography className={classes.cardFeature}>
-                                    Madre
-                                  </Typography>
-                                </Grid>
-                                <Grid item xs={6}>
-                                  <Typography>
-                                    {currentAnimal && currentAnimal.mother
-                                      ? currentAnimal.mother.identifier
-                                      : "Sin información"}
-                                  </Typography>
-                                </Grid>
-                                <Grid item xs={1}>
-                                  <IconButton
-                                    size="small"
-                                    onClick={() => {
-                                      history.push(
-                                        generatePath(
-                                          ROUTES_DICT.animalDetail.root,
-                                          {
-                                            ...params,
-                                            _id: currentAnimal.motherId,
-                                          }
-                                        )
-                                      );
-                                    }}
-                                  >
-                                    <Edit fontSize="small"></Edit>
-                                  </IconButton>
-                                </Grid>
-                              </>
-                            )}
+                            {currentAnimal &&
+                              currentAnimal.motherId !== null &&
+                              currentAnimal.motherId !== "" && (
+                                <>
+                                  <Grid item xs={5}>
+                                    <Typography className={classes.cardFeature}>
+                                      Madre
+                                    </Typography>
+                                  </Grid>
+                                  <Grid item xs={7}>
+                                    <Typography>
+                                      {currentAnimal && currentAnimal.mother
+                                        ? currentAnimal.mother.identifier
+                                        : "Sin información"}
+                                      <IconButton
+                                        className={classes.cardEditIcon}
+                                        style={{ marginLeft: "1rem" }}
+                                        size="small"
+                                        onClick={() => {
+                                          history.push(
+                                            generatePath(
+                                              ROUTES_DICT.animalDetail.detail,
+                                              {
+                                                ...params,
+                                                _id: currentAnimal.motherId,
+                                              }
+                                            )
+                                          );
+                                        }}
+                                      >
+                                        <Visibility fontSize="small"></Visibility>
+                                      </IconButton>
+                                    </Typography>
+                                  </Grid>
+                                </>
+                              )}
                             {currentAnimal && currentAnimal.motherRef !== null && (
                               <>
                                 <Grid item xs={5}>
@@ -569,7 +573,9 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
                                 </Grid>
                                 <Grid item xs={7}>
                                   <Typography>
-                                    {currentAnimal && currentAnimal.motherRef
+                                    {currentAnimal &&
+                                    currentAnimal.motherRef &&
+                                    currentAnimal.motherRef !== ""
                                       ? currentAnimal.motherRef
                                       : "Sin información"}
                                   </Typography>
@@ -701,23 +707,29 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
                                       <ViewList fontSize="small"></ViewList>
                                     </IconButton>
                                   )}
-                                <IconButton
-                                  className={classes.cardEditIcon}
-                                  size="small"
-                                  onClick={() => {
-                                    history.push(
-                                      generatePath(
-                                        ROUTES_DICT.animalDetail.birth.create,
-                                        {
-                                          ...params,
-                                          _id: params._id,
-                                        }
-                                      )
-                                    );
-                                  }}
-                                >
-                                  <Add fontSize="small"></Add>
-                                </IconButton>
+                                {currentAnimal &&
+                                  currentAnimal.reproductiveStatus &&
+                                  currentAnimal.reproductiveStatus ===
+                                    "PREGNANT" && (
+                                    <IconButton
+                                      className={classes.cardEditIcon}
+                                      size="small"
+                                      onClick={() => {
+                                        history.push(
+                                          generatePath(
+                                            ROUTES_DICT.animalDetail.birth
+                                              .create,
+                                            {
+                                              ...params,
+                                              _id: params._id,
+                                            }
+                                          )
+                                        );
+                                      }}
+                                    >
+                                      <Add fontSize="small"></Add>
+                                    </IconButton>
+                                  )}
                               </div>
                             </div>
                             <Divider></Divider>
@@ -1450,23 +1462,43 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
                             >
                               Pesos
                             </Typography>
-                            <IconButton
-                              className={classes.cardEditIcon}
-                              size="small"
-                              onClick={() => {
-                                history.push(
-                                  generatePath(
-                                    ROUTES_DICT.animalDetail.weight.update,
-                                    {
-                                      ...params,
-                                      _id: params._id,
-                                    }
-                                  )
-                                );
-                              }}
-                            >
-                              <Edit fontSize="small"></Edit>
-                            </IconButton>
+                            <div>
+                              <IconButton
+                                className={classes.cardEditIcon}
+                                size="small"
+                                style={{ marginRight: "0.5rem" }}
+                                onClick={() => {
+                                  history.push(
+                                    generatePath(
+                                      ROUTES_DICT.animalDetail.weight.list,
+                                      {
+                                        ...params,
+                                        _id: params._id,
+                                      }
+                                    )
+                                  );
+                                }}
+                              >
+                                <ViewList fontSize="small"></ViewList>
+                              </IconButton>
+                              <IconButton
+                                className={classes.cardEditIcon}
+                                size="small"
+                                onClick={() => {
+                                  history.push(
+                                    generatePath(
+                                      ROUTES_DICT.animalDetail.weight.create,
+                                      {
+                                        ...params,
+                                        _id: params._id,
+                                      }
+                                    )
+                                  );
+                                }}
+                              >
+                                <Add fontSize="small"></Add>
+                              </IconButton>
+                            </div>
                           </div>
                           <Divider className={classes.divider}></Divider>
                           <div className="">

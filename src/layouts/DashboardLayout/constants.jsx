@@ -16,33 +16,18 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { ROUTES_DICT, ROUTES_SLUGS } from "../../routes/routesDict";
 
-export const menuList = (current) => {
-  if (current && current.reproductiveManagement === "DM_&_AI_&_ET") {
-    const newObject = {
-      id: "servicios",
-      title: "Servicios",
-      img: Rec11,
-      submenu: [
-        {
-          id: "inicio",
-          title: "Inicio",
-          link: ROUTES_DICT.service.list,
-        },
-        {
-          id: "agregar",
-          title: "Agregar I.A / M.N.",
-          link: ROUTES_DICT.service.createIAMN,
-        },
-        {
-          id: "agregar-transferencias",
-          title: "Agregar transf. embriones",
-          link: ROUTES_DICT.service.createET,
-        },
-      ],
-    };
-    list[2].submenu.splice(5, 1, newObject);
+export const menuList = () => {
+  const validator = localStorage.getItem("reproductiveManagement");
+  if (validator !== "DM_&_AI_&_ET") {
+    list[2].submenu[5].submenu.splice(2, 1);
     return list;
   } else {
+    const newObject = {
+      id: "agregar-transferencias",
+      title: "Agregar transf. embriones",
+      link: ROUTES_DICT.service.createET,
+    };
+    list[2].submenu[5].submenu.splice(2, 1, newObject);
     return list;
   }
 };
@@ -155,11 +140,11 @@ export const list = [
             title: "Agregar I.A / M.N.",
             link: ROUTES_DICT.service.createIAMN,
           },
-          // {
-          //   id: "agregar-transferencias",
-          //   title: "Agregar transf. embriones",
-          //   link: ROUTES_DICT.service.createET,
-          // },
+          {
+            id: "agregar-transferencias",
+            title: "Agregar transf. embriones",
+            link: ROUTES_DICT.service.createET,
+          },
         ],
       },
       {
