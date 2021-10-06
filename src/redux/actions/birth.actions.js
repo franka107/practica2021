@@ -10,8 +10,9 @@ const list = () => async (dispatch, getState) => {
   dispatch({ type: ACTION_TYPES.BIRTH.RETRIEVE_LIST, payload: response });
 };
 
-const create = (data, animal) => async (dispatch, getState) => {
+const create = (data) => async (dispatch, getState) => {
   const agribusiness = getState().agribusiness.current;
+  const animal = getState().animal.list.find((e) => e._id === data.animalId);
 
   await IdeasCloudApi.fetch(
     "birthControlCreate",
