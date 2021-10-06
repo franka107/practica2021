@@ -35,6 +35,9 @@ const MilkForm = ({
     (state) => state.animal.list.filter((e) => e.gender === "FEMALE"),
     shallowEqual
   );
+  const currentAgribusiness = useSelector(
+    (state) => state.agribusiness.current
+  );
 
   useEffect(() => {
     if (!femaleAnimals || femaleAnimals.length === 0) {
@@ -128,7 +131,12 @@ const MilkForm = ({
               name="firstSample"
               onChange={props.handleChange}
               endAdornment={
-                <InputAdornment position="start">Kg</InputAdornment>
+                <InputAdornment position="start">
+                  {currentAgribusiness &&
+                  currentAgribusiness.milkUnit === "LITERS"
+                    ? "L."
+                    : "Kg."}
+                </InputAdornment>
               }
               type="number"
               xs={12}
@@ -139,7 +147,12 @@ const MilkForm = ({
               name="secondSample"
               onChange={props.handleChange}
               endAdornment={
-                <InputAdornment position="start">Kg</InputAdornment>
+                <InputAdornment position="start">
+                  {currentAgribusiness &&
+                  currentAgribusiness.milkUnit === "LITERS"
+                    ? "L."
+                    : "Kg."}
+                </InputAdornment>
               }
               type="number"
               xs={12}
@@ -151,7 +164,12 @@ const MilkForm = ({
               type="number"
               onChange={props.handleChange}
               endAdornment={
-                <InputAdornment position="start">Kg</InputAdornment>
+                <InputAdornment position="start">
+                  {currentAgribusiness &&
+                  currentAgribusiness.milkUnit === "LITERS"
+                    ? "L."
+                    : "Kg."}
+                </InputAdornment>
               }
               xs={12}
               sm={4}
