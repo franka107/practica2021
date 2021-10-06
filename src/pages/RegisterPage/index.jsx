@@ -1,4 +1,4 @@
-import React from "react";
+// emport React from "react";
 import { Facebook } from "@material-ui/icons";
 import {
   Button,
@@ -14,11 +14,12 @@ import RegisterCard from "../../components/RegisterCard";
 import { Formik } from "formik";
 import * as yup from "yup";
 import TextFieldFormik from "../../components/Inputs/TextFieldFormik";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import googleBtn from "../../assets/images/google.png";
 import { useDispatch } from "react-redux";
 import { useState } from "react";
 import PasswordValidation from "../../components/PasswordValidation";
+import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props";
 import PasswordFieldFormik from "../../components/Inputs/PasswordFieldFormik";
 import UserType from "./UserType";
 import { ROUTES_DICT } from "../../routes/routesDict";
@@ -27,6 +28,7 @@ import TermsAndConditions from "./TermsAndConditions";
 import authService from "../../services/auth.service";
 import { useSelector } from "react-redux";
 import uiActions from "../../redux/actions/ui.actions";
+import { useGoogleLogin } from "react-google-login";
 
 function RegisterPage(props) {
   const classes = useStyles();
@@ -43,6 +45,31 @@ function RegisterPage(props) {
     termsAndConditions: false,
   };
 
+  const onSuccess = (res) => {
+    console.log(res);
+    const values = {
+      email: res.profileObj.email,
+      firstName: res.profileObj.givenName,
+      lastName: res.profileObj.familyName,
+    };
+    dispatch(AuthActions.loginWithGoogle(values)).then((farm) => {
+      if (farm) {
+        history.push(ROUTES_DICT.animal.list);
+      } else {
+        history.push(ROUTES_DICT.setup);
+      }
+    });
+  };
+  const clientId = process.env.REACT_APP_GOOGLE_ENV;
+
+  const onFailure = (res) => {};
+
+  const { signIn } = useGoogleLogin({
+    onSuccess,
+    onFailure,
+    clientId,
+    accessType: "offline",
+  });
   const validationSchema = yup.object({
     email: yup
       .string("Ingresa tu correo eletrónico.")
@@ -72,6 +99,22 @@ function RegisterPage(props) {
       .boolean("Evalua los terminos y condiciones")
       .required("Este campo es obligatorio"),
   });
+  const history = useHistory();
+
+  const onResponseFB = (res) => {
+    const values = {
+      email: res.email,
+      firstName: res.name,
+      lastName: "",
+    };
+    dispatch(AuthActions.loginWithGoogle(values)).then((farm) => {
+      if (farm) {
+        history.push(ROUTES_DICT.animal.list);
+      } else {
+        history.push(ROUTES_DICT.setup);
+      }
+    });
+  };
 
   const currentUser = useSelector((state) => state.auth.current);
 
@@ -112,6 +155,9 @@ function RegisterPage(props) {
             <Grid item xs={12}>
               <Button
                 className={classes.googleBtn}
+                onClick={() => {
+                  signIn();
+                }}
                 startIcon={<img src={googleBtn} alt={"Google"} />}
               >
                 <Typography align={"center"} className={classes.googleBtnText}>
@@ -120,14 +166,24 @@ function RegisterPage(props) {
               </Button>
             </Grid>
             <Grid item xs={12}>
-              <Button
-                className={classes.googleBtn}
-                startIcon={<Facebook className={classes.fbIcon} />}
-              >
-                <Typography align={"center"} className={classes.googleBtnText}>
-                  Iniciar sesión con Facebook
-                </Typography>
-              </Button>
+              <FacebookLogin
+                appId="1286554848458675"
+                fields="name,email,picture"
+                callback={onResponseFB}
+                render={(renderProps) => (
+                  <Button
+                    className={classes.googleBtn}
+                    startIcon={<Facebook className={classes.fbIcon} />}
+                  >
+                    <Typography
+                      align={"center"}
+                      className={classes.googleBtnText}
+                    >
+                      Iniciar sesión con Facebook
+                    </Typography>
+                  </Button>
+                )}
+              />
             </Grid>
             <Grid item className={classes.titleContainer}>
               <Typography
