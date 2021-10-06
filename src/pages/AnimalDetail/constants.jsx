@@ -12,14 +12,20 @@ export const animalDetailChipOptions = (location, params) => [
   {
     key: "Información general",
     path: {
-      pathname: ROUTES_DICT.animalDetail.root,
+      pathname: generatePath(ROUTES_DICT.animalDetail.root, {
+        ...params,
+        _id: params._id,
+      }),
       background: location,
     },
   },
   {
     key: "Pedigree",
     path: {
-      pathname: ROUTES_DICT.birth.list,
+      pathname: generatePath(ROUTES_DICT.animalDetail.pedigree, {
+        ...params,
+        _id: params._id,
+      }),
       background: location,
     },
   },

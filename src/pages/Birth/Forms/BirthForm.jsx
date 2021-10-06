@@ -140,6 +140,7 @@ const BirthForm = ({
               color: values.firstChildColor,
               birthDate: values.birthDate,
               herdDate: values.birthDate,
+              motherId: values.animalId,
             })
           );
           childs.push(firstChild);
@@ -148,12 +149,13 @@ const BirthForm = ({
           if (birthTypeOptions[values.birthType] === birthTypeOptions.TWIN) {
             const secondChild = await dispatch(
               AnimalActions.create({
-                identifier: values.firstChildIdentifier,
-                name: values.firstChildName,
-                gender: values.firstChildGender,
-                color: values.firstChildColor,
+                identifier: values.secondChildIdentifier,
+                name: values.secondChildName,
+                gender: values.secondChildGender,
+                color: values.secondChildColor,
                 birthDate: values.birthDate,
                 herdDate: values.birthDate,
+                motherId: values.animalId,
               })
             );
             childs.push(secondChild);

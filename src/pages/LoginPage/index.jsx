@@ -61,7 +61,6 @@ function LoginPage(props) {
   });
 
   const onResponseFB = (res) => {
-    console.log(res);
     const values = {
       email: res.email,
       firstName: res.name,

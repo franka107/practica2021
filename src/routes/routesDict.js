@@ -186,6 +186,7 @@ export const ROUTES_DICT = {
   emailVerified: `/${ROUTES_SLUGS.emailVerified}`,
   pregnancies: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.pregnancies}`,
   animalDetail: {
+    pedigree: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animalDetail}/:_id/${ROUTES_SLUGS.pedigree}`,
     root: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animalDetail}`,
     detail: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animalDetail}/:_id/${ROUTES_SLUGS.detail}`,
     delete: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animalDetail}/:_id/${ROUTES_SLUGS.detail}/${ROUTES_SLUGS.delete}`,
@@ -233,7 +234,6 @@ export const ROUTES_DICT = {
       view: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animalDetail}/:_id/${ROUTES_SLUGS.detail}/qr/${ROUTES_SLUGS.view}`,
     },
   },
-  pedigree: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animalDetail}/:animalId/${ROUTES_SLUGS.pedigree}`,
   recoverPassword: `/${ROUTES_SLUGS.recoverPassword}`,
   setup: `/${ROUTES_SLUGS.setup}`,
 };

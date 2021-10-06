@@ -39,7 +39,7 @@ export default function PedigreePage() {
       dispatch(AnimalActions.list(currentAgribusiness._id));
     }
     if (!currentAnimal) {
-      dispatch(AnimalActions.listById({ _id: params.animalId }));
+      dispatch(AnimalActions.get({ _id: params._id }));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, currentAnimal]);
@@ -83,36 +83,6 @@ export default function PedigreePage() {
 
   return (
     <Grid container xs={12}>
-      <Typography variant={"h6"}>Control Ganadero</Typography>
-      <Grid container spacing={2} className={classes.optionContainer}>
-        <Grid item>
-          <Chip
-            className={clsx(classes.option)}
-            onClick={() => {
-              history.push(ROUTES_DICT.animal.list);
-            }}
-            label="Inicio"
-          ></Chip>
-        </Grid>
-        <Grid item>
-          <Chip
-            className={clsx(classes.option)}
-            label="Información General"
-            onClick={() => {
-              history.push(ROUTES_DICT.animalDetail + `/${params.animalId}`);
-            }}
-          ></Chip>
-        </Grid>
-        <Grid item>
-          <Chip
-            className={clsx(classes.option, classes.active)}
-            onClick={() => {
-              history.push(ROUTES_DICT.pedigree);
-            }}
-            label="Pedigree"
-          ></Chip>
-        </Grid>
-      </Grid>
       <Grid container spacing={2}>
         <Grid item xs={12} lg={3}>
           <Paper elevation={4} className={classes.card}>

@@ -176,7 +176,6 @@ const GeneralForm = ({
                 }))}
                 label="Estado"
                 name="reproductiveStatus"
-                disabled
                 lg={6}
                 sm={6}
                 xs={12}

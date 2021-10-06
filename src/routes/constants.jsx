@@ -606,14 +606,7 @@ export const RENDER_ROUTES = [
       },
     ],
   },
-  {
-    path: ROUTES_DICT.pedigree,
-    key: "Control Animal",
-    exact: true,
-    component: PedigreePage,
-    layout: DashboardLayout,
-    type: ROUTE_TYPES.private,
-  },
+
   // {
   //   path: ROUTES_DICT.animalDetail + "/:animalId",
   //   key: "Detalles de animal",
@@ -634,6 +627,13 @@ export const RENDER_ROUTES = [
     layout: DashboardLayout,
     type: ROUTE_TYPES.private,
     routes: [
+      {
+        path: ROUTES_DICT.animalDetail.pedigree,
+        key: "Control Animal",
+        exact: true,
+        component: PedigreePage,
+        type: ROUTE_TYPES.private,
+      },
       {
         path: ROUTES_DICT.animalDetail.detail,
         key: "Detalle de animal",
