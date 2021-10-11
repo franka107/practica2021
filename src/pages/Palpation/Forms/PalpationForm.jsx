@@ -71,6 +71,14 @@ const PalpationForm = ({
       .string("Ingresa la identificacion del animal.")
       .required("Este campo es requerido.")
       .nullable(),
+    touchDate: yup
+      .date("Ingresa una fecha correcta.")
+      .max(new Date(), "No puedes poner una fecha futura")
+      .nullable(),
+    pregnancyDate: yup
+      .date("Ingresa una fecha correcta.")
+      .max(new Date(), "No puedes poner una fecha futura")
+      .nullable(),
     state: yup.string().required("Este campo es requerido"),
   });
 
@@ -81,7 +89,8 @@ const PalpationForm = ({
       }
       if (type === "create") {
         const animal = femaleAnimals.find((e) => e._id === values.animalId);
-        await dispatch(PalpationActions.create(values, animal));
+        const user = listCollaborator.find((e) => e._id === values.userId);
+        await dispatch(PalpationActions.create(values, animal, user));
       }
       if (type === "update") {
         await dispatch(PalpationActions.update(values));

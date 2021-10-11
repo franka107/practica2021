@@ -39,7 +39,7 @@ const PalpationListPage = ({ children, setTitle, setChipList }) => {
       dispatch(PalpationActions.list());
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [dispatch, listPalpationControl]);
 
   const options = {
     selectableRows: "none",

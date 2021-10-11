@@ -150,15 +150,10 @@ export const estadiosOptions = [
 ];
 
 export const qualityEmbryoOptions = [
-  { _id: 0, name: "0" },
   { _id: 1, name: "1" },
   { _id: 2, name: "2" },
   { _id: 3, name: "3" },
   { _id: 4, name: "4" },
-  { _id: 5, name: "5" },
-  { _id: 6, name: "6" },
-  { _id: 7, name: "7" },
-  { _id: 8, name: "8" },
 ];
 
 export const conditionOptions = [

@@ -65,7 +65,11 @@ function AnimalForm({
     A: {},
   });
   const dispatch = useDispatch();
-  const listRaces = useSelector((state) => state.race.list);
+  const listRaces = useSelector((state) =>
+    state.race.list.sort((a, b) =>
+      a.name > b.name ? 1 : a.name < b.name ? -1 : 0
+    )
+  );
   const currentAgribusiness = useSelector(
     (state) => state.agribusiness.current
   );

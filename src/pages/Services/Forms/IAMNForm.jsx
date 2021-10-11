@@ -20,6 +20,8 @@ import { sexOptions } from "../../../constants";
 import _ from "lodash";
 import CollaboratorActions from "../../../redux/actions/collaborator.actions";
 import { useParams } from "react-router";
+import geneticStockActions from "../../../redux/actions/geneticStock.actions";
+import MovementActions from "../../../redux/actions/movement.actions";
 
 const defaultInitValues = {
   agribusinessId: "",
@@ -189,6 +191,8 @@ const IAMNForm = ({
       if (hideAnimal) {
         await dispatch(AnimalActions.get({ _id: params._id }));
       }
+      await dispatch(geneticStockActions.listGeneticStockByAgribusiness());
+      await dispatch(MovementActions.list());
       onCompleteSubmit();
     } catch {
       actions.setSubmitting(false);
