@@ -70,6 +70,128 @@ const BirthForm = ({
     shallowEqual
   );
 
+  const calculateRaces = async (motherId, fatherId) => {
+    const mother = await IdeasCloudApi.fetch("animalGetById", {
+      _id: motherId,
+    });
+    const father = await IdeasCloudApi.fetch("animalGetById", {
+      _id: fatherId,
+    });
+
+    console.log(mother);
+    const fatherRaces = Object.keys(father)
+      .filter(
+        (key) =>
+          (key.includes("race1Id") ||
+            key.includes("race2Id") ||
+            key.includes("race3Id") ||
+            key.includes("race4Id")) &&
+          !!father[key]
+      )
+      .map((key) => {
+        return {
+          raceId: father[key],
+          percentageRace: father[`percentageRace${key.slice(-3, -2)}`],
+        };
+      });
+
+    const motherRaces = Object.keys(mother)
+      .filter(
+        (key) =>
+          (key.includes("race1Id") ||
+            key.includes("race2Id") ||
+            key.includes("race3Id") ||
+            key.includes("race4Id")) &&
+          !!mother[key]
+      )
+      .map((key) => {
+        return {
+          raceId: mother[key],
+          percentageRace: mother[`percentageRace${key.slice(-3, -2)}`],
+        };
+      });
+
+    const fullRaces = motherRaces.concat(fatherRaces);
+
+    const countRace = (race) => {
+      let count = 0;
+      fullRaces.map((e) => {
+        if (e.raceId === race.raceId) {
+          count++;
+        }
+      });
+      return count;
+    };
+
+    let childRaces = [];
+    for (const raceObject of fullRaces) {
+      if (!Boolean(childRaces.find((e) => e.raceId === raceObject.raceId))) {
+        if (countRace(raceObject) !== 1) {
+          const coincidences = fullRaces.filter(
+            (e) => e.raceId === raceObject.raceId
+          );
+          const percentageRace =
+            Number(
+              coincidences[0]?.percentageRace + coincidences[1]?.percentageRace
+            ) / 2;
+          childRaces.push({
+            raceId: raceObject.raceId,
+            percentageRace,
+          });
+        } else {
+          childRaces.push({
+            raceId: raceObject.raceId,
+            percentageRace: Number(raceObject?.percentageRace / 2),
+          });
+        }
+      }
+    }
+
+    const result = {};
+
+    console.log(childRaces);
+
+    childRaces.map((raceObject, i) => {
+      result[`race${i + 1}Id`] = raceObject.raceId;
+      result[`percentageRace${i + 1}`] = raceObject.percentageRace;
+    });
+
+    console.log(result);
+    return result;
+
+    //const childRaces = fullRaces.map((raceObject) => {
+    //  const raceObjectFather = fatherRaces.find(
+    //    (e) => e.raceId === raceObject.raceId
+    //  );
+    //  const percentage =
+    //    (raceObject.percentageRace + Number(raceObjectFather?.percentageRace)) /
+    //    2;
+    //  return {
+    //    raceId: raceObject.raceId,
+    //    percentageRace: percentage,
+    //  };
+    //});
+
+    //const averageRaces = motherRaces.map( raceObject => {
+    //  motherRaces.find( e => e.raceId === raceObject.raceId)
+    //})
+    //[{ raceId: 'asdsaf', percentageRace: 23}]
+
+    //const motherRaces = {
+    //  percentageRace1: mother.percentageRace1 / 2,
+    //  percentageRace2: mother.percentageRace2 / 2,
+    //  percentageRace3: mother.percentageRace3 / 2,
+    //  percentageRace4: mother.percentageRace4 / 2,
+    //};
+
+    //const fatherRaces = {
+    //  percentageRace1: father.percentageRace1 / 2,
+    //  percentageRace2: father.percentageRace2 / 2,
+    //  percentageRace3: father.percentageRace3 / 2,
+    //  percentageRace4: father.percentageRace4 / 2,
+    //};
+  };
+
   const validationSchema = () =>
     yup.lazy((values) =>
       yup.object({
@@ -132,23 +254,53 @@ const BirthForm = ({
           birthTypeOptions[values.birthType] === birthTypeOptions.SIMPLE ||
           birthTypeOptions[values.birthType] === birthTypeOptions.TWIN
         ) {
-          const firstChild = await dispatch(
-            AnimalActions.create({
-              identifier: values.firstChildIdentifier,
-              name: values.firstChildName,
-              gender: values.firstChildGender,
-              color: values.firstChildColor,
-              birthDate: new Date(),
-              herdDate: new Date(),
-              motherId: values.animalId,
-              fatherId: maleAnimals.find(
-                (e) =>
-                  e._id ===
-                  femaleAnimals.find((e) => e._id === values.animalId)
-                    ?.activeService.reproductorAnimalId
-              )?._id,
-            })
+          let dataChild = {
+            identifier: values.firstChildIdentifier,
+            name: values.firstChildName,
+            gender: values.firstChildGender,
+            color: values.firstChildColor,
+            birthDate: new Date(),
+            herdDate: new Date(),
+            motherId: values.animalId,
+            fatherId: maleAnimals.find(
+              (e) =>
+                e._id ===
+                femaleAnimals.find((e) => e._id === values.animalId)
+                  ?.activeService.reproductorAnimalId
+            )?._id,
+          };
+
+          console.log(
+            femaleAnimals.find((e) => e._id === values.animalId)?.activeService
+              .reproductorAnimalId
           );
+
+          if (
+            femaleAnimals.find((e) => e._id === values.animalId)?.activeService
+              .reproductorAnimalId
+          ) {
+            dataChild = {
+              ...dataChild,
+              ...(await calculateRaces(
+                values.animalId,
+
+                femaleAnimals.find((e) => e._id === values.animalId)
+                  ?.activeService.reproductorAnimalId
+              )),
+            };
+            console.log("datachillll");
+            console.log(dataChild);
+            console.log("calculateRaces");
+            console.log(
+              await calculateRaces(
+                values.animalId,
+
+                femaleAnimals.find((e) => e._id === values.animalId)
+                  ?.activeService.reproductorAnimalId
+              )
+            );
+          }
+          const firstChild = await dispatch(AnimalActions.create(dataChild));
           childs.push(firstChild);
           values.children.push(firstChild._id);
           values.child1Id = firstChild._id;

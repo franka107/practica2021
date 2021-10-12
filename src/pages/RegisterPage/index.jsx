@@ -39,8 +39,8 @@ function RegisterPage(props) {
   const initValues = {
     firstName: "",
     lastName: "",
-    email: "",
-    password: "",
+    emailRegister: "",
+    passwordRegister: "",
     sendInformation: false,
     termsAndConditions: false,
   };
@@ -71,11 +71,11 @@ function RegisterPage(props) {
     accessType: "offline",
   });
   const validationSchema = yup.object({
-    email: yup
+    emailRegister: yup
       .string("Ingresa tu correo eletrónico.")
       .email("Ingrese un correo válido.")
       .required("El correo electrónico es requerido."),
-    password: yup
+    passwordRegister: yup
       .string("Ingresa tu contraseña")
       .min(8, "La contraseña debe tener un mínimo de 8 caracteres.")
       .matches(
@@ -122,6 +122,9 @@ function RegisterPage(props) {
     dispatch(
       AuthActions.register({
         ...values,
+        email: values.emailRegister,
+        password: values.passwordRegister,
+
         termsAndConditionsAcceptedOn: new Date(),
         sendInformationAcceptedOn: new Date(),
       })
@@ -294,19 +297,19 @@ function RegisterPage(props) {
           </Grid>
           */}
           <TextFieldFormik
-            name="email"
+            name="emailRegister"
             type="text"
             label="Correo electrónico"
             onChange={handleChange}
             xs={12}
           ></TextFieldFormik>
           <PasswordFieldFormik
-            name="password"
+            name="passwordRegister"
             label="Contraseña"
             onChange={handleChange}
             xs={12}
           ></PasswordFieldFormik>
-          <PasswordValidation value={values.password} />
+          <PasswordValidation value={values.passwordRegister} />
           <Grid item xs={12}>
             <FormControlLabel
               control={
