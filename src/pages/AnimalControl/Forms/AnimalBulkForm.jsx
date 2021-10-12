@@ -42,7 +42,8 @@ const AnimalBulkForm = ({ onClickCancelButton }) => {
   const [animalListUploadInfo, setAnimalListUploadInfo] = useState([]);
   const [isUploading, setIsUploading] = useState(false);
   const [csvListLength, setCsvListLength] = useState(0);
-
+  const [animalSucess, setAnimalSucess] = useState(0);
+  const [animalError, setAnimalError] = useState(0);
   useEffect(() => {
     if (!raceList || raceList.length === 0) {
       dispatch(raceActions.listRace());
@@ -54,7 +55,8 @@ const AnimalBulkForm = ({ onClickCancelButton }) => {
       console.log(csvFile);
       setAnimalListUploadInfo([]);
       setIsUploading(true);
-
+      setAnimalSucess(0);
+      setAnimalError(0);
       const reader = new FileReader();
       reader.onload = (e) => {
         const text = e.target.result;
@@ -80,6 +82,8 @@ const AnimalBulkForm = ({ onClickCancelButton }) => {
           );
           return dateObject;
         };
+        let errorUpload = 0;
+        let successUpload = 0;
         data.forEach(async (animal) => {
           /**
            * Validacion dinamíca de razas
@@ -130,10 +134,13 @@ const AnimalBulkForm = ({ onClickCancelButton }) => {
               };
               dispatch(WeightActions.create(weightData));
             }
+            successUpload = successUpload + 1;
+            setAnimalSucess(successUpload);
           } catch (e) {
             setAnimalListUploadInfo((oldArray) => [...oldArray, animal]);
-
-            console.log(animalListUploadInfo);
+            errorUpload = errorUpload + 1;
+            setAnimalError(errorUpload);
+            console.log("error", animalListUploadInfo, errorUpload);
           }
         });
       };
@@ -197,6 +204,7 @@ const AnimalBulkForm = ({ onClickCancelButton }) => {
         </a>{" "}
         el siguiente documento.
       </Typography>
+
       <Grid container spacing={1}>
         <Button
           component="label"
@@ -232,38 +240,63 @@ const AnimalBulkForm = ({ onClickCancelButton }) => {
         </Button>
         {fileData(csvFile)}
       </Grid>
-      <Grid container xs={12} spacing={1} className={classes.chipContainer}>
+      <Grid container item xs={12} spacing={1}>
         {isUploading && (
-          <Grid item xs={12}>
-            <LinearProgressWithLabel
-              value={(animalListUploadInfo.length / csvListLength) * 100}
-            />
-          </Grid>
+          <>
+            <Grid item xs={12}>
+              <LinearProgressWithLabel
+                value={(animalListUploadInfo.length / csvListLength) * 100}
+              />
+              {`${animalSucess}/${csvListLength} registros subidos`}
+            </Grid>
+
+            <Grid
+              container
+              item
+              xs={12}
+              spacing={1}
+              style={{ marginTop: "0.5rem" }}
+            >
+              <Typography variant={"subtitle2"}>
+                {animalError} registros no subidos
+              </Typography>
+              <Grid
+                container
+                item
+                xs={12}
+                spacing={1}
+                className={classes.chipContainer}
+              >
+                {animalListUploadInfo.map((animal, index) => (
+                  <Grid item xs={12} key={index}>
+                    {!animal?._id && (
+                      <Chip
+                        icon={
+                          animal?._id ? (
+                            <Check className={`${classes.largeChip}__icon`} />
+                          ) : (
+                            <Error className={`${classes.largeChip}__icon`} />
+                          )
+                        }
+                        className={clsx(
+                          classes.largeChip,
+                          animal?._id
+                            ? `${classes.largeChip}--success`
+                            : `${classes.largeChip}--danger`
+                        )}
+                        label={
+                          animal?._id
+                            ? `${animal.identifier}: Exitoso`
+                            : `${animal.identifier}: Error al momento de subir`
+                        }
+                      />
+                    )}
+                  </Grid>
+                ))}
+              </Grid>
+            </Grid>
+          </>
         )}
-        {animalListUploadInfo.map((animal, index) => (
-          <Grid item xs={12} key={index}>
-            <Chip
-              icon={
-                animal?._id ? (
-                  <Check className={`${classes.largeChip}__icon`} />
-                ) : (
-                  <Error className={`${classes.largeChip}__icon`} />
-                )
-              }
-              className={clsx(
-                classes.largeChip,
-                animal?._id
-                  ? `${classes.largeChip}--success`
-                  : `${classes.largeChip}--danger`
-              )}
-              label={
-                animal?._id
-                  ? `${animal.identifier}: Exitoso`
-                  : `${animal.identifier}: Error al momento de subir`
-              }
-            />
-          </Grid>
-        ))}
       </Grid>
       <Grid
         container
@@ -275,18 +308,20 @@ const AnimalBulkForm = ({ onClickCancelButton }) => {
           <ButtonFormik
             onClick={onClickCancelButton}
             xs={2}
-            label="Cancelar"
+            label={!isUploading ? "Cancelar" : "Cerrar"}
             type="button"
           />
         </Grid>
-        <Grid item xs={2}>
-          <ButtonFormik
-            onClick={handleSubmit}
-            xs={2}
-            label="Guardar"
-            type="submit"
-          />
-        </Grid>
+        {!isUploading && (
+          <Grid item xs={2}>
+            <ButtonFormik
+              onClick={handleSubmit}
+              xs={2}
+              label="Guardar"
+              type="submit"
+            />
+          </Grid>
+        )}
       </Grid>
     </>
   );
