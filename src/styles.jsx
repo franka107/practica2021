@@ -19,7 +19,8 @@ export const useStyles = makeStyles((theme) => ({
     display: "none",
   },
   chipContainer: {
-    marginTop: "0.5rem",
+    maxHeight: "400px",
+    overflowY: "scroll",
   },
 
   baseBtn: {
