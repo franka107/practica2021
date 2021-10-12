@@ -17,7 +17,7 @@ export function dryingReducer(state = initialState, action) {
     case ACTION_TYPES.DRYING.CREATE:
       return {
         ...state,
-        list: [...state.list, action.payload],
+        list: [action.payload, ...state.list],
       };
     case ACTION_TYPES.DRYING.UPDATE_CURRENT:
       return {

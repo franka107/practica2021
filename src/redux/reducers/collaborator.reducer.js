@@ -17,7 +17,7 @@ export function collaboratorReducer(state = initialState, action) {
     case ACTION_TYPES.COLLABORATOR.CREATE:
       return {
         ...state,
-        list: [...state.list, action.payload],
+        list: [action.payload, ...state.list],
       };
     case ACTION_TYPES.COLLABORATOR.UPDATE_CURRENT:
       return {

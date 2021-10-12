@@ -17,7 +17,7 @@ export function saleReducer(state = initialState, action) {
     case ACTION_TYPES.SALE.CREATE:
       return {
         ...state,
-        list: [...state.list, action.payload],
+        list: [action.payload, ...state.list],
       };
     case ACTION_TYPES.SALE.UPDATE_CURRENT:
       return {

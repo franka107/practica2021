@@ -5,7 +5,7 @@ export function movementReducer(state = {}, action) {
     case ACTION_TYPES.MOVEMENT.CREATE:
       return {
         ...state,
-        list: [...state.list, action.payload],
+        list: [action.payload, ...state.list],
         current: action.payload,
       };
     case ACTION_TYPES.MOVEMENT.RETRIEVE_LIST:

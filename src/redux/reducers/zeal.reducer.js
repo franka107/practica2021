@@ -17,7 +17,7 @@ export function zealReducer(state = initialState, action) {
     case ACTION_TYPES.ZEAL.CREATE:
       return {
         ...state,
-        list: [...state.list, action.payload],
+        list: [action.payload, ...state.list],
       };
     case ACTION_TYPES.ZEAL.UPDATE_CURRENT:
       return {

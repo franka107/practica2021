@@ -6,7 +6,7 @@ export function birthReducer(state = initialState, action) {
     case ACTION_TYPES.BIRTH.CREATE:
       return {
         ...state,
-        list: [...state.list, action.payload],
+        list: [action.payload, ...state.list],
         current: action.payload,
       };
     case ACTION_TYPES.BIRTH.RETRIEVE_LIST:

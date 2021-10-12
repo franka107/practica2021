@@ -17,7 +17,7 @@ export function palpationReducer(state = initialState, action) {
     case ACTION_TYPES.PALPATION.CREATE:
       return {
         ...state,
-        list: [...state.list, action.payload],
+        list: [action.payload, ...state.list],
       };
     case ACTION_TYPES.PALPATION.UPDATE_CURRENT:
       return {

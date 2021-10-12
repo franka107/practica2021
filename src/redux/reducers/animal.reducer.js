@@ -17,7 +17,7 @@ export function animalReducer(state = initialState, action) {
     case ACTION_TYPES.ANIMAL.CREATE:
       return {
         ...state,
-        list: [...state.list, action.payload],
+        list: [action.payload, ...state.list],
       };
     case ACTION_TYPES.ANIMAL.UPDATE_CURRENT:
       return {

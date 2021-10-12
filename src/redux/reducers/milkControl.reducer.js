@@ -17,7 +17,7 @@ export function milkControlReducer(state = initialState, action) {
     case ACTION_TYPES.MILKCONTROL.CREATE:
       return {
         ...state,
-        list: [...state.list, action.payload],
+        list: [action.payload, ...state.list],
       };
     case ACTION_TYPES.MILKCONTROL.UPDATE_CURRENT:
       return {

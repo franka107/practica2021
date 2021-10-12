@@ -17,7 +17,7 @@ export function weightReducer(state = initialState, action) {
     case ACTION_TYPES.WEIGHT.CREATE:
       return {
         ...state,
-        list: [...state.list, action.payload],
+        list: [action.payload, ...state.list],
       };
     case ACTION_TYPES.WEIGHT.UPDATE_CURRENT:
       return {
