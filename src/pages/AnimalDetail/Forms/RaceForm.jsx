@@ -33,7 +33,11 @@ const RaceForm = ({
   });
   const dispatch = useDispatch();
   const currentAnimal = useSelector((state) => state.animal.current);
-  const listRaces = useSelector((state) => state.race.list);
+  const listRaces = useSelector((state) =>
+    state.race.list.sort((a, b) =>
+      a.name > b.name ? 1 : a.name < b.name ? -1 : 0
+    )
+  );
 
   const femaleAnimals = useSelector(
     (state) => state.animal.list.filter((e) => e.gender === "FEMALE"),

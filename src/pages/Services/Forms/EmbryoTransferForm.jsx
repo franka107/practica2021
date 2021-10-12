@@ -23,6 +23,7 @@ import {
 import AnimalActions from "../../../redux/actions/animal.actions";
 import CollaboratorActions from "../../../redux/actions/collaborator.actions";
 import { useParams } from "react-router";
+import MovementActions from "../../../redux/actions/movement.actions";
 
 const defaultInitValues = {
   agribusinessId: "",
@@ -131,6 +132,8 @@ const EmbryoTransferForm = ({
       if (hideAnimal) {
         await dispatch(AnimalActions.get({ _id: params._id }));
       }
+      await dispatch(geneticStockActions.listGeneticStockByAgribusiness());
+      await dispatch(MovementActions.list());
       onCompleteSubmit();
     } catch {
       actions.setSubmitting(false);
@@ -218,7 +221,7 @@ const EmbryoTransferForm = ({
             />
             <TextFieldFormik
               onChange={props.handleChange}
-              name="embryoName"
+              name="name"
               label="Nom. embrión"
               disabled
               xs={12}
@@ -227,7 +230,7 @@ const EmbryoTransferForm = ({
                 props.values.geneticStockId
                   ? listEmbryo.find(
                       (e) => e._id === props.values.geneticStockId
-                    )?.embryoName
+                    )?.name
                   : ""
               }
             />

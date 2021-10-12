@@ -51,7 +51,11 @@ const GeneticStockForm = ({
   onCompleteSubmit = () => {},
 }) => {
   const dispatch = useDispatch();
-  const racesList = useSelector((state) => state.race.list);
+  const racesList = useSelector((state) =>
+    state.race.list.sort((a, b) =>
+      a.name > b.name ? 1 : a.name < b.name ? -1 : 0
+    )
+  );
   const currentFarm = useSelector((state) => state.farm.current);
   const classes = useStyles();
   const [animalRace, setAnimalRace] = useState({
@@ -86,7 +90,8 @@ const GeneticStockForm = ({
     try {
       if (type === "create") {
         const arrayImages = [];
-        if (values.imageURL || values.imageURL.length !== 0) {
+        console.log("ANTES");
+        if (values.imageURL && values.imageURL.length !== 0) {
           for (let index = 0; index <= values.imageURL.length - 1; index++) {
             const response = await IdeasCloudApi.fetch("uploadImage", {
               farmId: currentFarm._id,
@@ -107,14 +112,14 @@ const GeneticStockForm = ({
               arrayImages.push(newURL);
             });
           }
-          await dispatch(
-            geneticStockActions.createGenticStock({
-              ...values,
-              geneticType,
-              images: arrayImages,
-            })
-          );
         }
+        await dispatch(
+          geneticStockActions.createGenticStock({
+            ...values,
+            geneticType,
+            images: arrayImages,
+          })
+        );
       }
       if (type === "update") {
         let finalArray = [];

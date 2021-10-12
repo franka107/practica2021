@@ -22,9 +22,9 @@ const get = (data) => async (dispatch) => {
   });
 };
 
-const create = (data, animal) => async (dispatch, getState) => {
+const create = (data, animal, user) => async (dispatch, getState) => {
   const agribusiness = getState().agribusiness.current;
-  const response = await IdeasCloudApi.fetch(
+  await IdeasCloudApi.fetch(
     "palpationControlCreate",
     {
       ...data,
@@ -36,10 +36,12 @@ const create = (data, animal) => async (dispatch, getState) => {
   );
   dispatch(AnimalActions.list());
 
+  console.log("antes");
   dispatch({
     type: ACTION_TYPES.PALPATION.CREATE,
-    payload: { ...response, animal: animal },
+    payload: { ...data, animal: animal, user: user },
   });
+  console.log("despues");
 };
 const update = (data) => async (dispatch) => {
   const response = await IdeasCloudApi.fetch(
