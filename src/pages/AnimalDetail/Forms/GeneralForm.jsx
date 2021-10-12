@@ -72,6 +72,7 @@ const GeneralForm = ({
       .nullable(),
     herdDate: yup
       .date("Ingresa una fecha correcta.")
+      .max(new Date(), "No puedes poner una fecha futura")
       // .string("Ingresa la fecha de nacimiento del animal.")
       .nullable(),
     gender: yup

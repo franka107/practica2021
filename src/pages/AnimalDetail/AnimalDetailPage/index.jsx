@@ -312,11 +312,13 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
                         <Grid item xs={8}>
                           {currentAnimal && (
                             <Typography>
-                              {currentAnimal.gender === "MALE" && (
-                                <>{currentAnimal.category}</>
-                              )}
-                              {currentAnimal.gender === "FEMALE" &&
-                                stateOptions[currentAnimal.reproductiveStatus]}
+                              {currentAnimal.gender === "MALE"
+                                ? currentAnimal.category
+                                : currentAnimal.gender === "FEMALE" &&
+                                  currentAnimal.reproductiveStatus &&
+                                  currentAnimal.reproductiveStatus !== ""
+                                ? stateOptions[currentAnimal.reproductiveStatus]
+                                : "Sin información"}
                             </Typography>
                           )}
                           {/* <Typography>Vaca seca, 276 dias de preñez</Typography> */}
@@ -414,7 +416,11 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
                         </Grid>
                         <Grid item xs={8}>
                           <Typography>
-                            {currentAnimal && currentAnimal.registerNumber}
+                            {currentAnimal &&
+                            currentAnimal.registerNumber &&
+                            currentAnimal.registerNumber !== ""
+                              ? currentAnimal.registerNumber
+                              : "Sin información"}
                           </Typography>
                         </Grid>
                       </Grid>
@@ -619,34 +625,92 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
                             </Grid>
                           </Grid>
                           {currentAnimal &&
-                          currentAnimal.percentageRace1 !== null &&
-                          currentAnimal.percentageRace1 !== 100 ? (
-                            <Grid
-                              container
-                              className={classes.generalFeature}
-                              xs={12}
-                            >
-                              <Grid item xs={5}>
-                                <Typography className={classes.cardFeature}>
-                                  Raza 2
-                                </Typography>
+                            currentAnimal.race2Id &&
+                            currentAnimal.race2Id !== "" &&
+                            currentAnimal.race2 &&
+                            currentAnimal.percentageRace2 !== 0 && (
+                              <Grid
+                                container
+                                className={classes.generalFeature}
+                                xs={12}
+                              >
+                                <Grid item xs={5}>
+                                  <Typography className={classes.cardFeature}>
+                                    Raza2
+                                  </Typography>
+                                </Grid>
+                                <Grid item xs={7}>
+                                  <Typography>
+                                    {currentAnimal &&
+                                      currentAnimal.race2 &&
+                                      currentAnimal.race2.name}{" "}
+                                    -{" "}
+                                    {currentAnimal &&
+                                      currentAnimal.percentageRace2 &&
+                                      currentAnimal.percentageRace2}
+                                    %
+                                  </Typography>
+                                </Grid>
                               </Grid>
-                              <Grid item xs={7}>
-                                <Typography>
-                                  {currentAnimal &&
-                                    currentAnimal.race2 &&
-                                    currentAnimal.race2.name}{" "}
-                                  -{" "}
-                                  {currentAnimal &&
-                                    currentAnimal.percentageRace2 &&
-                                    currentAnimal.percentageRace2}
-                                  %
-                                </Typography>
+                            )}
+                          {currentAnimal &&
+                            currentAnimal.race3Id &&
+                            currentAnimal.race3Id !== "" &&
+                            currentAnimal.race3 &&
+                            currentAnimal.percentageRace3 !== 0 && (
+                              <Grid
+                                container
+                                className={classes.generalFeature}
+                                xs={12}
+                              >
+                                <Grid item xs={5}>
+                                  <Typography className={classes.cardFeature}>
+                                    Raza3
+                                  </Typography>
+                                </Grid>
+                                <Grid item xs={7}>
+                                  <Typography>
+                                    {currentAnimal &&
+                                      currentAnimal.race3 &&
+                                      currentAnimal.race3.name}{" "}
+                                    -{" "}
+                                    {currentAnimal &&
+                                      currentAnimal.percentageRace3 &&
+                                      currentAnimal.percentageRace3}
+                                    %
+                                  </Typography>
+                                </Grid>
                               </Grid>
-                            </Grid>
-                          ) : (
-                            <div></div>
-                          )}
+                            )}
+                          {currentAnimal &&
+                            currentAnimal.race4Id &&
+                            currentAnimal.race4Id !== "" &&
+                            currentAnimal.race4 &&
+                            currentAnimal.percentageRace4 !== 0 && (
+                              <Grid
+                                container
+                                className={classes.generalFeature}
+                                xs={12}
+                              >
+                                <Grid item xs={5}>
+                                  <Typography className={classes.cardFeature}>
+                                    Raza4
+                                  </Typography>
+                                </Grid>
+                                <Grid item xs={7}>
+                                  <Typography>
+                                    {currentAnimal &&
+                                      currentAnimal.race4 &&
+                                      currentAnimal.race4.name}{" "}
+                                    -{" "}
+                                    {currentAnimal &&
+                                      currentAnimal.percentageRace4 &&
+                                      currentAnimal.percentageRace4}
+                                    %
+                                  </Typography>
+                                </Grid>
+                              </Grid>
+                            )}
                           <Grid
                             container
                             className={classes.generalFeature}
