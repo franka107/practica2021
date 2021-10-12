@@ -29,7 +29,9 @@ function AutocompleteFieldFormik({
         disabled={disabled}
         defaultValue={defaultValue}
         options={options || []}
-        getOptionLabel={(option) => (option ? option.identifier : "")}
+        getOptionLabel={(option) =>
+          option ? option.identifier + "-" + option?.name : ""
+        }
         getOptionSelected={(option, value) => option._id === value._id}
         // filterOptions={filterOptions}
         renderInput={(params) => (

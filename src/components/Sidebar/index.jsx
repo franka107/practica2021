@@ -18,6 +18,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useDispatch, useSelector } from "react-redux";
 import agribusinessActions from "../../redux/actions/agribusiness.actions";
 import { ROUTES_DICT } from "../../routes/routesDict";
+import AnimalActions from "../../redux/actions/animal.actions";
 
 function Sidebar({ openDrawer, setOpenDrawer, options }) {
   const history = useHistory();
@@ -201,6 +202,7 @@ function Sidebar({ openDrawer, setOpenDrawer, options }) {
                       dispatch(
                         agribusinessActions.setCurrentAgribusiness(agribusiness)
                       );
+                      dispatch(AnimalActions.list());
                       history.push(ROUTES_DICT.animal.list);
                     }}
                   >
@@ -231,9 +233,6 @@ function Sidebar({ openDrawer, setOpenDrawer, options }) {
                   } else {
                     history.push(item.link);
                   }
-                }
-                if (openDrawer) {
-                  setOpenDrawer(false);
                 }
               }}
               className={clsx(
@@ -278,9 +277,6 @@ function Sidebar({ openDrawer, setOpenDrawer, options }) {
                           } else {
                             history.push(subitem.link);
                           }
-                        }
-                        if (openDrawer) {
-                          setOpenDrawer(false);
                         }
                       }}
                     >
