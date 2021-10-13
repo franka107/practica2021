@@ -47,7 +47,7 @@ const CollaboratorForms = ({
     lastName: yup
       .string("Ingresa los apellidos del colaborador")
       .required("Este campo es requerido."),
-    controlDate: yup
+    dateAdmission: yup
       .date("Ingresa una fecha correcta.")
       .required("Este campo es requerido."),
   });
@@ -61,7 +61,7 @@ const CollaboratorForms = ({
       {(props) => (
         <form onSubmit={props.handleSubmit}>
           <Typography variant={"subtitle1"} gutterBottom>
-            Hacienda o Empresa
+            Colaboradores
           </Typography>
           <Grid container spacing={1}>
             <TextFieldFormik

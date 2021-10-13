@@ -29,13 +29,14 @@ const SaleForm = ({
   onCompleteSubmit = () => {},
 }) => {
   const dispatch = useDispatch();
-  const femaleAnimals = useSelector(
-    (state) => state.animal.list.filter((e) => e.gender === "FEMALE"),
-    shallowEqual
-  );
+  // const femaleAnimals = useSelector(
+  //   (state) => state.animal.list.filter((e) => e.gender === "FEMALE"),
+  //   shallowEqual
+  // );
+  const listAnimal = useSelector((state) => state.animal.list);
 
   useEffect(() => {
-    if (!femaleAnimals || femaleAnimals.length === 0) {
+    if (!listAnimal || listAnimal.length === 0) {
       dispatch(AnimalActions.list());
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -54,7 +55,7 @@ const SaleForm = ({
   const handleSubmit = async (values, actions) => {
     try {
       if (type === "create") {
-        const animal = femaleAnimals.find((e) => e._id === values.animalId);
+        const animal = listAnimal.find((e) => e._id === values.animalId);
         await dispatch(SaleActions.create(values, animal));
       }
       if (type === "update") {
@@ -93,7 +94,7 @@ const SaleForm = ({
               xs={12}
             ></SelectFieldFormik>
             <AutocompleteFieldFormik
-              options={femaleAnimals}
+              options={listAnimal}
               name="animalId"
               label="Identificacíon del animal"
               onChange={props.handleChange}
@@ -108,7 +109,7 @@ const SaleForm = ({
               xs={12}
               value={
                 props.values.animalId
-                  ? femaleAnimals.find((e) => e._id === props.values.animalId)
+                  ? listAnimal.find((e) => e._id === props.values.animalId)
                       ?.name
                   : ""
               }

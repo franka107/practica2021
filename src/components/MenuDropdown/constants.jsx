@@ -29,20 +29,20 @@ export const menuItems = [
     title: "Planes",
     link: ROUTES_DICT.plan,
   },
-  {
-    id: 5,
-    title: "Contáctanos",
-  },
-  {
-    id: 6,
-    title: "Productos",
-  },
-  {
-    id: 7,
-    title: "Industrias",
-  },
-  {
-    id: 8,
-    title: "Equipos",
-  },
+  // {
+  //   id: 5,
+  //   title: "Contáctanos",
+  // },
+  // {
+  //   id: 6,
+  //   title: "Productos",
+  // },
+  // {
+  //   id: 7,
+  //   title: "Industrias",
+  // },
+  // {
+  //   id: 8,
+  //   title: "Equipos",
+  // },
 ];
