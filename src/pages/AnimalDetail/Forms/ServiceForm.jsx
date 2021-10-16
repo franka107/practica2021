@@ -6,6 +6,7 @@ import TextFieldFormik from "../../../components/Inputs/TextFieldFormik";
 import DatePickerFieldFormik from "../../../components/Inputs/DatePickerFieldFormik";
 import SelectFieldFormik from "../../../components/Inputs/SelectFieldFormik";
 import ButtonFormik from "../../../components/Inputs/ButtonFormik";
+import { useSelector } from "react-redux";
 
 const ServiceForm = ({
   initValues,
@@ -17,6 +18,8 @@ const ServiceForm = ({
   };
   const validationSchema = yup.object({});
 
+  const isHeifer = useSelector((state) => state.agribusiness.current.isHeifer);
+  console.log(isHeifer);
   return (
     <Formik
       initialValues={initValues}

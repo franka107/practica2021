@@ -93,6 +93,7 @@ function AnimalForm({
     birthDate: yup
       .date("Ingresa una fecha correcta.")
       .max(new Date(), "No puedes poner una fecha futura")
+      .required("La fecha de nacimiento es necesaria")
       .nullable(),
     herdDate: yup
       .date("Ingresa una fecha correcta.")

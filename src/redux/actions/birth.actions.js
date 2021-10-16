@@ -14,7 +14,7 @@ const create = (data) => async (dispatch, getState) => {
   const agribusiness = getState().agribusiness.current;
   const animal = getState().animal.list.find((e) => e._id === data.animalId);
 
-  await IdeasCloudApi.fetch(
+  const response = await IdeasCloudApi.fetch(
     "birthControlCreate",
     {
       ...data,
@@ -28,6 +28,8 @@ const create = (data) => async (dispatch, getState) => {
     type: ACTION_TYPES.BIRTH.CREATE,
     payload: { ...data, animal: animal },
   });
+
+  return response;
 };
 const update = (data, geneticType) => async (dispatch, getState) => {
   const response = await IdeasCloudApi.fetch(

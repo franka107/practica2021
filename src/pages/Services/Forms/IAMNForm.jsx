@@ -48,6 +48,8 @@ const IAMNForm = ({
 }) => {
   const dispatch = useDispatch();
   const params = useParams();
+  const isHeifer = useSelector((state) => state.agribusiness.current.isHeifer);
+  console.log(isHeifer);
   const femaleAnimals = useSelector(
     (state) =>
       state.animal.list.filter(

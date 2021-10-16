@@ -28,9 +28,11 @@ const defaultInitValues = {
   children: [],
   birthDate: new Date(),
   animalId: null,
-  birthType: birthTypeOptions.SIMPLE,
-  difficulty: birthDifficulyOptions.CEASAREAN,
+  birthType: "SIMPLE",
+  difficulty: "CEASAREAN",
   retainedPlacenta: false,
+  lastFemaleBirth: "",
+  lastMaleBirth: "",
   father: "",
   semen: "",
   embryo: "",
@@ -48,6 +50,7 @@ const BirthForm = ({
   const currentAgribusiness = useSelector(
     (state) => state.agribusiness.current
   );
+  const births = useSelector((state) => state.birth.list);
   const maleAnimals = useSelector(
     (state) => state.animal.list.filter((e) => e.gender === "MALE"),
     shallowEqual
@@ -202,6 +205,7 @@ const BirthForm = ({
         birthDate: yup
           .date("Ingresa una fecha")
           .required("Este campo es requerido."),
+
         birthType: yup
           .string("Ingresa el tipo de nacimiento")
           .required("Esta campo es requerido."),
@@ -214,23 +218,6 @@ const BirthForm = ({
       })
     );
   const classes = useStyles();
-  const getLastBirthDate = (animalId, gender) => {
-    const lastBirth = animalId
-      ? allAnimals.find((e) => e._id === animalId)?.births[0]
-      : null;
-
-    const childs = [];
-
-    if (lastBirth) {
-      typeof lastBirth.child1 === "object" && childs.push(lastBirth.child1);
-      typeof lastBirth.child2 === "object" && childs.push(lastBirth.child2);
-      const child = childs.find((e) => e.gender === gender);
-      if (child) return lastBirth.birthDate;
-      else return null;
-    } else {
-      return null;
-    }
-  };
 
   useEffect(() => {
     if (!listSemen || listSemen.length === 0) {
@@ -248,8 +235,7 @@ const BirthForm = ({
   const onSubmit = async (values, actions) => {
     try {
       if (type === "create") {
-        //await dispatch(MovementActions.create(transformedValues, geneticType));
-        let childs = [];
+        const birth = await dispatch(BirthActions.create(values));
         if (
           birthTypeOptions[values.birthType] === birthTypeOptions.SIMPLE ||
           birthTypeOptions[values.birthType] === birthTypeOptions.TWIN
@@ -259,25 +245,23 @@ const BirthForm = ({
             name: values.firstChildName,
             gender: values.firstChildGender,
             color: values.firstChildColor,
+            reproductiveStatus:
+              values.firstChildGender === "MALE" ? null : "EMPTY",
             birthDate: new Date(),
             herdDate: new Date(),
+            birthId: birth._id,
             motherId: values.animalId,
             fatherId: maleAnimals.find(
               (e) =>
                 e._id ===
                 femaleAnimals.find((e) => e._id === values.animalId)
-                  ?.activeService.reproductorAnimalId
+                  ?.activeService?.reproductorAnimalId
             )?._id,
           };
 
-          console.log(
-            femaleAnimals.find((e) => e._id === values.animalId)?.activeService
-              .reproductorAnimalId
-          );
-
           if (
             femaleAnimals.find((e) => e._id === values.animalId)?.activeService
-              .reproductorAnimalId
+              ?.reproductorAnimalId
           ) {
             dataChild = {
               ...dataChild,
@@ -301,33 +285,44 @@ const BirthForm = ({
             );
           }
           const firstChild = await dispatch(AnimalActions.create(dataChild));
-          childs.push(firstChild);
           values.children.push(firstChild._id);
           values.child1Id = firstChild._id;
+
+          console.log(
+            "birthEvaluation",
+            birthTypeOptions[values.birthType] === birthTypeOptions.TWIN
+          );
           if (birthTypeOptions[values.birthType] === birthTypeOptions.TWIN) {
+            console.log("dentro de parto gemelar");
+            console.log("dentro de parto gemelar reload");
+            let data2Child = {
+              identifier: values.secondChildIdentifier,
+              name: values.secondChildName,
+              gender: values.secondChildGender,
+              reproductiveStatus:
+                values.secondChildGender === "MALE" ? null : "EMPTY",
+              color: values.secondChildColor,
+              birthId: birth._id,
+              birthDate: new Date(),
+              herdDate: new Date(),
+              motherId: values.animalId,
+              fatherId: maleAnimals.find(
+                (e) =>
+                  e._id ===
+                  femaleAnimals.find((e) => e._id === values.animalId)
+                    ?.activeService?.reproductorAnimalId
+              )?._id,
+            };
+
+            console.log("data2child", data2Child);
+
             const secondChild = await dispatch(
-              AnimalActions.create({
-                identifier: values.secondChildIdentifier,
-                name: values.secondChildName,
-                gender: values.secondChildGender,
-                color: values.secondChildColor,
-                birthDate: new Date(),
-                herdDate: new Date(),
-                motherId: values.animalId,
-                fatherId: maleAnimals.find(
-                  (e) =>
-                    e._id ===
-                    femaleAnimals.find((e) => e._id === values.animalId)
-                      ?.activeService.reproductorAnimalId
-                )?._id,
-              })
+              AnimalActions.create(data2Child)
             );
-            childs.push(secondChild);
             values.children.push(secondChild._id);
             values.child2Id = secondChild._id;
           }
-          const animal = femaleAnimals.find((e) => e._id === values.animalId);
-          await dispatch(BirthActions.create(values, animal));
+          //const animal = femaleAnimals.find((e) => e._id === values.animalId);
 
           const cowData = await IdeasCloudApi.fetch("animalGetById", {
             _id: values.animalId,
@@ -336,7 +331,7 @@ const BirthForm = ({
             AnimalActions.update({
               ...cowData,
               agribusinessId: currentAgribusiness._id,
-              reproductiveStatus: "EMPTY",
+              //reproductiveStatus: "EMPTY",
             })
           );
         } else {
@@ -361,6 +356,7 @@ const BirthForm = ({
       if (hideAnimal) {
         await dispatch(AnimalActions.get({ _id: params._id }));
       }
+      dispatch(BirthActions.list());
       onCompleteSubmit();
     } catch {
       actions.setSubmitting(false);
@@ -369,339 +365,411 @@ const BirthForm = ({
   return (
     <Formik
       initialValues={initValues}
-      validationSchema={validationSchema}
       onSubmit={onSubmit}
+      validationSchema={validationSchema}
       enableReinitialize
     >
-      {function Form(props) {
-        useEffect(() => {
-          props.setFieldValue(
-            "lastMaleBirthDate",
-            getLastBirthDate(props.values.animalId, "MALE")
-          );
-          props.setFieldValue(
-            "lastfemaleBirthDate",
-            getLastBirthDate(props.values.animalId, "FEMALE")
-          );
-          // eslint-disable-next-line react-hooks/exhaustive-deps
-        }, [props.values]);
-        return (
-          <form onSubmit={props.handleSubmit} className={classes.formStyle}>
-            <Grid container spacing={1}>
-              <Grid item>
-                <Typography variant={"subtitle1"}>
-                  {type === "create" ? "Nuevo nacimiento" : "Editar nacimiento"}
-                </Typography>
+      {births &&
+        function Form(props) {
+          useEffect(() => {
+            if (props.values.animalId) {
+              const animalSelectedBirths = births.filter(
+                (birth) => birth.animalId === props.values.animalId
+              );
+              console.log(animalSelectedBirths);
+              const lastBirthComparison = (first, second, gender) => {
+                console.log("executeFunction");
+                if (
+                  first === null ||
+                  new Date(second.birthDate) > new Date(first.birthDate)
+                ) {
+                  console.log("second.birthDate", new Date(second.birthDate));
+                  console.log("first.birthDate", new Date(first?.birthDate));
+                  console.log("Dentro del lastBirthComparicon");
+                  if (
+                    second.birthType === "SIMPLE" &&
+                    second.children[0].gender === gender
+                  ) {
+                    console.log("second.children", second.children);
+                    return second;
+                  }
+                  if (second.birthType === "TWIN") {
+                    const filteredChildren = second.children.filter(
+                      (child) => child.gender === gender
+                    );
+                    if (filteredChildren.length > 0) {
+                      return second;
+                    }
+                  }
+                  return first;
+                } else {
+                  console.log("false por fecha");
+                  return first;
+                }
+              };
+
+              const lastMaleBirth = animalSelectedBirths.reduce((a, b) => {
+                return lastBirthComparison(a, b, "MALE");
+              }, null);
+
+              const lastFemaleBirth = animalSelectedBirths.reduce((a, b) => {
+                return lastBirthComparison(a, b, "FEMALE");
+              }, null);
+
+              console.log("lastMaleBirth =>", lastMaleBirth);
+              console.log("lastFemaleBirth =>", lastFemaleBirth);
+              props.setFieldValue(
+                "lastMaleBirth",
+                lastMaleBirth
+                  ? lastMaleBirth.children.filter((e) => e.gender === "MALE")[0]
+                      .identifier
+                  : ""
+              );
+              props.setFieldValue(
+                "lastFemaleBirth",
+                lastFemaleBirth
+                  ? lastFemaleBirth.children.filter(
+                      (e) => e.gender === "FEMALE"
+                    )[0].identifier
+                  : ""
+              );
+            } else {
+              props.setFieldValue("lastMaleBirth", "");
+              props.setFieldValue("lastFemaleBirth", "");
+            }
+            // eslint-disable-next-line react-hooks/exhaustive-deps
+          }, [props.values.animalId]);
+          return (
+            <form onSubmit={props.handleSubmit} className={classes.formStyle}>
+              <Grid container spacing={1}>
+                <Grid item>
+                  <Typography variant={"subtitle1"}>
+                    {type === "create"
+                      ? "Nuevo nacimiento"
+                      : "Editar nacimiento"}
+                  </Typography>
+                </Grid>
               </Grid>
-            </Grid>
-            <Grid container spacing={1}>
-              <Grid item>
-                <Typography variant={"subtitle2"}>Datos Generales</Typography>
+              <Grid container spacing={1}>
+                <Grid item>
+                  <Typography variant={"subtitle2"}>Datos Generales</Typography>
+                </Grid>
               </Grid>
-            </Grid>
-            <Grid container spacing={1}>
-              {!hideAnimal && (
+              <Grid container spacing={1}>
+                {!hideAnimal && (
+                  <>
+                    <AutocompleteFieldFormik
+                      options={femaleAnimals}
+                      displayName={false}
+                      name="animalId"
+                      label="Identificacíon del animal"
+                      onChange={props.handleChange}
+                      defaultValue={
+                        type === "create" ? null : props.values.animal
+                      }
+                      md={6}
+                      xs={12}
+                    />
+                    <TextFieldFormik
+                      label="Nombre"
+                      name="name"
+                      disabled
+                      onChange={props.handleChange}
+                      xs={12}
+                      md={6}
+                      value={
+                        props.values.animalId
+                          ? femaleAnimals.find(
+                              (e) => e._id === props.values.animalId
+                            )?.name
+                          : ""
+                      }
+                    />
+                  </>
+                )}
+                <DatePickerFieldFormik
+                  label="Fecha de parto "
+                  name="birthDate"
+                  onChange={props.handleChange}
+                  lg={4}
+                  sm={4}
+                  xs={12}
+                ></DatePickerFieldFormik>
+                <SelectFieldFormik
+                  onChange={props.handleChange}
+                  label="Tipo de parto"
+                  name="birthType"
+                  lg={4}
+                  options={Object.keys(birthTypeOptions).map((key) => ({
+                    _id: key,
+                    name: birthTypeOptions[key],
+                  }))}
+                  sm={4}
+                  xs={12}
+                ></SelectFieldFormik>
+                <SelectFieldFormik
+                  onChange={props.handleChange}
+                  label="Dificultad"
+                  name="difficulty"
+                  options={Object.keys(birthDifficulyOptions).map((key) => ({
+                    _id: key,
+                    name: birthDifficulyOptions[key],
+                  }))}
+                  lg={4}
+                  sm={4}
+                  xs={12}
+                ></SelectFieldFormik>
+                <TextFieldFormik
+                  label="Detalles"
+                  name="detail"
+                  onChange={props.handleChange}
+                  xs={12}
+                ></TextFieldFormik>
+                <DatePickerFieldFormik
+                  label="Fecha de Preñez"
+                  name="pregnantDate"
+                  onChange={props.handleChange}
+                  lg={6}
+                  value={
+                    props.values.animalId
+                      ? femaleAnimals.find(
+                          (e) => e._id === props.values.animalId
+                        )?.pregnantDate
+                      : null
+                  }
+                  sm={6}
+                  disabled
+                  xs={12}
+                ></DatePickerFieldFormik>
+                <DatePickerFieldFormik
+                  label="Fecha de Ult. Tacto"
+                  name="touchDate"
+                  onChange={props.handleChange}
+                  lg={6}
+                  disabled
+                  value={
+                    props.values.animalId
+                      ? femaleAnimals.find(
+                          (e) => e._id === props.values.animalId
+                        )?.palpations[0]?.touchDate
+                      : null
+                  }
+                  sm={6}
+                  xs={12}
+                ></DatePickerFieldFormik>
+                <CheckboxFormik
+                  sm={6}
+                  xs={12}
+                  name="retainedPlacenta"
+                  label="Retuvo placenta"
+                  onChange={props.handleChange}
+                />
+                {props.values.animalId &&
+                  femaleAnimals.find((e) => e._id === props.values.animalId)
+                    ?.activeService?.serviceType === "NA_MO" && (
+                    <TextFieldFormik
+                      label="Padre"
+                      name="father"
+                      disabled
+                      onChange={props.handleChange}
+                      value={
+                        props.values.animalId
+                          ? maleAnimals.find(
+                              (e) =>
+                                e._id ===
+                                femaleAnimals.find(
+                                  (e) => e._id === props.values.animalId
+                                )?.activeService.reproductorAnimalId
+                            )?.identifier
+                          : ""
+                      }
+                      lg={6}
+                      sm={6}
+                      xs={12}
+                    />
+                  )}
+                {props.values.animalId &&
+                  femaleAnimals.find((e) => e._id === props.values.animalId)
+                    ?.activeService?.serviceType === "EM_TR" && (
+                    <TextFieldFormik
+                      label="Embrión"
+                      name="embryo"
+                      disabled
+                      onChange={props.handleChange}
+                      value={
+                        props.values.animalId
+                          ? listEmbryo.find(
+                              (e) =>
+                                e._id ===
+                                femaleAnimals.find(
+                                  (e) => e._id === props.values.animalId
+                                )?.activeService.geneticStockId
+                            )?.identifier
+                          : ""
+                      }
+                      lg={6}
+                      sm={6}
+                      xs={12}
+                    />
+                  )}
+                {props.values.animalId &&
+                  femaleAnimals.find((e) => e._id === props.values.animalId)
+                    ?.activeService?.serviceType === "AR_IN" && (
+                    <TextFieldFormik
+                      label="Semen"
+                      name="semen"
+                      disabled
+                      onChange={props.handleChange}
+                      value={
+                        props.values.animalId
+                          ? listSemen.find(
+                              (e) =>
+                                e._id ===
+                                femaleAnimals.find(
+                                  (e) => e._id === props.values.animalId
+                                )?.activeService.geneticStockId
+                            )?.identifier
+                          : ""
+                      }
+                      lg={6}
+                      sm={6}
+                      xs={12}
+                    />
+                  )}
+              </Grid>
+
+              {(birthTypeOptions[props.values.birthType] ===
+                birthTypeOptions.SIMPLE ||
+                birthTypeOptions[props.values.birthType] ===
+                  birthTypeOptions.TWIN) && (
                 <>
-                  <AutocompleteFieldFormik
-                    options={femaleAnimals}
-                    name="animalId"
-                    label="Identificacíon del animal"
-                    onChange={props.handleChange}
-                    defaultValue={
-                      type === "create" ? null : props.values.animal
-                    }
-                    md={6}
-                    xs={12}
-                  />
-                  <TextFieldFormik
-                    label="Nombre"
-                    name="name"
-                    disabled
-                    onChange={props.handleChange}
-                    xs={12}
-                    md={6}
-                    value={
-                      props.values.animalId
-                        ? femaleAnimals.find(
-                            (e) => e._id === props.values.animalId
-                          )?.name
-                        : ""
-                    }
-                  />
+                  <Grid container spacing={1} className={classes.formStyle}>
+                    <Grid item>
+                      <Typography variant={"subtitle2"}>Nacimientos</Typography>
+                    </Grid>
+                  </Grid>
+                  <Grid
+                    container
+                    spacing={1}
+                    className={classes.form__subBorder}
+                  >
+                    <TextFieldFormik
+                      label="Identificación"
+                      name="firstChildIdentifier"
+                      onChange={props.handleChange}
+                      lg={3}
+                      sm={3}
+                      xs={12}
+                    ></TextFieldFormik>
+                    <TextFieldFormik
+                      label="Nombre"
+                      name="firstChildName"
+                      onChange={props.handleChange}
+                      lg={3}
+                      sm={3}
+                      xs={12}
+                    ></TextFieldFormik>
+                    <SelectFieldFormik
+                      onChange={props.handleChange}
+                      options={sexOptions.slice(1)}
+                      label="Sexo"
+                      name="firstChildGender"
+                      sm={3}
+                      xs={12}
+                    ></SelectFieldFormik>
+                    <TextFieldFormik
+                      label="Color"
+                      name="firstChildColor"
+                      onChange={props.handleChange}
+                      lg={3}
+                      sm={3}
+                      xs={12}
+                    ></TextFieldFormik>
+                    {birthTypeOptions[props.values.birthType] ===
+                      birthTypeOptions.TWIN && (
+                      <>
+                        <TextFieldFormik
+                          label="Identificación"
+                          name="secondChildIdentifier"
+                          onChange={props.handleChange}
+                          lg={3}
+                          sm={3}
+                          xs={12}
+                        ></TextFieldFormik>
+                        <TextFieldFormik
+                          label="Nombre"
+                          name="secondChildName"
+                          onChange={props.handleChange}
+                          lg={3}
+                          sm={3}
+                          xs={12}
+                        ></TextFieldFormik>
+                        <SelectFieldFormik
+                          onChange={props.handleChange}
+                          options={sexOptions.slice(1)}
+                          label="Sexo"
+                          name="secondChildGender"
+                          sm={3}
+                          xs={12}
+                        ></SelectFieldFormik>
+                        <TextFieldFormik
+                          label="Color"
+                          name="secondChildColor"
+                          onChange={props.handleChange}
+                          lg={3}
+                          sm={3}
+                          xs={12}
+                        ></TextFieldFormik>
+                      </>
+                    )}
+                  </Grid>
                 </>
               )}
-              <DatePickerFieldFormik
-                label="Fecha "
-                name="birthDate"
-                onChange={props.handleChange}
-                lg={4}
-                sm={4}
-                xs={12}
-              ></DatePickerFieldFormik>
-              <SelectFieldFormik
-                onChange={props.handleChange}
-                label="Tipo de parto"
-                name="birthType"
-                lg={4}
-                options={Object.keys(birthTypeOptions).map((key) => ({
-                  _id: key,
-                  name: birthTypeOptions[key],
-                }))}
-                sm={4}
-                xs={12}
-              ></SelectFieldFormik>
-              <SelectFieldFormik
-                onChange={props.handleChange}
-                label="Dificultad"
-                name="difficulty"
-                options={Object.keys(birthDifficulyOptions).map((key) => ({
-                  _id: key,
-                  name: birthDifficulyOptions[key],
-                }))}
-                lg={4}
-                sm={4}
-                xs={12}
-              ></SelectFieldFormik>
-              <TextFieldFormik
-                label="Detalles"
-                name="detail"
-                onChange={props.handleChange}
-                xs={12}
-              ></TextFieldFormik>
-              <DatePickerFieldFormik
-                label="Fecha de Preñez"
-                name="pregnantDate"
-                onChange={props.handleChange}
-                lg={6}
-                value={
-                  props.values.animalId
-                    ? femaleAnimals.find((e) => e._id === props.values.animalId)
-                        ?.pregnantDate
-                    : null
-                }
-                sm={6}
-                disabled
-                xs={12}
-              ></DatePickerFieldFormik>
-              <DatePickerFieldFormik
-                label="Fecha de Ult. Tacto"
-                name="touchDate"
-                onChange={props.handleChange}
-                lg={6}
-                disabled
-                value={
-                  props.values.animalId
-                    ? femaleAnimals.find((e) => e._id === props.values.animalId)
-                        ?.palpations[0]?.touchDate
-                    : null
-                }
-                sm={6}
-                xs={12}
-              ></DatePickerFieldFormik>
-              <CheckboxFormik
-                sm={6}
-                xs={12}
-                name="retainedPlacenta"
-                label="Retuvo placenta"
-                onChange={props.handleChange}
-              />
-              {props.values.animalId &&
-                femaleAnimals.find((e) => e._id === props.values.animalId)
-                  ?.activeService?.serviceType === "NA_MO" && (
-                  <TextFieldFormik
-                    label="Padre"
-                    name="father"
-                    disabled
-                    onChange={props.handleChange}
-                    value={
-                      props.values.animalId
-                        ? maleAnimals.find(
-                            (e) =>
-                              e._id ===
-                              femaleAnimals.find(
-                                (e) => e._id === props.values.animalId
-                              )?.activeService.reproductorAnimalId
-                          )?.identifier
-                        : ""
-                    }
-                    lg={6}
-                    sm={6}
-                    xs={12}
-                  />
-                )}
-              {props.values.animalId &&
-                femaleAnimals.find((e) => e._id === props.values.animalId)
-                  ?.activeService?.serviceType === "EM_TR" && (
-                  <TextFieldFormik
-                    label="Embrión"
-                    name="embryo"
-                    disabled
-                    onChange={props.handleChange}
-                    value={
-                      props.values.animalId
-                        ? listEmbryo.find(
-                            (e) =>
-                              e._id ===
-                              femaleAnimals.find(
-                                (e) => e._id === props.values.animalId
-                              )?.activeService.geneticStockId
-                          )?.identifier
-                        : ""
-                    }
-                    lg={6}
-                    sm={6}
-                    xs={12}
-                  />
-                )}
-              {props.values.animalId &&
-                femaleAnimals.find((e) => e._id === props.values.animalId)
-                  ?.activeService?.serviceType === "AR_IN" && (
-                  <TextFieldFormik
-                    label="Semen"
-                    name="semen"
-                    disabled
-                    onChange={props.handleChange}
-                    value={
-                      props.values.animalId
-                        ? listSemen.find(
-                            (e) =>
-                              e._id ===
-                              femaleAnimals.find(
-                                (e) => e._id === props.values.animalId
-                              )?.activeService.geneticStockId
-                          )?.identifier
-                        : ""
-                    }
-                    lg={6}
-                    sm={6}
-                    xs={12}
-                  />
-                )}
-            </Grid>
-
-            {(birthTypeOptions[props.values.birthType] ===
-              birthTypeOptions.SIMPLE ||
-              birthTypeOptions[props.values.birthType] ===
-                birthTypeOptions.TWIN) && (
-              <>
-                <Grid container spacing={1} className={classes.formStyle}>
-                  <Grid item>
-                    <Typography variant={"subtitle2"}>Nacimientos</Typography>
-                  </Grid>
-                </Grid>
-                <Grid container spacing={1} className={classes.form__subBorder}>
-                  <TextFieldFormik
-                    label="Identificación"
-                    name="firstChildIdentifier"
-                    onChange={props.handleChange}
-                    lg={3}
-                    sm={3}
-                    xs={12}
-                  ></TextFieldFormik>
-                  <TextFieldFormik
-                    label="Nombre"
-                    name="firstChildName"
-                    onChange={props.handleChange}
-                    lg={3}
-                    sm={3}
-                    xs={12}
-                  ></TextFieldFormik>
-                  <SelectFieldFormik
-                    onChange={props.handleChange}
-                    options={sexOptions.slice(1)}
-                    label="Sexo"
-                    name="firstChildGender"
-                    sm={3}
-                    xs={12}
-                  ></SelectFieldFormik>
-                  <TextFieldFormik
-                    label="Color"
-                    name="firstChildColor"
-                    onChange={props.handleChange}
-                    lg={3}
-                    sm={3}
-                    xs={12}
-                  ></TextFieldFormik>
-                  {birthTypeOptions[props.values.birthType] ===
-                    birthTypeOptions.TWIN && (
-                    <>
-                      <TextFieldFormik
-                        label="Identificación"
-                        name="secondChildIdentifier"
-                        onChange={props.handleChange}
-                        lg={3}
-                        sm={3}
-                        xs={12}
-                      ></TextFieldFormik>
-                      <TextFieldFormik
-                        label="Nombre"
-                        name="secondChildName"
-                        onChange={props.handleChange}
-                        lg={3}
-                        sm={3}
-                        xs={12}
-                      ></TextFieldFormik>
-                      <SelectFieldFormik
-                        onChange={props.handleChange}
-                        options={sexOptions.slice(1)}
-                        label="Sexo"
-                        name="secondChildGender"
-                        sm={3}
-                        xs={12}
-                      ></SelectFieldFormik>
-                      <TextFieldFormik
-                        label="Color"
-                        name="secondChildColor"
-                        onChange={props.handleChange}
-                        lg={3}
-                        sm={3}
-                        xs={12}
-                      ></TextFieldFormik>
-                    </>
-                  )}
-                </Grid>
-              </>
-            )}
-            <br />
-            <Divider />
-            <br />
-            <Grid container spacing={1}>
-              <DatePickerFieldFormik
-                label="Ult. cria macho"
-                name="lastMaleBirthDate"
-                onChange={props.handleChange}
-                lg={6}
-                sm={6}
-                xs={12}
-                disabled
-              ></DatePickerFieldFormik>
-              <TextFieldFormik
-                label="Ult. cria hembra"
-                name="lastFemaleBirthDate"
-                onChange={props.handleChange}
-                lg={6}
-                sm={6}
-                xs={12}
-                disabled
-              ></TextFieldFormik>
-            </Grid>
-            <Grid
-              item
-              container
-              justifyContent={"flex-end"}
-              style={{ gap: "0.5rem" }}
-              xs={12}
-            >
-              <Grid item xs={3} className={classes.paddingButton}>
-                <ButtonFormik xs={3} label="Cancelar" type="cancel" />
+              <br />
+              <Divider />
+              <br />
+              <Grid container spacing={1}>
+                <TextFieldFormik
+                  label="Ult. cria macho"
+                  name="lastMaleBirth"
+                  onChange={props.handleChange}
+                  lg={6}
+                  sm={6}
+                  xs={12}
+                  disabled
+                ></TextFieldFormik>
+                <TextFieldFormik
+                  label="Ult. cria hembra"
+                  name="lastFemaleBirth"
+                  onChange={props.handleChange}
+                  lg={6}
+                  sm={6}
+                  xs={12}
+                  disabled
+                ></TextFieldFormik>
               </Grid>
-              <Grid item xs={3}>
-                <ButtonFormik xs={3} label="Siguiente" type="submit" />
+              <Grid
+                item
+                container
+                justifyContent={"flex-end"}
+                style={{ gap: "0.5rem" }}
+                xs={12}
+              >
+                <Grid item xs={3} className={classes.paddingButton}>
+                  <ButtonFormik
+                    onClick={onClickCancelButton}
+                    xs={3}
+                    label="Cancelar"
+                    type="cancel"
+                  />
+                </Grid>
+                <Grid item xs={3}>
+                  <ButtonFormik xs={3} label="Siguiente" type="submit" />
+                </Grid>
               </Grid>
-            </Grid>
-          </form>
-        );
-      }}
+            </form>
+          );
+        }}
     </Formik>
   );
 };
