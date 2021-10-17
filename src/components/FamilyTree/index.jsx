@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Tree from "react-d3-tree";
 import { generatePath, useHistory } from "react-router";
 import { ROUTES_DICT } from "../../routes/routesDict";
@@ -6,82 +6,6 @@ import CustomInfoIcon from "../CustomInfoIcon";
 
 // This is a simplified example of an org chart with a depth of 2.
 // Note how deeper levels are defined recursively via the `children` property.
-const orgChart = {
-  name: "Larissa",
-  key: "#00123",
-  children: [
-    {
-      name: "John",
-      key: "#00123",
-      attributes: {
-        department: "Production",
-      },
-      children: [
-        {
-          name: "Foreman",
-          key: "#00123",
-          attributes: {
-            department: "Fabrication",
-          },
-          children: [
-            {
-              name: "Worker",
-              key: "#00123",
-            },
-          ],
-        },
-        {
-          name: "Foreman",
-          key: "#00123",
-          attributes: {
-            department: "Assembly",
-          },
-          children: [
-            {
-              name: "Worker",
-              key: "#00123",
-            },
-          ],
-        },
-      ],
-    },
-    {
-      name: "Larissa",
-      key: "#00123",
-      attributes: {
-        department: "Production",
-      },
-      children: [
-        {
-          name: "Foreman",
-          key: "#00123",
-          attributes: {
-            department: "Fabrication",
-          },
-          children: [
-            {
-              name: "Santiago",
-              key: "#00123",
-            },
-          ],
-        },
-        {
-          name: "Lissa",
-          key: "#00123",
-          attributes: {
-            department: "Assembly",
-          },
-          children: [
-            {
-              name: "Mario",
-              key: "#00123",
-            },
-          ],
-        },
-      ],
-    },
-  ],
-};
 
 export default function Familytree({ animal }) {
   const nodeSize = { x: 100, y: 150 };
@@ -140,6 +64,36 @@ export default function Familytree({ animal }) {
       </foreignObject>
     </g>
   );
+  const [translate, setTranslate] = useState({ x: 150, y: 150 });
+
+  useEffect(() => {
+    const dimensions = document.getElementById("treeWrapper");
+    setTranslate({
+      x: dimensions.clientWidth / 3,
+      y: 80 * 5,
+    });
+  }, []);
+
+  const Card = ({ nodeData }) => (
+    <div>
+      <div className="card">
+        <div className="card-body">
+          <h5 style={{ margin: "5px" }} className="card-title">
+            {nodeData.attributes.title}
+          </h5>
+          <h6
+            style={{ margin: "5px" }}
+            className="card-subtitle mb-2 text-muted"
+          >
+            {nodeData.attributes.subtitle}
+          </h6>
+          <p style={{ margin: "5px" }} className="card-text">
+            {nodeData.attributes.text}
+          </p>
+        </div>
+      </div>
+    </div>
+  );
 
   const data = {
     name: animal.name,
@@ -191,13 +145,30 @@ export default function Familytree({ animal }) {
   };
   return (
     // `<Tree />` will fill width/height of its container; in this case `#treeWrapper`.
-    <div id="treeWrapper" style={{ width: "100%", height: "70em" }}>
+    <div
+      id="treeWrapper"
+      style={{ width: "100%", height: "50em" }}
+      // ref={(tc) => (this.treeContainer = tc)}
+    >
       <Tree
         data={data}
         renderCustomNodeElement={(rd3tProps) =>
           renderForeignObjectNode({ ...rd3tProps, foreignObjectProps })
         }
+        // nodeLabelComponent={{
+        //   render: <Card />,
+        //   foreignObjectWrapper: {
+        //     style: {
+        //       background: "lightblue",
+        //       width: "150px",
+        //       height: "80px",
+        //       x: 150 / -2,
+        //       y: 80 / -2,
+        //     },
+        //   },
+        // }}
         pathFunc="step"
+        translate={translate}
       />
     </div>
   );

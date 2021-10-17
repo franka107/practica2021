@@ -12,6 +12,7 @@ import { useEffect } from "react";
 import SaleActions from "../../../../redux/actions/sale.actions";
 import SelectFieldFormik from "../../../../components/Inputs/SelectFieldFormik";
 import { saleTranferOptions } from "../../../../constants";
+import { differenceInMonths } from "date-fns";
 
 const defaultInitValues = {
   animalId: "",
@@ -29,15 +30,37 @@ const SaleForm = ({
   onCompleteSubmit = () => {},
 }) => {
   const dispatch = useDispatch();
+  // const result = differenceInMonths(new Date(2014, 8, 1), new Date(2014, 0, 31))
+
+  const currentAgribusiness = useSelector(
+    (state) => state.agribusiness.current
+  );
   // const femaleAnimals = useSelector(
-  //   (state) => state.animal.list.filter((e) => e.gender === "FEMALE"),
+  //   (state) =>
+  //     state.animal.list.filter(
+  //       (e) => e.gender === "FEMALE"
+  //     ),
   //   shallowEqual
   // );
   const listAnimal = useSelector((state) => state.animal.list);
+  //   .filter(
+  //     (e) =>
+  //       differenceInMonths(new Date(), new Date(e?.birthDate)) >=
+  //       currentAgribusiness.isHeifer
+  //   ),
+  // shallowEqual
 
   useEffect(() => {
     if (!listAnimal || listAnimal.length === 0) {
       dispatch(AnimalActions.list());
+      // console.log(differenceInMonths(new Date(), new Date(2021, 3, 1)) === 6);`
+      console.log(currentAgribusiness);
+      //   .filter(
+      //     (e) =>
+      //       differenceInMonths(new Date(), new Date(e.birthDate)) ===
+      //       currentAgribusiness.isHeifer
+      //   ),
+      // shallowEqual
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
