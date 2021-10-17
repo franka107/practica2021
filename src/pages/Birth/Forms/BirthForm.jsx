@@ -33,6 +33,8 @@ const defaultInitValues = {
   retainedPlacenta: false,
   lastFemaleBirth: "",
   lastMaleBirth: "",
+  firstChildGender: "",
+  secondChildGender: "",
   father: "",
   semen: "",
   embryo: "",
@@ -358,13 +360,57 @@ const BirthForm = ({
           }, [props.values.animalId]);
 
           useEffect(() => {
-            console.log("onChangeAnimalId");
-            //const animal = await dispatch(
-            //  AnimalActions.get({ _id: props.values.animalId })
-            //);
-            //console.log(animal);
-            //if (animal?.activeService) {
-            //}
+            props.setFieldValue("firstChildGender", "");
+            props.setFieldValue("secondChildGender", "");
+            if (props.values.animalId) {
+              dispatch(AnimalActions.get({ _id: props.values.animalId })).then(
+                (animal) => {
+                  if (animal.activeService) {
+                    switch (animal.activeService.serviceType) {
+                      //Inseminación artificial
+                      case "AR_IN":
+                        if (
+                          animal.activeService.strawGender === "MALE" ||
+                          animal.activeService.strawGender === "FEMALE"
+                        ) {
+                          props.setFieldValue(
+                            "firstChildGender",
+                            animal.activeService.strawGender
+                          );
+                          props.setFieldValue(
+                            "secondChildGender",
+                            animal.activeService.strawGender
+                          );
+                        }
+                        break;
+                      case "NA_MO":
+                        break;
+                      // Transferencia de embriones
+                      case "EM_TR":
+                        if (
+                          animal.activeService.embryoGender === "MALE" ||
+                          animal.activeService.embryoGender === "FEMALE"
+                        ) {
+                          props.setFieldValue(
+                            "firstChildGender",
+                            animal.activeService.embryoGender
+                          );
+                          props.setFieldValue(
+                            "secondChildGender",
+                            animal.activeService.embryoGender
+                          );
+                        }
+                        break;
+
+                      default:
+                        break;
+                    }
+                  }
+                }
+              );
+            }
+
+            // eslint-disable-next-line react-hooks/exhaustive-deps
           }, [props.values.animalId]);
           return (
             <form onSubmit={props.handleSubmit} className={classes.formStyle}>

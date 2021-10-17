@@ -13,6 +13,7 @@ const list = () => async (dispatch, getState) => {
 const get = (data) => async (dispatch) => {
   const response = await IdeasCloudApi.fetch("animalGetById", data);
   dispatch({ type: ACTION_TYPES.ANIMAL.UPDATE_CURRENT, payload: response });
+  return response;
 };
 
 const create = (data) => async (dispatch, getState) => {
