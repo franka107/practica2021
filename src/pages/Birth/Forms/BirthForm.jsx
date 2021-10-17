@@ -618,7 +618,12 @@ const BirthForm = ({
                 <>
                   <Grid container spacing={1} className={classes.formStyle}>
                     <Grid item>
-                      <Typography variant={"subtitle2"}>Nacimientos</Typography>
+                      <Typography variant={"subtitle2"}>
+                        {birthTypeOptions[props.values.birthType] ===
+                        birthTypeOptions.SIMPLE
+                          ? "Datos de la cría"
+                          : "Datos de las crías"}
+                      </Typography>
                     </Grid>
                   </Grid>
                   <Grid
