@@ -19,7 +19,7 @@ import authActions from "../../../redux/actions/auth.actions";
 
 function UserType({ onClick }) {
   const classes = useStyles();
-  const [value, setValue] = useState(userTypes[0].key);
+  const [value, setValue] = useState(userTypes[0]._id);
   const { current: currentUser } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
@@ -99,6 +99,7 @@ function UserType({ onClick }) {
                 }
                 labelPlacement="start"
                 className={classes.labelContainer}
+                disabled={userType.disabled}
               />
             </Grid>
           ))}

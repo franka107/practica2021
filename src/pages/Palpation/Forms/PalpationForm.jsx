@@ -164,6 +164,7 @@ const PalpationForm = ({
                   name: stateOptions[key],
                 }))}
                 label="Estado"
+                disabled={type === "create" ? false : true}
                 name="state"
                 xs={11}
               />

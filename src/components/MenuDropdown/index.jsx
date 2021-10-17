@@ -14,6 +14,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useStyles } from "./styles";
 import { menuItems } from "./constants";
 import { useDispatch } from "react-redux";
+import { ROUTES_DICT } from "../../routes/routesDict";
 
 function MenuDropdown({ isLogin, setLoginState }) {
   const dispatch = useDispatch();
@@ -64,7 +65,12 @@ function MenuDropdown({ isLogin, setLoginState }) {
       {isLogin && (
         <React.Fragment>
           <Grid item>
-            <AccountCircleIcon className={classes.iconColor} />
+            <AccountCircleIcon
+              className={classes.iconColor}
+              onClick={() => {
+                history.push(ROUTES_DICT.account);
+              }}
+            />
           </Grid>
           <Grid item>
             <Search className={classes.iconColor} />

@@ -28,9 +28,13 @@ const RaceForm = ({
 }) => {
   const classes = useStyles();
   const letters = ["A", "B", "C", "D"];
-  const [animalRace, setAnimalRace] = useState({
-    A: { type: "1", percentage: "100%" },
-  });
+  const [racesShow, setRacesShow] = useState([
+    { letter: "A", show: true },
+    { letter: "B", show: false },
+    { letter: "C", show: false },
+    { letter: "D", show: false },
+  ]);
+  const [inxRace, setInxRace] = useState(0);
   const dispatch = useDispatch();
   const currentAnimal = useSelector((state) => state.animal.current);
   const listRaces = useSelector((state) =>
@@ -51,6 +55,8 @@ const RaceForm = ({
   const [errorPercentage, setErrorPercentage] = useState("");
 
   useEffect(() => {
+    const r = racesShow;
+    let i = inxRace;
     if (!listRaces || listRaces.length === 0) {
       dispatch(RaceActions.listRace());
     }
@@ -65,19 +71,28 @@ const RaceForm = ({
     if (
       currentAnimal.percentageRace2 !== 0 &&
       currentAnimal.percentageRace2 !== null
-    )
-      handleAddRace();
-    if (
-      currentAnimal.percentageRace4 !== 0 &&
-      currentAnimal.percentageRace2 !== null
-    )
-      handleAddRace();
+    ) {
+      r[1].show = true;
+      i = i + 1;
+    }
+
     if (
       currentAnimal.percentageRace3 !== 0 &&
-      currentAnimal.percentageRace2 !== null
-    )
-      handleAddRace();
+      currentAnimal.percentageRace3 !== null
+    ) {
+      r[2].show = true;
+      i = i + 1;
+    }
 
+    if (
+      currentAnimal.percentageRace4 !== 0 &&
+      currentAnimal.percentageRace4 !== null
+    ) {
+      r[3].show = true;
+      i = i + 1;
+    }
+    setInxRace(i);
+    setRacesShow(r);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -104,23 +119,24 @@ const RaceForm = ({
   };
 
   const handleAddRace = () => {
-    const listRaces = { ...animalRace };
-    if (letters[Object.keys(listRaces).length]) {
-      listRaces[letters[Object.keys(listRaces).length]] = {
-        type: "1",
-        percentage: "0%",
-      };
-
-      setAnimalRace(listRaces);
-    }
+    const r = racesShow;
+    const i = inxRace;
+    r[i + 1].show = true;
+    setInxRace(i + 1);
+    console.log(r);
+    setRacesShow(r);
   };
 
-  const handleRemoveRace = (id, index, values) => {
-    const listRaces = { ...animalRace };
-    delete listRaces[id];
+  const handleRemoveRace = (index, values) => {
+    const r = racesShow;
+    const i = inxRace;
+
     values[`percentageRace${index + 1}`] = 0;
     values[`race${index + 1}Id`] = "";
-    setAnimalRace(listRaces);
+
+    r[i].show = false;
+    setInxRace(i - 1);
+    setRacesShow(r);
   };
 
   const handleSubmit = async (values, actions) => {
@@ -190,7 +206,7 @@ const RaceForm = ({
             </Grid>
           </Grid>
           <Grid container spacing={1} className={classes.formStyle}>
-            <SearchFieldFormik
+            {/* <SearchFieldFormik
               options={maleAnimals}
               label="Padre"
               type="text"
@@ -215,76 +231,100 @@ const RaceForm = ({
               lg={6}
               sm={6}
               xs={12}
-            ></SearchFieldFormik>
+            ></SearchFieldFormik> */}
+            <TextFieldFormik
+              label="Madre"
+              type="text"
+              name="motherRef"
+              onChange={props.handleChange}
+              lg={6}
+              sm={6}
+              xs={12}
+            ></TextFieldFormik>
+            <TextFieldFormik
+              label="Padre"
+              type="text"
+              name="fatherRef"
+              onChange={props.handleChange}
+              lg={6}
+              sm={6}
+              xs={12}
+            ></TextFieldFormik>
           </Grid>
           <Grid item xs={12} container className={classes.border}>
-            {Object.keys(animalRace).map((raceItem, index) => (
-              <Grid
-                item
-                xs={12}
-                container
-                key={`race-option-${raceItem}`}
-                spacing={1}
-                className={classes.raceContainer}
-              >
-                <Grid item xs={12}>
-                  <Typography
-                    variant={"body2"}
-                    gutterBottom
-                    className={classes.subtitle}
+            {racesShow.map((raceItem, index) => (
+              <>
+                {raceItem.show && (
+                  <Grid
+                    item
+                    xs={12}
+                    container
+                    key={`race-option-${index}`}
+                    spacing={1}
+                    className={classes.raceContainer}
                   >
-                    {`Raza ${raceItem}`}
-                  </Typography>
-                </Grid>
-                <Grid item container sm={8} xs={12}>
-                  <SelectFieldFormik
-                    name={`race${index + 1}Id`}
-                    label="Raza"
-                    options={listRaces}
-                    onChange={props.handleChange}
-                  />
-                </Grid>
-                <Grid
-                  item
-                  container
-                  sm={4}
-                  xs={12}
-                  alignItems={"center"}
-                  justifyContent={"center"}
-                >
-                  <Grid item xs={11}>
-                    <TextFieldFormik
-                      xs={12}
-                      name={`percentageRace${index + 1}`}
-                      endAdornment={
-                        <InputAdornment position="start">%</InputAdornment>
-                      }
-                      type="number"
-                      label="Porcentaje"
-                      style={{ textAlign: "end" }}
-                      // type="number"
-                      onChange={props.handleChange}
-                    />
-                  </Grid>
-                  <Grid item xs={1}>
-                    {Boolean(index) && (
-                      <DeleteIcon
-                        className={classes.deleteIcon}
-                        onClick={() =>
-                          handleRemoveRace(raceItem, index, props.values)
-                        }
+                    <Grid item xs={12}>
+                      <Typography
+                        variant={"body2"}
+                        gutterBottom
+                        className={classes.subtitle}
+                      >
+                        {`Raza ${raceItem.letter}`}
+                      </Typography>
+                    </Grid>
+                    <Grid item container sm={8} xs={12}>
+                      <SelectFieldFormik
+                        name={`race${index + 1}Id`}
+                        label="Raza"
+                        options={listRaces}
+                        onChange={props.handleChange}
                       />
-                    )}
+                    </Grid>
+                    <Grid
+                      item
+                      container
+                      sm={4}
+                      xs={12}
+                      alignItems={"center"}
+                      justifyContent={"center"}
+                    >
+                      <Grid item xs={11}>
+                        <TextFieldFormik
+                          xs={12}
+                          name={`percentageRace${index + 1}`}
+                          endAdornment={
+                            <InputAdornment position="start">%</InputAdornment>
+                          }
+                          type="number"
+                          label="Porcentaje"
+                          style={{ textAlign: "end" }}
+                          // type="number"
+                          onChange={props.handleChange}
+                        />
+                      </Grid>
+                      <Grid item xs={1}>
+                        {inxRace === index && Boolean(index) && (
+                          <DeleteIcon
+                            className={classes.deleteIcon}
+                            onClick={() =>
+                              handleRemoveRace(index, props.values)
+                            }
+                          />
+                        )}
+                      </Grid>
+                    </Grid>
                   </Grid>
-                </Grid>
-              </Grid>
+                )}
+              </>
             ))}
             <Grid item xs={12} className={classes.errorMessage}>
               <Typography variant={"caption"} gutterBottom>
                 {errorPercentage}
               </Typography>
             </Grid>
-            <AddCircle className={classes.addBtn} onClick={handleAddRace} />
+            {inxRace !== racesShow.length - 1 && (
+              <AddCircle className={classes.addBtn} onClick={handleAddRace} />
+            )}
           </Grid>
           <Grid container spacing={1}>
             <SelectFieldFormik

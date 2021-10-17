@@ -12,6 +12,7 @@ import { useEffect } from "react";
 import SaleActions from "../../../../redux/actions/sale.actions";
 import SelectFieldFormik from "../../../../components/Inputs/SelectFieldFormik";
 import { saleTranferOptions } from "../../../../constants";
+import { differenceInMonths } from "date-fns";
 
 const defaultInitValues = {
   animalId: "",
@@ -29,14 +30,37 @@ const SaleForm = ({
   onCompleteSubmit = () => {},
 }) => {
   const dispatch = useDispatch();
-  const femaleAnimals = useSelector(
-    (state) => state.animal.list.filter((e) => e.gender === "FEMALE"),
-    shallowEqual
+  // const result = differenceInMonths(new Date(2014, 8, 1), new Date(2014, 0, 31))
+
+  const currentAgribusiness = useSelector(
+    (state) => state.agribusiness.current
   );
+  // const femaleAnimals = useSelector(
+  //   (state) =>
+  //     state.animal.list.filter(
+  //       (e) => e.gender === "FEMALE"
+  //     ),
+  //   shallowEqual
+  // );
+  const listAnimal = useSelector((state) => state.animal.list);
+  //   .filter(
+  //     (e) =>
+  //       differenceInMonths(new Date(), new Date(e?.birthDate)) >=
+  //       currentAgribusiness.isHeifer
+  //   ),
+  // shallowEqual
 
   useEffect(() => {
-    if (!femaleAnimals || femaleAnimals.length === 0) {
+    if (!listAnimal || listAnimal.length === 0) {
       dispatch(AnimalActions.list());
+      // console.log(differenceInMonths(new Date(), new Date(2021, 3, 1)) === 6);`
+      console.log(currentAgribusiness);
+      //   .filter(
+      //     (e) =>
+      //       differenceInMonths(new Date(), new Date(e.birthDate)) ===
+      //       currentAgribusiness.isHeifer
+      //   ),
+      // shallowEqual
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -54,7 +78,7 @@ const SaleForm = ({
   const handleSubmit = async (values, actions) => {
     try {
       if (type === "create") {
-        const animal = femaleAnimals.find((e) => e._id === values.animalId);
+        const animal = listAnimal.find((e) => e._id === values.animalId);
         await dispatch(SaleActions.create(values, animal));
       }
       if (type === "update") {
@@ -93,7 +117,7 @@ const SaleForm = ({
               xs={12}
             ></SelectFieldFormik>
             <AutocompleteFieldFormik
-              options={femaleAnimals}
+              options={listAnimal}
               name="animalId"
               label="Identificacíon del animal"
               onChange={props.handleChange}
@@ -108,7 +132,7 @@ const SaleForm = ({
               xs={12}
               value={
                 props.values.animalId
-                  ? femaleAnimals.find((e) => e._id === props.values.animalId)
+                  ? listAnimal.find((e) => e._id === props.values.animalId)
                       ?.name
                   : ""
               }
