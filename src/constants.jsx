@@ -134,6 +134,12 @@ export const birthTypeOptions = {
   DEAD: "Nació muerto",
 };
 
+export const serviceStatusOptions = {
+  SUCCESSFUL: "Exitoso",
+  UNCERTAIN: "Incierto",
+  FAILED: "Fallido",
+};
+
 export const birthDifficulyOptions = {
   EUTOCICUS: "Eutócico",
   DISTOCICUS: "Distócico",

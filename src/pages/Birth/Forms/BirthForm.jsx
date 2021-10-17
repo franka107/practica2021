@@ -27,7 +27,7 @@ import { useStyles } from "../../../styles";
 const defaultInitValues = {
   children: [],
   birthDate: new Date(),
-  animalId: null,
+  animalId: "",
   birthType: "SIMPLE",
   difficulty: "CEASAREAN",
   retainedPlacenta: false,
@@ -81,7 +81,6 @@ const BirthForm = ({
       _id: fatherId,
     });
 
-    console.log(mother);
     const fatherRaces = Object.keys(father)
       .filter(
         (key) =>
@@ -152,47 +151,12 @@ const BirthForm = ({
 
     const result = {};
 
-    console.log(childRaces);
-
     childRaces.map((raceObject, i) => {
       result[`race${i + 1}Id`] = raceObject.raceId;
       result[`percentageRace${i + 1}`] = raceObject.percentageRace;
     });
 
-    console.log(result);
     return result;
-
-    //const childRaces = fullRaces.map((raceObject) => {
-    //  const raceObjectFather = fatherRaces.find(
-    //    (e) => e.raceId === raceObject.raceId
-    //  );
-    //  const percentage =
-    //    (raceObject.percentageRace + Number(raceObjectFather?.percentageRace)) /
-    //    2;
-    //  return {
-    //    raceId: raceObject.raceId,
-    //    percentageRace: percentage,
-    //  };
-    //});
-
-    //const averageRaces = motherRaces.map( raceObject => {
-    //  motherRaces.find( e => e.raceId === raceObject.raceId)
-    //})
-    //[{ raceId: 'asdsaf', percentageRace: 23}]
-
-    //const motherRaces = {
-    //  percentageRace1: mother.percentageRace1 / 2,
-    //  percentageRace2: mother.percentageRace2 / 2,
-    //  percentageRace3: mother.percentageRace3 / 2,
-    //  percentageRace4: mother.percentageRace4 / 2,
-    //};
-
-    //const fatherRaces = {
-    //  percentageRace1: father.percentageRace1 / 2,
-    //  percentageRace2: father.percentageRace2 / 2,
-    //  percentageRace3: father.percentageRace3 / 2,
-    //  percentageRace4: father.percentageRace4 / 2,
-    //};
   };
 
   const validationSchema = () =>
@@ -272,29 +236,10 @@ const BirthForm = ({
                   ?.activeService.reproductorAnimalId
               )),
             };
-            console.log("datachillll");
-            console.log(dataChild);
-            console.log("calculateRaces");
-            console.log(
-              await calculateRaces(
-                values.animalId,
-
-                femaleAnimals.find((e) => e._id === values.animalId)
-                  ?.activeService.reproductorAnimalId
-              )
-            );
           }
-          const firstChild = await dispatch(AnimalActions.create(dataChild));
-          values.children.push(firstChild._id);
-          values.child1Id = firstChild._id;
+          await dispatch(AnimalActions.create(dataChild));
 
-          console.log(
-            "birthEvaluation",
-            birthTypeOptions[values.birthType] === birthTypeOptions.TWIN
-          );
           if (birthTypeOptions[values.birthType] === birthTypeOptions.TWIN) {
-            console.log("dentro de parto gemelar");
-            console.log("dentro de parto gemelar reload");
             let data2Child = {
               identifier: values.secondChildIdentifier,
               name: values.secondChildName,
@@ -314,26 +259,8 @@ const BirthForm = ({
               )?._id,
             };
 
-            console.log("data2child", data2Child);
-
-            const secondChild = await dispatch(
-              AnimalActions.create(data2Child)
-            );
-            values.children.push(secondChild._id);
-            values.child2Id = secondChild._id;
+            await dispatch(AnimalActions.create(data2Child));
           }
-          //const animal = femaleAnimals.find((e) => e._id === values.animalId);
-
-          const cowData = await IdeasCloudApi.fetch("animalGetById", {
-            _id: values.animalId,
-          });
-          await dispatch(
-            AnimalActions.update({
-              ...cowData,
-              agribusinessId: currentAgribusiness._id,
-              //reproductiveStatus: "EMPTY",
-            })
-          );
         } else {
           await dispatch(BirthActions.create(values));
           const cowData = await IdeasCloudApi.fetch("animalGetById", {
@@ -350,8 +277,6 @@ const BirthForm = ({
       }
       if (type === "update") {
         await dispatch(BirthActions.update(values));
-
-        //await dispatch(MovementActions.update(transformedValues, geneticType));
       }
       if (hideAnimal) {
         await dispatch(AnimalActions.get({ _id: params._id }));
@@ -376,21 +301,15 @@ const BirthForm = ({
               const animalSelectedBirths = births.filter(
                 (birth) => birth.animalId === props.values.animalId
               );
-              console.log(animalSelectedBirths);
               const lastBirthComparison = (first, second, gender) => {
-                console.log("executeFunction");
                 if (
                   first === null ||
                   new Date(second.birthDate) > new Date(first.birthDate)
                 ) {
-                  console.log("second.birthDate", new Date(second.birthDate));
-                  console.log("first.birthDate", new Date(first?.birthDate));
-                  console.log("Dentro del lastBirthComparicon");
                   if (
                     second.birthType === "SIMPLE" &&
                     second.children[0].gender === gender
                   ) {
-                    console.log("second.children", second.children);
                     return second;
                   }
                   if (second.birthType === "TWIN") {
@@ -403,7 +322,6 @@ const BirthForm = ({
                   }
                   return first;
                 } else {
-                  console.log("false por fecha");
                   return first;
                 }
               };
@@ -416,8 +334,6 @@ const BirthForm = ({
                 return lastBirthComparison(a, b, "FEMALE");
               }, null);
 
-              console.log("lastMaleBirth =>", lastMaleBirth);
-              console.log("lastFemaleBirth =>", lastFemaleBirth);
               props.setFieldValue(
                 "lastMaleBirth",
                 lastMaleBirth
@@ -437,7 +353,18 @@ const BirthForm = ({
               props.setFieldValue("lastMaleBirth", "");
               props.setFieldValue("lastFemaleBirth", "");
             }
+
             // eslint-disable-next-line react-hooks/exhaustive-deps
+          }, [props.values.animalId]);
+
+          useEffect(() => {
+            console.log("onChangeAnimalId");
+            //const animal = await dispatch(
+            //  AnimalActions.get({ _id: props.values.animalId })
+            //);
+            //console.log(animal);
+            //if (animal?.activeService) {
+            //}
           }, [props.values.animalId]);
           return (
             <form onSubmit={props.handleSubmit} className={classes.formStyle}>
@@ -465,7 +392,7 @@ const BirthForm = ({
                       label="Identificacíon del animal"
                       onChange={props.handleChange}
                       defaultValue={
-                        type === "create" ? null : props.values.animal
+                        type === "create" ? "" : props.values.animal
                       }
                       md={6}
                       xs={12}

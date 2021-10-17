@@ -11,6 +11,7 @@ function AutocompleteFieldFormik({
   onChange,
   disabled = false,
   displayName = true,
+  label,
   ...props
 }) {
   const [field, meta, helpers] = useField(props);
@@ -25,7 +26,9 @@ function AutocompleteFieldFormik({
     <Grid item xs={xs} {...props}>
       <Autocomplete
         // onChange={(event, value) => console.log(props)}
-        onChange={(e, value) => setValue(value && value._id)}
+        onChange={(e, value) => {
+          setValue(value && value._id);
+        }}
         // {...props}
         disabled={disabled}
         defaultValue={defaultValue}
@@ -37,13 +40,13 @@ function AutocompleteFieldFormik({
               : option.identifier
             : ""
         }
+        {...props}
         getOptionSelected={(option, value) => option._id === value._id}
         // filterOptions={filterOptions}
         renderInput={(params) => (
           <TextField
             {...params}
-            {...field}
-            {...props}
+            label={label}
             variant="filled"
             error={meta.touched && Boolean(meta.error)}
             helperText={meta.touched && meta.error}
