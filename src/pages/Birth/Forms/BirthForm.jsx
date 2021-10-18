@@ -76,43 +76,43 @@ const BirthForm = ({
     shallowEqual
   );
 
-  const calculateRaces = async (motherId, fatherId) => {
-    const mother = await IdeasCloudApi.fetch("animalGetById", {
-      _id: motherId,
-    });
-    const father = await IdeasCloudApi.fetch("animalGetById", {
-      _id: fatherId,
-    });
+  const calculateRaces = (originRaces1, originRaces2) => {
+    //const mother = await IdeasCloudApi.fetch("animalGetById", {
+    //  _id: motherId,
+    //});
+    //const father = await IdeasCloudApi.fetch("animalGetById", {
+    //  _id: fatherId,
+    //});
 
-    const fatherRaces = Object.keys(father)
+    const fatherRaces = Object.keys(originRaces1)
       .filter(
         (key) =>
           (key.includes("race1Id") ||
             key.includes("race2Id") ||
             key.includes("race3Id") ||
             key.includes("race4Id")) &&
-          !!father[key]
+          !!originRaces1[key]
       )
       .map((key) => {
         return {
-          raceId: father[key],
-          percentageRace: father[`percentageRace${key.slice(-3, -2)}`],
+          raceId: originRaces1[key],
+          percentageRace: originRaces1[`percentageRace${key.slice(-3, -2)}`],
         };
       });
 
-    const motherRaces = Object.keys(mother)
+    const motherRaces = Object.keys(originRaces2)
       .filter(
         (key) =>
           (key.includes("race1Id") ||
             key.includes("race2Id") ||
             key.includes("race3Id") ||
             key.includes("race4Id")) &&
-          !!mother[key]
+          !!originRaces2[key]
       )
       .map((key) => {
         return {
-          raceId: mother[key],
-          percentageRace: mother[`percentageRace${key.slice(-3, -2)}`],
+          raceId: originRaces2[key],
+          percentageRace: originRaces2[`percentageRace${key.slice(-3, -2)}`],
         };
       });
 
@@ -159,6 +159,7 @@ const BirthForm = ({
       result[`percentageRace${i + 1}`] = raceObject.percentageRace;
     });
 
+    console.log(result);
     return result;
   };
 
@@ -203,10 +204,39 @@ const BirthForm = ({
     try {
       if (type === "create") {
         const birth = await dispatch(BirthActions.create(values));
+
         if (
           birthTypeOptions[values.birthType] === birthTypeOptions.SIMPLE ||
           birthTypeOptions[values.birthType] === birthTypeOptions.TWIN
         ) {
+          let races = {};
+          if (currentAnimal.activeService) {
+            switch (currentAnimal.activeService.serviceType) {
+              //Artificial Insemination
+              case "AR_IN":
+                races = calculateRaces(
+                  currentAnimal,
+                  currentAnimal.activeService.geneticStock
+                );
+                break;
+              //Natural Mount
+              case "NA_MO":
+                races = calculateRaces(
+                  currentAnimal,
+                  currentAnimal.activeService.reproductorAnimal
+                );
+                break;
+              //Embryo transfer
+              case "EM_TR":
+                races = calculateRaces(
+                  currentAnimal,
+                  currentAnimal.activeService.geneticStock
+                );
+                break;
+              default:
+            }
+          }
+
           let dataChild = {
             identifier: values.firstChildIdentifier,
             name: values.firstChildName,
@@ -218,32 +248,28 @@ const BirthForm = ({
             herdDate: new Date(),
             birthId: birth._id,
             motherId: values.animalId,
-            fatherId: maleAnimals.find(
-              (e) =>
-                e._id ===
-                femaleAnimals.find((e) => e._id === values.animalId)
-                  ?.activeService?.reproductorAnimalId
-            )?._id,
+            fatherId: currentAnimal.activeService?.reproductorAnimalId,
             bornBy: currentAnimal.activeService?.serviceType,
+            ...races,
           };
 
           /**
            * Calculate race percentage beta
            */
-          if (
-            femaleAnimals.find((e) => e._id === values.animalId)?.activeService
-              ?.reproductorAnimalId
-          ) {
-            dataChild = {
-              ...dataChild,
-              ...(await calculateRaces(
-                values.animalId,
+          //if (
+          //  femaleAnimals.find((e) => e._id === values.animalId)?.activeService
+          //    ?.reproductorAnimalId
+          //) {
+          //  dataChild = {
+          //    ...dataChild,
+          //    ...(await calculateRaces(
+          //      values.animalId,
 
-                femaleAnimals.find((e) => e._id === values.animalId)
-                  ?.activeService.reproductorAnimalId
-              )),
-            };
-          }
+          //      femaleAnimals.find((e) => e._id === values.animalId)
+          //        ?.activeService.reproductorAnimalId
+          //    )),
+          //  };
+          //}
           await dispatch(AnimalActions.create(dataChild));
 
           if (birthTypeOptions[values.birthType] === birthTypeOptions.TWIN) {
@@ -258,13 +284,10 @@ const BirthForm = ({
               birthDate: new Date(),
               herdDate: new Date(),
               motherId: values.animalId,
-              fatherId: maleAnimals.find(
-                (e) =>
-                  e._id ===
-                  femaleAnimals.find((e) => e._id === values.animalId)
-                    ?.activeService?.reproductorAnimalId
-              )?._id,
+
+              fatherId: currentAnimal.activeService?.reproductorAnimalId,
               bornBy: currentAnimal.activeService?.serviceType,
+              ...races,
             };
 
             await dispatch(AnimalActions.create(data2Child));
