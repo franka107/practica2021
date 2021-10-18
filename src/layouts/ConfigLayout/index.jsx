@@ -7,10 +7,13 @@ import MenuOpenIcon from "@material-ui/icons/MenuOpen";
 import { useStyles } from "./styles";
 import Logo from "../../components/Logo";
 import { menuList } from "./constants";
+import { useHistory } from "react-router";
+import { ROUTES_DICT } from "../../routes/routesDict";
 
 export const ConfigLayout = ({ children }) => {
   const classes = useStyles();
   const [openDrawer, setOpenDrawer] = useState(false);
+  const history = useHistory();
   return (
     <div>
       <Grid
@@ -21,7 +24,7 @@ export const ConfigLayout = ({ children }) => {
         justifyContent={"space-between"}
       >
         <Grid item md={2} sm={4} xs={5} className={classes.logoContainer}>
-          <Logo footer />
+          <Logo footer onClick={() => history.push(ROUTES_DICT.animal.list)} />
         </Grid>
         <Grid item className={classes.drawerIcon}>
           <MenuOpenIcon fontSize="large" onClick={() => setOpenDrawer(true)} />

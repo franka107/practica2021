@@ -10,11 +10,12 @@ const propTypes = {
   customClasses: PropTypes.object,
 };
 
-function Logo({ footer, customClasses }) {
+function Logo({ footer, customClasses, onClick = () => {} }) {
   const classes = useStyles();
 
   return (
     <div
+      onClick={onClick}
       className={clsx(classes.header, footer && classes.footer, customClasses)}
     >
       {!footer ? (
