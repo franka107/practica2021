@@ -65,6 +65,7 @@ const BirthForm = ({
       ),
     shallowEqual
   );
+  const currentAnimal = useSelector((state) => state.animal.current);
   const listSemen = useSelector(
     (state) => state.geneticStock.list.filter((e) => e.geneticType === "SEMEN"),
     shallowEqual
@@ -223,8 +224,12 @@ const BirthForm = ({
                 femaleAnimals.find((e) => e._id === values.animalId)
                   ?.activeService?.reproductorAnimalId
             )?._id,
+            bornBy: currentAnimal.activeService?.serviceType,
           };
 
+          /**
+           * Calculate race percentage beta
+           */
           if (
             femaleAnimals.find((e) => e._id === values.animalId)?.activeService
               ?.reproductorAnimalId
@@ -259,6 +264,7 @@ const BirthForm = ({
                   femaleAnimals.find((e) => e._id === values.animalId)
                     ?.activeService?.reproductorAnimalId
               )?._id,
+              bornBy: currentAnimal.activeService?.serviceType,
             };
 
             await dispatch(AnimalActions.create(data2Child));

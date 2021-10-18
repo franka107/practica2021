@@ -13,6 +13,7 @@ import {
   sexDictionary,
   sexOptions,
   stateOptions,
+  typeServicesTest,
 } from "../../../constants";
 import CheckboxFormik from "../../../components/Inputs/CheckboxFormik";
 
@@ -101,6 +102,16 @@ const GeneralForm = ({
               name="name"
               onChange={props.handleChange}
             />
+            <SelectFieldFormik
+              onChange={props.handleChange}
+              options={Object.keys(typeServicesTest).map((key) => ({
+                _id: key,
+                name: typeServicesTest[key],
+              }))}
+              label="Nacido por"
+              name="bornBy"
+              xs={12}
+            ></SelectFieldFormik>
           </Grid>
           <Grid container spacing={1} xs={12}>
             <Grid item>

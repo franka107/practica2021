@@ -18,6 +18,7 @@ import {
   racialTypeOptions,
   sexOptions,
   stateOptions,
+  typeServicesTest,
 } from "../../../constants";
 import raceActions from "../../../redux/actions/race.actions";
 
@@ -50,6 +51,7 @@ const defaultInitValues = {
   racialType: "",
   color: "",
   reproductiveStatus: null,
+  bornBy: null,
 };
 
 function AnimalForm({
@@ -263,8 +265,18 @@ function AnimalForm({
               name="registerNumber"
               type="text"
               onChange={props.handleChange}
-              xs={12}
+              xs={6}
             ></TextFieldFormik>
+            <SelectFieldFormik
+              onChange={props.handleChange}
+              options={Object.keys(typeServicesTest).map((key) => ({
+                _id: key,
+                name: typeServicesTest[key],
+              }))}
+              label="Nacido por"
+              name="bornBy"
+              xs={6}
+            ></SelectFieldFormik>
             <SelectFieldFormik
               onChange={props.handleChange}
               options={sexOptions.slice(1)}

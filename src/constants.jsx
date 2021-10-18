@@ -120,8 +120,8 @@ export const typeServices = [
 ];
 
 export const typeServicesTest = {
-  AR_IN: "I.A",
-  NA_MO: "M.N",
+  AR_IN: "Inseminación Artificial",
+  NA_MO: "Monta natural",
   EM_TR: "Tranferencia de embriones",
 };
 
