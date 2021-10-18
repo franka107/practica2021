@@ -253,23 +253,6 @@ const BirthForm = ({
             ...races,
           };
 
-          /**
-           * Calculate race percentage beta
-           */
-          //if (
-          //  femaleAnimals.find((e) => e._id === values.animalId)?.activeService
-          //    ?.reproductorAnimalId
-          //) {
-          //  dataChild = {
-          //    ...dataChild,
-          //    ...(await calculateRaces(
-          //      values.animalId,
-
-          //      femaleAnimals.find((e) => e._id === values.animalId)
-          //        ?.activeService.reproductorAnimalId
-          //    )),
-          //  };
-          //}
           await dispatch(AnimalActions.create(dataChild));
 
           if (birthTypeOptions[values.birthType] === birthTypeOptions.TWIN) {
