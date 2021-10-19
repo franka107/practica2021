@@ -25,6 +25,10 @@ const get = (data) => async (dispatch) => {
   return response;
 };
 
+const clearCurrent = (data) => async (dispatch) => {
+  dispatch({ type: ACTION_TYPES.ANIMAL.UPDATE_CURRENT, payload: null });
+};
+
 const create = (data) => async (dispatch, getState) => {
   const agribusiness = getState().agribusiness.current;
   const response = await IdeasCloudApi.fetch(
@@ -75,6 +79,7 @@ const AnimalActions = {
   get,
   create,
   update,
+  clearCurrent,
   deleteAnimal,
 };
 

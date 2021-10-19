@@ -37,6 +37,7 @@ const defaultInitValues = {
   gender: "MALE",
   category: null,
   father: null,
+  pregnantDate: null,
   mother: null,
   fatherId: "",
   motherId: "",
@@ -305,18 +306,30 @@ function AnimalForm({
                 ></CheckboxFormik>
               </Grid>
             ) : (
-              <SelectFieldFormik
-                onChange={props.handleChange}
-                options={Object.keys(stateOptions).map((key) => ({
-                  _id: key,
-                  name: stateOptions[key],
-                }))}
-                label="Estado"
-                name="reproductiveStatus"
-                lg={6}
-                sm={6}
-                xs={12}
-              ></SelectFieldFormik>
+              <>
+                <SelectFieldFormik
+                  onChange={props.handleChange}
+                  options={Object.keys(stateOptions).map((key) => ({
+                    _id: key,
+                    name: stateOptions[key],
+                  }))}
+                  label="Estado"
+                  name="reproductiveStatus"
+                  lg={6}
+                  sm={6}
+                  xs={12}
+                ></SelectFieldFormik>
+                {props.values.reproductiveStatus === "PREGNANT" && (
+                  <DatePickerFieldFormik
+                    label="Fecha de preñez"
+                    name="pregnantDate"
+                    onChange={props.handleChange}
+                    lg={12}
+                    sm={12}
+                    xs={12}
+                  ></DatePickerFieldFormik>
+                )}
+              </>
             )}
 
             {type === "create" ? (

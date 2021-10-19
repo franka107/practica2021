@@ -1,4 +1,5 @@
 import { Divider, Grid, Typography } from "@material-ui/core";
+import { differenceInDays } from "date-fns";
 import { Formik } from "formik";
 import PropTypes from "prop-types";
 import { useEffect } from "react";
@@ -23,6 +24,7 @@ import IdeasCloudApi from "../../../helpers/ideascloudApi";
 import AnimalActions from "../../../redux/actions/animal.actions";
 import BirthActions from "../../../redux/actions/birth.actions";
 import geneticStockActions from "../../../redux/actions/geneticStock.actions";
+import uiActions from "../../../redux/actions/ui.actions";
 import { useStyles } from "../../../styles";
 const defaultInitValues = {
   children: [],
@@ -197,8 +199,32 @@ const BirthForm = ({
     if (hideAnimal) {
       initValues.animalId = params._id;
     }
+    dispatch(AnimalActions.clearCurrent());
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (currentAnimal) {
+      if (
+        differenceInDays(new Date(), new Date(currentAnimal.pregnantDate)) < 283
+      ) {
+        dispatch(
+          uiActions.showSnackbar(
+            "El parto de este animal sera prematuro",
+            "warning"
+          )
+        );
+      }
+      if (!currentAnimal.pregnantDate) {
+        dispatch(
+          uiActions.showSnackbar(
+            "No hay informacion de la fecha de preñez",
+            "warning"
+          )
+        );
+      }
+    }
+  }, [currentAnimal]);
 
   const onSubmit = async (values, actions) => {
     try {
