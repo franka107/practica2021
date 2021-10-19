@@ -1,5 +1,9 @@
 import { format, isAfter, isBefore } from "date-fns";
-import { sexDictionary, stateOptions } from "../../../constants";
+import {
+  categoryOptionsTest,
+  sexDictionary,
+  stateOptions,
+} from "../../../constants";
 import { getAgeInYears } from "../../../helpers/convertDate";
 import { DatePicker } from "@material-ui/pickers";
 import { Grid } from "@material-ui/core";
@@ -57,6 +61,7 @@ export const columns = [
     name: "category",
     options: {
       filter: true,
+      customBodyRender: (value) => categoryOptionsTest[value],
       //filterType: "checkbox",
       //filterOptions: {
       //  names: ["Reproductor", "No Reproductor"],

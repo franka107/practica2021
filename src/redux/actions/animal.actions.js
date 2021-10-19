@@ -10,6 +10,15 @@ const list = () => async (dispatch, getState) => {
   dispatch({ type: ACTION_TYPES.ANIMAL.RETRIEVE, payload: response });
 };
 
+const listDeads = () => async (dispatch, getState) => {
+  const agribusiness = getState().agribusiness.current;
+  const response = await IdeasCloudApi.fetch("animalListDeadsByAgribusiness", {
+    agribusinessId: agribusiness?._id,
+  });
+
+  dispatch({ type: ACTION_TYPES.ANIMAL.RETRIEVE_DEADS, payload: response });
+};
+
 const get = (data) => async (dispatch) => {
   const response = await IdeasCloudApi.fetch("animalGetById", data);
   dispatch({ type: ACTION_TYPES.ANIMAL.UPDATE_CURRENT, payload: response });
@@ -62,6 +71,7 @@ const deleteAnimal = (data) => async (dispatch) => {
 
 const AnimalActions = {
   list,
+  listDeads,
   get,
   create,
   update,

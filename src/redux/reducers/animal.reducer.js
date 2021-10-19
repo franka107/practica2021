@@ -9,6 +9,11 @@ export function animalReducer(state = initialState, action) {
         ...state,
         list: action.payload,
       };
+    case ACTION_TYPES.ANIMAL.RETRIEVE_DEADS:
+      return {
+        ...state,
+        listDeads: action.payload,
+      };
     case ACTION_TYPES.ANIMAL.RETRIEVE_BY_ID:
       return {
         ...state,

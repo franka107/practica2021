@@ -173,6 +173,10 @@ export const typeEmbryonOptions = [
   { _id: "FIV", name: "In Vitro (FIV)" },
 ];
 
+export const categoryOptionsTest = {
+  REPRODUCTOR: "Reproductor",
+};
+
 export const controlTypeOptions = {
   BIRTH: "Nacimiento",
   BALANCE: "Balanza",

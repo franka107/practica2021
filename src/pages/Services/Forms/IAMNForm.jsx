@@ -22,6 +22,7 @@ import CollaboratorActions from "../../../redux/actions/collaborator.actions";
 import { useParams } from "react-router";
 import geneticStockActions from "../../../redux/actions/geneticStock.actions";
 import MovementActions from "../../../redux/actions/movement.actions";
+import { differenceInMonths } from "date-fns";
 
 const defaultInitValues = {
   agribusinessId: "",
@@ -49,6 +50,9 @@ const IAMNForm = ({
   const dispatch = useDispatch();
   const params = useParams();
   const isHeifer = useSelector((state) => state.agribusiness.current.isHeifer);
+  const currentAgribusiness = useSelector(
+    (state) => state.agribusiness.current
+  );
   console.log(isHeifer);
   const femaleAnimals = useSelector(
     (state) =>
@@ -56,10 +60,19 @@ const IAMNForm = ({
         (e) =>
           e.gender === "FEMALE" &&
           e.reproductiveStatus !== "PREGNANT" &&
-          !e.isServed
+          !e.isServed &&
+          differenceInMonths(new Date(), new Date(e?.birthDate)) >=
+            currentAgribusiness.isHeifer
       ),
     shallowEqual
   );
+  //const listAnimal = useSelector((state) => state.animal.list);
+  //   .filter(
+  //     (e) =>
+  //       differenceInMonths(new Date(), new Date(e?.birthDate)) >=
+  //       currentAgribusiness.isHeifer
+  //   ),
+  // shallowEqual
 
   const maleAnimals = useSelector(
     (state) =>
@@ -69,9 +82,6 @@ const IAMNForm = ({
     shallowEqual
   );
 
-  const currentAgribusiness = useSelector(
-    (state) => state.agribusiness.current
-  );
   const listSemen = useSelector(
     (state) =>
       state.geneticStock.list.filter(

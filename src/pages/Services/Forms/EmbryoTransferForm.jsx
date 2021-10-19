@@ -24,6 +24,7 @@ import AnimalActions from "../../../redux/actions/animal.actions";
 import CollaboratorActions from "../../../redux/actions/collaborator.actions";
 import { useParams } from "react-router";
 import MovementActions from "../../../redux/actions/movement.actions";
+import { differenceInMonths } from "date-fns";
 
 const defaultInitValues = {
   agribusinessId: "",
@@ -55,18 +56,21 @@ const EmbryoTransferForm = ({
 }) => {
   const dispatch = useDispatch();
   const params = useParams();
+
+  const { current: currentAgribusiness } = useSelector(
+    (state) => state.agribusiness
+  );
   const femaleAnimals = useSelector(
     (state) =>
       state.animal.list.filter(
         (e) =>
           e.gender === "FEMALE" &&
           e.reproductiveStatus !== "PREGNANT" &&
-          !e.isServed
+          !e.isServed &&
+          differenceInMonths(new Date(), new Date(e?.birthDate)) >=
+            currentAgribusiness.isHeifer
       ),
     shallowEqual
-  );
-  const { current: currentAgribusiness } = useSelector(
-    (state) => state.agribusiness
   );
   const listEmbryo = useSelector(
     (state) =>

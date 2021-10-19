@@ -2,38 +2,6 @@ import { getGroupedByHerdDate } from "../../../helpers/chartsFunctions";
 
 export const chartData = [
   {
-    id: 1,
-    renderNumber: (animalList) => animalList && animalList.length,
-    text: "Nro. de animales",
-    amountType: "asc",
-    percentage: 25,
-  },
-  {
-    id: 2,
-    text: "Vacas de producción",
-    percentage: -2,
-    renderNumber: (animalList) => 12,
-  },
-  {
-    id: 3,
-    text: "Novillas de vientre",
-    percentage: 25,
-    renderNumber: (animalList) => 12,
-  },
-  {
-    id: 4,
-    number: 16,
-    text: "Partos programados",
-    percentage: 25,
-    renderNumber: (animalList) => 12,
-  },
-  {
-    id: 5,
-    renderNumber: (animalList) => 12,
-    text: "Vacas secas",
-    percentage: -2,
-  },
-  {
     id: 6,
     text: "Novillas próximas de parto",
     percentage: 25,

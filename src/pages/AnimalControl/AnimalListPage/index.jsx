@@ -5,7 +5,7 @@ import {
   useParams,
   generatePath,
 } from "react-router-dom";
-import { Grid } from "@material-ui/core";
+import { Grid, Switch, Typography } from "@material-ui/core";
 import AnimalDescription from "../AnimalDescription";
 import AnimalCharts from "../AnimalCharts";
 import AddAnimals from "../AddAnimals";
@@ -26,10 +26,12 @@ const AnimalPageList = ({ children, setTitle, setChipList }) => {
   const location = useLocation();
   const dispatch = useDispatch();
   const listAnimal = useSelector((state) => state.animal.list);
+  const listAnimalDeads = useSelector((state) => state.animal.listDeads);
   const currentAgribusiness = useSelector(
     (state) => state.agribusiness.current
   );
   const [searchText, setSearchText] = useState();
+  const [listType, setListType] = useState(true);
 
   useEffect(() => {
     setTitle("Control Ganadero");
@@ -37,8 +39,11 @@ const AnimalPageList = ({ children, setTitle, setChipList }) => {
     if (!listAnimal || listAnimal.length === 0) {
       dispatch(AnimalActions.list());
     }
+    if (!listAnimalDeads || listAnimalDeads.length === 0) {
+      dispatch(AnimalActions.listDeads());
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [listType]);
 
   const options = {
     selectableRows: "none",
@@ -100,9 +105,25 @@ const AnimalPageList = ({ children, setTitle, setChipList }) => {
       <AnimalDescription />
       <AnimalCharts />
       <AddAnimals searchText={searchText} setSearchText={setSearchText} />
+      <Typography component="div">
+        <Grid component="label" container alignItems="center" spacing={1}>
+          <Grid item>Animales Muertos</Grid>
+          <Grid item>
+            <Switch
+              label
+              checked={listType}
+              onChange={(e) => {
+                setListType(!listType);
+              }}
+            />
+          </Grid>
+          <Grid item>Animales Vivos</Grid>
+        </Grid>
+      </Typography>
+
       <Grid item xs={12} className={classes.registerContainer}>
         <CustomMuiTable
-          data={listAnimal}
+          data={listType ? listAnimal : listAnimalDeads}
           columns={[...columns, actionColumn]}
           options={options}
         />

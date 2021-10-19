@@ -532,13 +532,7 @@ const BirthForm = ({
                   onChange={props.handleChange}
                   lg={6}
                   disabled
-                  value={
-                    props.values.animalId
-                      ? femaleAnimals.find(
-                          (e) => e._id === props.values.animalId
-                        )?.palpations[0]?.touchDate
-                      : null
-                  }
+                  value={currentAnimal?.palpations?.[0]?.touchDate || null}
                   sm={6}
                   xs={12}
                 ></DatePickerFieldFormik>

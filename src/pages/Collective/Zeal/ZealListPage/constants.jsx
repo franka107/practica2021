@@ -26,7 +26,7 @@ export const columns = [
     options: {
       filter: false,
       customBodyRender: (value) =>
-        value.birthDate
+        value?.birthDate
           ? getAgeInYears(new Date(value.birthDate), new Date()) + " años"
           : null,
       searchable: false,

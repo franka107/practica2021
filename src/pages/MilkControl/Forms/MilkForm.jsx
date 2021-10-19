@@ -11,6 +11,7 @@ import { useDispatch } from "react-redux";
 import AnimalActions from "../../../redux/actions/animal.actions";
 import MilkActions from "../../../redux/actions/milkControl.actions";
 import { useParams } from "react-router";
+import BirthActions from "../../../redux/actions/birth.actions";
 
 const defaultInitValues = {
   animalId: "",
@@ -31,8 +32,14 @@ const MilkForm = ({
 }) => {
   const dispatch = useDispatch();
   const params = useParams();
+  const births = useSelector((state) => state.birth.list);
   const femaleAnimals = useSelector(
-    (state) => state.animal.list.filter((e) => e.gender === "FEMALE"),
+    (state) =>
+      state.animal.list.filter(
+        (e) =>
+          e.gender === "FEMALE" &&
+          births.find((birth) => birth.animalId === e._id)
+      ),
     shallowEqual
   );
   const currentAgribusiness = useSelector(
@@ -42,6 +49,9 @@ const MilkForm = ({
   useEffect(() => {
     if (!femaleAnimals || femaleAnimals.length === 0) {
       dispatch(AnimalActions.list());
+    }
+    if (!births || births.length === 0) {
+      dispatch(BirthActions.list());
     }
     if (hideAnimal) {
       initValues.animalId = params._id;

@@ -1,38 +1,39 @@
-import { makeStyles } from '@material-ui/core'
+import { makeStyles } from "@material-ui/core";
 
 export const useStyles = makeStyles((theme) => ({
   optionContainer: {
-    padding: '1rem 0',
+    padding: "1rem 0",
   },
   option: {
-    padding: '1.2rem .5rem',
+    padding: "1.2rem .5rem",
     backgroundColor: theme.palette.button.tertiary,
-    '&:hover': {
+    "&:hover": {
       backgroundColor: theme.palette.button.primary,
-      color: 'white',
+      color: "white",
     },
-    '&:focus': {
+    "&:focus": {
       backgroundColor: theme.palette.button.primary,
-      color: 'white',
+      color: "white",
     },
   },
   active: {
     backgroundColor: theme.palette.secondary.main,
-    color: 'white',
+    color: "white",
   },
   userContainer: {
     backgroundColor: theme.palette.card.green,
-    padding: '2rem',
+    padding: "2rem",
+    height: "100%",
   },
   userTitle: {
-    fontWeight: '600',
+    fontWeight: "600",
     fontSize: 25,
   },
   userDescription: {
     fontSize: 13,
   },
   userItem: {
-    padding: '1rem',
+    padding: "1rem",
   },
   userItemNumber: {
     fontSize: 22,
@@ -41,130 +42,130 @@ export const useStyles = makeStyles((theme) => ({
     fontSize: 13,
   },
   userItemContainer: {
-    padding: '1rem',
+    padding: "1rem",
     backgroundColor: theme.palette.card.gray,
-    height: '100%',
-    width: '100%',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'column',
+    height: "100%",
+    width: "100%",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "column",
   },
   icon: {
     color: theme.palette.general.main,
-    marginBottom: '1rem',
+    marginBottom: "1rem",
   },
   cardContainer: {
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down("sm")]: {
       margin: 0,
     },
   },
   registerContainer: {
-    paddingTop: '1rem',
+    paddingTop: "1rem",
   },
   errorsContainer: {
-    paddingTop: '1rem',
+    paddingTop: "1rem",
   },
   textSecondary: {
     color: `${theme.palette.secondary.main} !important`,
   },
   tableHeader: {
     color: `${theme.palette.secondary.main} !important`,
-    backgroundColor: '#fafafa',
-    position: 'sticky',
+    backgroundColor: "#fafafa",
+    position: "sticky",
     top: 0,
   },
   closeBtn: {
-    position: 'absolute',
+    position: "absolute",
     right: 10,
     top: 10,
-    cursor: 'pointer',
+    cursor: "pointer",
   },
-  modal: { padding: '2.5rem' },
+  modal: { padding: "2.5rem" },
   optionDelete: {
-    backgroundColor: '#E7B3CA',
+    backgroundColor: "#E7B3CA",
   },
   card: {
-    padding: '1.2rem',
-    margin: '0.5rem',
+    padding: "1.2rem",
+    margin: "0.5rem",
   },
   calendarTitle: {
-    fontSize: '12px',
+    fontSize: "12px",
   },
   link: {
-    textAlign: 'right',
-    display: 'block',
+    textAlign: "right",
+    display: "block",
   },
   image: {
-    width: '70%',
-    margin: 'auto',
-    paddingTop: '2rem',
-    paddingBottom: '2rem',
-    position: 'relative',
+    width: "70%",
+    margin: "auto",
+    paddingTop: "2rem",
+    paddingBottom: "2rem",
+    position: "relative",
   },
   cowImageEditButton: {
-    position: 'absolute',
-    right: '-0.5rem',
-    top: '1.5rem',
+    position: "absolute",
+    right: "-0.5rem",
+    top: "1.5rem",
   },
   cowImageQrButton: {
-    position: 'absolute',
-    right: '-2.5rem',
-    bottom: '0.5rem',
-    backgroundColor: '#E8EDF1',
-    padding: '10px',
-    borderRadius: '100%',
+    position: "absolute",
+    right: "-2.5rem",
+    bottom: "0.5rem",
+    backgroundColor: "#E8EDF1",
+    padding: "10px",
+    borderRadius: "100%",
   },
   cowImage: {
-    width: '100%',
-    margin: 'auto',
-    borderRadius: '1rem',
+    width: "100%",
+    margin: "auto",
+    borderRadius: "1rem",
   },
   textCenter: {
-    textAlign: 'center',
+    textAlign: "center",
   },
   generalFeature: {
-    padding: '0.25rem',
+    padding: "0.25rem",
   },
   borderLinearProgress: {
-    padding: '2rem',
-    paddingLeft: '3rem',
-    paddingRight: '3rem',
+    padding: "2rem",
+    paddingLeft: "3rem",
+    paddingRight: "3rem",
   },
   cardFeature: {
-    color: '#979797',
-    fontWeight: 'bold',
+    color: "#979797",
+    fontWeight: "bold",
   },
   cowCodeTitle: {
-    paddingBottom: '1rem',
+    paddingBottom: "1rem",
   },
   divider: {
-    marginBottom: '1rem',
+    marginBottom: "1rem",
   },
   checkboxSmall: {
-    width: '16px',
-    height: '16px',
+    width: "16px",
+    height: "16px",
   },
 
   qrImage: {
-    width: '60px',
+    width: "60px",
   },
   cardEditIcon: {
-    backgroundColor: '#BBD1D7',
+    backgroundColor: "#BBD1D7",
   },
   cardEditButtonCow: {
-    backgroundColor: '#BBD1D7',
-    '&:hover': {
-      backgroundColor: '#BBD1D7',
+    backgroundColor: "#BBD1D7",
+    "&:hover": {
+      backgroundColor: "#BBD1D7",
     },
   },
   cardTitle: {
-    fontWeight: '700',
-    alignSelf: 'flex-end',
+    fontWeight: "700",
+    alignSelf: "flex-end",
   },
   cardHeader: {
-    paddingBottom: '0.25rem',
-    display: 'flex',
-    justifyContent: 'space-between',
+    paddingBottom: "0.25rem",
+    display: "flex",
+    justifyContent: "space-between",
   },
-}))
+}));

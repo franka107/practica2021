@@ -27,7 +27,7 @@ export const columns = (list) => [
     options: {
       filter: false,
       customBodyRender: (value) =>
-        value.birthDate
+        value?.birthDate
           ? getAgeInYears(new Date(value.birthDate), new Date()) + " años"
           : null,
       searchable: false,
@@ -50,7 +50,7 @@ export const columns = (list) => [
     name: "animal",
     options: {
       filter: false,
-      customBodyRender: (value) => (value.numberBith ? value.numberBith : 0),
+      customBodyRender: (value) => (value?.numberBirth ? value.numberBirth : 0),
       searchable: false,
     },
   },

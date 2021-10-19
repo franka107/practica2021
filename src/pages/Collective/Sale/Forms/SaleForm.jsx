@@ -119,7 +119,7 @@ const SaleForm = ({
             <AutocompleteFieldFormik
               options={listAnimal}
               name="animalId"
-              label="Identificacíon del animal"
+              label="Identificación del animal"
               onChange={props.handleChange}
               defaultValue={type === "create" ? null : props.values.animal}
               xs={12}
