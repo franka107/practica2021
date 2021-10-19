@@ -26,12 +26,15 @@ const update = (data) => {
 
 function findByOwnerId(ownerId) {
   return new Promise((resolve, reject) => {
+    //window.icAPI.callService(
+    //  "farmGetByOwnerId",
+    //  { ownerId },
     window.icAPI.callService(
-      "farmGetByOwnerId",
-      { ownerId },
+      "userGetById",
+      { _id: ownerId },
       (error, response) => {
         if (!error) {
-          resolve(response.responseJSON);
+          resolve(response.responseJSON?.farm);
         } else {
           const rejectBody = {
             message:

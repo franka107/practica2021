@@ -28,7 +28,7 @@ const UserForm = ({
     try {
       console.log(values);
       if (type === "create") {
-        dispatch(UserActions.create(values));
+        dispatch(UserActions.create({ ...values, verified: true }));
       }
       if (type === "update") {
         dispatch(UserActions.update(values));

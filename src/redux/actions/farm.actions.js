@@ -3,6 +3,7 @@ import ACTION_TYPES from "../types";
 import { farmConstants } from "../types/farm.constants";
 import { alertActions } from "./alert.actions";
 import uiActions from "./ui.actions";
+import UserActions from "./user.actions";
 
 export const farmActions = { create, findFarmByOwnerId, clearAll, update };
 
@@ -41,6 +42,9 @@ function create(data) {
     return FarmService.farmCreate(data).then(
       (response) => {
         dispatch(success(response));
+        dispatch(
+          UserActions.update({ _id: data.ownerId, farmId: response._id })
+        );
         return Promise.resolve();
       },
       (error) => {

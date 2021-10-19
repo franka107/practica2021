@@ -127,6 +127,7 @@ function RegisterPage(props) {
 
         termsAndConditionsAcceptedOn: new Date(),
         sendInformationAcceptedOn: new Date(),
+        verified: false,
       })
     )
       .then(() => {

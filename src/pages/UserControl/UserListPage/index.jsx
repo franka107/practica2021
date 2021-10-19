@@ -21,17 +21,18 @@ function UserListPage({ children, setTitle, setChipList }) {
   const params = useParams();
   const dispatch = useDispatch();
   const [searchText, setSearchText] = useState();
+  const currentFarm = useSelector((state) => state.farm.current);
 
   const listUser = useSelector((state) => state.user.list);
 
   useEffect(() => {
     setTitle("Lista de usuarios");
     setChipList(userRouteOptions(location));
-    if (!listUser || listUser.length === 0) {
+    if ((!listUser || listUser.length === 0) && currentFarm) {
       dispatch(UserActions.list());
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [currentFarm]);
 
   const options = {
     selectableRows: "none",
