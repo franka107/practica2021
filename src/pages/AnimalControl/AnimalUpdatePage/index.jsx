@@ -5,6 +5,12 @@ import CustomDialog from "../../../components/CustomDialog";
 import AnimalActions from "../../../redux/actions/animal.actions";
 import AnimalForm from "../Forms/AnimalForm";
 
+/**
+ * @component
+ * @description Componente, dialog o modal que contiene el formulario para poder editar de un animal
+ * @author Emerson Puma Quispe <emerson.puma@ideascloud.io>
+ */
+
 const AnimalUpdatePage = ({ parentPathname }) => {
   const params = useParams();
   const dispatch = useDispatch();

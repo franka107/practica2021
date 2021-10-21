@@ -3,7 +3,13 @@ import { SearchRounded } from "@material-ui/icons";
 import { Grid, TextField } from "@material-ui/core";
 import { useStyles } from "./styles";
 
-function SearchAnimals({ setSearchText, searchText }) {
+/**
+ * @component
+ * @description Componente, barra de busqueda de animales
+ * @author Emerson Puma Quispe <emerson.puma@ideascloud.io>
+ */
+
+const SearchAnimals = ({ setSearchText, searchText }) => {
   const classes = useStyles();
 
   return (
@@ -86,6 +92,6 @@ function SearchAnimals({ setSearchText, searchText }) {
       </Dialog> */}
     </React.Fragment>
   );
-}
+};
 
 export default SearchAnimals;

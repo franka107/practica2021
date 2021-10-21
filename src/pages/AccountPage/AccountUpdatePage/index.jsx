@@ -2,6 +2,13 @@ import React from "react";
 import { Grid, Typography } from "@material-ui/core";
 import AccountForm from "../Forms/AccountForm";
 import { useSelector } from "react-redux";
+
+/**
+ * @component
+ * @description Componente, este contiene el formulario de cuenta
+ * @author Emerson Puma Quispe <emerson.puma@ideascloud.io>
+ */
+
 const AccountControlPage = () => {
   const userCurrent = useSelector((state) => state.auth.user);
 

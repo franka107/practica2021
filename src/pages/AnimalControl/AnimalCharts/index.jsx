@@ -8,7 +8,13 @@ import TrendingUpIcon from "@material-ui/icons/TrendingUp";
 import { chartData, renderChartDetailOptions, chartOptions } from "./constants";
 import { useSelector } from "react-redux";
 
-function AnimalCharts() {
+/**
+ * @component
+ * @description Componente, en esta sección se encuentra los chart's o gráficos de la vista principal de animales
+ * @author Emerson Puma Quispe <emerson.puma@ideascloud.io>
+ */
+
+const AnimalCharts = () => {
   const classes = useStyles();
   const [openDetail, setOpenDetail] = useState(false);
   const { list: animalList } = useSelector((state) => state.animal);
@@ -98,6 +104,6 @@ function AnimalCharts() {
       </Dialog>
     </Grid>
   );
-}
+};
 
 export default AnimalCharts;

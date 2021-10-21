@@ -23,14 +23,14 @@ import raceActions from "../../../redux/actions/race.actions";
 
 /**
  * @component
- * @description Componente, formulario de animales
+ * @description Componente, formulario para crear o editar animales
  * @author Emerson Puma Quispe <emerson.puma@ideascloud.io>
  */
 
 const defaultInitValues = {
   identifier: "",
   name: "",
-  birthDate: null,
+  birthDate: new Date(),
   herdDate: new Date(),
   registerNumber: "",
   gender: "MALE",
