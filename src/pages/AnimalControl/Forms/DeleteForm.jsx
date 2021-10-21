@@ -11,6 +11,12 @@ import ButtonFormik from "../../../components/Inputs/ButtonFormik";
 import { deleteOptions } from "../../../constants";
 import AnimalActions from "../../../redux/actions/animal.actions";
 
+/**
+ * @component
+ * @description Componente, formulario para eliminar animales
+ * @author Emerson Puma Quispe <emerson.puma@ideascloud.io>
+ */
+
 const DeleteForm = ({ onClickCancelButton, idDelete }) => {
   const dispatch = useDispatch();
 

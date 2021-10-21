@@ -8,16 +8,10 @@ import { CameraAlt, Edit, ViewList, Add, Visibility } from "@material-ui/icons";
 import clsx from "clsx";
 // import HighchartsReact from "highcharts-react-official";
 import { useState, useEffect } from "react";
-import { BorderLinearProgress } from "../../../components/BorderLinearProgress";
+// import { BorderLinearProgress } from "../../../components/BorderLinearProgress";
 import { useStyles } from "../styles";
 // import Highcharts from "highcharts";
 import Calendar from "react-calendar";
-// import Timeline from "@material-ui/lab/Timeline";
-// import TimelineItem from "@material-ui/lab/TimelineItem";
-// import TimelineSeparator from "@material-ui/lab/TimelineSeparator";
-// import TimelineConnector from "@material-ui/lab/TimelineConnector";
-// import TimelineContent from "@material-ui/lab/TimelineContent";
-// import TimelineDot from "@material-ui/lab/TimelineDot";
 import {
   useParams,
   useLocation,
@@ -38,6 +32,12 @@ import {
   unitCapacityTestOptions,
 } from "../../../constants";
 import { add, differenceInDays, format } from "date-fns";
+
+/**
+ * @component
+ * @description Componente, en esta seccion se encuentra la estrucura de toda la vista de detalle de animal
+ * @author Emerson Puma Quispe <emerson.puma@ideascloud.io>
+ */
 
 const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
   const classes = useStyles();
@@ -131,17 +131,17 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
     }
   };
 
-  const calculateIEC = (values = []) => {
-    if (values.length > 1) {
-      const result = differenceInDays(
-        new Date(values[0].controlDate),
-        new Date(values[1].controlDate)
-      );
-      return result + " dias";
-    } else {
-      return "Sin información";
-    }
-  };
+  // const calculateIEC = (values = []) => {
+  //   if (values.length > 1) {
+  //     const result = differenceInDays(
+  //       new Date(values[0].controlDate),
+  //       new Date(values[1].controlDate)
+  //     );
+  //     return result + " dias";
+  //   } else {
+  //     return "Sin información";
+  //   }
+  // };
 
   useEffect(() => {
     setChipList(animalDetailChipOptions(location, params));
@@ -2088,68 +2088,6 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
                     </div>
                   </Paper>
                 </Grid>
-                {/* <Grid item xs={12}>
-                  <Paper
-                    style={{ height: "96%" }}
-                    elevation={4}
-                    className={classes.card}
-                  >
-                    <div className={classes.cardHeader}>
-                      <Typography variant="body1" className={classes.cardTitle}>
-                        Linea de tiempo
-                      </Typography>{" "}
-                    </div>
-                    <Divider className={classes.divider}></Divider>
-                    <Typography variant="body1" className={classes.cardTitle}>
-                      This Week
-                    </Typography>
-                    <div>
-                      <Timeline>
-                        <TimelineItem>
-                          <TimelineSeparator>
-                            <TimelineDot />
-                            <TimelineConnector />
-                          </TimelineSeparator>
-                          <TimelineContent>02 hours ago</TimelineContent>
-                        </TimelineItem>
-                        <TimelineItem>
-                          <TimelineSeparator>
-                            <TimelineDot />
-                            <TimelineConnector />
-                          </TimelineSeparator>
-                          <TimelineContent>21 hours ago</TimelineContent>
-                        </TimelineItem>
-                        <TimelineItem>
-                          <TimelineSeparator>
-                            <TimelineDot />
-                          </TimelineSeparator>
-                          <TimelineContent>22 hours ago</TimelineContent>
-                        </TimelineItem>
-                      </Timeline>
-                    </div>
-                    <Typography variant="body1" className={classes.cardTitle}>
-                      Last Week
-                    </Typography>
-                    <div>
-                      <Timeline>
-                        <TimelineItem>
-                          <TimelineSeparator>
-                            <TimelineDot />
-                            <TimelineConnector />
-                          </TimelineSeparator>
-                          <TimelineContent>02 hours ago</TimelineContent>
-                        </TimelineItem>
-                        <TimelineItem>
-                          <TimelineSeparator>
-                            <TimelineDot />
-                            <TimelineConnector />
-                          </TimelineSeparator>
-                          <TimelineContent>21 hours ago</TimelineContent>
-                        </TimelineItem>
-                      </Timeline>
-                    </div>
-                  </Paper>
-                </Grid> */}
               </Grid>
             </Grid>
           </Grid>

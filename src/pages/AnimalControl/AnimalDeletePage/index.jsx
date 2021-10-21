@@ -2,6 +2,12 @@ import { useParams } from "react-router";
 import CustomDialog from "../../../components/CustomDialog";
 import DeleteForm from "../Forms/DeleteForm";
 
+/**
+ * @component
+ * @description Componente, dialog o modal que contiene el formulario para poder eliminar animales
+ * @author Emerson Puma Quispe <emerson.puma@ideascloud.io>
+ */
+
 const AnimalDeletePage = ({ parentPathname }) => {
   const params = useParams();
 

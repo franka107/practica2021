@@ -6,7 +6,13 @@ import SearchAnimals from "../SearchAnimals";
 import { useHistory } from "react-router";
 import { ROUTES_DICT } from "../../../routes/routesDict";
 
-function AddAnimals({ searchText, setSearchText }) {
+/**
+ * @component
+ * @description Componente, en esta seccion se encuentra la estrucura de los botones para poder añadir un nuevo animal, también se encuentra filtro de búsqueda
+ * @author Emerson Puma Quispe <emerson.puma@ideascloud.io>
+ */
+
+const AddAnimals = ({ searchText, setSearchText }) => {
   const classes = useStyles();
   const [openMenu, setOpenMenu] = useState(false);
   const history = useHistory();
@@ -88,6 +94,6 @@ function AddAnimals({ searchText, setSearchText }) {
       </Grid>
     </Grid>
   );
-}
+};
 
 export default AddAnimals;

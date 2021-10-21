@@ -12,6 +12,13 @@ import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
 import { ROUTES_DICT } from "../../../routes/routesDict";
 import ACTION_TYPES from "../../../redux/types";
+
+/**
+ * @component
+ * @description Componente, formulario de para poder actualizar los datos de la cuenta
+ * @author Emerson Puma Quispe <emerson.puma@ideascloud.io>
+ */
+
 const defaultInitValues = {
   firstName: "",
   lastName: "",
@@ -19,6 +26,7 @@ const defaultInitValues = {
   password: "",
   profile: "BASIC",
 };
+
 const AccountForm = ({ initValues = defaultInitValues }) => {
   const dispatch = useDispatch();
   const history = useHistory();

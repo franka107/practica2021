@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Chip, Grid, Typography } from "@material-ui/core";
+import React, { useEffect } from "react";
+import { Grid, Typography } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -7,29 +7,26 @@ import {
   faGem,
   faPaperPlane,
 } from "@fortawesome/free-regular-svg-icons";
-import clsx from "clsx";
-
-import { menuList } from "../../../layouts/DashboardLayout/constants";
 import { useStyles } from "./styles";
 import { useSelector } from "react-redux";
+
+/**
+ * @component
+ * @description Componente, en esta seccion se encuentra la estrucura de los iconos de logros, tareas, etc
+ * @author Emerson Puma Quispe <emerson.puma@ideascloud.io>
+ */
 
 function AnimalDescription() {
   const classes = useStyles();
   const history = useHistory();
   const { location = {} } = history;
-  const [activeTab, setActiveTab] = useState("inicio");
   const { current: currentAgribussiness } = useSelector(
     (state) => state.agribusiness
   );
 
   const { user } = useSelector((state) => state.auth);
 
-  useEffect(() => {
-    const { hash = {} } = location;
-    const path = hash.replace("#", "");
-
-    setActiveTab(hash ? path : "inicio");
-  }, [location]);
+  useEffect(() => {}, [location]);
 
   return (
     <Grid item container xs={12}>

@@ -19,7 +19,13 @@ import uiActions from "../../../redux/actions/ui.actions";
 import WeightActions from "../../../redux/actions/weight.actions";
 import { useStyles } from "../../../styles";
 
-function LinearProgressWithLabel(props) {
+/**
+ * @component
+ * @description Componente, formulario para subida de datos masivos
+ * @author Emerson Puma Quispe <emerson.puma@ideascloud.io>
+ */
+
+const LinearProgressWithLabel = (props) => {
   return (
     <Box sx={{ display: "flex", alignItems: "center" }}>
       <Box sx={{ width: "100%", mr: 1 }}>
@@ -32,7 +38,7 @@ function LinearProgressWithLabel(props) {
       </Box>
     </Box>
   );
-}
+};
 
 const AnimalBulkForm = ({ onClickCancelButton }) => {
   const classes = useStyles();

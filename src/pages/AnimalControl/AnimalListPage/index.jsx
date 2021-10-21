@@ -18,6 +18,13 @@ import { animalRouteOptions } from "../constants";
 import { columns } from "./constants";
 import { ROUTES_DICT } from "../../../routes/routesDict";
 import AnimalActions from "../../../redux/actions/animal.actions";
+import { differenceInMonths } from "date-fns";
+
+/**
+ * @component
+ * @description Componente, tabla que contiene la lista de animales
+ * @author Emerson Puma Quispe <emerson.puma@ideascloud.io>
+ */
 
 const AnimalPageList = ({ children, setTitle, setChipList }) => {
   const history = useHistory();
@@ -49,6 +56,130 @@ const AnimalPageList = ({ children, setTitle, setChipList }) => {
     selectableRows: "none",
     searchText,
     search: false,
+  };
+
+  const claseColumn = {
+    label: "Clase",
+    name: "gender",
+    options: {
+      filter: false,
+      customBodyRenderLite: (dataIndex) => {
+        // isBreeding => Cria
+        // isHeifer => Novilla
+        switch (true) {
+          case listAnimal[dataIndex].gender === "FEMALE" &&
+            differenceInMonths(
+              new Date(),
+              new Date(listAnimal[dataIndex]?.birthDate)
+            ) < currentAgribusiness.isBreeding:
+            return "Cria Hembra";
+          case listAnimal[dataIndex].gender === "MALE" &&
+            differenceInMonths(
+              new Date(),
+              new Date(listAnimal[dataIndex]?.birthDate)
+            ) < currentAgribusiness.isBreeding:
+            return "Cria Macho";
+          case listAnimal[dataIndex].gender === "FEMALE" &&
+            differenceInMonths(
+              new Date(),
+              new Date(listAnimal[dataIndex]?.birthDate)
+            ) >= currentAgribusiness.isBreeding &&
+            differenceInMonths(
+              new Date(),
+              new Date(listAnimal[dataIndex]?.birthDate)
+            ) < currentAgribusiness.isHeifer:
+            return "Hembra Levante";
+          case listAnimal[dataIndex].gender === "MALE" &&
+            differenceInMonths(
+              new Date(),
+              new Date(listAnimal[dataIndex]?.birthDate)
+            ) >= currentAgribusiness.isBreeding &&
+            differenceInMonths(
+              new Date(),
+              new Date(listAnimal[dataIndex]?.birthDate)
+            ) < currentAgribusiness.isHeifer:
+            return "Macho Levante";
+          case listAnimal[dataIndex].gender === "FEMALE" &&
+            differenceInMonths(
+              new Date(),
+              new Date(listAnimal[dataIndex]?.birthDate)
+            ) >= currentAgribusiness.isHeifer &&
+            listAnimal[dataIndex].reproductiveStatus === "EMPTY":
+            return "Vaquillona Vacia";
+          case listAnimal[dataIndex].gender === "FEMALE" &&
+            differenceInMonths(
+              new Date(),
+              new Date(listAnimal[dataIndex]?.birthDate)
+            ) >= currentAgribusiness.isHeifer &&
+            listAnimal[dataIndex].reproductiveStatus === "PREGNANT":
+            return "Vaquillona Preñada";
+          case listAnimal[dataIndex].gender === "MALE" &&
+            differenceInMonths(
+              new Date(),
+              new Date(listAnimal[dataIndex]?.birthDate)
+            ) >= currentAgribusiness.isHeifer &&
+            differenceInMonths(
+              new Date(),
+              new Date(listAnimal[dataIndex]?.birthDate)
+            ) < 24 &&
+            listAnimal[dataIndex].category !== "REPRODUCTOR":
+            return "Novillo para Engorda";
+          case listAnimal[dataIndex].gender === "MALE" &&
+            differenceInMonths(
+              new Date(),
+              new Date(listAnimal[dataIndex]?.birthDate)
+            ) >= currentAgribusiness.isHeifer &&
+            differenceInMonths(
+              new Date(),
+              new Date(listAnimal[dataIndex]?.birthDate)
+            ) < 24 &&
+            listAnimal[dataIndex].category === "REPRODUCTOR":
+            return "Torete";
+          case listAnimal[dataIndex].gender === "MALE" &&
+            differenceInMonths(
+              new Date(),
+              new Date(listAnimal[dataIndex]?.birthDate)
+            ) >= 24 &&
+            listAnimal[dataIndex].category === "REPRODUCTOR":
+            return "Toro Reproductor";
+          // mayor que 24 meses
+          case listAnimal[dataIndex].gender === "FEMALE" &&
+            differenceInMonths(
+              new Date(),
+              new Date(listAnimal[dataIndex]?.birthDate)
+            ) >= 24 &&
+            !listAnimal[dataIndex].isDried &&
+            listAnimal[dataIndex].reproductiveStatus === "EMPTY":
+            return "Vaca Parida";
+          case listAnimal[dataIndex].gender === "FEMALE" &&
+            differenceInMonths(
+              new Date(),
+              new Date(listAnimal[dataIndex]?.birthDate)
+            ) >= 24 &&
+            !listAnimal[dataIndex].isDried &&
+            listAnimal[dataIndex].reproductiveStatus === "PREGNANT":
+            return "Vaca Preñada";
+          case listAnimal[dataIndex].gender === "FEMALE" &&
+            differenceInMonths(
+              new Date(),
+              new Date(listAnimal[dataIndex]?.birthDate)
+            ) >= 24 &&
+            listAnimal[dataIndex].isDried &&
+            listAnimal[dataIndex].reproductiveStatus === "EMPTY":
+            return "Vaca Seca";
+          case listAnimal[dataIndex].gender === "FEMALE" &&
+            differenceInMonths(
+              new Date(),
+              new Date(listAnimal[dataIndex]?.birthDate)
+            ) >= 24 &&
+            listAnimal[dataIndex].isDried &&
+            listAnimal[dataIndex].reproductiveStatus === "PREGNANT":
+            return "Vaca Seca";
+          default:
+            return "Indeterminado";
+        }
+      },
+    },
   };
 
   const actionColumn = {
@@ -123,8 +254,13 @@ const AnimalPageList = ({ children, setTitle, setChipList }) => {
 
       <Grid item xs={12} className={classes.registerContainer}>
         <CustomMuiTable
+<<<<<<< HEAD
           data={listType ? listAnimal : listAnimalDeads}
           columns={[...columns, actionColumn]}
+=======
+          data={listAnimal}
+          columns={[...columns, claseColumn, actionColumn]}
+>>>>>>> tdev/ICC-49/animal-class
           options={options}
         />
       </Grid>
