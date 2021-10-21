@@ -42,6 +42,11 @@ const defaultInitValues = {
   embryo: "",
 };
 
+/**
+ *
+ * @param {Object} props.initValues Contiene los valores iniciarles del formulario
+ * @returns
+ */
 const BirthForm = ({
   initValues = defaultInitValues,
   type = "create",
@@ -79,13 +84,6 @@ const BirthForm = ({
   );
 
   const calculateRaces = (originRaces1, originRaces2) => {
-    //const mother = await IdeasCloudApi.fetch("animalGetById", {
-    //  _id: motherId,
-    //});
-    //const father = await IdeasCloudApi.fetch("animalGetById", {
-    //  _id: fatherId,
-    //});
-
     const fatherRaces = Object.keys(originRaces1)
       .filter(
         (key) =>
