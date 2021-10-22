@@ -1,12 +1,10 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
 import CustomDialog from "../../../components/CustomDialog";
 import HaciendaImageForm from "../Forms/HaciendaImageForm";
 
 const FarmImageUploadPage = ({ parentPathname }) => {
-  const params = useParams();
   const dispatch = useDispatch();
 
   const currentFarm = useSelector((state) => state.farm.current);

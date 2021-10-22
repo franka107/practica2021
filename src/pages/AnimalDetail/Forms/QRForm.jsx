@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid, Typography, CardMedia } from "@material-ui/core";
+import { Grid, Typography } from "@material-ui/core";
 import QRCode from "qrcode.react";
 
 const QrForm = () => {

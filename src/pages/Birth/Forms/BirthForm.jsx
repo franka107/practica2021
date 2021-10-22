@@ -11,13 +11,11 @@ import AutocompleteFieldFormik from "../../../components/Inputs/AutocompleteFiel
 import ButtonFormik from "../../../components/Inputs/ButtonFormik";
 import CheckboxFormik from "../../../components/Inputs/CheckboxFormik";
 import DatePickerFieldFormik from "../../../components/Inputs/DatePickerFieldFormik";
-import MultipleCheckboxFormik from "../../../components/Inputs/MultipleCheckboxFormik";
 import SelectFieldFormik from "../../../components/Inputs/SelectFieldFormik";
 import TextFieldFormik from "../../../components/Inputs/TextFieldFormik";
 import {
   birthDifficulyOptions,
   birthTypeOptions,
-  categoryOptions,
   sexOptions,
 } from "../../../constants";
 import IdeasCloudApi from "../../../helpers/ideascloudApi";
@@ -47,6 +45,7 @@ const defaultInitValues = {
  * @param {Object} props.initValues Contiene los valores iniciarles del formulario
  * @returns
  */
+
 const BirthForm = ({
   initValues = defaultInitValues,
   type = "create",
@@ -64,7 +63,7 @@ const BirthForm = ({
     (state) => state.animal.list.filter((e) => e.gender === "MALE"),
     shallowEqual
   );
-  const allAnimals = useSelector((state) => state.animal.list);
+  // const allAnimals = useSelector((state) => state.animal.list);
   const femaleAnimals = useSelector(
     (state) =>
       state.animal.list.filter(

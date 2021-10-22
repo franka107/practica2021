@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { alpha, Grid, Switch } from "@material-ui/core";
+import { Grid, Switch } from "@material-ui/core";
 import { columns } from "./constants";
 import CustomMuiTable from "../../../components/CustomMuiTable";
 import { useDispatch, useSelector, shallowEqual } from "react-redux";
@@ -16,7 +16,6 @@ import TableButtons from "../../../components/TableButtons";
 import geneticStockActions from "../../../redux/actions/geneticStock.actions";
 import DataContainer from "../../../components/DataContainer";
 import SearchContainer from "../../../components/SearchContainer";
-import { styled } from "@material-ui/styles";
 
 function GeneticStockList({ children, setTitle, setChipList }) {
   const dispatch = useDispatch();

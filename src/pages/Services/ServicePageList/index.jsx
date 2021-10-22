@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Grid, Typography, IconButton } from "@material-ui/core";
+import { Grid, IconButton } from "@material-ui/core";
 import { Edit, Delete } from "@material-ui/icons";
-import { useLocation, useParams } from "react-router";
+import { useParams } from "react-router";
 import { useHistory } from "react-router";
 import { shallowEqual, useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import ChipList from "../../../components/ChipList";
 import CustomMuiTable from "../../../components/CustomMuiTable";
-import { serviceRouteOptions, columnsToMuiTable } from "../constants";
+import { columnsToMuiTable } from "../constants";
 import serviceActions from "../../../redux/actions/service.actions";
 import AnimalActions from "../../../redux/actions/animal.actions";
 import { ROUTES_DICT } from "../../../routes/routesDict";
@@ -20,7 +19,7 @@ import SearchContainer from "../../../components/SearchContainer";
  */
 
 const ServicePageList = (props) => {
-  const location = useLocation();
+  // const location = useLocation();
   const dispatch = useDispatch();
   const params = useParams();
   const history = useHistory();

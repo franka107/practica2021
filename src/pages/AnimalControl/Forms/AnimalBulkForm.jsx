@@ -54,6 +54,7 @@ const AnimalBulkForm = ({ onClickCancelButton }) => {
     if (!raceList || raceList.length === 0) {
       dispatch(raceActions.listRace());
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleSubmit = () => {

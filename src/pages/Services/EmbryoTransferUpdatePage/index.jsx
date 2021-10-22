@@ -5,7 +5,6 @@ import { useParams } from "react-router";
 import EmbryoTransferForm from "../Forms/EmbryoTransferForm";
 import serviceActions from "../../../redux/actions/service.actions.js";
 import { useSelector } from "react-redux";
-import { CircularProgress, Grid } from "@material-ui/core";
 
 const EmbryoTransferUpdatePage = ({ parentPathname }) => {
   const params = useParams();

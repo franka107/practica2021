@@ -5,7 +5,7 @@ import Highcharts from "highcharts/highstock";
 import { Dialog, Grid, Paper, Typography } from "@material-ui/core";
 import clsx from "clsx";
 import TrendingUpIcon from "@material-ui/icons/TrendingUp";
-import { chartData, renderChartDetailOptions, chartOptions } from "./constants";
+import { renderChartDetailOptions } from "./constants";
 import { useSelector } from "react-redux";
 import IdeasCloudApi from "../../../helpers/ideascloudApi";
 
@@ -36,6 +36,7 @@ const AnimalCharts = () => {
         setChartsInfoBirths(response);
       });
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [animalList]);
 
   const chartRealOptions = {

@@ -5,7 +5,6 @@ import * as yup from "yup";
 import TextFieldFormik from "../../../components/Inputs/TextFieldFormik";
 import DatePickerFieldFormik from "../../../components/Inputs/DatePickerFieldFormik";
 import ButtonFormik from "../../../components/Inputs/ButtonFormik";
-import MultipleCheckboxFormik from "../../../components/Inputs/MultipleCheckboxFormik";
 import CheckboxFormik from "../../../components/Inputs/CheckboxFormik";
 
 /**

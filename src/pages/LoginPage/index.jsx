@@ -14,9 +14,7 @@ import PasswordFieldFormik from "../../components/Inputs/PasswordFieldFormik";
 import { ROUTES_DICT } from "../../routes/routesDict";
 import AuthActions from "../../redux/actions/auth.actions";
 import { useGoogleLogin } from "react-google-login";
-import uiActions from "../../redux/actions/ui.actions";
 import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props";
-import ReactFacebookLogin from "react-facebook-login";
 
 function LoginPage(props) {
   const classes = useStyles();

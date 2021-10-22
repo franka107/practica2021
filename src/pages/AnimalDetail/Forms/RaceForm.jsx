@@ -7,11 +7,9 @@ import * as yup from "yup";
 import TextFieldFormik from "../../../components/Inputs/TextFieldFormik";
 import SelectFieldFormik from "../../../components/Inputs/SelectFieldFormik";
 import ButtonFormik from "../../../components/Inputs/ButtonFormik";
-import SearchFieldFormik from "../../../components/Inputs/SearchFieldFormik";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import AnimalActions from "../../../redux/actions/animal.actions";
 import { useStyles } from "../styles";
-import ACTION_TYPES from "../../../redux/types";
 import { racialTypeOptions } from "../../../constants";
 import RaceActions from "../../../redux/actions/race.actions";
 
@@ -27,7 +25,7 @@ const RaceForm = ({
   onCompleteSubmit = () => {},
 }) => {
   const classes = useStyles();
-  const letters = ["A", "B", "C", "D"];
+  // const letters = ["A", "B", "C", "D"];
   const [racesShow, setRacesShow] = useState([
     { letter: "A", show: true },
     { letter: "B", show: false },

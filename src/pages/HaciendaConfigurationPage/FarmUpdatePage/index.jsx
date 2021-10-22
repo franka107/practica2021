@@ -4,7 +4,6 @@ import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import CustomDialog from "../../../components/CustomDialog";
 import RegisterFarmForm from "../../../components/Forms/RegisterFarmForm";
-import { farmActions } from "../../../redux/actions/farm.actions";
 
 const FarmUpdatePage = ({ parentPathname }) => {
   const params = useParams();
