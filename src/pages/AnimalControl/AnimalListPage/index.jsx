@@ -254,13 +254,8 @@ const AnimalPageList = ({ children, setTitle, setChipList }) => {
 
       <Grid item xs={12} className={classes.registerContainer}>
         <CustomMuiTable
-<<<<<<< HEAD
           data={listType ? listAnimal : listAnimalDeads}
-          columns={[...columns, actionColumn]}
-=======
-          data={listAnimal}
           columns={[...columns, claseColumn, actionColumn]}
->>>>>>> tdev/ICC-49/animal-class
           options={options}
         />
       </Grid>

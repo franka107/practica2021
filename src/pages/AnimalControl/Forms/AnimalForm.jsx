@@ -350,7 +350,7 @@ function AnimalForm({
                 type="text"
                 name="fatherRef"
                 onChange={props.handleChange}
-                defaultValue={props.values.father || null}
+                defaultValue={props.values.fatherRef || null}
                 lg={6}
                 sm={6}
                 xs={12}
@@ -375,7 +375,7 @@ function AnimalForm({
                 type="text"
                 name="motherRef"
                 onChange={props.handleChange}
-                defaultValue={props.values.mother || null}
+                defaultValue={props.values.motherRef || null}
                 lg={6}
                 sm={6}
                 xs={12}

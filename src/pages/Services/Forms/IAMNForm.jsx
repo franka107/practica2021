@@ -23,6 +23,7 @@ import { useParams } from "react-router";
 import geneticStockActions from "../../../redux/actions/geneticStock.actions";
 import MovementActions from "../../../redux/actions/movement.actions";
 import { differenceInMonths } from "date-fns";
+import BirthActions from "../../../redux/actions/birth.actions";
 
 const defaultInitValues = {
   agribusinessId: "",
@@ -119,6 +120,7 @@ const IAMNForm = ({
     if (!listCollaborator || listCollaborator.length === 0) {
       dispatch(CollaboratorActions.list());
     }
+
     if (
       !femaleAnimals ||
       femaleAnimals.length === 0 ||

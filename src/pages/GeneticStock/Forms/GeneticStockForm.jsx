@@ -315,7 +315,7 @@ const GeneticStockForm = ({
                       endAdornment={
                         <InputAdornment position="start">%</InputAdornment>
                       }
-                      type="text"
+                      type="number"
                       label="Porcentaje"
                       style={{ textAlign: "end" }}
                       // type="number"

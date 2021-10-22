@@ -1,5 +1,6 @@
 import ACTION_TYPES from "../types";
 import IdeasCloudApi from "../../helpers/ideascloudApi";
+import AnimalActions from "./animal.actions";
 
 const list = () => async (dispatch, getState) => {
   const agribusiness = getState().agribusiness.current;
@@ -30,6 +31,7 @@ const create = (data, animal) => async (dispatch, getState) => {
     "Colectiva venta registrado satisfactoriamente.",
     "Error desconocido, intente nuavamente."
   );
+  dispatch(AnimalActions.list());
   dispatch({
     type: ACTION_TYPES.SALE.CREATE,
     payload: { ...response, animal: animal },

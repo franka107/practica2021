@@ -53,6 +53,7 @@ function LoginPage(props) {
   const onFailure = (res) => {};
 
   const clientId = process.env.REACT_APP_GOOGLE_ENV;
+  const clientIdFb = process.env.REACT_APP_FACEBOOK_ENV;
   const { signIn } = useGoogleLogin({
     onSuccess,
     onFailure,
@@ -153,7 +154,7 @@ function LoginPage(props) {
           </Grid>
           <Grid item xs={12}>
             <FacebookLogin
-              appId="1286554848458675"
+              appId={clientIdFb}
               fields="name,email,picture"
               callback={onResponseFB}
               render={(renderProps) => (

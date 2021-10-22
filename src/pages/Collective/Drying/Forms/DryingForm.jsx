@@ -41,7 +41,8 @@ const DryingForm = ({
   const validationSchema = yup.object({
     animalId: yup
       .string("Ingresa la identificacion del animal.")
-      .required("Este campo es requerido."),
+      .required("Este campo es requerido.")
+      .nullable(),
     date: yup
       .date("Ingresa una fecha correcta.")
       .max(new Date(), "No puedes poner una fecha futura")

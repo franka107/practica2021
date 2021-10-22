@@ -1,5 +1,6 @@
 import IdeasCloudApi from "../../helpers/ideascloudApi";
 import ACTION_TYPES from "../types";
+import AnimalActions from "./animal.actions";
 
 const list = () => async (dispatch, getState) => {
   const agribusiness = getState().agribusiness.current;
@@ -29,6 +30,7 @@ const create = (data) => async (dispatch, getState) => {
     payload: { ...data, animal: animal },
   });
 
+  dispatch(AnimalActions.list());
   return response;
 };
 const update = (data, geneticType) => async (dispatch, getState) => {

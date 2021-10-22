@@ -137,6 +137,7 @@ function RegisterPage(props) {
         actions.setSubmitting(false);
       });
   };
+  const clientIdFb = process.env.REACT_APP_FACEBOOK_ENV;
 
   const switchView = (viewName) => {
     switch (viewName) {
@@ -171,7 +172,7 @@ function RegisterPage(props) {
             </Grid>
             <Grid item xs={12}>
               <FacebookLogin
-                appId="1286554848458675"
+                appId={clientIdFb}
                 fields="name,email,picture"
                 callback={onResponseFB}
                 render={(renderProps) => (

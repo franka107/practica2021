@@ -43,7 +43,7 @@ const defaultInitValues = {
 };
 
 /**
- *
+ * Formulario de nacimiento
  * @param {Object} props.initValues Contiene los valores iniciarles del formulario
  * @returns
  */
@@ -188,6 +188,7 @@ const BirthForm = ({
   const classes = useStyles();
 
   useEffect(() => {
+    dispatch(AnimalActions.clearCurrent());
     if (!listSemen || listSemen.length === 0) {
       dispatch(geneticStockActions.listGeneticStockByAgribusiness());
     }
@@ -197,32 +198,8 @@ const BirthForm = ({
     if (hideAnimal) {
       initValues.animalId = params._id;
     }
-    dispatch(AnimalActions.clearCurrent());
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch]);
-
-  useEffect(() => {
-    if (currentAnimal) {
-      if (
-        differenceInDays(new Date(), new Date(currentAnimal.pregnantDate)) < 283
-      ) {
-        dispatch(
-          uiActions.showSnackbar(
-            "El parto de este animal sera prematuro",
-            "warning"
-          )
-        );
-      }
-      if (!currentAnimal.pregnantDate) {
-        dispatch(
-          uiActions.showSnackbar(
-            "No hay informacion de la fecha de preñez",
-            "warning"
-          )
-        );
-      }
-    }
-  }, [currentAnimal]);
+  }, []);
 
   const onSubmit = async (values, actions) => {
     try {
@@ -394,6 +371,31 @@ const BirthForm = ({
 
             // eslint-disable-next-line react-hooks/exhaustive-deps
           }, [props.values.animalId]);
+
+          useEffect(() => {
+            if (currentAnimal && currentAnimal._id === props.values.animalId) {
+              const days = differenceInDays(
+                new Date(),
+                new Date(currentAnimal.pregnantDate)
+              );
+              if (days < 283) {
+                dispatch(
+                  uiActions.showSnackbar(
+                    `El parto se esta dando con ${days} días, es prematuro.`,
+                    "warning"
+                  )
+                );
+              }
+              if (!currentAnimal.pregnantDate) {
+                dispatch(
+                  uiActions.showSnackbar(
+                    "No hay informacion de la fecha de preñez",
+                    "warning"
+                  )
+                );
+              }
+            }
+          }, [currentAnimal]);
 
           useEffect(() => {
             props.setFieldValue("firstChildGender", "");

@@ -1,13 +1,6 @@
 import { getGroupedByHerdDate } from "../../../helpers/chartsFunctions";
 
-export const chartData = [
-  {
-    id: 6,
-    text: "Novillas próximas de parto",
-    percentage: 25,
-    renderNumber: (animalList) => 12,
-  },
-];
+export const chartData = [];
 
 export const chartOptions = {
   chart: {
