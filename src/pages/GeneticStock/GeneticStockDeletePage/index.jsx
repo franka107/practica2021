@@ -5,10 +5,6 @@ import { useParams } from "react-router-dom";
 import CustomDialog from "../../../components/CustomDialog";
 import DeleteForm from "../../../components/Forms/DeleteForm";
 import geneticStockActions from "../../../redux/actions/geneticStock.actions";
-import MovementActions from "../../../redux/actions/movement.actions";
-import { ROUTES_SLUGS } from "../../../routes/routesDict";
-import GeneticStockForm from "../Forms/GeneticStockForm";
-import MovementForm from "../Forms/MovementForm";
 
 const GeneticStockDeletePage = ({ parentPathname }) => {
   const params = useParams();

@@ -4,10 +4,7 @@ import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import CustomDialog from "../../../components/CustomDialog";
 import geneticStockActions from "../../../redux/actions/geneticStock.actions";
-import MovementActions from "../../../redux/actions/movement.actions";
-import { ROUTES_SLUGS } from "../../../routes/routesDict";
 import GeneticStockForm from "../Forms/GeneticStockForm";
-import MovementForm from "../Forms/MovementForm";
 
 const GeneticStockUpdatePage = ({ parentPathname }) => {
   const params = useParams();

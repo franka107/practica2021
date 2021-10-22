@@ -1,9 +1,8 @@
-import { Grid, Typography } from "@material-ui/core";
+import { Grid } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector, shallowEqual } from "react-redux";
 import { useHistory, useLocation, useParams } from "react-router";
-import ChipList from "../../../components/ChipList";
 import CustomMuiTable from "../../../components/CustomMuiTable";
 import SearchContainer from "../../../components/SearchContainer";
 import MovementActions from "../../../redux/actions/movement.actions";

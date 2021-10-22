@@ -17,8 +17,6 @@ import IAMNUpdatePage from "../pages/Services/IAMNUpdatePage";
 import EmbryoTransferCreatePage from "../pages/Services/EmbryoTransferCreatePage";
 import EmbryoTransferUpdatePage from "../pages/Services/EmbryoTransferUpdatePage";
 import ServiceDeletePage from "../pages/Services/ServiceDeletePage";
-import PalpationPage from "../pages/PalpationPage";
-import BirthPage from "../pages/Birth";
 import PregnanciesPage from "../pages/PregnanciesPage";
 import PedigreePage from "../pages/PedigreePage";
 import GeneticStockList from "../pages/GeneticStock/GeneticStockList";
@@ -81,7 +79,6 @@ import CalendarUpdatePage from "../pages/AnimalDetail/CalendarUpdatePage";
 import IAServiceCreatePage from "../pages/AnimalDetail/IAServiceCreatePage";
 import OtherUpdatePage from "../pages/AnimalDetail/OtherUpdatePage";
 import MilkControlCreatePage from "../pages/AnimalDetail/MilkControlCreatePage";
-import WeightControlUpdatePage from "../pages/AnimalDetail/WeightControlCreatePage";
 import AnimalDetailDeletePage from "../pages/AnimalDetail/AnimalDetailDeletePage";
 import CollaboratorCreatePage from "../pages/HaciendaConfigurationPage/CollaboratorCreatePage";
 import CollaboratorUpdatePage from "../pages/HaciendaConfigurationPage/CollaboratorUpdatePage";
@@ -100,6 +97,7 @@ import { palpationRouteOptions } from "../pages/Palpation/constants";
 import { milkRouteOptions } from "../pages/MilkControl/constants";
 import WeightControlCreatePage from "../pages/AnimalDetail/WeightControlCreatePage";
 import RecoverPasswordPage from "../pages/RecoverPasswordPage";
+import { weightRouteOptions } from "../pages/Collective/Weight/constants";
 
 export const ROUTE_TYPES = {
   public: "public",

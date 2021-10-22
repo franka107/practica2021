@@ -9,7 +9,6 @@ import TextFieldFormik from "../../../components/Inputs/TextFieldFormik";
 import ButtonFormik from "../../../components/Inputs/ButtonFormik";
 import DatePickerFieldFormik from "../../../components/Inputs/DatePickerFieldFormik";
 import SelectFieldFormik from "../../../components/Inputs/SelectFieldFormik";
-import SearchFieldFormik from "../../../components/Inputs/SearchFieldFormik";
 import CheckboxFormik from "../../../components/Inputs/CheckboxFormik";
 import { useDispatch, useSelector, shallowEqual } from "react-redux";
 import AnimalActions from "../../../redux/actions/animal.actions";
@@ -164,10 +163,10 @@ function AnimalForm({
     // if (errorPercentage === "") {
 
     const validPercentages = handleCheckPercentage({
-      percentageRace1: values.percentageRace1,
-      percentageRace2: values.percentageRace2,
-      percentageRace3: values.percentageRace3,
-      percentageRace4: values.percentageRace4,
+      percentageRace1: values.percentageRace1 ? values.percentageRace1 : 0,
+      percentageRace2: values.percentageRace2 ? values.percentageRace2 : 0,
+      percentageRace3: values.percentageRace3 ? values.percentageRace3 : 0,
+      percentageRace4: values.percentageRace4 ? values.percentageRace4 : 0,
     });
 
     if (!validPercentages) return;

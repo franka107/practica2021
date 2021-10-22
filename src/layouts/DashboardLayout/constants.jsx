@@ -157,11 +157,11 @@ export const list = [
             title: "Registro celos",
             link: ROUTES_DICT.collective.zeal.list,
           },
-          {
-            id: "agregar-pesos",
-            title: "Ingresos Pesos",
-            link: ROUTES_DICT.collective.weight.list,
-          },
+          // {
+          //   id: "agregar-pesos",
+          //   title: "Ingresos Pesos",
+          //   link: ROUTES_DICT.collective.weight.list,
+          // },
           {
             id: "ventas",
             title: "Ventas",
@@ -174,7 +174,7 @@ export const list = [
           // },
           {
             id: "agregar-registros",
-            title: "Ingreso reg. asoc.",
+            title: "Reg. asociación",
             link: ROUTES_DICT.collective.association.list,
           },
           {

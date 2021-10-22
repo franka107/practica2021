@@ -6,13 +6,12 @@ import TextFieldFormik from "../../../../components/Inputs/TextFieldFormik";
 import ButtonFormik from "../../../../components/Inputs/ButtonFormik";
 import DatePickerFieldFormik from "../../../../components/Inputs/DatePickerFieldFormik";
 import AutocompleteFieldFormik from "../../../../components/Inputs/AutocompleteFieldFormik";
-import { shallowEqual, useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import AnimalActions from "../../../../redux/actions/animal.actions";
 import { useEffect } from "react";
 import SaleActions from "../../../../redux/actions/sale.actions";
 import SelectFieldFormik from "../../../../components/Inputs/SelectFieldFormik";
 import { saleTranferOptions } from "../../../../constants";
-import { differenceInMonths } from "date-fns";
 
 const defaultInitValues = {
   animalId: "",

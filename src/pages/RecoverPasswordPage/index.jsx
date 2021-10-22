@@ -1,5 +1,4 @@
 import React from "react";
-import { Facebook } from "@material-ui/icons";
 import { Button, Container, Grid, Typography } from "@material-ui/core";
 import { useStyles } from "../LoginPage/styles";
 import Logo from "../../components/Logo";
@@ -7,22 +6,17 @@ import RegisterCard from "../../components/RegisterCard";
 import { Formik } from "formik";
 import * as yup from "yup";
 import TextFieldFormik from "../../components/Inputs/TextFieldFormik";
-import { Link, useHistory } from "react-router-dom";
-import googleBtn from "../../assets/images/google.png";
+// import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import PasswordFieldFormik from "../../components/Inputs/PasswordFieldFormik";
-import { ROUTES_DICT } from "../../routes/routesDict";
-import AuthActions from "../../redux/actions/auth.actions";
-import { useGoogleLogin } from "react-google-login";
-import uiActions from "../../redux/actions/ui.actions";
-import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props";
-import ReactFacebookLogin from "react-facebook-login";
+// import { ROUTES_DICT } from "../../routes/routesDict";
+// import AuthActions from "../../redux/actions/auth.actions";
+// import { useGoogleLogin } from "react-google-login";
 import IdeasCloudApi from "../../helpers/ideascloudApi";
 
 function RecoverPasswordPage(props) {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const history = useHistory();
+  // const history = useHistory();
 
   const validationSchema = yup.object({
     email: yup
@@ -31,46 +25,46 @@ function RecoverPasswordPage(props) {
       .required("El correo electrónico es requerido."),
   });
 
-  const onSuccess = (res) => {
-    console.log(res);
-    const values = {
-      email: res.profileObj.email,
-      firstName: res.profileObj.givenName,
-      lastName: res.profileObj.familyName,
-    };
-    dispatch(AuthActions.loginWithGoogle(values)).then((farm) => {
-      if (farm) {
-        history.push(ROUTES_DICT.animal.list);
-      } else {
-        history.push(ROUTES_DICT.setup);
-      }
-    });
-  };
+  // const onSuccess = (res) => {
+  //   console.log(res);
+  //   const values = {
+  //     email: res.profileObj.email,
+  //     firstName: res.profileObj.givenName,
+  //     lastName: res.profileObj.familyName,
+  //   };
+  //   dispatch(AuthActions.loginWithGoogle(values)).then((farm) => {
+  //     if (farm) {
+  //       history.push(ROUTES_DICT.animal.list);
+  //     } else {
+  //       history.push(ROUTES_DICT.setup);
+  //     }
+  //   });
+  // };
 
-  const onFailure = (res) => {};
+  // const onFailure = (res) => {};
 
-  const clientId = process.env.REACT_APP_GOOGLE_ENV;
-  const { signIn } = useGoogleLogin({
-    onSuccess,
-    onFailure,
-    clientId,
-    accessType: "offline",
-  });
+  // const clientId = process.env.REACT_APP_GOOGLE_ENV;
+  // const { signIn } = useGoogleLogin({
+  //   onSuccess,
+  //   onFailure,
+  //   clientId,
+  //   accessType: "offline",
+  // });
 
-  const onResponseFB = (res) => {
-    const values = {
-      email: res.email,
-      firstName: res.name,
-      lastName: "",
-    };
-    dispatch(AuthActions.loginWithGoogle(values)).then((farm) => {
-      if (farm) {
-        history.push(ROUTES_DICT.animal.list);
-      } else {
-        history.push(ROUTES_DICT.setup);
-      }
-    });
-  };
+  // const onResponseFB = (res) => {
+  //   const values = {
+  //     email: res.email,
+  //     firstName: res.name,
+  //     lastName: "",
+  //   };
+  //   dispatch(AuthActions.loginWithGoogle(values)).then((farm) => {
+  //     if (farm) {
+  //       history.push(ROUTES_DICT.animal.list);
+  //     } else {
+  //       history.push(ROUTES_DICT.setup);
+  //     }
+  //   });
+  // };
 
   const onSubmitForm = async (values, actions) => {
     //dispatch(AuthActions.login(values))

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Tree from "react-d3-tree";
 import { generatePath, useHistory } from "react-router";
 import { ROUTES_DICT } from "../../routes/routesDict";
-import CustomInfoIcon from "../CustomInfoIcon";
+// import CustomInfoIcon from "../CustomInfoIcon";
 
 // This is a simplified example of an org chart with a depth of 2.
 // Note how deeper levels are defined recursively via the `children` property.
@@ -74,26 +74,26 @@ export default function Familytree({ animal }) {
     });
   }, []);
 
-  const Card = ({ nodeData }) => (
-    <div>
-      <div className="card">
-        <div className="card-body">
-          <h5 style={{ margin: "5px" }} className="card-title">
-            {nodeData.attributes.title}
-          </h5>
-          <h6
-            style={{ margin: "5px" }}
-            className="card-subtitle mb-2 text-muted"
-          >
-            {nodeData.attributes.subtitle}
-          </h6>
-          <p style={{ margin: "5px" }} className="card-text">
-            {nodeData.attributes.text}
-          </p>
-        </div>
-      </div>
-    </div>
-  );
+  // const Card = ({ nodeData }) => (
+  //   <div>
+  //     <div className="card">
+  //       <div className="card-body">
+  //         <h5 style={{ margin: "5px" }} className="card-title">
+  //           {nodeData.attributes.title}
+  //         </h5>
+  //         <h6
+  //           style={{ margin: "5px" }}
+  //           className="card-subtitle mb-2 text-muted"
+  //         >
+  //           {nodeData.attributes.subtitle}
+  //         </h6>
+  //         <p style={{ margin: "5px" }} className="card-text">
+  //           {nodeData.attributes.text}
+  //         </p>
+  //       </div>
+  //     </div>
+  //   </div>
+  // );
 
   const data = {
     name: animal.name,

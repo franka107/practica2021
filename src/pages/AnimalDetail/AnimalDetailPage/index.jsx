@@ -72,15 +72,10 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
   //   return "Sin información";
   // };
 
-  const calculateDaysPregnancy = (values = []) => {
-    if (values[0]?.state === "PREGNANT") {
-      const result = differenceInDays(
-        new Date(),
-        new Date(values[0].pregnancyDate)
-      );
-      const days = result > 1 ? " dias" : " dia";
-      return result + days;
-    }
+  const calculateDaysPregnancy = (values) => {
+    const result = differenceInDays(new Date(), new Date(values));
+    const days = result > 1 ? " dias" : " dia";
+    return result + days;
   };
 
   const totalMilk = (values = []) => {
@@ -104,19 +99,17 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
     return result + days;
   };
 
-  const expectedBirth = (values = []) => {
-    if (values[0]?.state === "PREGNANT") {
-      const result = add(new Date(values[0].pregnancyDate), {
-        years: 0,
-        months: 9,
-        weeks: 1,
-        days: 0,
-        hours: 0,
-        minutes: 0,
-        seconds: 0,
-      });
-      return format(new Date(result), "yyyy-MM-dd");
-    }
+  const expectedBirth = (values) => {
+    const result = add(new Date(values), {
+      years: 0,
+      months: 9,
+      weeks: 1,
+      days: 0,
+      hours: 0,
+      minutes: 0,
+      seconds: 0,
+    });
+    return format(new Date(result), "yyyy-MM-dd");
   };
 
   const calculateIEP = (values = []) => {
@@ -512,22 +505,19 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
                                   </Grid>
                                 </>
                               )}
-                            {currentAnimal && currentAnimal.fatherRef !== null && (
-                              <>
-                                <Grid item xs={5}>
-                                  <Typography className={classes.cardFeature}>
-                                    Ref. Padre
-                                  </Typography>
-                                </Grid>
-                                <Grid item xs={7}>
-                                  <Typography>
-                                    {currentAnimal && currentAnimal.fatherRef
-                                      ? currentAnimal.fatherRef
-                                      : "Sin información"}
-                                  </Typography>
-                                </Grid>
-                              </>
-                            )}
+
+                            <Grid item xs={5}>
+                              <Typography className={classes.cardFeature}>
+                                Ref. Padre
+                              </Typography>
+                            </Grid>
+                            <Grid item xs={7}>
+                              <Typography>
+                                {currentAnimal && currentAnimal.fatherRef
+                                  ? currentAnimal.fatherRef
+                                  : "Sin información"}
+                              </Typography>
+                            </Grid>
                           </Grid>
                           <Grid
                             container
@@ -1262,7 +1252,7 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
                                     </Typography>
                                   </Grid>
                                 </Grid>
-                                <Grid
+                                {/* <Grid
                                   container
                                   className={classes.generalFeature}
                                   xs={12}
@@ -1275,7 +1265,7 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
                                   <Grid item xs={7}>
                                     <Typography>0</Typography>
                                   </Grid>
-                                </Grid>
+                                </Grid> */}
                                 <Grid
                                   container
                                   className={classes.generalFeature}
@@ -1402,7 +1392,7 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
                                         <Grid item xs={7}>
                                           <Typography>
                                             {calculateDaysPregnancy(
-                                              currentAnimal.palpations
+                                              currentAnimal.pregnantDate
                                             )}
                                           </Typography>
                                         </Grid>
@@ -1422,7 +1412,7 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
                                         <Grid item xs={7}>
                                           <Typography>
                                             {expectedBirth(
-                                              currentAnimal.palpations
+                                              currentAnimal.pregnantDate
                                             )}
                                           </Typography>
                                         </Grid>

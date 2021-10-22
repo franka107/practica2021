@@ -13,12 +13,11 @@ import { useStyles } from "../styles";
 import { useDispatch, useSelector } from "react-redux";
 import CustomMuiTable from "../../../components/CustomMuiTable";
 import TableButtons from "../../../components/TableButtons";
-import RaceActions from "../../../redux/actions/race.actions";
 import { animalRouteOptions } from "../constants";
 import { columns } from "./constants";
 import { ROUTES_DICT } from "../../../routes/routesDict";
 import AnimalActions from "../../../redux/actions/animal.actions";
-import { differenceInMonths } from "date-fns";
+import { differenceInDays, differenceInMonths } from "date-fns";
 
 /**
  * @component
@@ -104,6 +103,10 @@ const AnimalPageList = ({ children, setTitle, setChipList }) => {
               new Date(),
               new Date(listAnimal[dataIndex]?.birthDate)
             ) >= currentAgribusiness.isHeifer &&
+            differenceInMonths(
+              new Date(),
+              new Date(listAnimal[dataIndex]?.birthDate)
+            ) < 24 &&
             listAnimal[dataIndex].reproductiveStatus === "EMPTY":
             return "Vaquillona Vacia";
           case listAnimal[dataIndex].gender === "FEMALE" &&
@@ -111,8 +114,22 @@ const AnimalPageList = ({ children, setTitle, setChipList }) => {
               new Date(),
               new Date(listAnimal[dataIndex]?.birthDate)
             ) >= currentAgribusiness.isHeifer &&
+            differenceInMonths(
+              new Date(),
+              new Date(listAnimal[dataIndex]?.birthDate)
+            ) < 24 &&
             listAnimal[dataIndex].reproductiveStatus === "PREGNANT":
-            return "Vaquillona Preñada";
+            const pregnatDayHeifer = differenceInDays(
+              new Date(),
+              new Date(listAnimal[dataIndex].pregnantDate)
+            );
+            const nDayHeifer =
+              pregnatDayHeifer === 0
+                ? " dias preñez"
+                : pregnatDayHeifer === 1
+                ? " dia de preñez"
+                : " dias de preñez";
+            return `Vaquillona Preñada, ${pregnatDayHeifer} ${nDayHeifer}`;
           case listAnimal[dataIndex].gender === "MALE" &&
             differenceInMonths(
               new Date(),
@@ -148,33 +165,76 @@ const AnimalPageList = ({ children, setTitle, setChipList }) => {
               new Date(),
               new Date(listAnimal[dataIndex]?.birthDate)
             ) >= 24 &&
+            listAnimal[dataIndex].lastBirth &&
             !listAnimal[dataIndex].isDried &&
             listAnimal[dataIndex].reproductiveStatus === "EMPTY":
-            return "Vaca Parida";
+            const openDayEMPTY24 = differenceInDays(
+              new Date(),
+              new Date(listAnimal[dataIndex].lastBirth.birthDate)
+            );
+            const nDayEMPTY24 =
+              openDayEMPTY24 === 0
+                ? " dias abiertos"
+                : openDayEMPTY24 === 1
+                ? " dia de abierto"
+                : " dias de abiertos";
+            return `Vaca Parida, ${openDayEMPTY24} ${nDayEMPTY24}`;
           case listAnimal[dataIndex].gender === "FEMALE" &&
             differenceInMonths(
               new Date(),
               new Date(listAnimal[dataIndex]?.birthDate)
             ) >= 24 &&
+            listAnimal[dataIndex].lastBirth &&
             !listAnimal[dataIndex].isDried &&
             listAnimal[dataIndex].reproductiveStatus === "PREGNANT":
-            return "Vaca Preñada";
+            const DayPREGNANT24 = differenceInDays(
+              new Date(),
+              new Date(listAnimal[dataIndex].pregnantDate)
+            );
+            const nDayPREGNANT24 =
+              DayPREGNANT24 === 0
+                ? " dias de preñez"
+                : DayPREGNANT24 === 1
+                ? " dia de preñez"
+                : " dias de preñez";
+            return `Vaca Preñada, ${DayPREGNANT24} ${nDayPREGNANT24}`;
+          case listAnimal[dataIndex].gender === "FEMALE" &&
+            differenceInMonths(
+              new Date(),
+              new Date(listAnimal[dataIndex]?.birthDate)
+            ) >= 24 &&
+            listAnimal[dataIndex].lastBirth &&
+            listAnimal[dataIndex].isDried &&
+            listAnimal[dataIndex].reproductiveStatus === "EMPTY":
+            const openDayE24 = differenceInDays(
+              new Date(),
+              new Date(listAnimal[dataIndex].lastBirth.birthDate)
+            );
+            const nDayE24 =
+              openDayE24 === 0
+                ? " dias abiertos"
+                : openDayE24 === 1
+                ? " dia de abierto"
+                : " dias de abiertos";
+            return `Vaca Seca, ${openDayE24} ${nDayE24}`;
           case listAnimal[dataIndex].gender === "FEMALE" &&
             differenceInMonths(
               new Date(),
               new Date(listAnimal[dataIndex]?.birthDate)
             ) >= 24 &&
             listAnimal[dataIndex].isDried &&
-            listAnimal[dataIndex].reproductiveStatus === "EMPTY":
-            return "Vaca Seca";
-          case listAnimal[dataIndex].gender === "FEMALE" &&
-            differenceInMonths(
-              new Date(),
-              new Date(listAnimal[dataIndex]?.birthDate)
-            ) >= 24 &&
-            listAnimal[dataIndex].isDried &&
             listAnimal[dataIndex].reproductiveStatus === "PREGNANT":
-            return "Vaca Seca";
+            const DayP24 = differenceInDays(
+              new Date(),
+              new Date(listAnimal[dataIndex].pregnantDate)
+            );
+            const nDayP24 =
+              DayP24 === 0
+                ? " dias de preñez"
+                : DayP24 === 1
+                ? " dia de preñez"
+                : " dias de preñez";
+            return `Vaca Seca,  ${DayP24} ${nDayP24}`;
           default:
             return "Indeterminado";
         }

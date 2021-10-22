@@ -11,7 +11,6 @@ import AnimalActions from "../../../redux/actions/animal.actions";
 import {
   categoryOptions,
   sexDictionary,
-  sexOptions,
   stateOptions,
   typeServicesTest,
 } from "../../../constants";

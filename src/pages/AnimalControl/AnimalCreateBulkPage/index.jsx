@@ -1,4 +1,3 @@
-import { useParams } from "react-router";
 import CustomDialog from "../../../components/CustomDialog";
 import AnimalBulkForm from "../Forms/AnimalBulkForm";
 
@@ -9,8 +8,6 @@ import AnimalBulkForm from "../Forms/AnimalBulkForm";
  */
 
 const AnimalCreateBulkPage = ({ parentPathname }) => {
-  const params = useParams();
-
   return (
     <>
       <CustomDialog parentPathname={parentPathname}>

@@ -13,12 +13,12 @@ import PropTypes from "prop-types";
 import ButtonFormik from "../../../components/Inputs/ButtonFormik";
 import { useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
-import { useSelector, shallowEqual } from "react-redux";
+import { useSelector } from "react-redux";
 import geneticStockActions from "../../../redux/actions/geneticStock.actions";
 import raceActions from "../../../redux/actions/race.actions";
 import CheckboxFormik from "../../../components/Inputs/CheckboxFormik";
 import { useStyles } from "../../../styles";
-import { AddCircle, Close, Delete } from "@material-ui/icons";
+import { AddCircle, Close } from "@material-ui/icons";
 import DeleteIcon from "@material-ui/icons/Delete";
 import IdeasCloudApi from "../../../helpers/ideascloudApi";
 import CustomPaper from "../../../components/CustomPaper";
@@ -442,7 +442,7 @@ const GeneticStockForm = ({
                       </Grid>
                       <img
                         src={image}
-                        alt={`image${i}`}
+                        alt={`img${i}`}
                         style={{
                           maxWidth: "100%",
                           maxHeight: "150px",
@@ -454,7 +454,6 @@ const GeneticStockForm = ({
                           margin: "auto",
                         }}
                         border="0"
-                        alt="Null"
                       />
                     </CustomPaper>
                   ))}

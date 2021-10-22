@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Grid, IconButton, Tooltip, Typography } from "@material-ui/core";
+import { Grid, Typography } from "@material-ui/core";
 import * as yup from "yup";
 import { Formik } from "formik";
 import TextFieldFormik from "../../../components/Inputs/TextFieldFormik";
@@ -11,8 +11,6 @@ import { stateOptions } from "../../../constants";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import AnimalActions from "../../../redux/actions/animal.actions";
 import PalpationActions from "../../../redux/actions/palpation.actions";
-import { Info } from "@material-ui/icons";
-import { useStyles } from "../../../styles";
 import CustomInfoIcon from "../../../components/CustomInfoIcon";
 import CollaboratorActions from "../../../redux/actions/collaborator.actions";
 import { useParams } from "react-router";
@@ -33,7 +31,6 @@ const PalpationForm = ({
   onClickCancelButton,
   onCompleteSubmit = () => {},
 }) => {
-  const classes = useStyles();
   const params = useParams();
   const stateTitle =
     'Una vez que se declare el estado del animal como "Preñada" o "Vacía" ya no estará disponible en este módulo hasta que se realize un nuevo servicio del animal.';

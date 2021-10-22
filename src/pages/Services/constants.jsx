@@ -1,7 +1,6 @@
 import { ROUTES_DICT } from "../../routes/routesDict";
 import { format } from "date-fns";
-import { typeServicesTest, stateOptions } from "../../constants";
-import { values } from "lodash-es";
+import { typeServicesTest } from "../../constants";
 
 export const columnsToMuiTable = [
   {

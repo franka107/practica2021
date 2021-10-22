@@ -15,7 +15,7 @@ import SearchContainer from "../../../components/SearchContainer";
 import BirthActions from "../../../redux/actions/birth.actions";
 import { useDispatch } from "react-redux";
 import { columns } from "./constants";
-import { useLocation, useParams } from "react-router";
+import { useParams } from "react-router";
 
 function BirthListPage({ children }) {
   const classes = useStyles();

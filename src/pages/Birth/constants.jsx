@@ -1,6 +1,3 @@
-import { IconButton } from "@material-ui/core";
-import DeleteIcon from "@material-ui/icons/Delete";
-import { Edit } from "@material-ui/icons";
 import { ROUTES_DICT } from "../../routes/routesDict";
 
 export const columns = [

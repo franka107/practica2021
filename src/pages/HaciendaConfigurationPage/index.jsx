@@ -13,14 +13,7 @@ import {
   useLocation,
 } from "react-router-dom";
 import clsx from "clsx";
-import {
-  Edit,
-  Add,
-  Delete,
-  Camera,
-  Photo,
-  CameraAlt,
-} from "@material-ui/icons";
+import { Edit, Add, Delete, CameraAlt } from "@material-ui/icons";
 import { columnsTable, haciendaRouteOptions } from "./constants";
 import { useStyles } from "./styles";
 import { useDispatch, useSelector } from "react-redux";

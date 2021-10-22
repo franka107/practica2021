@@ -1,10 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  useHistory,
-  useLocation,
-  useParams,
-  generatePath,
-} from "react-router-dom";
+import { useHistory, useParams, generatePath } from "react-router-dom";
 import { Grid } from "@material-ui/core";
 import { columns } from "./constants";
 import { useStyles } from "../styles";
@@ -17,7 +12,6 @@ import SearchContainer from "../../../components/SearchContainer";
 
 const MilkListPage = ({ children, setTitle, setChipList }) => {
   const history = useHistory();
-  const location = useLocation();
   const params = useParams();
   const dispatch = useDispatch();
   const classes = useStyles();

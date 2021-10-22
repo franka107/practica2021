@@ -1,13 +1,7 @@
 import React, { useEffect, useState } from "react";
-import {
-  useHistory,
-  useLocation,
-  useParams,
-  generatePath,
-} from "react-router-dom";
+import { useHistory, useParams, generatePath } from "react-router-dom";
 import { Grid } from "@material-ui/core";
 import { columns } from "./constants";
-import { weightRouteOptions } from "../constants";
 import { useStyles } from "../styles";
 import CustomMuiTable from "../../../../components/CustomMuiTable";
 import TableButtons from "../../../../components/TableButtons";
@@ -18,7 +12,6 @@ import SearchContainer from "../../../../components/SearchContainer";
 
 function WeightListPage({ children, setTitle, setChipList }) {
   const history = useHistory();
-  const location = useLocation();
   const params = useParams();
   const dispatch = useDispatch();
   const classes = useStyles();

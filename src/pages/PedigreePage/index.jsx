@@ -1,21 +1,10 @@
 import { Typography } from "@material-ui/core";
-import { Chip } from "@material-ui/core";
 import { Grid } from "@material-ui/core";
-import clsx from "clsx";
-import QRCode from "qrcode.react";
-import { getAge, formatDate } from "../../helpers/convertDate";
-import { useState } from "react";
-import { useHistory, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useStyles } from "../AnimalControl/AnimalDescription/styles";
 import { Paper } from "@material-ui/core";
 import { Divider } from "@material-ui/core";
-import { IconButton } from "@material-ui/core";
-import { Edit } from "@material-ui/icons";
-import HighchartsReact from "highcharts-react-official";
-import Highcharts from "highcharts";
 import Familytree from "../../components/FamilyTree";
-import { ROUTES_DICT } from "../../routes/routesDict";
-import { BorderLinearProgress } from "../../components/BorderLinearProgress";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
@@ -23,7 +12,6 @@ import AnimalActions from "../../redux/actions/animal.actions";
 
 export default function PedigreePage() {
   const classes = useStyles();
-  const history = useHistory();
   // const [dialog, setDialog] = useState();
   const dispatch = useDispatch();
   // const [open, setOpen] = useState(false);
@@ -44,42 +32,42 @@ export default function PedigreePage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, currentAnimal]);
 
-  const [cow] = useState({
-    imageSrc:
-      "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Cow_female_black_white.jpg/782px-Cow_female_black_white.jpg",
-  });
-  const chartOptions = {
-    chart: {
-      type: "pie",
-      options3d: {
-        enabled: true,
-        alpha: 45,
-      },
-    },
-    title: {
-      text: undefined,
-    },
+  // const [cow] = useState({
+  //   imageSrc:
+  //     "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Cow_female_black_white.jpg/782px-Cow_female_black_white.jpg",
+  // });
+  // const chartOptions = {
+  //   chart: {
+  //     type: "pie",
+  //     options3d: {
+  //       enabled: true,
+  //       alpha: 45,
+  //     },
+  //   },
+  //   title: {
+  //     text: undefined,
+  //   },
 
-    plotOptions: {
-      pie: {
-        innerSize: 200,
-        depth: 45,
-      },
-    },
-    series: [
-      {
-        name: "Delivered amount",
-        data: [
-          ["10%", 8],
-          ["20%", 12],
-          ["16%", 3],
-        ],
-      },
-    ],
-    credits: {
-      enabled: false,
-    },
-  };
+  //   plotOptions: {
+  //     pie: {
+  //       innerSize: 200,
+  //       depth: 45,
+  //     },
+  //   },
+  //   series: [
+  //     {
+  //       name: "Delivered amount",
+  //       data: [
+  //         ["10%", 8],
+  //         ["20%", 12],
+  //         ["16%", 3],
+  //       ],
+  //     },
+  //   ],
+  //   credits: {
+  //     enabled: false,
+  //   },
+  // };
 
   return (
     <Grid container xs={12}>

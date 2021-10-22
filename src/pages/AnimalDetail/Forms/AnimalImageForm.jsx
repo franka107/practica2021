@@ -132,7 +132,7 @@ const AnimalImageForm = ({
                     </Grid>
                     <img
                       src={image}
-                      alt={`image${i}`}
+                      alt={`img${i}`}
                       style={{
                         maxWidth: "100%",
                         maxHeight: "150px",
@@ -144,7 +144,6 @@ const AnimalImageForm = ({
                         margin: "auto",
                       }}
                       border="0"
-                      alt="Null"
                     />
                   </CustomPaper>
                 ))}

@@ -13,7 +13,7 @@ import {
 import { ExpandLess, ExpandMore, Edit } from "@material-ui/icons";
 import clsx from "clsx";
 import { useStyles } from "./styles";
-import { useHistory, useLocation } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useDispatch, useSelector } from "react-redux";
 import agribusinessActions from "../../redux/actions/agribusiness.actions";
@@ -24,7 +24,6 @@ function Sidebar({ openDrawer, setOpenDrawer, options }) {
   const history = useHistory();
   const dispatch = useDispatch();
   const { location = {} } = history;
-  const realLocation = useLocation();
   const classes = useStyles();
   const farm = {
     id: "control-ganadero",
