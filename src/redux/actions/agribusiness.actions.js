@@ -1,5 +1,6 @@
 import IdeasCloudApi from "../../helpers/ideascloudApi";
 import ACTION_TYPES from "../types";
+import UserActions from "./user.actions";
 
 const list = () => async (dispatch, getState) => {
   const farm = getState().farm.current;
@@ -19,12 +20,13 @@ const get = (data) => async (dispatch) => {
 };
 
 const create = (data) => async (dispatch, getState) => {
-  const farm = getState().farm.current;
+  const auth = getState().auth;
+  const user = await UserActions.get({ _id: auth.user._id });
   const response = await IdeasCloudApi.fetch(
     "agribusinessCreate",
     {
       ...data,
-      farmId: farm._id,
+      farmId: user.farmId,
     },
     dispatch,
     "Tu agronegocio fue creado exitosamente",
