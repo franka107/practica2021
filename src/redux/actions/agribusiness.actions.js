@@ -21,7 +21,8 @@ const get = (data) => async (dispatch) => {
 
 const create = (data) => async (dispatch, getState) => {
   const auth = getState().auth;
-  const user = await UserActions.get({ _id: auth.user._id });
+  const user = await dispatch(UserActions.get({ _id: auth.user._id }));
+  console.log(user);
   const response = await IdeasCloudApi.fetch(
     "agribusinessCreate",
     {

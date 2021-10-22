@@ -44,6 +44,7 @@ const update = (data) => async (dispatch) => {
 const get = (data) => async (dispatch) => {
   const response = await IdeasCloudApi.fetch("userGetById", data);
   dispatch({ type: ACTION_TYPES.USER.UPDATE_CURRENT, payload: response });
+  return response;
 };
 
 const deleteUser = (data) => async (dispatch) => {

@@ -309,10 +309,12 @@ function AnimalForm({
               <>
                 <SelectFieldFormik
                   onChange={props.handleChange}
-                  options={Object.keys(stateOptions).map((key) => ({
-                    _id: key,
-                    name: stateOptions[key],
-                  }))}
+                  options={Object.keys(stateOptions)
+                    .filter((e) => e === "PREGNANT" || e === "EMPTY")
+                    .map((key) => ({
+                      _id: key,
+                      name: stateOptions[key],
+                    }))}
                   label="Estado"
                   name="reproductiveStatus"
                   lg={6}
