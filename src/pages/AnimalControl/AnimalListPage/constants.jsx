@@ -56,21 +56,21 @@ export const columns = [
       customBodyRender: (value) => stateOptions[value],
     },
   },
-  {
-    label: "Categoría",
-    name: "category",
-    options: {
-      filter: true,
-      customBodyRender: (value) => categoryOptionsTest[value],
-      //filterType: "checkbox",
-      //filterOptions: {
-      //  names: ["Reproductor", "No Reproductor"],
-      //},
-      //searchable: false,
-      //customBodyRender: (value) =>
-      //  value ? "Reproductor" : typeof value === "boolean" && "No Reproductor",
-    },
-  },
+  // {
+  //   label: "Categoría",
+  //   name: "category",
+  //   options: {
+  //     filter: true,
+  //     customBodyRender: (value) => categoryOptionsTest[value],
+  //     //filterType: "checkbox",
+  //     //filterOptions: {
+  //     //  names: ["Reproductor", "No Reproductor"],
+  //     //},
+  //     //searchable: false,
+  //     //customBodyRender: (value) =>
+  //     //  value ? "Reproductor" : typeof value === "boolean" && "No Reproductor",
+  //   },
+  // },
   {
     label: "Entrada hato",
     name: "herdDate",

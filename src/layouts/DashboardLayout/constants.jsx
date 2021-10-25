@@ -172,11 +172,11 @@ export const list = [
           //   title: "Sanidad",
           //   link: routesDictionary.livestockControl,
           // },
-          {
-            id: "agregar-registros",
-            title: "Reg. asociación",
-            link: ROUTES_DICT.collective.association.list,
-          },
+          // {
+          //   id: "agregar-registros",
+          //   title: "Reg. asociación",
+          //   link: ROUTES_DICT.collective.association.list,
+          // },
           {
             id: "secados",
             title: "Secados/Destete",
