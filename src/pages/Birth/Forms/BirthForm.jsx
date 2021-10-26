@@ -371,6 +371,7 @@ const BirthForm = ({
             // eslint-disable-next-line react-hooks/exhaustive-deps
           }, [props.values.animalId]);
 
+          /*
           useEffect(() => {
             if (currentAnimal && currentAnimal._id === props.values.animalId) {
               const days = differenceInDays(
@@ -396,6 +397,7 @@ const BirthForm = ({
             }
           }, [currentAnimal]);
 
+          */
           useEffect(() => {
             props.setFieldValue("firstChildGender", "");
             props.setFieldValue("secondChildGender", "");
