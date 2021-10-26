@@ -4,7 +4,7 @@ import UserActions from "./user.actions";
 
 const list = () => async (dispatch, getState) => {
   const farm = getState().farm.current;
-  const response = await IdeasCloudApi.fetch("agribusinessList", {
+  const response = await IdeasCloudApi.fetch("agribusinessListByFarmId", {
     farmId: farm._id,
   });
 
