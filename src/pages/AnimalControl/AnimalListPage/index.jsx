@@ -65,6 +65,8 @@ const AnimalPageList = ({ children, setTitle, setChipList }) => {
       customBodyRenderLite: (dataIndex) => {
         // isBreeding => Cria
         // isHeifer => Novilla
+        let spDay = "";
+        let iDay = 0;
         switch (true) {
           case listAnimal[dataIndex].gender === "FEMALE" &&
             differenceInMonths(
@@ -119,17 +121,17 @@ const AnimalPageList = ({ children, setTitle, setChipList }) => {
               new Date(listAnimal[dataIndex]?.birthDate)
             ) < 24 &&
             listAnimal[dataIndex].reproductiveStatus === "PREGNANT":
-            const pregnatDayHeifer = differenceInDays(
+            iDay = differenceInDays(
               new Date(),
               new Date(listAnimal[dataIndex].pregnantDate)
             );
-            const nDayHeifer =
-              pregnatDayHeifer === 0
+            spDay =
+              iDay === 0
                 ? " dias preñez"
-                : pregnatDayHeifer === 1
+                : iDay === 1
                 ? " dia de preñez"
                 : " dias de preñez";
-            return `Vaquillona Preñada, ${pregnatDayHeifer} ${nDayHeifer}`;
+            return `Vaquillona Preñada, ${iDay} ${spDay}`;
           case listAnimal[dataIndex].gender === "MALE" &&
             differenceInMonths(
               new Date(),
@@ -168,17 +170,17 @@ const AnimalPageList = ({ children, setTitle, setChipList }) => {
             listAnimal[dataIndex].lastBirth &&
             !listAnimal[dataIndex].isDried &&
             listAnimal[dataIndex].reproductiveStatus === "EMPTY":
-            const openDayEMPTY24 = differenceInDays(
+            iDay = differenceInDays(
               new Date(),
               new Date(listAnimal[dataIndex].lastBirth.birthDate)
             );
-            const nDayEMPTY24 =
-              openDayEMPTY24 === 0
+            spDay =
+              iDay === 0
                 ? " dias abiertos"
-                : openDayEMPTY24 === 1
-                ? " dia de abierto"
-                : " dias de abiertos";
-            return `Vaca Parida, ${openDayEMPTY24} ${nDayEMPTY24}`;
+                : iDay === 1
+                ? " dia abierto"
+                : " dias abiertos";
+            return `Vaca Parida, ${iDay} ${spDay}`;
           case listAnimal[dataIndex].gender === "FEMALE" &&
             differenceInMonths(
               new Date(),
@@ -187,17 +189,17 @@ const AnimalPageList = ({ children, setTitle, setChipList }) => {
             listAnimal[dataIndex].lastBirth &&
             !listAnimal[dataIndex].isDried &&
             listAnimal[dataIndex].reproductiveStatus === "PREGNANT":
-            const DayPREGNANT24 = differenceInDays(
+            iDay = differenceInDays(
               new Date(),
               new Date(listAnimal[dataIndex].pregnantDate)
             );
-            const nDayPREGNANT24 =
-              DayPREGNANT24 === 0
+            spDay =
+              iDay === 0
                 ? " dias de preñez"
-                : DayPREGNANT24 === 1
+                : iDay === 1
                 ? " dia de preñez"
                 : " dias de preñez";
-            return `Vaca Preñada, ${DayPREGNANT24} ${nDayPREGNANT24}`;
+            return `Vaca Preñada, ${iDay} ${spDay}`;
           case listAnimal[dataIndex].gender === "FEMALE" &&
             differenceInMonths(
               new Date(),
@@ -206,35 +208,112 @@ const AnimalPageList = ({ children, setTitle, setChipList }) => {
             listAnimal[dataIndex].lastBirth &&
             listAnimal[dataIndex].isDried &&
             listAnimal[dataIndex].reproductiveStatus === "EMPTY":
-            const openDayE24 = differenceInDays(
+            iDay = differenceInDays(
               new Date(),
               new Date(listAnimal[dataIndex].lastBirth.birthDate)
             );
-            const nDayE24 =
-              openDayE24 === 0
+            spDay =
+              iDay === 0
                 ? " dias abiertos"
-                : openDayE24 === 1
+                : iDay === 1
                 ? " dia de abierto"
                 : " dias de abiertos";
-            return `Vaca Seca, ${openDayE24} ${nDayE24}`;
+            return `Vaca Seca, ${iDay} ${spDay}`;
           case listAnimal[dataIndex].gender === "FEMALE" &&
             differenceInMonths(
               new Date(),
               new Date(listAnimal[dataIndex]?.birthDate)
             ) >= 24 &&
+            listAnimal[dataIndex].lastBirth &&
             listAnimal[dataIndex].isDried &&
             listAnimal[dataIndex].reproductiveStatus === "PREGNANT":
-            const DayP24 = differenceInDays(
+            iDay = differenceInDays(
               new Date(),
               new Date(listAnimal[dataIndex].pregnantDate)
             );
-            const nDayP24 =
-              DayP24 === 0
+            spDay =
+              iDay === 0
                 ? " dias de preñez"
-                : DayP24 === 1
+                : iDay === 1
                 ? " dia de preñez"
                 : " dias de preñez";
-            return `Vaca Seca,  ${DayP24} ${nDayP24}`;
+            return `Vaca Seca,  ${iDay} ${spDay}`;
+          case listAnimal[dataIndex].gender === "FEMALE" &&
+            differenceInMonths(
+              new Date(),
+              new Date(listAnimal[dataIndex]?.birthDate)
+            ) >= 24 &&
+            listAnimal[dataIndex].lastBirthDate &&
+            !listAnimal[dataIndex].isDried &&
+            listAnimal[dataIndex].reproductiveStatus === "EMPTY":
+            iDay = differenceInDays(
+              new Date(),
+              new Date(listAnimal[dataIndex].lastBirthDate)
+            );
+            spDay =
+              iDay === 0
+                ? " dias abiertos"
+                : iDay === 1
+                ? " dia de abierto"
+                : " dias de abiertos";
+            return `Vaca Parida, ${iDay} ${spDay}`;
+          case listAnimal[dataIndex].gender === "FEMALE" &&
+            differenceInMonths(
+              new Date(),
+              new Date(listAnimal[dataIndex]?.birthDate)
+            ) >= 24 &&
+            listAnimal[dataIndex].lastBirthDate &&
+            !listAnimal[dataIndex].isDried &&
+            listAnimal[dataIndex].reproductiveStatus === "PREGNANT":
+            iDay = differenceInDays(
+              new Date(),
+              new Date(listAnimal[dataIndex].pregnantDate)
+            );
+            spDay =
+              iDay === 0
+                ? " dias de preñez"
+                : iDay === 1
+                ? " dia de preñez"
+                : " dias de preñez";
+            return `Vaca Preñada, ${iDay} ${spDay}`;
+          case listAnimal[dataIndex].gender === "FEMALE" &&
+            differenceInMonths(
+              new Date(),
+              new Date(listAnimal[dataIndex]?.birthDate)
+            ) >= 24 &&
+            listAnimal[dataIndex].lastBirthDate &&
+            listAnimal[dataIndex].isDried &&
+            listAnimal[dataIndex].reproductiveStatus === "EMPTY":
+            iDay = differenceInDays(
+              new Date(),
+              new Date(listAnimal[dataIndex].lastBirthDate)
+            );
+            spDay =
+              iDay === 0
+                ? " dias abiertos"
+                : iDay === 1
+                ? " dia abierto"
+                : " dias abiertos";
+            return `Vaca Seca, ${iDay} ${spDay}`;
+          case listAnimal[dataIndex].gender === "FEMALE" &&
+            differenceInMonths(
+              new Date(),
+              new Date(listAnimal[dataIndex]?.birthDate)
+            ) >= 24 &&
+            listAnimal[dataIndex].lastBirthDate &&
+            listAnimal[dataIndex].isDried &&
+            listAnimal[dataIndex].reproductiveStatus === "PREGNANT":
+            iDay = differenceInDays(
+              new Date(),
+              new Date(listAnimal[dataIndex].pregnantDate)
+            );
+            spDay =
+              iDay === 0
+                ? " dias de preñez"
+                : iDay === 1
+                ? " dia de preñez"
+                : " dias de preñez";
+            return `Vaca Seca,  ${iDay} ${spDay}`;
           default:
             return "Indeterminado";
         }
@@ -298,7 +377,7 @@ const AnimalPageList = ({ children, setTitle, setChipList }) => {
       <AddAnimals searchText={searchText} setSearchText={setSearchText} />
       <Typography component="div">
         <Grid component="label" container alignItems="center" spacing={1}>
-          <Grid item>Animales Muertos</Grid>
+          <Grid item>Animales Desactivados</Grid>
           <Grid item>
             <Switch
               label

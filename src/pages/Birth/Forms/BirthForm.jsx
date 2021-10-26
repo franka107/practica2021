@@ -773,7 +773,7 @@ const BirthForm = ({
                   />
                 </Grid>
                 <Grid item xs={3}>
-                  <ButtonFormik xs={3} label="Siguiente" type="submit" />
+                  <ButtonFormik xs={3} label="Guardar" type="submit" />
                 </Grid>
               </Grid>
             </form>

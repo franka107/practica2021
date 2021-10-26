@@ -31,7 +31,7 @@ import {
   unitWeightTestOptions,
   unitCapacityTestOptions,
 } from "../../../constants";
-import { add, differenceInDays, format } from "date-fns";
+import { add, differenceInDays, differenceInMonths, format } from "date-fns";
 
 /**
  * @component
@@ -99,12 +99,221 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
     return result + days;
   };
 
+  const kindAnimal = () => {
+    let spDay = "";
+    let iDay = 0;
+    switch (true) {
+      case currentAnimal.gender === "FEMALE" &&
+        differenceInMonths(new Date(), new Date(currentAnimal?.birthDate)) <
+          currentAgribusiness.isBreeding:
+        return "Cria Hembra";
+      case currentAnimal.gender === "MALE" &&
+        differenceInMonths(new Date(), new Date(currentAnimal?.birthDate)) <
+          currentAgribusiness.isBreeding:
+        return "Cria Macho";
+      case currentAnimal.gender === "FEMALE" &&
+        differenceInMonths(new Date(), new Date(currentAnimal?.birthDate)) >=
+          currentAgribusiness.isBreeding &&
+        differenceInMonths(new Date(), new Date(currentAnimal?.birthDate)) <
+          currentAgribusiness.isHeifer:
+        return "Hembra Levante";
+      case currentAnimal.gender === "MALE" &&
+        differenceInMonths(new Date(), new Date(currentAnimal?.birthDate)) >=
+          currentAgribusiness.isBreeding &&
+        differenceInMonths(new Date(), new Date(currentAnimal?.birthDate)) <
+          currentAgribusiness.isHeifer:
+        return "Macho Levante";
+      case currentAnimal.gender === "FEMALE" &&
+        differenceInMonths(new Date(), new Date(currentAnimal?.birthDate)) >=
+          currentAgribusiness.isHeifer &&
+        differenceInMonths(new Date(), new Date(currentAnimal?.birthDate)) <
+          24 &&
+        currentAnimal.reproductiveStatus === "EMPTY":
+        return "Vaquillona Vacia";
+      case currentAnimal.gender === "FEMALE" &&
+        differenceInMonths(new Date(), new Date(currentAnimal?.birthDate)) >=
+          currentAgribusiness.isHeifer &&
+        differenceInMonths(new Date(), new Date(currentAnimal?.birthDate)) <
+          24 &&
+        currentAnimal.reproductiveStatus === "PREGNANT":
+        iDay = differenceInDays(
+          new Date(),
+          new Date(currentAnimal.pregnantDate)
+        );
+        spDay =
+          iDay === 0
+            ? " dias preñez"
+            : iDay === 1
+            ? " dia de preñez"
+            : " dias de preñez";
+        return `Vaquillona Preñada, ${iDay} ${spDay}`;
+      case currentAnimal.gender === "MALE" &&
+        differenceInMonths(new Date(), new Date(currentAnimal?.birthDate)) >=
+          currentAgribusiness.isHeifer &&
+        differenceInMonths(new Date(), new Date(currentAnimal?.birthDate)) <
+          24 &&
+        currentAnimal.category !== "REPRODUCTOR":
+        return "Novillo para Engorda";
+      case currentAnimal.gender === "MALE" &&
+        differenceInMonths(new Date(), new Date(currentAnimal?.birthDate)) >=
+          currentAgribusiness.isHeifer &&
+        differenceInMonths(new Date(), new Date(currentAnimal?.birthDate)) <
+          24 &&
+        currentAnimal.category === "REPRODUCTOR":
+        return "Torete";
+      case currentAnimal.gender === "MALE" &&
+        differenceInMonths(new Date(), new Date(currentAnimal?.birthDate)) >=
+          24 &&
+        currentAnimal.category === "REPRODUCTOR":
+        return "Toro Reproductor";
+      // mayor que 24 meses
+      case currentAnimal.gender === "FEMALE" &&
+        differenceInMonths(new Date(), new Date(currentAnimal?.birthDate)) >=
+          24 &&
+        currentAnimal.births.length !== 0 &&
+        !currentAnimal.isDried &&
+        currentAnimal.reproductiveStatus === "EMPTY":
+        iDay = differenceInDays(
+          new Date(),
+          new Date(currentAnimal.births[0].birthDate)
+        );
+        spDay =
+          iDay === 0
+            ? " dias abiertos"
+            : iDay === 1
+            ? " dia de abierto"
+            : " dias de abiertos";
+        return `Vaca Parida, ${iDay} ${spDay}`;
+      case currentAnimal.gender === "FEMALE" &&
+        differenceInMonths(new Date(), new Date(currentAnimal?.birthDate)) >=
+          24 &&
+        currentAnimal.births.length !== 0 &&
+        !currentAnimal.isDried &&
+        currentAnimal.reproductiveStatus === "PREGNANT":
+        iDay = differenceInDays(
+          new Date(),
+          new Date(currentAnimal.pregnantDate)
+        );
+        spDay =
+          iDay === 0
+            ? " dias de preñez"
+            : iDay === 1
+            ? " dia de preñez"
+            : " dias de preñez";
+        return `Vaca Preñada, ${iDay} ${spDay}`;
+      case currentAnimal.gender === "FEMALE" &&
+        differenceInMonths(new Date(), new Date(currentAnimal?.birthDate)) >=
+          24 &&
+        currentAnimal.births.length !== 0 &&
+        currentAnimal.isDried &&
+        currentAnimal.reproductiveStatus === "EMPTY":
+        iDay = differenceInDays(
+          new Date(),
+          new Date(currentAnimal.births[0].birthDate)
+        );
+        spDay =
+          iDay === 0
+            ? " dias abiertos"
+            : iDay === 1
+            ? " dia de abierto"
+            : " dias de abiertos";
+        return `Vaca Seca, ${iDay} ${spDay}`;
+      case currentAnimal.gender === "FEMALE" &&
+        differenceInMonths(new Date(), new Date(currentAnimal?.birthDate)) >=
+          24 &&
+        currentAnimal.births.length !== 0 &&
+        currentAnimal.isDried &&
+        currentAnimal.reproductiveStatus === "PREGNANT":
+        iDay = differenceInDays(
+          new Date(),
+          new Date(currentAnimal.pregnantDate)
+        );
+        spDay =
+          iDay === 0
+            ? " dias de preñez"
+            : iDay === 1
+            ? " dia de preñez"
+            : " dias de preñez";
+        return `Vaca Seca,  ${iDay} ${spDay}`;
+      case currentAnimal.gender === "FEMALE" &&
+        differenceInMonths(new Date(), new Date(currentAnimal?.birthDate)) >=
+          24 &&
+        currentAnimal.lastBirthDate &&
+        !currentAnimal.isDried &&
+        currentAnimal.reproductiveStatus === "EMPTY":
+        iDay = differenceInDays(
+          new Date(),
+          new Date(currentAnimal.lastBirthDate)
+        );
+        spDay =
+          iDay === 0
+            ? " dias abiertos"
+            : iDay === 1
+            ? " dia de abierto"
+            : " dias de abiertos";
+        return `Vaca Parida, ${iDay} ${spDay}`;
+      case currentAnimal.gender === "FEMALE" &&
+        differenceInMonths(new Date(), new Date(currentAnimal?.birthDate)) >=
+          24 &&
+        currentAnimal.lastBirthDate &&
+        !currentAnimal.isDried &&
+        currentAnimal.reproductiveStatus === "PREGNANT":
+        iDay = differenceInDays(
+          new Date(),
+          new Date(currentAnimal.pregnantDate)
+        );
+        spDay =
+          iDay === 0
+            ? " dias de preñez"
+            : iDay === 1
+            ? " dia de preñez"
+            : " dias de preñez";
+        return `Vaca Preñada, ${iDay} ${spDay}`;
+      case currentAnimal.gender === "FEMALE" &&
+        differenceInMonths(new Date(), new Date(currentAnimal?.birthDate)) >=
+          24 &&
+        currentAnimal.lastBirthDate &&
+        currentAnimal.isDried &&
+        currentAnimal.reproductiveStatus === "EMPTY":
+        iDay = differenceInDays(
+          new Date(),
+          new Date(currentAnimal.lastBirthDate)
+        );
+        spDay =
+          iDay === 0
+            ? " dias abiertos"
+            : iDay === 1
+            ? " dia abierto"
+            : " dias abiertos";
+        return `Vaca Seca, ${iDay} ${spDay}`;
+      case currentAnimal.gender === "FEMALE" &&
+        differenceInMonths(new Date(), new Date(currentAnimal?.birthDate)) >=
+          24 &&
+        currentAnimal.lastBirthDate &&
+        currentAnimal.isDried &&
+        currentAnimal.reproductiveStatus === "PREGNANT":
+        iDay = differenceInDays(
+          new Date(),
+          new Date(currentAnimal.pregnantDate)
+        );
+        spDay =
+          iDay === 0
+            ? " dias de preñez"
+            : iDay === 1
+            ? " dia de preñez"
+            : " dias de preñez";
+        return `Vaca Seca,  ${iDay} ${spDay}`;
+      default:
+        return "Indeterminado";
+    }
+  };
+
   const expectedBirth = (values) => {
     const result = add(new Date(values), {
       years: 0,
-      months: 9,
-      weeks: 1,
-      days: 0,
+      months: 0,
+      weeks: 0,
+      days: 285,
       hours: 0,
       minutes: 0,
       seconds: 0,
@@ -287,6 +496,22 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
                                 new Date(currentAnimal.birthDate),
                                 new Date()
                               )}
+                          </Typography>
+                        </Grid>
+                      </Grid>
+                      <Grid
+                        container
+                        className={classes.generalFeature}
+                        xs={12}
+                      >
+                        <Grid item xs={4}>
+                          <Typography className={classes.cardFeature}>
+                            Clase
+                          </Typography>
+                        </Grid>
+                        <Grid item xs={8}>
+                          <Typography>
+                            {currentAnimal && kindAnimal()}
                           </Typography>
                         </Grid>
                       </Grid>
@@ -505,19 +730,26 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
                                   </Grid>
                                 </>
                               )}
-
-                            <Grid item xs={5}>
-                              <Typography className={classes.cardFeature}>
-                                Ref. Padre
-                              </Typography>
-                            </Grid>
-                            <Grid item xs={7}>
-                              <Typography>
-                                {currentAnimal && currentAnimal.fatherRef
-                                  ? currentAnimal.fatherRef
-                                  : "Sin información"}
-                              </Typography>
-                            </Grid>
+                            {currentAnimal && currentAnimal.fatherId === null && (
+                              <>
+                                <Grid item xs={5}>
+                                  <Typography className={classes.cardFeature}>
+                                    {currentAnimal.fatherRef &&
+                                    currentAnimal.fatherRef !== ""
+                                      ? "Ref. Padre"
+                                      : "Padre"}
+                                  </Typography>
+                                </Grid>
+                                <Grid item xs={7}>
+                                  <Typography>
+                                    {currentAnimal.fatherRef &&
+                                    currentAnimal.fatherRef !== ""
+                                      ? currentAnimal.fatherRef
+                                      : "Sin información"}
+                                  </Typography>
+                                </Grid>
+                              </>
+                            )}
                           </Grid>
                           <Grid
                             container
@@ -560,17 +792,19 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
                                   </Grid>
                                 </>
                               )}
-                            {currentAnimal && currentAnimal.motherRef !== null && (
+                            {currentAnimal && currentAnimal.motherId === null && (
                               <>
                                 <Grid item xs={5}>
                                   <Typography className={classes.cardFeature}>
-                                    Ref. Madre
+                                    {currentAnimal.motherRef &&
+                                    currentAnimal.motherRef !== ""
+                                      ? "Ref. Madre"
+                                      : "Madre"}
                                   </Typography>
                                 </Grid>
                                 <Grid item xs={7}>
                                   <Typography>
-                                    {currentAnimal &&
-                                    currentAnimal.motherRef &&
+                                    {currentAnimal.motherRef &&
                                     currentAnimal.motherRef !== ""
                                       ? currentAnimal.motherRef
                                       : "Sin información"}
