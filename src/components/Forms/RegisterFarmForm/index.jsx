@@ -20,6 +20,9 @@ import {
 import { farmActions } from "../../../redux/actions/farm.actions";
 import currencyActions from "../../../redux/actions/currency.actions";
 import { useState } from "react";
+import IdeasCloudApi from "../../../helpers/ideascloudApi";
+import { regionConstants } from "../../../redux/types/region.constants";
+import { districtConstants } from "../../../redux/types/district.constants";
 
 const defaultInitValues = {
   name: "",
@@ -95,8 +98,8 @@ const RegisterFarmForm = ({
 
   useEffect(() => {
     dispatch(countryActions.retrieveCountries());
-    dispatch(regionActions.retrieveRegions());
-    dispatch(districtActions.retrieveDistricts());
+    //dispatch(regionActions.retrieveRegions());
+    //dispatch(districtActions.retrieveDistricts());
     dispatch(currencyActions.retrieveCurrencies());
   }, [dispatch]);
 
@@ -129,112 +132,135 @@ const RegisterFarmForm = ({
           onSubmit={handleSubmit}
           validationSchema={validationSchema}
         >
-          {(props) => (
-            <form onSubmit={props.handleSubmit}>
-              <Grid container spacing={1}>
-                <TextFieldFormik
-                  label="Nombre de la hacienda"
-                  name="name"
-                  onChange={props.handleChange}
-                />
-                <TextFieldFormik
-                  label="Nombre del propietario"
-                  name="landLord"
-                  onChange={props.handleChange}
-                  lg={9}
-                  sm={6}
-                  xs={12}
-                />
-                <TextFieldFormik
-                  label="RUC/DNI/NIT"
-                  name="nit"
-                  onChange={props.handleChange}
-                  lg={3}
-                  sm={6}
-                  xs={12}
-                />
-                <SelectFieldFormik
-                  xs={4}
-                  label="Pais"
-                  name="countryId"
-                  options={countries}
-                />
-                <SelectFieldFormik
-                  xs={4}
-                  label="Región"
-                  name="regionId"
-                  options={regionList}
-                />
-                <SelectFieldFormik
-                  xs={4}
-                  label="Distrito"
-                  name="districtId"
-                  options={districtList}
-                />
-                <TextFieldFormik
-                  label="Dirección"
-                  name="address"
-                  onChange={props.handleChange}
-                  xs={9}
-                />
-                <PhoneNumberFieldFormik
-                  xs={3}
-                  name="phoneNumber"
-                  onChange={props.handleChange}
-                />
-                <Grid item xs={12}>
-                  <Typography
-                    variant={"subtitle2"}
-                    className={classes.subtitle2}
-                  >
-                    Unidades de medida
-                  </Typography>
-                </Grid>
-                <SelectFieldFormik
-                  sm={3}
-                  label="Unidad de areá"
-                  name="areaUnit"
-                  options={unitAreaOptions}
-                />
-                <SelectFieldFormik
-                  sm={3}
-                  label="Unidad de peso"
-                  name="weightUnit"
-                  options={unitWeightOptions}
-                />
-                <SelectFieldFormik
-                  sm={3}
-                  label="Unidad de volumen"
-                  name="capacityUnit"
-                  options={unitCapacityOptions}
-                />
-                <SelectFieldFormik
-                  sm={3}
-                  label="Moneda"
-                  name="currencyId"
-                  options={currencyListParsed}
-                />
-                {type === "create" && (
-                  <ButtonFormik type={"submit"} xs={3} label="Siguiente" />
-                )}
-                {type === "update" && (
-                  <Grid item container xs={12} justifyContent="space-between">
-                    <Grid item xs={5}>
-                      <ButtonFormik
-                        xs={12}
-                        label="Cancelar"
-                        type="cancel"
-                        onClick={onClickCancelButton}
-                      />
-                    </Grid>
-                    <Grid item xs={5}>
-                      <ButtonFormik xs={12} label="Guardar" type="submit" />
-                    </Grid>
+          {function Form(props) {
+            useEffect(() => {
+              IdeasCloudApi.fetch("regionListByCountry", {
+                countryId: props.values.countryId,
+              }).then((payload) => {
+                dispatch({
+                  type: regionConstants.GETALL_SUCCESS,
+                  payload,
+                });
+              });
+            }, [props.values.countryId]);
+
+            useEffect(() => {
+              IdeasCloudApi.fetch("districtListByRegion", {
+                regionId: props.values.regionId,
+              }).then((payload) => {
+                dispatch({
+                  type: districtConstants.GETALL_SUCCESS,
+                  payload,
+                });
+              });
+            }, [props.values.regionId]);
+            return (
+              <form onSubmit={props.handleSubmit}>
+                <Grid container spacing={1}>
+                  <TextFieldFormik
+                    label="Nombre de la hacienda"
+                    name="name"
+                    onChange={props.handleChange}
+                  />
+                  <TextFieldFormik
+                    label="Nombre del propietario"
+                    name="landLord"
+                    onChange={props.handleChange}
+                    lg={9}
+                    sm={6}
+                    xs={12}
+                  />
+                  <TextFieldFormik
+                    label="RUC/DNI/NIT"
+                    name="nit"
+                    onChange={props.handleChange}
+                    lg={3}
+                    sm={6}
+                    xs={12}
+                  />
+                  <SelectFieldFormik
+                    xs={4}
+                    label="Pais"
+                    name="countryId"
+                    options={countries}
+                  />
+                  <SelectFieldFormik
+                    xs={4}
+                    label="Región"
+                    name="regionId"
+                    options={regionList}
+                  />
+                  <SelectFieldFormik
+                    xs={4}
+                    label="Distrito"
+                    name="districtId"
+                    options={districtList}
+                  />
+                  <TextFieldFormik
+                    label="Dirección"
+                    name="address"
+                    onChange={props.handleChange}
+                    xs={9}
+                  />
+                  <PhoneNumberFieldFormik
+                    xs={3}
+                    name="phoneNumber"
+                    onChange={props.handleChange}
+                  />
+                  <Grid item xs={12}>
+                    <Typography
+                      variant={"subtitle2"}
+                      className={classes.subtitle2}
+                    >
+                      Unidades de medida
+                    </Typography>
                   </Grid>
-                )}
-              </Grid>
-            </form>
-          )}
+                  <SelectFieldFormik
+                    sm={3}
+                    label="Unidad de areá"
+                    name="areaUnit"
+                    options={unitAreaOptions}
+                  />
+                  <SelectFieldFormik
+                    sm={3}
+                    label="Unidad de peso"
+                    name="weightUnit"
+                    options={unitWeightOptions}
+                  />
+                  <SelectFieldFormik
+                    sm={3}
+                    label="Unidad de volumen"
+                    name="capacityUnit"
+                    options={unitCapacityOptions}
+                  />
+                  <SelectFieldFormik
+                    sm={3}
+                    label="Moneda"
+                    name="currencyId"
+                    options={currencyListParsed}
+                  />
+                  {type === "create" && (
+                    <ButtonFormik type={"submit"} xs={3} label="Siguiente" />
+                  )}
+                  {type === "update" && (
+                    <Grid item container xs={12} justifyContent="space-between">
+                      <Grid item xs={5}>
+                        <ButtonFormik
+                          xs={12}
+                          label="Cancelar"
+                          type="cancel"
+                          onClick={onClickCancelButton}
+                        />
+                      </Grid>
+                      <Grid item xs={5}>
+                        <ButtonFormik xs={12} label="Guardar" type="submit" />
+                      </Grid>
+                    </Grid>
+                  )}
+                </Grid>
+              </form>
+            );
+          }}
         </Formik>
       </Grid>
     </div>
