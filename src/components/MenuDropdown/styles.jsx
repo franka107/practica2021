@@ -1,12 +1,21 @@
-import { makeStyles } from '@material-ui/core'
+import { makeStyles } from "@material-ui/core";
 
 export const useStyles = makeStyles((theme) => ({
   menuContainer: {
-    width: 'fit-content',
-    paddingRight: '1.5rem',
-    [theme.breakpoints.down('xs')]: {
+    width: "fit-content",
+    paddingRight: "1.5rem",
+    [theme.breakpoints.down("xs")]: {
       paddingRight: 0,
     },
+  },
+  customModal: {
+    padding: "1.2rem",
+  },
+  customModal__closeBtn: {
+    position: "absolute",
+    right: 10,
+    top: 10,
+    cursor: "pointer",
   },
   menuIcon: {
     height: 40,
@@ -14,41 +23,41 @@ export const useStyles = makeStyles((theme) => ({
     background: theme.palette.icon.menu,
     color: theme.palette.icon.menuFill,
     borderRadius: 8,
-    verticalAlign: 'middle',
-    display: 'flex',
-    alignContent: 'center',
-    justifyContent: 'center',
-    marginLeft: 'auto',
-    cursor: 'pointer',
+    verticalAlign: "middle",
+    display: "flex",
+    alignContent: "center",
+    justifyContent: "center",
+    marginLeft: "auto",
+    cursor: "pointer",
   },
   menuIconContainer: {
-    paddingRight: '1rem',
-    margin: '0 .5rem',
+    paddingRight: "1rem",
+    margin: "0 .5rem",
   },
   icon: {
-    margin: 'auto .5rem',
+    margin: "auto .5rem",
     fontSize: 33,
-    padding: '0 1px',
+    padding: "0 1px",
   },
   menuList: {
-    top: '63px!important',
-    width: 'min-content',
+    top: "63px!important",
+    width: "min-content",
     right: 20,
-    left: 'auto!important',
+    left: "auto!important",
   },
   iconColor: {
     fill: theme.palette.icon.menu,
     height: 40,
     width: 48,
-    margin: '0 .5rem',
-    cursor: 'pointer',
-    [theme.breakpoints.down('xs')]: {
-      display: 'none',
+    margin: "0 .5rem",
+    cursor: "pointer",
+    [theme.breakpoints.down("xs")]: {
+      display: "none",
     },
   },
   menuImg: {
-    minWidth: 'min-content',
-    marginRight: '.5rem',
-    color: 'black',
+    minWidth: "min-content",
+    marginRight: ".5rem",
+    color: "black",
   },
-}))
+}));

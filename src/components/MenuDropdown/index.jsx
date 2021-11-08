@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import {
+  Button,
+  Dialog,
   Grid,
   ListItemIcon,
   Menu,
   MenuItem,
   Typography,
 } from "@material-ui/core";
-import { Menu as MenuIcon, Search } from "@material-ui/icons";
+import { Close, Menu as MenuIcon, Search } from "@material-ui/icons";
 import { useHistory } from "react-router-dom";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import NotificationsNoneOutlinedIcon from "@material-ui/icons/NotificationsNoneOutlined";
@@ -15,11 +17,13 @@ import { useStyles } from "./styles";
 import { menuItems } from "./constants";
 import { useDispatch } from "react-redux";
 import { ROUTES_DICT } from "../../routes/routesDict";
+import CommentForm from "../../pages/Comment/Forms/CommentForm";
 
 function MenuDropdown({ isLogin, setLoginState }) {
   const dispatch = useDispatch();
   const classes = useStyles();
   const [openMenu, setOpenMenu] = useState(false);
+  const [openDialog, setOpenDialog] = useState(false);
   const [menuList, setMenuList] = useState([]);
   const history = useHistory();
 
@@ -64,6 +68,39 @@ function MenuDropdown({ isLogin, setLoginState }) {
     >
       {isLogin && (
         <React.Fragment>
+          <Grid item>
+            <Button
+              color="primary"
+              variant="contained"
+              style={{
+                borderRadius: 25,
+                padding: "auto 1rem",
+                color: "#fff",
+                backgroundColor: "#00A796",
+              }}
+              onClick={() => setOpenDialog(true)}
+            >
+              Reportar incidencia
+            </Button>
+            <Dialog
+              open={openDialog}
+              fullWidth
+              classes={{ paperFullWidth: classes.customModal }}
+              onClose={() => setOpenDialog(false)}
+              maxWidth="sm"
+            >
+              <Close
+                onClick={() => setOpenDialog(false)}
+                className={classes.customModal__closeBtn}
+              />
+              <CommentForm
+                onCompleteSubmit={() => {
+                  setOpenDialog(false);
+                }}
+                onClickCancelButton={() => setOpenDialog(false)}
+              />
+            </Dialog>
+          </Grid>
           <Grid item>
             <AccountCircleIcon
               className={classes.iconColor}

@@ -150,6 +150,15 @@ const ACTION_TYPES = {
     DELETE: "collaborator/DELETE",
     CREATE: "collaborator/CREATE",
   },
+  COMMENT: {
+    RETRIEVE_BY_CURRENCY: "comment/RETRIEVE_BY_CURRENCY",
+    RETRIEVE_BY_ID: "comment/RETRIEVE_BY_ID",
+    UPDATE: "comment/UPDATE",
+    RETRIEVE: "comment/RETRIEVE",
+    UPDATE_CURRENT: "comment/UPDATE_CURRENT",
+    DELETE: "comment/DELETE",
+    CREATE: "comment/CREATE",
+  },
   USER: {
     RETRIEVE_BY_ID: "user/RETRIEVE_BY_ID",
     UPDATE: "user/UPDATE",
