@@ -179,6 +179,7 @@ function RegisterPage(props) {
                   <Button
                     className={classes.googleBtn}
                     startIcon={<Facebook className={classes.fbIcon} />}
+                    onClick={renderProps.onClick}
                   >
                     <Typography
                       align={"center"}
