@@ -43,6 +43,13 @@ const defaultInitValues = {
   percentageRace4: 0,
   images: null,
 };
+
+/**
+ * @component
+ * @description Componente, formulario para crear o editar el registro del stock genetico
+ * @author Emerson Puma Quispe <emerson.puma@ideascloud.io>
+ */
+
 const GeneticStockForm = ({
   initValues = defaultInitValues,
   type = "create",

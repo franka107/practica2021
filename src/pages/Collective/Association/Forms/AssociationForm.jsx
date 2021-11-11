@@ -11,6 +11,12 @@ import { useDispatch } from "react-redux";
 import AnimalActions from "../../../../redux/actions/animal.actions";
 import AssociationActions from "../../../../redux/actions/association.actions";
 
+/**
+ * @component
+ * @description Componente, formulario para crear o editar registros de asociaciones
+ * @author Emerson Puma Quispe <emerson.puma@ideascloud.io>
+ */
+
 const defaultInitValues = {
   animalId: "",
   name: "",

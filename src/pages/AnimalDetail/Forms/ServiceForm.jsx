@@ -8,6 +8,12 @@ import SelectFieldFormik from "../../../components/Inputs/SelectFieldFormik";
 import ButtonFormik from "../../../components/Inputs/ButtonFormik";
 import { useSelector } from "react-redux";
 
+/**
+ * @component
+ * @description Componente, formulario para crear los servicios de un animal
+ * @author Emerson Puma Quispe <emerson.puma@ideascloud.io>
+ */
+
 const ServiceForm = ({
   initValues,
   onClickCancelButton,

@@ -6,6 +6,12 @@ import CustomDialog from "../../../../components/CustomDialog";
 import SaleActions from "../../../../redux/actions/sale.actions";
 import SaleForm from "../Forms/SaleForm";
 
+/**
+ * @component
+ * @description Componente, dialog o modal que contiene el formulario para poder actulizar ventas de animales
+ * @author Emerson Puma Quispe <emerson.puma@ideascloud.io>
+ */
+
 const SaleUpdatePage = ({ parentPathname }) => {
   const params = useParams();
   const dispatch = useDispatch();

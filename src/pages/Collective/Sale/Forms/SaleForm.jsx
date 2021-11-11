@@ -22,6 +22,12 @@ const defaultInitValues = {
   typeAction: "SALE",
 };
 
+/**
+ * @component
+ * @description Componente, formulario para crear o editar ventas o traslados de animales
+ * @author Emerson Puma Quispe <emerson.puma@ideascloud.io>
+ */
+
 const SaleForm = ({
   initValues = defaultInitValues,
   type = "create",

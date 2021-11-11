@@ -2,7 +2,6 @@ import React from "react";
 import { Grid, Typography, Button, IconButton } from "@material-ui/core";
 import { Formik } from "formik";
 import * as yup from "yup";
-// import TextFieldFormik from "../../../../components/Inputs/TextFieldFormik";
 import ButtonFormik from "../../../components/Inputs/ButtonFormik";
 import IdeasCloudApi from "../../../helpers/ideascloudApi";
 import { useDispatch, useSelector } from "react-redux";
@@ -14,6 +13,12 @@ import _ from "lodash";
 const defaultInitValues = {
   imageUrl: null,
 };
+
+/**
+ * @component
+ * @description Componente, formulario para crear o editar animales
+ * @author Emerson Puma Quispe <emerson.puma@ideascloud.io>
+ */
 
 const AnimalImageForm = ({
   initValues = defaultInitValues,

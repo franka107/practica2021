@@ -7,6 +7,12 @@ import MovementActions from "../../../redux/actions/movement.actions";
 import { ROUTES_SLUGS } from "../../../routes/routesDict";
 import MovementForm from "../Forms/MovementForm";
 
+/**
+ * @component
+ * @description Componente, dialog o modal que contiene el formulario para poder actualizar datos de movimientos
+ * @author Emerson Puma Quispe <emerson.puma@ideascloud.io>
+ */
+
 const MovementCreatePage = ({ parentPathname }) => {
   const params = useParams();
   const dispatch = useDispatch();

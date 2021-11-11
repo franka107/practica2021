@@ -6,6 +6,12 @@ import CustomDialog from "../../../../components/CustomDialog";
 import AssociationActions from "../../../../redux/actions/association.actions";
 import AssociationForm from "../Forms/AssociationForm";
 
+/**
+ * @component
+ * @description Componente, dialog o modal que contiene el formulario para poder actualizar los registro de asociaciones
+ * @author Emerson Puma Quispe <emerson.puma@ideascloud.io>
+ */
+
 const AssociationUpdatePage = ({ parentPathname }) => {
   const params = useParams();
   const dispatch = useDispatch();

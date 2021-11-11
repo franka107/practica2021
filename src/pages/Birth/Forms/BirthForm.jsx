@@ -41,9 +41,9 @@ const defaultInitValues = {
 };
 
 /**
- * Formulario de nacimiento
- * @param {Object} props.initValues Contiene los valores iniciarles del formulario
- * @returns
+ * @component
+ * @description Componente, formulario para crear o editar los datos de nacimientos de una vaca
+ * @author Frank Cary Viveros <frank.cary@ideascloud.io>
  */
 
 const BirthForm = ({

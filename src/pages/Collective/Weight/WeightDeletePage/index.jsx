@@ -4,6 +4,12 @@ import CustomDialog from "../../../../components/CustomDialog";
 import DeleteForm from "../../../../components/Forms/DeleteForm";
 import WeightActions from "../../../../redux/actions/weight.actions";
 
+/**
+ * @component
+ * @description Componente, dialog o modal que contiene el formulario para poder eliminar pesos de un animal
+ * @author Emerson Puma Quispe <emerson.puma@ideascloud.io>
+ */
+
 const WeightDeletePage = ({ parentPathname }) => {
   const params = useParams();
   const dispatch = useDispatch();

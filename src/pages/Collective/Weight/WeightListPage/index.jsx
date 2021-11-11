@@ -10,6 +10,12 @@ import WeightActions from "../../../../redux/actions/weight.actions";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import SearchContainer from "../../../../components/SearchContainer";
 
+/**
+ * @component
+ * @description Componente, dialog o modal que contiene el formulario para poder agregar pesos de un animal
+ * @author Emerson Puma Quispe <emerson.puma@ideascloud.io>
+ */
+
 function WeightListPage({ children, setTitle, setChipList }) {
   const history = useHistory();
   const params = useParams();

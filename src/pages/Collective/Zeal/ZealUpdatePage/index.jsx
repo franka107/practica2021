@@ -6,6 +6,12 @@ import CustomDialog from "../../../../components/CustomDialog";
 import ZealActions from "../../../../redux/actions/zeal.actions";
 import ZealForm from "../Forms/ZealForm";
 
+/**
+ * @component
+ * @description Componente, dialog o modal que contiene el formulario para poder actualizar datos de celos de una vaca
+ * @author Emerson Puma Quispe <emerson.puma@ideascloud.io>
+ */
+
 const ZealUpdatePage = ({ parentPathname }) => {
   const params = useParams();
   const dispatch = useDispatch();

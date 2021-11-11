@@ -22,6 +22,13 @@ const defaultInitValues = {
   userId: "",
   observation: "",
 };
+
+/**
+ * @component
+ * @description Componente, formulario para crear o editar datos de pesos de animales
+ * @author Emerson Puma Quispe <emerson.puma@ideascloud.io>
+ */
+
 function WeightForm({
   initValues = defaultInitValues,
   type = "create",

@@ -17,7 +17,13 @@ import { useDispatch } from "react-redux";
 import { columns } from "./constants";
 import { useParams } from "react-router";
 
-function BirthListPage({ children }) {
+/**
+ * @component
+ * @description Componente, tabla que contiene la lista de nacimientos de una vaca
+ * @author Emerson Puma Quispe <emerson.puma@ideascloud.io>
+ */
+
+const BirthListPage = ({ children }) => {
   const classes = useStyles();
   const [searchText, setSearchText] = useState();
 
@@ -272,6 +278,6 @@ function BirthListPage({ children }) {
       {children()}
     </Grid>
   );
-}
+};
 
 export default BirthListPage;

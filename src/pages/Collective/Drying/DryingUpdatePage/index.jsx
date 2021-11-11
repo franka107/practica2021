@@ -6,6 +6,12 @@ import CustomDialog from "../../../../components/CustomDialog";
 import DryingActions from "../../../../redux/actions/drying.actions";
 import DryingForm from "../Forms/DryingForm";
 
+/**
+ * @component
+ * @description Componente, dialog o modal que contiene el formulario para poder actualizar datos de secado de una vaca
+ * @author Emerson Puma Quispe <emerson.puma@ideascloud.io>
+ */
+
 const DryingUpdatePage = ({ parentPathname }) => {
   const params = useParams();
   const dispatch = useDispatch();

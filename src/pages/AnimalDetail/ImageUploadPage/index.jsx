@@ -5,6 +5,12 @@ import { useParams } from "react-router-dom";
 import CustomDialog from "../../../components/CustomDialog";
 import AnimalImageForm from "../Forms/AnimalImageForm";
 
+/**
+ * @component
+ * @description Componente, dialog o modal que contiene el formulario para poder actualizar las imagenes de un animal
+ * @author Emerson Puma Quispe <emerson.puma@ideascloud.io>
+ */
+
 const ImageUploadPage = ({ parentPathname }) => {
   const params = useParams();
   const dispatch = useDispatch();

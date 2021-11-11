@@ -10,6 +10,12 @@ import { ROUTES_SLUGS } from "../../../routes/routesDict";
 import { embryoRouteOptions, semenRouteOptions } from "../constants";
 import { columns } from "./constants";
 
+/**
+ * @component
+ * @description Componente, tabla que contiene la lista de movimientos
+ * @author Emerson Puma Quispe <emerson.puma@ideascloud.io>
+ */
+
 const MovementPageList = ({ children, setTitle, setChipList }) => {
   const history = useHistory();
   const location = useLocation();

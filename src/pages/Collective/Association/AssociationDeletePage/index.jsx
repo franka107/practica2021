@@ -4,6 +4,12 @@ import CustomDialog from "../../../../components/CustomDialog";
 import DeleteForm from "../../../../components/Forms/DeleteForm";
 import AssociationActions from "../../../../redux/actions/association.actions";
 
+/**
+ * @component
+ * @description Componente, dialog o modal que contiene el formulario para poder eliminar registros de asociacion
+ * @author Emerson Puma Quispe <emerson.puma@ideascloud.io>
+ */
+
 const AssociationDeletePage = ({ parentPathname }) => {
   const params = useParams();
   const dispatch = useDispatch();

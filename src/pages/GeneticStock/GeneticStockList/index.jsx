@@ -17,6 +17,12 @@ import geneticStockActions from "../../../redux/actions/geneticStock.actions";
 import DataContainer from "../../../components/DataContainer";
 import SearchContainer from "../../../components/SearchContainer";
 
+/**
+ * @component
+ * @description Componente, tabla que contiene la lista de stock genetico
+ * @author Emerson Puma Quispe <emerson.puma@ideascloud.io>
+ */
+
 function GeneticStockList({ children, setTitle, setChipList }) {
   const dispatch = useDispatch();
   const params = useParams();

@@ -5,6 +5,12 @@ import { useParams } from "react-router-dom";
 import CustomDialog from "../../../components/CustomDialog";
 import RaceForm from "../Forms/RaceForm";
 
+/**
+ * @component
+ * @description Componente, dialog o modal que contiene el formulario para poder actualizar los datos relacionados a la raza de un animal
+ * @author Emerson Puma Quispe <emerson.puma@ideascloud.io>
+ */
+
 const RaceUpdatePage = ({ parentPathname }) => {
   const params = useParams();
   const dispatch = useDispatch();

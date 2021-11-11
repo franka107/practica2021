@@ -6,6 +6,12 @@ import CustomDialog from "../../../../components/CustomDialog";
 import WeightActions from "../../../../redux/actions/weight.actions";
 import WeightForm from "../Forms/WeightForm";
 
+/**
+ * @component
+ * @description Componente, tabla que contiene la lista de los pesos de animales
+ * @author Emerson Puma Quispe <emerson.puma@ideascloud.io>
+ */
+
 const WeightUpdatePage = ({ parentPathname }) => {
   const params = useParams();
   const dispatch = useDispatch();
