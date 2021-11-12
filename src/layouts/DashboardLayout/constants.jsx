@@ -43,11 +43,11 @@ export const list = [
         title: "Inicio",
         link: ROUTES_DICT.animal.list,
       },
-      {
-        id: "estadisticas",
-        title: "Estadísticas",
-        // link: routesDictionary.livestockControl,
-      },
+      // {
+      //   id: "estadisticas",
+      //   title: "Estadísticas",
+      //   // link: routesDictionary.livestockControl,
+      // },
     ],
   },
   {

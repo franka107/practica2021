@@ -380,7 +380,6 @@ const AnimalPageList = ({ children, setTitle, setChipList }) => {
           <Grid item>Animales Desactivados</Grid>
           <Grid item>
             <Switch
-              label
               checked={listType}
               onChange={(e) => {
                 setListType(!listType);

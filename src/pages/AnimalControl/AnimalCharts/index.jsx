@@ -75,7 +75,7 @@ const AnimalCharts = () => {
   };
 
   return (
-    <Grid container xs={12} className={classes.container}>
+    <Grid container className={classes.container}>
       <Grid item container lg={7} xs={12}>
         <Grid
           item

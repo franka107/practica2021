@@ -188,7 +188,11 @@ function Sidebar({ openDrawer, setOpenDrawer, options }) {
               )}
             </ListItemIcon>
           </ListItem>
-          <Collapse in={nestedList[farm.title]} timeout="auto" unmountOnExit>
+          <Collapse
+            in={Boolean(nestedList[farm.title])}
+            timeout="auto"
+            unmountOnExit
+          >
             {listAgribusiness &&
               listAgribusiness.map((agribusiness) => {
                 return (
@@ -257,7 +261,11 @@ function Sidebar({ openDrawer, setOpenDrawer, options }) {
                 </div>
               )}
             </ListItem>
-            <Collapse in={nestedList[item.id]} timeout="auto" unmountOnExit>
+            <Collapse
+              in={Boolean(nestedList[item.id])}
+              timeout="auto"
+              unmountOnExit
+            >
               {item.submenu &&
                 item.submenu.map((subitem) => {
                   const SubCustomIcon = subitem.img;
@@ -319,7 +327,7 @@ function Sidebar({ openDrawer, setOpenDrawer, options }) {
                         )}
                       </ListItem>
                       <Collapse
-                        in={subNestedList[subitem.id]}
+                        in={Boolean(subNestedList[subitem.id])}
                         timeout="auto"
                         unmountOnExit
                       >

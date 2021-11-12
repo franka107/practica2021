@@ -13,6 +13,11 @@ export const unitWeightTestOptions = {
   KILOGRAMS: "Kg.",
 };
 
+export const commentTypeOptions = {
+  ERROR: "Error",
+  IMPROVEMENT: "Mejora",
+};
+
 export const unitCapacityTestOptions = {
   LITERS: "L.",
   KILOGRAMS: "Kg.",
