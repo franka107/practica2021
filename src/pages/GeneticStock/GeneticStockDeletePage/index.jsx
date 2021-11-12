@@ -6,6 +6,12 @@ import CustomDialog from "../../../components/CustomDialog";
 import DeleteForm from "../../../components/Forms/DeleteForm";
 import geneticStockActions from "../../../redux/actions/geneticStock.actions";
 
+/**
+ * @component
+ * @description Componente, dialog o modal que contiene el formulario para poder eliminar datos al stock genetico
+ * @author Emerson Puma Quispe <emerson.puma@ideascloud.io>
+ */
+
 const GeneticStockDeletePage = ({ parentPathname }) => {
   const params = useParams();
   const dispatch = useDispatch();

@@ -19,6 +19,12 @@ const defaultInitValues = {
   observation: "",
 };
 
+/**
+ * @component
+ * @description Componente, formulario para crear o editar registros de secado de vacas
+ * @author Emerson Puma Quispe <emerson.puma@ideascloud.io>
+ */
+
 const DryingForm = ({
   initValues = defaultInitValues,
   type = "create",

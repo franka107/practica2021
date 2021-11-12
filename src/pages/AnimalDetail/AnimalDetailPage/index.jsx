@@ -6,11 +6,8 @@ import { IconButton } from "@material-ui/core";
 import { Grid } from "@material-ui/core";
 import { CameraAlt, Edit, ViewList, Add, Visibility } from "@material-ui/icons";
 import clsx from "clsx";
-// import HighchartsReact from "highcharts-react-official";
 import { useState, useEffect } from "react";
-// import { BorderLinearProgress } from "../../../components/BorderLinearProgress";
 import { useStyles } from "../styles";
-// import Highcharts from "highcharts";
 import Calendar from "react-calendar";
 import {
   useParams,

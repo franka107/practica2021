@@ -16,6 +16,12 @@ import { useDispatch, useSelector } from "react-redux";
 import AssociationActions from "../../../../redux/actions/association.actions";
 import SearchContainer from "../../../../components/SearchContainer";
 
+/**
+ * @component
+ * @description Componente, tabla que contiene la lista de asociaciones
+ * @author Emerson Puma Quispe <emerson.puma@ideascloud.io>
+ */
+
 function AssociationListPage({ children, setTitle, setChipList }) {
   const history = useHistory();
   const location = useLocation();

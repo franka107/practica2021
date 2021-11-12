@@ -12,6 +12,12 @@ import { deleteOptions } from "../../../constants";
 import AnimalActions from "../../../redux/actions/animal.actions";
 import { ROUTES_DICT } from "../../../routes/routesDict";
 
+/**
+ * @component
+ * @description Componente, formulario para eliminar animales
+ * @author Emerson Puma Quispe <emerson.puma@ideascloud.io>
+ */
+
 const DeleteForm = ({ onClickCancelButton, idDelete }) => {
   const dispatch = useDispatch();
   const history = useHistory();

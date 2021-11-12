@@ -5,6 +5,7 @@ import _ from "lodash";
  * @description Retorna un array con 12 elementos, con la cantidad de animales por ordenados de mes a mes por entrada hato
  * @returns [null,1,3,4,5,null,683,1,4,3,1,2]
  */
+
 export const getGroupedByHerdDate = (animalList = []) => {
   animalList = animalList.filter((animal) => {
     if (!animal.herdDate) return null;

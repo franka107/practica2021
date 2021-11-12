@@ -11,6 +11,7 @@ import { ROUTES_DICT } from "./routesDict";
  * @description Wrapper de autentificacion que solicita datos globales de prioridad (Farm actual y Agronegocio actual)
  * @author Frank Cary Viveros <frank.cary@tecsup.edu.pe>
  */
+
 const AuthWrapper = ({ children }) => {
   const dispatch = useDispatch();
   const currentFarm = useSelector((state) => state.farm.current);

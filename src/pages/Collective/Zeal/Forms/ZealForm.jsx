@@ -19,6 +19,12 @@ const defaultInitValues = {
   observation: "",
 };
 
+/**
+ * @component
+ * @description Componente, formulario para crear o editar los datos de celos de una vaca
+ * @author Emerson Puma Quispe <emerson.puma@ideascloud.io>
+ */
+
 const ZealForm = ({
   initValues = defaultInitValues,
   type = "create",

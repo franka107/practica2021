@@ -26,6 +26,12 @@ const defaultInitValues = {
   toWho: "",
 };
 
+/**
+ * @component
+ * @description Componente, formulario para crear o editar el registro del movimientos que tiene relacion con stock genetico
+ * @author Emerson Puma Quispe <emerson.puma@ideascloud.io>
+ */
+
 const MovementForm = ({
   initValues = defaultInitValues,
   type = "create",

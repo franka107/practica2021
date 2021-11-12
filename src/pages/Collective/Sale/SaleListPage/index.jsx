@@ -16,6 +16,12 @@ import { useDispatch, useSelector } from "react-redux";
 import SaleActions from "../../../../redux/actions/sale.actions";
 import SearchContainer from "../../../../components/SearchContainer";
 
+/**
+ * @component
+ * @description Componente, tabla que contiene la lista de ventas de animales
+ * @author Emerson Puma Quispe <emerson.puma@ideascloud.io>
+ */
+
 const SaleListPage = ({ children, setTitle, setChipList }) => {
   const history = useHistory();
   const location = useLocation();

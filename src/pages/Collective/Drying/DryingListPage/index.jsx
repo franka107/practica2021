@@ -16,6 +16,12 @@ import { useDispatch, useSelector } from "react-redux";
 import DryingActions from "../../../../redux/actions/drying.actions";
 import SearchContainer from "../../../../components/SearchContainer";
 
+/**
+ * @component
+ * @description Componente, tabla que contiene la lista de secados de vacas
+ * @author Emerson Puma Quispe <emerson.puma@ideascloud.io>
+ */
+
 function DryingListPage({ children, setTitle, setChipList }) {
   const history = useHistory();
   const location = useLocation();

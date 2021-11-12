@@ -6,6 +6,12 @@ import CustomDialog from "../../../components/CustomDialog";
 import geneticStockActions from "../../../redux/actions/geneticStock.actions";
 import GeneticStockForm from "../Forms/GeneticStockForm";
 
+/**
+ * @component
+ * @description Componente, dialog o modal que contiene el formulario para poder actualizar datos al stock genetico
+ * @author Emerson Puma Quispe <emerson.puma@ideascloud.io>
+ */
+
 const GeneticStockUpdatePage = ({ parentPathname }) => {
   const params = useParams();
   const dispatch = useDispatch();
