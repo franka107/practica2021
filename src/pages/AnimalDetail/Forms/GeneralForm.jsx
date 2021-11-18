@@ -107,7 +107,7 @@ const GeneralForm = ({
                 _id: key,
                 name: typeServicesTest[key],
               }))}
-              label="Nacido por"
+              label="Concebido por"
               name="bornBy"
               xs={12}
             ></SelectFieldFormik>

@@ -159,6 +159,43 @@ function AnimalForm({
     setAnimalRace(races);
   };
 
+  const calculateRacialType = (values) => {
+    const type1 =
+      values.race1Id && values.race1Id !== ""
+        ? listRaces.find((e) => e._id === values.race1Id)?.racialType
+        : "";
+    const type2 =
+      values.race2Id && values.race2Id !== ""
+        ? listRaces.find((e) => e._id === values.race2Id)?.racialType
+        : type1;
+    const type3 =
+      values.race3Id && values.race3Id !== ""
+        ? listRaces.find((e) => e._id === values.race3Id)?.racialType
+        : type1;
+    const type4 =
+      values.race4Id && values.race4Id !== ""
+        ? listRaces.find((e) => e._id === values.race4Id)?.racialType
+        : type1;
+
+    if (
+      type1 === "BOS TAURUS" &&
+      type2 === "BOS TAURUS" &&
+      type3 === "BOS TAURUS" &&
+      type4 === "BOS TAURUS"
+    ) {
+      return "Taurino";
+    } else if (
+      type1 === "BOS INDICUS" &&
+      type2 === "BOS INDICUS" &&
+      type3 === "BOS INDICUS" &&
+      type4 === "BOS INDICUS"
+    ) {
+      return "Cebuino";
+    } else {
+      return "Media Sangre";
+    }
+  };
+
   const onSubmit = (values, actions) => {
     // if (errorPercentage === "") {
 
@@ -273,7 +310,7 @@ function AnimalForm({
                 _id: key,
                 name: typeServicesTest[key],
               }))}
-              label="Nacido por"
+              label="Concebido por"
               name="bornBy"
               xs={6}
             ></SelectFieldFormik>
@@ -463,7 +500,7 @@ function AnimalForm({
             />
           </Grid>
           <Grid container spacing={1}>
-            <SelectFieldFormik
+            {/* <SelectFieldFormik
               onChange={props.handleChange}
               options={racialTypeOptions}
               label="Tipo Racial"
@@ -471,8 +508,15 @@ function AnimalForm({
               lg={6}
               sm={6}
               xs={12}
-            ></SelectFieldFormik>
-
+            ></SelectFieldFormik> */}
+            <TextFieldFormik
+              label="Tipo Racial"
+              name="racialType"
+              disabled
+              onChange={props.handleChange}
+              xs={12}
+              value={calculateRacialType(props.values)}
+            />
             <TextFieldFormik
               label="Color"
               type="text"

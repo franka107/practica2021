@@ -454,7 +454,7 @@ const RegisterAgribusinessForm = ({
                     </Grid>
                   </Grid>
 
-                  <Typography variant={"subtitle2"} sm={12} xs={12}>
+                  {/* <Typography variant={"subtitle2"} sm={12} xs={12}>
                     Objetivo
                   </Typography>
                   <Grid
@@ -471,7 +471,7 @@ const RegisterAgribusinessForm = ({
                       options={objectiveFarmOptions}
                       onChange={props.handleChange}
                     ></MultipleCheckboxFormik>
-                  </Grid>
+                  </Grid> */}
                   <Grid xs={12}>
                     <Typography variant={"subtitle2"} sm={12} xs={12}>
                       Lecheria

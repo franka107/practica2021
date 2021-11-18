@@ -117,11 +117,13 @@ function MenuDropdown({ isLogin, setLoginState }) {
           </Grid>
         </React.Fragment>
       )}
-      <Grid item className={classes.menuIconContainer}>
-        <Typography className={classes.menuIcon} onClick={handleClick}>
-          <MenuIcon className={classes.icon} />
-        </Typography>
-      </Grid>
+      {isLogin && (
+        <Grid item className={classes.menuIconContainer}>
+          <Typography className={classes.menuIcon} onClick={handleClick}>
+            <MenuIcon className={classes.icon} />
+          </Typography>
+        </Grid>
+      )}
       <Menu
         id="simple-menu"
         anchorEl={openMenu}

@@ -12,9 +12,12 @@ import { useDispatch } from "react-redux";
 // import AuthActions from "../../redux/actions/auth.actions";
 // import { useGoogleLogin } from "react-google-login";
 import IdeasCloudApi from "../../helpers/ideascloudApi";
+import { useHistory } from "react-router";
+import { ROUTES_DICT } from "../../routes/routesDict";
 
 function RecoverPasswordPage(props) {
   const classes = useStyles();
+  const history = useHistory();
   const dispatch = useDispatch();
   // const history = useHistory();
 
@@ -85,6 +88,7 @@ function RecoverPasswordPage(props) {
       "Se reestableció su contraseña, por favor revise su correo electrónico"
     );
     actions.setSubmitting(false);
+    history.push(ROUTES_DICT.login);
   };
 
   const LoginForm = ({
@@ -112,6 +116,16 @@ function RecoverPasswordPage(props) {
               type="submit"
             >
               Recuperar contraseña
+            </Button>
+          </Grid>
+          <Grid item xs={12}>
+            <Button
+              className={classes.reset}
+              onClick={() => {
+                history.push(ROUTES_DICT.login);
+              }}
+            >
+              Regresar al Inicio de sesión
             </Button>
           </Grid>
         </Grid>

@@ -546,7 +546,7 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
                       >
                         <Grid item xs={4}>
                           <Typography className={classes.cardFeature}>
-                            Nacido por
+                            Concebido por
                           </Typography>
                         </Grid>
                         <Grid item xs={8}>
