@@ -80,8 +80,10 @@ function MenuDropdown({ isLogin, setLoginState }) {
               }}
               onClick={() => setOpenDialog(true)}
             >
-              Reportar incidencia
+              Reportar
             </Button>
+          </Grid>
+          <Grid item>
             <Dialog
               open={openDialog}
               fullWidth
