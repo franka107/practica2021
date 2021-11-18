@@ -65,6 +65,30 @@ export const columns = (list) => [
     },
   },
   {
+    label: "Dia",
+    name: "firstSample",
+    options: {
+      filter: false,
+      customBodyRender: (value) => `${value} L`,
+    },
+  },
+  {
+    label: "Tarde",
+    name: "secondSample",
+    options: {
+      filter: false,
+      customBodyRender: (value) => `${value} L`,
+    },
+  },
+  {
+    label: "Noche",
+    name: "thirdSample",
+    options: {
+      filter: false,
+      customBodyRender: (value) => `${value} L`,
+    },
+  },
+  {
     label: "Produción lechera",
     name: "_id",
     options: {

@@ -60,6 +60,14 @@ export const useStyles = makeStyles((theme) => ({
       color: "white",
     },
   },
+  reset: {
+    backgroundColor: theme.palette.button.secondary,
+    width: "100%",
+    "&:hover": {
+      backgroundColor: theme.palette.button.secondary,
+      color: "black",
+    },
+  },
   resetPassword: {
     marginLeft: "auto",
     textAlign: "right",
