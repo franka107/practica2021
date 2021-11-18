@@ -31,6 +31,7 @@ import { Route, useLocation, Redirect } from "react-router-dom";
 import { ROUTE_TYPES } from "./constants";
 import PropTypes from "prop-types";
 import { ROUTES_DICT } from "./routesDict";
+import React from "react";
 
 /**
  * @component
@@ -38,7 +39,7 @@ import { ROUTES_DICT } from "./routesDict";
  * @author Frank Cary Viveros &lt;frank.cary@tecsup.edu.pe>
  */
 
-const RouterList = ({ routes, outside, parentPathname }) => {
+const RouterList = ({ routes, outside, parentPathname, ...parentProps }) => {
   const location = useLocation();
   const background = location.state &amp;&amp; location.state.background;
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
@@ -47,67 +48,34 @@ const RouterList = ({ routes, outside, parentPathname }) => {
     &lt;>
       {routes &amp;&amp;
         routes.map(
-          ({
-            path,
-            exact,
-            component: Component,
-            layout: Layout,
-            type,
-            routes,
-            // eslint-disable-next-line array-callback-return
-          }) => {
+          (
+            {
+              path,
+              exact,
+              component: Component,
+              layout: Layout,
+              type,
+              routes,
+              // eslint-disable-next-line array-callback-return
+            },
+            index
+          ) => {
             if (!outside || (outside &amp;&amp; background)) {
               return (
-                &lt;Route
+                &lt;MemoizedRoute
+                  key={index}
                   path={path}
-                  location={
-                    !(outside &amp;&amp; background) &amp;&amp; (background || location)
-                  }
-                  exact={!(outside &amp;&amp; background) &amp;&amp; exact}
-                  render={(routeProps) => {
-                    if (
-                      (type === ROUTE_TYPES.public &amp;&amp; !isLoggedIn) ||
-                      (type === ROUTE_TYPES.private &amp;&amp; isLoggedIn)
-                    ) {
-                      return (
-                        &lt;>
-                          {Layout ? (
-                            &lt;Layout>
-                              &lt;Component
-                                parentPathname={parentPathname}
-                                {...routeProps}
-                              >
-                                {routes &amp;&amp; (
-                                  &lt;RouterList
-                                    routes={routes}
-                                    outside={outside}
-                                    parentPathname={path}
-                                  />
-                                )}
-                              &lt;/Component>
-                            &lt;/Layout>
-                          ) : (
-                            &lt;Component
-                              parentPathname={parentPathname}
-                              {...routeProps}
-                            >
-                              {routes &amp;&amp; (
-                                &lt;RouterList
-                                  routes={routes}
-                                  parentPathname={path}
-                                  outside={outside}
-                                />
-                              )}
-                            &lt;/Component>
-                          )}
-                        &lt;/>
-                      );
-                    } else if (type === ROUTE_TYPES.public &amp;&amp; isLoggedIn) {
-                      return &lt;Redirect to={ROUTES_DICT.animal.list} />;
-                    } else if (type === ROUTE_TYPES.private &amp;&amp; !isLoggedIn) {
-                      return &lt;Redirect to={ROUTES_DICT.login} />;
-                    }
-                  }}
+                  outside={outside}
+                  background={background}
+                  location={location}
+                  exact={exact}
+                  isLoggedIn={isLoggedIn}
+                  parentProps={parentProps}
+                  type={type}
+                  layout={Layout}
+                  component={Component}
+                  parentPathname={parentPathname}
+                  routes={routes}
                 />
               );
             }
@@ -131,6 +99,82 @@ RouterList.propTypes = {
    */
   parentPathName: PropTypes.string,
 };
+
+const MemoizedRoute = React.memo(
+  ({
+    path,
+    outside,
+    background,
+    location,
+    exact,
+    isLoggedIn,
+    parentProps,
+    type,
+    layout: Layout,
+    component: Component,
+    parentPathname,
+    routes,
+  }) => (
+    &lt;Route
+      path={path}
+      location={!(outside &amp;&amp; background) &amp;&amp; (background || location)}
+      exact={!(outside &amp;&amp; background) &amp;&amp; exact}
+      render={(routeProps) => {
+        if (
+          (type === ROUTE_TYPES.public &amp;&amp; !isLoggedIn) ||
+          (type === ROUTE_TYPES.private &amp;&amp; isLoggedIn)
+        ) {
+          return (
+            &lt;>
+              {Layout ? (
+                &lt;Layout>
+                  &lt;Component
+                    parentPathname={parentPathname}
+                    {...routeProps}
+                    {...parentProps}
+                  >
+                    {(childProps) =>
+                      routes &amp;&amp; (
+                        &lt;RouterList
+                          routes={routes}
+                          outside={outside}
+                          parentPathname={path}
+                          {...childProps}
+                        />
+                      )
+                    }
+                  &lt;/Component>
+                &lt;/Layout>
+              ) : (
+                &lt;Component
+                  parentPathname={parentPathname}
+                  {...routeProps}
+                  {...parentProps}
+                >
+                  {(childProps) =>
+                    routes &amp;&amp; (
+                      &lt;RouterList
+                        routes={routes}
+                        parentPathname={path}
+                        outside={outside}
+                        {...childProps}
+                      />
+                    )
+                  }
+                &lt;/Component>
+              )}
+            &lt;/>
+          );
+        } else if (type === ROUTE_TYPES.public &amp;&amp; isLoggedIn) {
+          return &lt;Redirect to={ROUTES_DICT.animal.list} />;
+        } else if (type === ROUTE_TYPES.private &amp;&amp; !isLoggedIn) {
+          return &lt;Redirect to={ROUTES_DICT.login} />;
+        }
+      }}
+    />
+  ),
+  (prevProps, nextProps) => false
+);
 export default RouterList;
 </code></pre>
         </article>
@@ -142,13 +186,13 @@ export default RouterList;
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="RouterList.html">RouterList</a></li></ul><h3>Global</h3><ul><li><a href="global.html#AuthWrapper">AuthWrapper</a></li><li><a href="global.html#CustomMaterialTable">CustomMaterialTable</a></li><li><a href="global.html#CustomMuiTable">CustomMuiTable</a></li><li><a href="global.html#getGroupedByHerdDate">getGroupedByHerdDate</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AccountControlPage.html">AccountControlPage</a></li><li><a href="AddAnimals.html">AddAnimals</a></li><li><a href="AgribusinessCreatePage.html">AgribusinessCreatePage</a></li><li><a href="AnimalCharts.html">AnimalCharts</a></li><li><a href="AnimalCreateBulkPage.html">AnimalCreateBulkPage</a></li><li><a href="AnimalCreatePage.html">AnimalCreatePage</a></li><li><a href="AnimalDeletePage.html">AnimalDeletePage</a></li><li><a href="AnimalDescription.html">AnimalDescription</a></li><li><a href="AnimalDetailDeletePage.html">AnimalDetailDeletePage</a></li><li><a href="AnimalDetailPage.html">AnimalDetailPage</a></li><li><a href="AnimalImageForm.html">AnimalImageForm</a></li><li><a href="AnimalPageList.html">AnimalPageList</a></li><li><a href="AnimalUpdatePage.html">AnimalUpdatePage</a></li><li><a href="AssociationCreatePage.html">AssociationCreatePage</a></li><li><a href="AssociationDeletePage.html">AssociationDeletePage</a></li><li><a href="AssociationListPage.html">AssociationListPage</a></li><li><a href="AssociationUpdatePage.html">AssociationUpdatePage</a></li><li><a href="BirthControlCreatePage.html">BirthControlCreatePage</a></li><li><a href="BirthCreatePage.html">BirthCreatePage</a></li><li><a href="BirthForm.html">BirthForm</a></li><li><a href="BirthListPage.html">BirthListPage</a></li><li><a href="CalendarForm.html">CalendarForm</a></li><li><a href="ChipList.html">ChipList</a></li><li><a href="CommentaryData.html">CommentaryData</a></li><li><a href="defaultInitValues.html">defaultInitValues</a></li><li><a href="DeleteForm.html">DeleteForm</a></li><li><a href="DryingCreatePage.html">DryingCreatePage</a></li><li><a href="DryingDeletePage.html">DryingDeletePage</a></li><li><a href="DryingForm.html">DryingForm</a></li><li><a href="DryingListPage.html">DryingListPage</a></li><li><a href="DryingUpdatePage.html">DryingUpdatePage</a></li><li><a href="GeneralForm.html">GeneralForm</a></li><li><a href="GeneralUpdatePage.html">GeneralUpdatePage</a></li><li><a href="GeneticStckCreatePage.html">GeneticStckCreatePage</a></li><li><a href="GeneticStockDeletePage.html">GeneticStockDeletePage</a></li><li><a href="GeneticStockForm.html">GeneticStockForm</a></li><li><a href="GeneticStockList.html">GeneticStockList</a></li><li><a href="GeneticStockUpdatePage.html">GeneticStockUpdatePage</a></li><li><a href="IAServiceCreatePage.html">IAServiceCreatePage</a></li><li><a href="ImageUploadPage.html">ImageUploadPage</a></li><li><a href="LinearProgressWithLabel.html">LinearProgressWithLabel</a></li><li><a href="MilkControlCreatePage.html">MilkControlCreatePage</a></li><li><a href="MilkForm.html">MilkForm</a></li><li><a href="MovementCreatePage.html">MovementCreatePage</a></li><li><a href="MovementForm.html">MovementForm</a></li><li><a href="MovementPageList.html">MovementPageList</a></li><li><a href="OtherForm.html">OtherForm</a></li><li><a href="PalapationControlCreatePage.html">PalapationControlCreatePage</a></li><li><a href="QrViewPage.html">QrViewPage</a></li><li><a href="RaceForm.html">RaceForm</a></li><li><a href="RaceUpdatePage.html">RaceUpdatePage</a></li><li><a href="RouterList.html">RouterList</a></li><li><a href="SaleCreatePage.html">SaleCreatePage</a></li><li><a href="SaleDeletePage.html">SaleDeletePage</a></li><li><a href="SaleForm.html">SaleForm</a></li><li><a href="SaleListPage.html">SaleListPage</a></li><li><a href="SaleUpdatePage.html">SaleUpdatePage</a></li><li><a href="SearchAnimals.html">SearchAnimals</a></li><li><a href="ServiceDeletePage.html">ServiceDeletePage</a></li><li><a href="ServiceForm.html">ServiceForm</a></li><li><a href="ServicePageList.html">ServicePageList</a></li><li><a href="TransferServiceCreatePage.html">TransferServiceCreatePage</a></li><li><a href="UserDeletePage.html">UserDeletePage</a></li><li><a href="WeightControlCreatePage.html">WeightControlCreatePage</a></li><li><a href="WeightCreatePage.html">WeightCreatePage</a></li><li><a href="WeightDeletePage.html">WeightDeletePage</a></li><li><a href="WeightForm.html">WeightForm</a></li><li><a href="WeightListPage.html">WeightListPage</a></li><li><a href="WeightUpdatePage.html">WeightUpdatePage</a></li><li><a href="ZealCreatePage.html">ZealCreatePage</a></li><li><a href="ZealDeletePage.html">ZealDeletePage</a></li><li><a href="ZealForm.html">ZealForm</a></li><li><a href="ZealListPage.html">ZealListPage</a></li><li><a href="ZealUpdatePage.html">ZealUpdatePage</a></li></ul><h3>Global</h3><ul><li><a href="global.html#AuthWrapper">AuthWrapper</a></li><li><a href="global.html#CustomMaterialTable">CustomMaterialTable</a></li><li><a href="global.html#CustomMuiTable">CustomMuiTable</a></li><li><a href="global.html#getGroupedByHerdDate">getGroupedByHerdDate</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Sun Sep 12 2021 15:25:33 GMT-0500 (Peru Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Thu Nov 18 2021 02:23:57 GMT-0500 (Peru Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: pages/Collective/Zeal/ZealDeletePage/index.jsx</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: pages/Collective/Zeal/ZealDeletePage/index.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { useDispatch } from "react-redux";
+import { useParams } from "react-router-dom";
+import CustomDialog from "../../../../components/CustomDialog";
+import DeleteForm from "../../../../components/Forms/DeleteForm";
+import ZealActions from "../../../../redux/actions/zeal.actions";
+
+/**
+ * @component
+ * @description Componente, dialog o modal que contiene el formulario para poder eliminar datos de celos de una vaca
+ * @author Emerson Puma Quispe &lt;emerson.puma@ideascloud.io>
+ */
+
+const ZealDeletePage = ({ parentPathname }) => {
+  const params = useParams();
+  const dispatch = useDispatch();
+
+  const onSubmit = () => {
+    dispatch(ZealActions.deleteZeal({ _id: params._id }));
+  };
+
+  return (
+    &lt;>
+      &lt;CustomDialog parentPathname={parentPathname} maxWidth="xs">
+        {(props) => (
+          &lt;DeleteForm
+            onClickCancelButton={props.handleClose}
+            onCompleteSubmit={onSubmit}
+          />
+        )}
+      &lt;/CustomDialog>
+    &lt;/>
+  );
+};
+
+export default ZealDeletePage;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AccountControlPage.html">AccountControlPage</a></li><li><a href="AddAnimals.html">AddAnimals</a></li><li><a href="AgribusinessCreatePage.html">AgribusinessCreatePage</a></li><li><a href="AnimalCharts.html">AnimalCharts</a></li><li><a href="AnimalCreateBulkPage.html">AnimalCreateBulkPage</a></li><li><a href="AnimalCreatePage.html">AnimalCreatePage</a></li><li><a href="AnimalDeletePage.html">AnimalDeletePage</a></li><li><a href="AnimalDescription.html">AnimalDescription</a></li><li><a href="AnimalDetailDeletePage.html">AnimalDetailDeletePage</a></li><li><a href="AnimalDetailPage.html">AnimalDetailPage</a></li><li><a href="AnimalImageForm.html">AnimalImageForm</a></li><li><a href="AnimalPageList.html">AnimalPageList</a></li><li><a href="AnimalUpdatePage.html">AnimalUpdatePage</a></li><li><a href="AssociationCreatePage.html">AssociationCreatePage</a></li><li><a href="AssociationDeletePage.html">AssociationDeletePage</a></li><li><a href="AssociationListPage.html">AssociationListPage</a></li><li><a href="AssociationUpdatePage.html">AssociationUpdatePage</a></li><li><a href="BirthControlCreatePage.html">BirthControlCreatePage</a></li><li><a href="BirthCreatePage.html">BirthCreatePage</a></li><li><a href="BirthForm.html">BirthForm</a></li><li><a href="BirthListPage.html">BirthListPage</a></li><li><a href="CalendarForm.html">CalendarForm</a></li><li><a href="ChipList.html">ChipList</a></li><li><a href="CommentaryData.html">CommentaryData</a></li><li><a href="defaultInitValues.html">defaultInitValues</a></li><li><a href="DeleteForm.html">DeleteForm</a></li><li><a href="DryingCreatePage.html">DryingCreatePage</a></li><li><a href="DryingDeletePage.html">DryingDeletePage</a></li><li><a href="DryingForm.html">DryingForm</a></li><li><a href="DryingListPage.html">DryingListPage</a></li><li><a href="DryingUpdatePage.html">DryingUpdatePage</a></li><li><a href="GeneralForm.html">GeneralForm</a></li><li><a href="GeneralUpdatePage.html">GeneralUpdatePage</a></li><li><a href="GeneticStckCreatePage.html">GeneticStckCreatePage</a></li><li><a href="GeneticStockDeletePage.html">GeneticStockDeletePage</a></li><li><a href="GeneticStockForm.html">GeneticStockForm</a></li><li><a href="GeneticStockList.html">GeneticStockList</a></li><li><a href="GeneticStockUpdatePage.html">GeneticStockUpdatePage</a></li><li><a href="IAServiceCreatePage.html">IAServiceCreatePage</a></li><li><a href="ImageUploadPage.html">ImageUploadPage</a></li><li><a href="LinearProgressWithLabel.html">LinearProgressWithLabel</a></li><li><a href="MilkControlCreatePage.html">MilkControlCreatePage</a></li><li><a href="MilkForm.html">MilkForm</a></li><li><a href="MovementCreatePage.html">MovementCreatePage</a></li><li><a href="MovementForm.html">MovementForm</a></li><li><a href="MovementPageList.html">MovementPageList</a></li><li><a href="OtherForm.html">OtherForm</a></li><li><a href="PalapationControlCreatePage.html">PalapationControlCreatePage</a></li><li><a href="QrViewPage.html">QrViewPage</a></li><li><a href="RaceForm.html">RaceForm</a></li><li><a href="RaceUpdatePage.html">RaceUpdatePage</a></li><li><a href="RouterList.html">RouterList</a></li><li><a href="SaleCreatePage.html">SaleCreatePage</a></li><li><a href="SaleDeletePage.html">SaleDeletePage</a></li><li><a href="SaleForm.html">SaleForm</a></li><li><a href="SaleListPage.html">SaleListPage</a></li><li><a href="SaleUpdatePage.html">SaleUpdatePage</a></li><li><a href="SearchAnimals.html">SearchAnimals</a></li><li><a href="ServiceDeletePage.html">ServiceDeletePage</a></li><li><a href="ServiceForm.html">ServiceForm</a></li><li><a href="ServicePageList.html">ServicePageList</a></li><li><a href="TransferServiceCreatePage.html">TransferServiceCreatePage</a></li><li><a href="UserDeletePage.html">UserDeletePage</a></li><li><a href="WeightControlCreatePage.html">WeightControlCreatePage</a></li><li><a href="WeightCreatePage.html">WeightCreatePage</a></li><li><a href="WeightDeletePage.html">WeightDeletePage</a></li><li><a href="WeightForm.html">WeightForm</a></li><li><a href="WeightListPage.html">WeightListPage</a></li><li><a href="WeightUpdatePage.html">WeightUpdatePage</a></li><li><a href="ZealCreatePage.html">ZealCreatePage</a></li><li><a href="ZealDeletePage.html">ZealDeletePage</a></li><li><a href="ZealForm.html">ZealForm</a></li><li><a href="ZealListPage.html">ZealListPage</a></li><li><a href="ZealUpdatePage.html">ZealUpdatePage</a></li></ul><h3>Global</h3><ul><li><a href="global.html#AuthWrapper">AuthWrapper</a></li><li><a href="global.html#CustomMaterialTable">CustomMaterialTable</a></li><li><a href="global.html#CustomMuiTable">CustomMuiTable</a></li><li><a href="global.html#getGroupedByHerdDate">getGroupedByHerdDate</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Thu Nov 18 2021 02:23:57 GMT-0500 (Peru Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

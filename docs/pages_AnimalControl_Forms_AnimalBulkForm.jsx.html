@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: pages/AnimalControl/Forms/AnimalBulkForm.jsx</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: pages/AnimalControl/Forms/AnimalBulkForm.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import {
+  Box,
+  Button,
+  Chip,
+  CircularProgress,
+  Grid,
+  LinearProgress,
+  Typography,
+} from "@material-ui/core";
+import { Check, Error } from "@material-ui/icons";
+import clsx from "clsx";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import ButtonFormik from "../../../components/Inputs/ButtonFormik";
+import AnimalActions from "../../../redux/actions/animal.actions";
+import raceActions from "../../../redux/actions/race.actions";
+import uiActions from "../../../redux/actions/ui.actions";
+import WeightActions from "../../../redux/actions/weight.actions";
+import { useStyles } from "../../../styles";
+
+/**
+ * @component
+ * @description Componente, formulario para subida de datos masivos
+ * @author Emerson Puma Quispe &lt;emerson.puma@ideascloud.io>
+ */
+
+const LinearProgressWithLabel = (props) => {
+  return (
+    &lt;Box sx={{ display: "flex", alignItems: "center" }}>
+      &lt;Box sx={{ width: "100%", mr: 1 }}>
+        &lt;LinearProgress variant="determinate" {...props} />
+      &lt;/Box>
+      &lt;Box sx={{ minWidth: 35 }}>
+        &lt;Typography variant="body2" color="text.secondary">{`${Math.round(
+          props.value
+        )}%`}&lt;/Typography>
+      &lt;/Box>
+    &lt;/Box>
+  );
+};
+
+const AnimalBulkForm = ({ onClickCancelButton }) => {
+  const classes = useStyles();
+  const [csvFile, setCsvFile] = useState();
+  const dispatch = useDispatch();
+  const raceList = useSelector((state) => state.race.list);
+  const [animalListUploadInfo, setAnimalListUploadInfo] = useState([]);
+  const [isUploading, setIsUploading] = useState(false);
+  const [csvListLength, setCsvListLength] = useState(0);
+  const [animalSucess, setAnimalSucess] = useState(0);
+  const [animalError, setAnimalError] = useState(0);
+  useEffect(() => {
+    if (!raceList || raceList.length === 0) {
+      dispatch(raceActions.listRace());
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const handleSubmit = () => {
+    if (csvFile) {
+      console.log(csvFile);
+      setAnimalListUploadInfo([]);
+      setIsUploading(true);
+      setAnimalSucess(0);
+      setAnimalError(0);
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const text = e.target.result;
+        const data = csvToArray(text);
+        setCsvListLength(data.length);
+
+        const getRaceId = (raceName) => {
+          const raceFinded = raceList.find(
+            (raceObject) => raceObject.name === raceName
+          );
+          if (raceFinded) {
+            return raceFinded._id;
+          } else {
+            return null;
+          }
+        };
+        const getDate = (dateString) => {
+          const dateParts = dateString.split("/");
+          const dateObject = new Date(
+            +dateParts[2],
+            dateParts[1] - 1,
+            +dateParts[0]
+          );
+          return dateObject;
+        };
+        let errorUpload = 0;
+        let successUpload = 0;
+        data.forEach(async (animal) => {
+          /**
+           * Validacion dinamíca de razas
+           */
+          animal.percentageRace1 = Number(animal.percentageRace1);
+          animal.percentageRace2 = Number(animal.percentageRace2);
+          animal.percentageRace3 = Number(animal.percentageRace3);
+          animal.percentageRace4 = Number(animal.percentageRace4);
+          animal.birthsQuantity = Number(animal.birthsQuantity);
+          animal.childrenQuantity = Number(animal.childrenQuantity);
+          animal.birthDate = animal.birthDate &amp;&amp; getDate(animal.birthDate);
+          animal.herdDate = animal.herdDate &amp;&amp; getDate(animal.herdDate);
+          animal.category =
+            animal.category.length === 0 ? null : animal.category;
+          animal.pregnantType =
+            animal.pregnantType.length === 0 ? null : animal.pregnantType;
+          animal.reproductiveStatus =
+            animal.reproductiveStatus.length === 0
+              ? null
+              : animal.reproductiveStatus;
+          animal.bornBy = animal.bornBy.length === 0 ? null : animal.bornBy;
+          if (animal.race1) {
+            animal.race1Id = getRaceId(animal.race1);
+          }
+          if (animal.race2) {
+            animal.race2Id = getRaceId(animal.race2);
+          }
+          if (animal.race3) {
+            animal.race3Id = getRaceId(animal.race3);
+          }
+          if (animal.race4) {
+            animal.race4Id = getRaceId(animal.race4);
+          }
+          try {
+            const animalCreated = await dispatch(AnimalActions.create(animal));
+            console.log(animalCreated);
+            setAnimalListUploadInfo((oldArray) => [...oldArray, animalCreated]);
+            /**
+             * Creacion de registro de pesos si hay informacion
+             */
+            if (animal.lastWeight &amp;&amp; animal.lastWeightDate) {
+              const weightData = {
+                animalId: animalCreated._id,
+                controlDate: getDate(animal.lastWeightDate),
+                controlType: "BALANCE",
+                weight: Number(animal.lastWeight),
+                observation: "",
+              };
+              dispatch(WeightActions.create(weightData));
+            }
+            successUpload = successUpload + 1;
+            setAnimalSucess(successUpload);
+          } catch (e) {
+            setAnimalListUploadInfo((oldArray) => [...oldArray, animal]);
+            errorUpload = errorUpload + 1;
+            setAnimalError(errorUpload);
+            console.log("error", animalListUploadInfo, errorUpload);
+          }
+        });
+      };
+
+      reader.readAsText(csvFile);
+    } else {
+      dispatch(
+        uiActions.showSnackbar("No has subido ningun archivo", "warning")
+      );
+    }
+  };
+  const csvToArray = (str, delimiter = ",") => {
+    // slice from start of text to the first \n index
+    // use split to create an array from string by delimiter
+    const headers = str.slice(0, str.indexOf("\n")).split(delimiter);
+
+    // slice from \n index + 1 to the end of the text
+    // use split to create an array of each csv value row
+    const rows = str.slice(str.indexOf("\n") + 1).split("\n");
+
+    // Map the rows
+    // split values from each row into an array
+    // use headers.reduce to create an object
+    // object properties derived from headers:values
+    // the object passed as an element of the array
+    const arr = rows.map(function (row) {
+      const values = row.split(delimiter);
+      const el = headers.reduce(function (object, header, index) {
+        object[header] = values[index];
+        return object;
+      }, {});
+      return el;
+    });
+
+    // return the array
+    return arr;
+  };
+
+  const fileData = (csvFile) => {
+    if (csvFile) {
+      return (
+        &lt;div style={{ paddingLeft: "0.5rem" }}>
+          &lt;p>File Name: {csvFile.name}&lt;/p>
+        &lt;/div>
+      );
+    } else {
+      return (
+        &lt;div style={{ paddingLeft: "0.5rem" }}>
+          &lt;h4>Elija antes de presionar el botón Cargar&lt;/h4>
+        &lt;/div>
+      );
+    }
+  };
+  return (
+    &lt;>
+      &lt;Typography variant={"subtitle1"}>Registro masivo&lt;/Typography>
+      &lt;Typography variant={"subtitle2"}>
+        Para registro masivo de animales,{" "}
+        &lt;a href="https://contigo-files.s3.amazonaws.com/static/ExampleData+-+Sheet1.csv">
+          descargue
+        &lt;/a>{" "}
+        el siguiente documento.
+      &lt;/Typography>
+
+      &lt;Grid container spacing={1}>
+        &lt;Button
+          component="label"
+          className={classes.baseBtn}
+          endIcon={false &amp;&amp; &lt;CircularProgress size={20} />}
+          variant="contained"
+        >
+          Subir CSV
+          &lt;input
+            accept=".csv"
+            hidden
+            name="csvFile"
+            className={classes.fileInput}
+            onChange={(e) => {
+              console.log(e.currentTarget.files[0]);
+              if (
+                e.currentTarget.files[0]?.type === "text/csv" ||
+                e.currentTarget.files[0]?.type === ""
+              ) {
+                setCsvFile(e.currentTarget.files[0]);
+              } else {
+                dispatch(
+                  uiActions.showSnackbar(
+                    "El formato del archivo no es compatible",
+                    "error",
+                    4000
+                  )
+                );
+              }
+            }}
+            type="file"
+          />
+        &lt;/Button>
+        {fileData(csvFile)}
+      &lt;/Grid>
+      &lt;Grid container item xs={12} spacing={1}>
+        {isUploading &amp;&amp; (
+          &lt;>
+            &lt;Grid item xs={12}>
+              &lt;LinearProgressWithLabel
+                value={(animalListUploadInfo.length / csvListLength) * 100}
+              />
+              {`${animalSucess}/${csvListLength} registros subidos`}
+            &lt;/Grid>
+
+            &lt;Grid
+              container
+              item
+              xs={12}
+              spacing={1}
+              style={{ marginTop: "0.5rem" }}
+            >
+              &lt;Typography variant={"subtitle2"}>
+                {animalError} registros no subidos
+              &lt;/Typography>
+              &lt;Grid
+                container
+                item
+                xs={12}
+                spacing={1}
+                className={classes.chipContainer}
+              >
+                {animalListUploadInfo.map((animal, index) => (
+                  &lt;Grid item xs={12} key={index}>
+                    {!animal?._id &amp;&amp; (
+                      &lt;Chip
+                        icon={
+                          animal?._id ? (
+                            &lt;Check className={`${classes.largeChip}__icon`} />
+                          ) : (
+                            &lt;Error className={`${classes.largeChip}__icon`} />
+                          )
+                        }
+                        className={clsx(
+                          classes.largeChip,
+                          animal?._id
+                            ? `${classes.largeChip}--success`
+                            : `${classes.largeChip}--danger`
+                        )}
+                        label={
+                          animal?._id
+                            ? `${animal.identifier}: Exitoso`
+                            : `${animal.identifier}: Error al momento de subir`
+                        }
+                      />
+                    )}
+                  &lt;/Grid>
+                ))}
+              &lt;/Grid>
+            &lt;/Grid>
+          &lt;/>
+        )}
+      &lt;/Grid>
+      &lt;Grid
+        container
+        justifyContent={"flex-end"}
+        style={{ gap: "0.5rem" }}
+        xs={12}
+      >
+        &lt;Grid item xs={2}>
+          &lt;ButtonFormik
+            onClick={onClickCancelButton}
+            xs={2}
+            label={!isUploading ? "Cancelar" : "Cerrar"}
+            type="button"
+          />
+        &lt;/Grid>
+        {!isUploading &amp;&amp; (
+          &lt;Grid item xs={2}>
+            &lt;ButtonFormik
+              onClick={handleSubmit}
+              xs={2}
+              label="Guardar"
+              type="submit"
+            />
+          &lt;/Grid>
+        )}
+      &lt;/Grid>
+    &lt;/>
+  );
+};
+
+export default AnimalBulkForm;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AccountControlPage.html">AccountControlPage</a></li><li><a href="AddAnimals.html">AddAnimals</a></li><li><a href="AgribusinessCreatePage.html">AgribusinessCreatePage</a></li><li><a href="AnimalCharts.html">AnimalCharts</a></li><li><a href="AnimalCreateBulkPage.html">AnimalCreateBulkPage</a></li><li><a href="AnimalCreatePage.html">AnimalCreatePage</a></li><li><a href="AnimalDeletePage.html">AnimalDeletePage</a></li><li><a href="AnimalDescription.html">AnimalDescription</a></li><li><a href="AnimalDetailDeletePage.html">AnimalDetailDeletePage</a></li><li><a href="AnimalDetailPage.html">AnimalDetailPage</a></li><li><a href="AnimalImageForm.html">AnimalImageForm</a></li><li><a href="AnimalPageList.html">AnimalPageList</a></li><li><a href="AnimalUpdatePage.html">AnimalUpdatePage</a></li><li><a href="AssociationCreatePage.html">AssociationCreatePage</a></li><li><a href="AssociationDeletePage.html">AssociationDeletePage</a></li><li><a href="AssociationListPage.html">AssociationListPage</a></li><li><a href="AssociationUpdatePage.html">AssociationUpdatePage</a></li><li><a href="BirthControlCreatePage.html">BirthControlCreatePage</a></li><li><a href="BirthCreatePage.html">BirthCreatePage</a></li><li><a href="BirthForm.html">BirthForm</a></li><li><a href="BirthListPage.html">BirthListPage</a></li><li><a href="CalendarForm.html">CalendarForm</a></li><li><a href="ChipList.html">ChipList</a></li><li><a href="CommentaryData.html">CommentaryData</a></li><li><a href="defaultInitValues.html">defaultInitValues</a></li><li><a href="DeleteForm.html">DeleteForm</a></li><li><a href="DryingCreatePage.html">DryingCreatePage</a></li><li><a href="DryingDeletePage.html">DryingDeletePage</a></li><li><a href="DryingForm.html">DryingForm</a></li><li><a href="DryingListPage.html">DryingListPage</a></li><li><a href="DryingUpdatePage.html">DryingUpdatePage</a></li><li><a href="GeneralForm.html">GeneralForm</a></li><li><a href="GeneralUpdatePage.html">GeneralUpdatePage</a></li><li><a href="GeneticStckCreatePage.html">GeneticStckCreatePage</a></li><li><a href="GeneticStockDeletePage.html">GeneticStockDeletePage</a></li><li><a href="GeneticStockForm.html">GeneticStockForm</a></li><li><a href="GeneticStockList.html">GeneticStockList</a></li><li><a href="GeneticStockUpdatePage.html">GeneticStockUpdatePage</a></li><li><a href="IAServiceCreatePage.html">IAServiceCreatePage</a></li><li><a href="ImageUploadPage.html">ImageUploadPage</a></li><li><a href="LinearProgressWithLabel.html">LinearProgressWithLabel</a></li><li><a href="MilkControlCreatePage.html">MilkControlCreatePage</a></li><li><a href="MilkForm.html">MilkForm</a></li><li><a href="MovementCreatePage.html">MovementCreatePage</a></li><li><a href="MovementForm.html">MovementForm</a></li><li><a href="MovementPageList.html">MovementPageList</a></li><li><a href="OtherForm.html">OtherForm</a></li><li><a href="PalapationControlCreatePage.html">PalapationControlCreatePage</a></li><li><a href="QrViewPage.html">QrViewPage</a></li><li><a href="RaceForm.html">RaceForm</a></li><li><a href="RaceUpdatePage.html">RaceUpdatePage</a></li><li><a href="RouterList.html">RouterList</a></li><li><a href="SaleCreatePage.html">SaleCreatePage</a></li><li><a href="SaleDeletePage.html">SaleDeletePage</a></li><li><a href="SaleForm.html">SaleForm</a></li><li><a href="SaleListPage.html">SaleListPage</a></li><li><a href="SaleUpdatePage.html">SaleUpdatePage</a></li><li><a href="SearchAnimals.html">SearchAnimals</a></li><li><a href="ServiceDeletePage.html">ServiceDeletePage</a></li><li><a href="ServiceForm.html">ServiceForm</a></li><li><a href="ServicePageList.html">ServicePageList</a></li><li><a href="TransferServiceCreatePage.html">TransferServiceCreatePage</a></li><li><a href="UserDeletePage.html">UserDeletePage</a></li><li><a href="WeightControlCreatePage.html">WeightControlCreatePage</a></li><li><a href="WeightCreatePage.html">WeightCreatePage</a></li><li><a href="WeightDeletePage.html">WeightDeletePage</a></li><li><a href="WeightForm.html">WeightForm</a></li><li><a href="WeightListPage.html">WeightListPage</a></li><li><a href="WeightUpdatePage.html">WeightUpdatePage</a></li><li><a href="ZealCreatePage.html">ZealCreatePage</a></li><li><a href="ZealDeletePage.html">ZealDeletePage</a></li><li><a href="ZealForm.html">ZealForm</a></li><li><a href="ZealListPage.html">ZealListPage</a></li><li><a href="ZealUpdatePage.html">ZealUpdatePage</a></li></ul><h3>Global</h3><ul><li><a href="global.html#AuthWrapper">AuthWrapper</a></li><li><a href="global.html#CustomMaterialTable">CustomMaterialTable</a></li><li><a href="global.html#CustomMuiTable">CustomMuiTable</a></li><li><a href="global.html#getGroupedByHerdDate">getGroupedByHerdDate</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Thu Nov 18 2021 02:23:57 GMT-0500 (Peru Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

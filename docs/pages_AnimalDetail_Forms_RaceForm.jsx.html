@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: pages/AnimalDetail/Forms/RaceForm.jsx</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: pages/AnimalDetail/Forms/RaceForm.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React, { useEffect, useState } from "react";
+import { Grid, Typography, InputAdornment } from "@material-ui/core";
+import DeleteIcon from "@material-ui/icons/Delete";
+import { AddCircle } from "@material-ui/icons";
+import { Formik } from "formik";
+import * as yup from "yup";
+import TextFieldFormik from "../../../components/Inputs/TextFieldFormik";
+import SelectFieldFormik from "../../../components/Inputs/SelectFieldFormik";
+import ButtonFormik from "../../../components/Inputs/ButtonFormik";
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
+import AnimalActions from "../../../redux/actions/animal.actions";
+import { useStyles } from "../styles";
+import { racialTypeOptions } from "../../../constants";
+import RaceActions from "../../../redux/actions/race.actions";
+
+/**
+ * @component
+ * @description Componente, formulario de los datos relacionados con la raza del animal
+ * @author Emerson Puma Quispe &lt;emerson.puma@ideascloud.io>
+ */
+
+const RaceForm = ({
+  initValues,
+  onClickCancelButton,
+  onCompleteSubmit = () => {},
+}) => {
+  const classes = useStyles();
+  // const letters = ["A", "B", "C", "D"];
+  const [racesShow, setRacesShow] = useState([
+    { letter: "A", show: true },
+    { letter: "B", show: false },
+    { letter: "C", show: false },
+    { letter: "D", show: false },
+  ]);
+  const [inxRace, setInxRace] = useState(0);
+  const dispatch = useDispatch();
+  const currentAnimal = useSelector((state) => state.animal.current);
+  const listRaces = useSelector((state) =>
+    state.race.list.sort((a, b) =>
+      a.name > b.name ? 1 : a.name &lt; b.name ? -1 : 0
+    )
+  );
+
+  const femaleAnimals = useSelector(
+    (state) => state.animal.list.filter((e) => e.gender === "FEMALE"),
+    shallowEqual
+  );
+  const maleAnimals = useSelector(
+    (state) => state.animal.list.filter((e) => e.gender === "MALE"),
+    shallowEqual
+  );
+
+  const [errorPercentage, setErrorPercentage] = useState("");
+
+  useEffect(() => {
+    const r = racesShow;
+    let i = inxRace;
+    if (!listRaces || listRaces.length === 0) {
+      dispatch(RaceActions.listRace());
+    }
+    if (
+      !femaleAnimals ||
+      femaleAnimals.length === 0 ||
+      !maleAnimals ||
+      maleAnimals.length === 0
+    ) {
+      dispatch(AnimalActions.list());
+    }
+    if (
+      currentAnimal.percentageRace2 !== 0 &amp;&amp;
+      currentAnimal.percentageRace2 !== null
+    ) {
+      r[1].show = true;
+      i = i + 1;
+    }
+
+    if (
+      currentAnimal.percentageRace3 !== 0 &amp;&amp;
+      currentAnimal.percentageRace3 !== null
+    ) {
+      r[2].show = true;
+      i = i + 1;
+    }
+
+    if (
+      currentAnimal.percentageRace4 !== 0 &amp;&amp;
+      currentAnimal.percentageRace4 !== null
+    ) {
+      r[3].show = true;
+      i = i + 1;
+    }
+    setInxRace(i);
+    setRacesShow(r);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const validationSchema = yup.object({});
+
+  // eslint-disable-next-line no-unused-vars
+  const handleCheckPercentage = (list = {}) => {
+    let total = 0;
+
+    Object.keys(list).forEach((animal) => {
+      const percentage = list[animal];
+      total = total + parseFloat(percentage);
+    });
+
+    if (total !== 100) {
+      setErrorPercentage(
+        "El porcentaje total debe ser 100%. Porfavor ajuste sus cantidades"
+      );
+      return false;
+    } else {
+      setErrorPercentage("");
+      return true;
+    }
+  };
+
+  const handleAddRace = () => {
+    const r = racesShow;
+    const i = inxRace;
+    r[i + 1].show = true;
+    setInxRace(i + 1);
+    console.log(r);
+    setRacesShow(r);
+  };
+
+  const handleRemoveRace = (index, values) => {
+    const r = racesShow;
+    const i = inxRace;
+
+    values[`percentageRace${index + 1}`] = 0;
+    values[`race${index + 1}Id`] = "";
+
+    r[i].show = false;
+    setInxRace(i - 1);
+    setRacesShow(r);
+  };
+
+  const handleSubmit = async (values, actions) => {
+    try {
+      const validPercentages = handleCheckPercentage({
+        percentageRace1:
+          values.percentageRace1 &amp;&amp; values.percentageRace1 !== 0
+            ? values.percentageRace1
+            : 0,
+        percentageRace2:
+          values.percentageRace2 &amp;&amp; values.percentageRace2 !== 0
+            ? values.percentageRace2
+            : 0,
+        percentageRace3:
+          values.percentageRace3 &amp;&amp; values.percentageRace3 !== 0
+            ? values.percentageRace3
+            : 0,
+        percentageRace4:
+          values.percentageRace4 &amp;&amp; values.percentageRace4 !== 0
+            ? values.percentageRace4
+            : 0,
+      });
+
+      let cont = 1;
+      while (cont &lt;= 4) {
+        if (values[`race${cont}Id`] || values[`race${cont}Id`] !== "") {
+          values[`race${cont}`] = listRaces.find(
+            (e) => e._id === values[`race${cont}Id`]
+          );
+        }
+        cont = cont + 1;
+      }
+
+      if (!validPercentages) return;
+      // if (errorPercentage === "") {
+      // values.agribusinessId = currentAgribusiness._id;
+
+      // if (values.father) {
+      //   values.fatherId = values.father._id;
+      // } else {
+      //   values.fatherId = "";
+      // }
+
+      // if (values.mother) {
+      //   values.motherId = values.mother._id;
+      // } else {
+      //   values.motherId = "";
+      // }
+
+      await dispatch(AnimalActions.update(values));
+      onCompleteSubmit();
+    } catch {
+      actions.setSubmitting(false);
+    }
+  };
+
+  return (
+    &lt;Formik
+      initialValues={initValues}
+      onSubmit={handleSubmit}
+      validationSchema={validationSchema}
+    >
+      {(props) => (
+        &lt;form onSubmit={props.handleSubmit}>
+          &lt;Grid container spacing={1}>
+            &lt;Grid item xs={12}>
+              &lt;Typography variant={"subtitle1"}>Raza&lt;/Typography>
+            &lt;/Grid>
+          &lt;/Grid>
+          &lt;Grid container spacing={1} className={classes.formStyle}>
+            {/* &lt;SearchFieldFormik
+              options={maleAnimals}
+              label="Padre"
+              type="text"
+              name="motherId"
+              onChange={(e, value) => {
+                props.setFieldValue("father", value);
+              }}
+              defaultValue={props.values.father || null}
+              lg={6}
+              sm={6}
+              xs={12}
+            >&lt;/SearchFieldFormik>
+            &lt;SearchFieldFormik
+              options={femaleAnimals}
+              label="Madre"
+              type="text"
+              name="motherId"
+              onChange={(e, value) => {
+                props.setFieldValue("mother", value);
+              }}
+              defaultValue={props.values.mother || null}
+              lg={6}
+              sm={6}
+              xs={12}
+            >&lt;/SearchFieldFormik> */}
+            &lt;TextFieldFormik
+              label="Madre"
+              type="text"
+              name="motherRef"
+              onChange={props.handleChange}
+              lg={6}
+              sm={6}
+              xs={12}
+            >&lt;/TextFieldFormik>
+            &lt;TextFieldFormik
+              label="Padre"
+              type="text"
+              name="fatherRef"
+              onChange={props.handleChange}
+              lg={6}
+              sm={6}
+              xs={12}
+            >&lt;/TextFieldFormik>
+          &lt;/Grid>
+          &lt;Grid item xs={12} container className={classes.border}>
+            {racesShow.map((raceItem, index) => (
+              &lt;>
+                {raceItem.show &amp;&amp; (
+                  &lt;Grid
+                    item
+                    xs={12}
+                    container
+                    key={`race-option-${index}`}
+                    spacing={1}
+                    className={classes.raceContainer}
+                  >
+                    &lt;Grid item xs={12}>
+                      &lt;Typography
+                        variant={"body2"}
+                        gutterBottom
+                        className={classes.subtitle}
+                      >
+                        {`Raza ${raceItem.letter}`}
+                      &lt;/Typography>
+                    &lt;/Grid>
+                    &lt;Grid item container sm={8} xs={12}>
+                      &lt;SelectFieldFormik
+                        name={`race${index + 1}Id`}
+                        label="Raza"
+                        options={listRaces}
+                        onChange={props.handleChange}
+                      />
+                    &lt;/Grid>
+                    &lt;Grid
+                      item
+                      container
+                      sm={4}
+                      xs={12}
+                      alignItems={"center"}
+                      justifyContent={"center"}
+                    >
+                      &lt;Grid item xs={11}>
+                        &lt;TextFieldFormik
+                          xs={12}
+                          name={`percentageRace${index + 1}`}
+                          endAdornment={
+                            &lt;InputAdornment position="start">%&lt;/InputAdornment>
+                          }
+                          type="number"
+                          label="Porcentaje"
+                          style={{ textAlign: "end" }}
+                          // type="number"
+                          onChange={props.handleChange}
+                        />
+                      &lt;/Grid>
+                      &lt;Grid item xs={1}>
+                        {inxRace === index &amp;&amp; Boolean(index) &amp;&amp; (
+                          &lt;DeleteIcon
+                            className={classes.deleteIcon}
+                            onClick={() =>
+                              handleRemoveRace(index, props.values)
+                            }
+                          />
+                        )}
+                      &lt;/Grid>
+                    &lt;/Grid>
+                  &lt;/Grid>
+                )}
+              &lt;/>
+            ))}
+            &lt;Grid item xs={12} className={classes.errorMessage}>
+              &lt;Typography variant={"caption"} gutterBottom>
+                {errorPercentage}
+              &lt;/Typography>
+            &lt;/Grid>
+            {inxRace !== racesShow.length - 1 &amp;&amp; (
+              &lt;AddCircle className={classes.addBtn} onClick={handleAddRace} />
+            )}
+          &lt;/Grid>
+          &lt;Grid container spacing={1}>
+            &lt;SelectFieldFormik
+              onChange={props.handleChange}
+              options={racialTypeOptions}
+              label="Tipo Racial"
+              name="racialType"
+              lg={6}
+              sm={6}
+              xs={12}
+            >&lt;/SelectFieldFormik>
+
+            &lt;TextFieldFormik
+              label="Color"
+              type="text"
+              name="color"
+              onChange={props.handleChange}
+              lg={6}
+              sm={6}
+              xs={12}
+            >&lt;/TextFieldFormik>
+          &lt;/Grid>
+          &lt;Grid item container justifyContent="space-between" xs={12}>
+            &lt;Grid item xs={5}>
+              &lt;ButtonFormik
+                xs={3}
+                label="Cancelar"
+                type="cancel"
+                onClick={onClickCancelButton}
+              />
+            &lt;/Grid>
+            &lt;Grid item xs={5}>
+              &lt;ButtonFormik xs={3} label="Guardar" type="submit" />
+            &lt;/Grid>
+          &lt;/Grid>
+        &lt;/form>
+      )}
+    &lt;/Formik>
+  );
+};
+
+export default RaceForm;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AccountControlPage.html">AccountControlPage</a></li><li><a href="AddAnimals.html">AddAnimals</a></li><li><a href="AgribusinessCreatePage.html">AgribusinessCreatePage</a></li><li><a href="AnimalCharts.html">AnimalCharts</a></li><li><a href="AnimalCreateBulkPage.html">AnimalCreateBulkPage</a></li><li><a href="AnimalCreatePage.html">AnimalCreatePage</a></li><li><a href="AnimalDeletePage.html">AnimalDeletePage</a></li><li><a href="AnimalDescription.html">AnimalDescription</a></li><li><a href="AnimalDetailDeletePage.html">AnimalDetailDeletePage</a></li><li><a href="AnimalDetailPage.html">AnimalDetailPage</a></li><li><a href="AnimalImageForm.html">AnimalImageForm</a></li><li><a href="AnimalPageList.html">AnimalPageList</a></li><li><a href="AnimalUpdatePage.html">AnimalUpdatePage</a></li><li><a href="AssociationCreatePage.html">AssociationCreatePage</a></li><li><a href="AssociationDeletePage.html">AssociationDeletePage</a></li><li><a href="AssociationListPage.html">AssociationListPage</a></li><li><a href="AssociationUpdatePage.html">AssociationUpdatePage</a></li><li><a href="BirthControlCreatePage.html">BirthControlCreatePage</a></li><li><a href="BirthCreatePage.html">BirthCreatePage</a></li><li><a href="BirthForm.html">BirthForm</a></li><li><a href="BirthListPage.html">BirthListPage</a></li><li><a href="CalendarForm.html">CalendarForm</a></li><li><a href="ChipList.html">ChipList</a></li><li><a href="CommentaryData.html">CommentaryData</a></li><li><a href="defaultInitValues.html">defaultInitValues</a></li><li><a href="DeleteForm.html">DeleteForm</a></li><li><a href="DryingCreatePage.html">DryingCreatePage</a></li><li><a href="DryingDeletePage.html">DryingDeletePage</a></li><li><a href="DryingForm.html">DryingForm</a></li><li><a href="DryingListPage.html">DryingListPage</a></li><li><a href="DryingUpdatePage.html">DryingUpdatePage</a></li><li><a href="GeneralForm.html">GeneralForm</a></li><li><a href="GeneralUpdatePage.html">GeneralUpdatePage</a></li><li><a href="GeneticStckCreatePage.html">GeneticStckCreatePage</a></li><li><a href="GeneticStockDeletePage.html">GeneticStockDeletePage</a></li><li><a href="GeneticStockForm.html">GeneticStockForm</a></li><li><a href="GeneticStockList.html">GeneticStockList</a></li><li><a href="GeneticStockUpdatePage.html">GeneticStockUpdatePage</a></li><li><a href="IAServiceCreatePage.html">IAServiceCreatePage</a></li><li><a href="ImageUploadPage.html">ImageUploadPage</a></li><li><a href="LinearProgressWithLabel.html">LinearProgressWithLabel</a></li><li><a href="MilkControlCreatePage.html">MilkControlCreatePage</a></li><li><a href="MilkForm.html">MilkForm</a></li><li><a href="MovementCreatePage.html">MovementCreatePage</a></li><li><a href="MovementForm.html">MovementForm</a></li><li><a href="MovementPageList.html">MovementPageList</a></li><li><a href="OtherForm.html">OtherForm</a></li><li><a href="PalapationControlCreatePage.html">PalapationControlCreatePage</a></li><li><a href="QrViewPage.html">QrViewPage</a></li><li><a href="RaceForm.html">RaceForm</a></li><li><a href="RaceUpdatePage.html">RaceUpdatePage</a></li><li><a href="RouterList.html">RouterList</a></li><li><a href="SaleCreatePage.html">SaleCreatePage</a></li><li><a href="SaleDeletePage.html">SaleDeletePage</a></li><li><a href="SaleForm.html">SaleForm</a></li><li><a href="SaleListPage.html">SaleListPage</a></li><li><a href="SaleUpdatePage.html">SaleUpdatePage</a></li><li><a href="SearchAnimals.html">SearchAnimals</a></li><li><a href="ServiceDeletePage.html">ServiceDeletePage</a></li><li><a href="ServiceForm.html">ServiceForm</a></li><li><a href="ServicePageList.html">ServicePageList</a></li><li><a href="TransferServiceCreatePage.html">TransferServiceCreatePage</a></li><li><a href="UserDeletePage.html">UserDeletePage</a></li><li><a href="WeightControlCreatePage.html">WeightControlCreatePage</a></li><li><a href="WeightCreatePage.html">WeightCreatePage</a></li><li><a href="WeightDeletePage.html">WeightDeletePage</a></li><li><a href="WeightForm.html">WeightForm</a></li><li><a href="WeightListPage.html">WeightListPage</a></li><li><a href="WeightUpdatePage.html">WeightUpdatePage</a></li><li><a href="ZealCreatePage.html">ZealCreatePage</a></li><li><a href="ZealDeletePage.html">ZealDeletePage</a></li><li><a href="ZealForm.html">ZealForm</a></li><li><a href="ZealListPage.html">ZealListPage</a></li><li><a href="ZealUpdatePage.html">ZealUpdatePage</a></li></ul><h3>Global</h3><ul><li><a href="global.html#AuthWrapper">AuthWrapper</a></li><li><a href="global.html#CustomMaterialTable">CustomMaterialTable</a></li><li><a href="global.html#CustomMuiTable">CustomMuiTable</a></li><li><a href="global.html#getGroupedByHerdDate">getGroupedByHerdDate</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Thu Nov 18 2021 02:23:57 GMT-0500 (Peru Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

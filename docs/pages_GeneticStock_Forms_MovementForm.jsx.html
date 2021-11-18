@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: pages/GeneticStock/Forms/MovementForm.jsx</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: pages/GeneticStock/Forms/MovementForm.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { Grid, Typography, InputAdornment } from "@material-ui/core";
+import { Formik } from "formik";
+import * as yup from "yup";
+import SelectFieldFormik from "../../../components/Inputs/SelectFieldFormik";
+import TextFieldFormik from "../../../components/Inputs/TextFieldFormik";
+import PropTypes from "prop-types";
+import DatePickerFieldFormik from "../../../components/Inputs/DatePickerFieldFormik";
+import ButtonFormik from "../../../components/Inputs/ButtonFormik";
+import { movementOptions, operationOptions } from "../../../constants";
+import { useDispatch } from "react-redux";
+import MovementActions from "../../../redux/actions/movement.actions";
+import { useEffect } from "react";
+import { useSelector, shallowEqual } from "react-redux";
+import geneticStockActions from "../../../redux/actions/geneticStock.actions";
+import AutocompleteFieldFormik from "../../../components/Inputs/AutocompleteFieldFormik";
+
+const defaultInitValues = {
+  geneticStockId: "",
+  movementType: "",
+  date: new Date(),
+  observation: "",
+  quantity: 1,
+  unitValue: 0,
+  saleAccount: "",
+  description: "",
+  toWho: "",
+};
+
+/**
+ * @component
+ * @description Componente, formulario para crear o editar el registro del movimientos que tiene relacion con stock genetico
+ * @author Emerson Puma Quispe &lt;emerson.puma@ideascloud.io>
+ */
+
+const MovementForm = ({
+  initValues = defaultInitValues,
+  type = "create",
+  onClickCancelButton,
+  onCompleteSubmit = () => {},
+  geneticType,
+}) => {
+  const dispatch = useDispatch();
+  const geneticStockList = useSelector(
+    (state) =>
+      state.geneticStock.list.filter(
+        (e) => e.active &amp;&amp; e.geneticType === geneticType
+      ),
+    shallowEqual
+  );
+  const currentFarm = useSelector((state) => state.farm.current);
+  const validationSchema = () =>
+    yup.lazy((values) => {
+      return yup.object({
+        movementType: yup
+          .string("Ingresa el tipo de movimiento")
+          .required("Esta campo es requerido."),
+        date: yup
+          .date("Ingresa una fecha")
+          .required("Este campo es requerido."),
+        geneticStockId: yup
+          .string("Ingresa stock genético")
+          .nullable(true)
+          .required("Esta campo es requerido."),
+        observation: yup.string("Ingresa una observación"),
+        quantity: yup
+          .number("Ingrese solo números")
+          .integer("Solo números enteros")
+          .min(1, "La cantidad debe ser mayor o igual a 1")
+          .max(
+            movementOptions[values.movementType] === movementOptions.SALE ||
+              movementOptions[values.movementType] === movementOptions.OTHER
+              ? values.geneticStockId
+                ? geneticStockList.find((e) => e._id === values.geneticStockId)
+                    ?.stock
+                : 0
+              : Infinity,
+            ({ max }) => `La cantidad debe ser menor o igual a ${max}`
+          )
+
+          .required("Este campo es requerido"),
+        unitValue: yup
+          .number("Ingrese solo números")
+          .required("Este campo es requerido"),
+        saleAccount: yup.string("Ingresa una cuenta"),
+        description: yup.string("Ingresa una descripción"),
+        toWho: yup.string("Ingresa información"),
+      });
+    });
+
+  useEffect(() => {
+    (!geneticStockList || geneticStockList.length === 0) &amp;&amp;
+      dispatch(
+        geneticStockActions.listGeneticStockByAgribusiness({
+          geneticType,
+        })
+      );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch]);
+
+  const transformByMovementType = (values) => {
+    if (
+      movementOptions[values.movementType] === movementOptions.SALE ||
+      operationOptions[values.movementOperationType] ===
+        operationOptions.SUBSTRACTION
+    ) {
+      values.quantity = values.quantity * -1;
+    }
+    return values;
+  };
+
+  const onSubmit = async (values, actions) => {
+    try {
+      const transformedValues = transformByMovementType(values);
+      if (type === "create") {
+        await dispatch(MovementActions.create(transformedValues, geneticType));
+      }
+      if (type === "update") {
+        await dispatch(MovementActions.update(transformedValues, geneticType));
+      }
+      onCompleteSubmit();
+    } catch {
+      actions.setSubmitting(false);
+    }
+  };
+
+  return (
+    &lt;Formik
+      initialValues={initValues}
+      validationSchema={validationSchema}
+      onSubmit={onSubmit}
+      enableReinitialize
+    >
+      {(props) => (
+        &lt;form onSubmit={props.handleSubmit}>
+          &lt;Grid container spacing={1}>
+            &lt;Grid item xs={12}>
+              &lt;Typography variant="subtitle1">
+                {type === "create" &amp;&amp; "Nuevo movimiento"}
+                {type === "update" &amp;&amp; "Editar movimiento"}
+              &lt;/Typography>
+            &lt;/Grid>
+            &lt;SelectFieldFormik
+              onChange={props.handleChange}
+              xs={12}
+              sm={props.values.movementType === "OTHER" ? 2 : 5}
+              name="movementType"
+              label="Movimiento"
+              options={Object.keys(movementOptions)
+                .filter(
+                  (key) =>
+                    key === "SALE" || key === "PURCHASE" || key === "OTHER"
+                )
+                .map((key) => ({
+                  _id: key,
+                  name: movementOptions[key],
+                }))}
+            />
+            {props.values.movementType === "OTHER" &amp;&amp; (
+              &lt;SelectFieldFormik
+                onChange={props.handleChange}
+                xs={12}
+                sm={3}
+                name="movementOperationType"
+                label="Tipo de operacion"
+                options={Object.keys(operationOptions).map((key) => ({
+                  _id: key,
+                  name: operationOptions[key],
+                }))}
+              />
+            )}
+            &lt;AutocompleteFieldFormik
+              options={geneticStockList}
+              name="geneticStockId"
+              label="Stock genético"
+              onChange={props.handleChange}
+              xs={12}
+              sm={5}
+            />
+            &lt;TextFieldFormik
+              name="stock"
+              label="Cantidad"
+              onChange={props.handleChange}
+              xs={12}
+              sm={2}
+              disabled
+              value={
+                props.values.geneticStockId
+                  ? geneticStockList.find(
+                      (e) => e._id === props.values.geneticStockId
+                    )?.stock
+                  : 0
+              }
+            />
+
+            &lt;DatePickerFieldFormik
+              label="Fecha"
+              onChange={props.handleChange}
+              name="date"
+              xs={12}
+              sm={6}
+            />
+            &lt;TextFieldFormik
+              onChange={props.handleChange}
+              name="toWho"
+              label="A quien"
+              xs={12}
+              sm={6}
+            />
+            &lt;TextFieldFormik
+              onChange={props.handleChange}
+              name="observation"
+              label="Observación"
+            />
+            &lt;TextFieldFormik
+              onChange={props.handleChange}
+              name="quantity"
+              label="Cantidad"
+              type="number"
+              xs={12}
+              sm={4}
+            />
+            &lt;TextFieldFormik
+              onChange={props.handleChange}
+              name="unitValue"
+              label="Valor unidad"
+              endAdornment={
+                &lt;InputAdornment position="start">
+                  {currentFarm?.currency?.currencyAbbreviation}
+                &lt;/InputAdornment>
+              }
+              type="number"
+              xs={12}
+              sm={4}
+            />
+            &lt;TextFieldFormik
+              name="total"
+              label="Total"
+              xs={12}
+              endAdornment={
+                &lt;InputAdornment position="start">
+                  {currentFarm?.currency?.currencyAbbreviation}
+                &lt;/InputAdornment>
+              }
+              sm={4}
+              disabled
+              value={(props.values.unitValue * props.values.quantity).toFixed(
+                2
+              )}
+            />
+            {/* 
+            &lt;TextFieldFormik
+              onChange={props.handleChange}
+              name="saleAccount"
+              label="Cta venta embrión"
+              xs={12}
+              sm={6}
+            />
+            */}
+            &lt;TextFieldFormik
+              onChange={props.handleChange}
+              name="description"
+              label="Descripción"
+              xs={12}
+              sm={12}
+            />
+          &lt;/Grid>
+          &lt;Grid
+            container
+            justifyContent={"flex-end"}
+            style={{ gap: "0.5rem" }}
+            xs={12}
+          >
+            {onClickCancelButton &amp;&amp; (
+              &lt;Grid item xs={2}>
+                &lt;ButtonFormik
+                  onClick={onClickCancelButton}
+                  xs={2}
+                  label="Cancelar"
+                  type="button"
+                />
+              &lt;/Grid>
+            )}
+            &lt;Grid item xs={2}>
+              &lt;ButtonFormik xs={2} label="Guardar" type="submit" />
+            &lt;/Grid>
+          &lt;/Grid>
+        &lt;/form>
+      )}
+    &lt;/Formik>
+  );
+};
+
+MovementForm.propTypes = {
+  type: PropTypes.oneOf(["create", "update"]).isRequired,
+  onClickCancelButton: PropTypes.func,
+  initValues: PropTypes.object,
+};
+
+export default MovementForm;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AccountControlPage.html">AccountControlPage</a></li><li><a href="AddAnimals.html">AddAnimals</a></li><li><a href="AgribusinessCreatePage.html">AgribusinessCreatePage</a></li><li><a href="AnimalCharts.html">AnimalCharts</a></li><li><a href="AnimalCreateBulkPage.html">AnimalCreateBulkPage</a></li><li><a href="AnimalCreatePage.html">AnimalCreatePage</a></li><li><a href="AnimalDeletePage.html">AnimalDeletePage</a></li><li><a href="AnimalDescription.html">AnimalDescription</a></li><li><a href="AnimalDetailDeletePage.html">AnimalDetailDeletePage</a></li><li><a href="AnimalDetailPage.html">AnimalDetailPage</a></li><li><a href="AnimalImageForm.html">AnimalImageForm</a></li><li><a href="AnimalPageList.html">AnimalPageList</a></li><li><a href="AnimalUpdatePage.html">AnimalUpdatePage</a></li><li><a href="AssociationCreatePage.html">AssociationCreatePage</a></li><li><a href="AssociationDeletePage.html">AssociationDeletePage</a></li><li><a href="AssociationListPage.html">AssociationListPage</a></li><li><a href="AssociationUpdatePage.html">AssociationUpdatePage</a></li><li><a href="BirthControlCreatePage.html">BirthControlCreatePage</a></li><li><a href="BirthCreatePage.html">BirthCreatePage</a></li><li><a href="BirthForm.html">BirthForm</a></li><li><a href="BirthListPage.html">BirthListPage</a></li><li><a href="CalendarForm.html">CalendarForm</a></li><li><a href="ChipList.html">ChipList</a></li><li><a href="CommentaryData.html">CommentaryData</a></li><li><a href="defaultInitValues.html">defaultInitValues</a></li><li><a href="DeleteForm.html">DeleteForm</a></li><li><a href="DryingCreatePage.html">DryingCreatePage</a></li><li><a href="DryingDeletePage.html">DryingDeletePage</a></li><li><a href="DryingForm.html">DryingForm</a></li><li><a href="DryingListPage.html">DryingListPage</a></li><li><a href="DryingUpdatePage.html">DryingUpdatePage</a></li><li><a href="GeneralForm.html">GeneralForm</a></li><li><a href="GeneralUpdatePage.html">GeneralUpdatePage</a></li><li><a href="GeneticStckCreatePage.html">GeneticStckCreatePage</a></li><li><a href="GeneticStockDeletePage.html">GeneticStockDeletePage</a></li><li><a href="GeneticStockForm.html">GeneticStockForm</a></li><li><a href="GeneticStockList.html">GeneticStockList</a></li><li><a href="GeneticStockUpdatePage.html">GeneticStockUpdatePage</a></li><li><a href="IAServiceCreatePage.html">IAServiceCreatePage</a></li><li><a href="ImageUploadPage.html">ImageUploadPage</a></li><li><a href="LinearProgressWithLabel.html">LinearProgressWithLabel</a></li><li><a href="MilkControlCreatePage.html">MilkControlCreatePage</a></li><li><a href="MilkForm.html">MilkForm</a></li><li><a href="MovementCreatePage.html">MovementCreatePage</a></li><li><a href="MovementForm.html">MovementForm</a></li><li><a href="MovementPageList.html">MovementPageList</a></li><li><a href="OtherForm.html">OtherForm</a></li><li><a href="PalapationControlCreatePage.html">PalapationControlCreatePage</a></li><li><a href="QrViewPage.html">QrViewPage</a></li><li><a href="RaceForm.html">RaceForm</a></li><li><a href="RaceUpdatePage.html">RaceUpdatePage</a></li><li><a href="RouterList.html">RouterList</a></li><li><a href="SaleCreatePage.html">SaleCreatePage</a></li><li><a href="SaleDeletePage.html">SaleDeletePage</a></li><li><a href="SaleForm.html">SaleForm</a></li><li><a href="SaleListPage.html">SaleListPage</a></li><li><a href="SaleUpdatePage.html">SaleUpdatePage</a></li><li><a href="SearchAnimals.html">SearchAnimals</a></li><li><a href="ServiceDeletePage.html">ServiceDeletePage</a></li><li><a href="ServiceForm.html">ServiceForm</a></li><li><a href="ServicePageList.html">ServicePageList</a></li><li><a href="TransferServiceCreatePage.html">TransferServiceCreatePage</a></li><li><a href="UserDeletePage.html">UserDeletePage</a></li><li><a href="WeightControlCreatePage.html">WeightControlCreatePage</a></li><li><a href="WeightCreatePage.html">WeightCreatePage</a></li><li><a href="WeightDeletePage.html">WeightDeletePage</a></li><li><a href="WeightForm.html">WeightForm</a></li><li><a href="WeightListPage.html">WeightListPage</a></li><li><a href="WeightUpdatePage.html">WeightUpdatePage</a></li><li><a href="ZealCreatePage.html">ZealCreatePage</a></li><li><a href="ZealDeletePage.html">ZealDeletePage</a></li><li><a href="ZealForm.html">ZealForm</a></li><li><a href="ZealListPage.html">ZealListPage</a></li><li><a href="ZealUpdatePage.html">ZealUpdatePage</a></li></ul><h3>Global</h3><ul><li><a href="global.html#AuthWrapper">AuthWrapper</a></li><li><a href="global.html#CustomMaterialTable">CustomMaterialTable</a></li><li><a href="global.html#CustomMuiTable">CustomMuiTable</a></li><li><a href="global.html#getGroupedByHerdDate">getGroupedByHerdDate</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Thu Nov 18 2021 02:23:57 GMT-0500 (Peru Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

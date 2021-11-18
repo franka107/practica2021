@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: routes/routesDict.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: routes/routesDict.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>export const ROUTES_SLUGS = {
+  /**
+   * common routes slugs
+   */
+  list: "list",
+  create: "create",
+  update: "update",
+  delete: "delete",
+  upload: "upload",
+  view: "view",
+  detail: "detail",
+  /**
+   * General routes slugs
+   */
+  register: "register",
+  login: "login",
+  emailVerified: "email-verified",
+  recoverPassword: "recover-password",
+  dashboard: "dashboard",
+  geneticStock: "genetic-stock",
+  semen: "semen",
+  movements: "movements",
+  embryo: "embryo",
+  colective: "colective",
+  service: "service",
+  iamn: "I.A-M.N",
+  animal: "animal",
+  embryoTransfer: "transfer-embryo",
+  account: "cuenta",
+  profile: "perfil",
+  user: "usuario",
+  palpation: "palpations",
+  birth: "nacimientos",
+  pregnancies: "preñeces",
+  plan: "plan",
+  hacienda: "hacienda",
+  animalDetail: "detalles-animal",
+  animalControl: "control-animal",
+  pedigree: "pedigree",
+  setup: "setup",
+  zeal: "zeal",
+  association: "association",
+  drying: "drying",
+  sale: "sale",
+  weight: "weight",
+  milk: "milk",
+  farm: "farm",
+  agribusiness: "agribusiness",
+  collaborator: "collaborator",
+};
+
+export const ROUTES_DICT = {
+  root: "/",
+  register: `/${ROUTES_SLUGS.register}`,
+  login: `/${ROUTES_SLUGS.login}`,
+  dashboard: `/${ROUTES_SLUGS.dashboard}`,
+  geneticStock: {
+    root: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.geneticStock}`,
+    geneticType: {
+      root: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.geneticStock}/:geneticType`,
+      list: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.geneticStock}/:geneticType/list`,
+      create: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.geneticStock}/:geneticType/list/${ROUTES_SLUGS.create}`,
+      update: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.geneticStock}/:geneticType/list/:_id/${ROUTES_SLUGS.update}`,
+      delete: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.geneticStock}/:geneticType/list/:_id/${ROUTES_SLUGS.delete}`,
+    },
+    movements: {
+      root: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.geneticStock}/:geneticType/${ROUTES_SLUGS.movements}`,
+      list: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.geneticStock}/:geneticType/${ROUTES_SLUGS.movements}/list`,
+      create: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.geneticStock}/:geneticType/${ROUTES_SLUGS.movements}/list/${ROUTES_SLUGS.create}`,
+      update: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.geneticStock}/:geneticType/${ROUTES_SLUGS.movements}/list/:_id/${ROUTES_SLUGS.update}`,
+      delete: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.geneticStock}/:geneticType/${ROUTES_SLUGS.movements}/list/:_id/${ROUTES_SLUGS.delete}`,
+    },
+  },
+  service: {
+    root: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.service}`,
+    list: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.service}/list`,
+    createIAMN: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.service}/list/${ROUTES_SLUGS.create}IAMN/`,
+    updateIAMN: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.service}/list/:_id/${ROUTES_SLUGS.update}IAMN/`,
+    updateET: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.service}/list/:_id/${ROUTES_SLUGS.update}ET/`,
+    createET: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.service}/list/${ROUTES_SLUGS.create}ET/`,
+    delete: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.service}/list/:_id/${ROUTES_SLUGS.delete}`,
+  },
+
+  birth: {
+    root: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.birth}`,
+    list: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.birth}/list`,
+    create: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.birth}/list/${ROUTES_SLUGS.create}/`,
+    update: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.birth}/list/:_id/${ROUTES_SLUGS.update}/`,
+    delete: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.birth}/list/:_id/${ROUTES_SLUGS.delete}/`,
+  },
+
+  animal: {
+    root: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animal}`,
+    list: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animal}/list`,
+    create: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animal}/list/${ROUTES_SLUGS.create}`,
+    createBulk: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animal}/list/${ROUTES_SLUGS.create}-bulk`,
+    update: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animal}/list/:_id/${ROUTES_SLUGS.update}`,
+    delete: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animal}/list/:_id/${ROUTES_SLUGS.delete}`,
+  },
+  milk: {
+    root: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.milk}`,
+    list: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.milk}/list`,
+    create: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.milk}/list/${ROUTES_SLUGS.create}`,
+    update: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.milk}/list/:_id/${ROUTES_SLUGS.update}`,
+    delete: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.milk}/list/:_id/${ROUTES_SLUGS.delete}`,
+  },
+  palpation: {
+    root: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.palpation}`,
+    list: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.palpation}/list`,
+    create: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.palpation}/list/${ROUTES_SLUGS.create}`,
+    update: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.palpation}/list/:_id/${ROUTES_SLUGS.update}`,
+    delete: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.palpation}/list/:_id/${ROUTES_SLUGS.delete}`,
+  },
+  collective: {
+    root: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.colective}`,
+    zeal: {
+      root: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.colective}/${ROUTES_SLUGS.zeal}`,
+      list: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.colective}/${ROUTES_SLUGS.zeal}/list`,
+      create: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.colective}/${ROUTES_SLUGS.zeal}/list/${ROUTES_SLUGS.create}`,
+      update: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.colective}/${ROUTES_SLUGS.zeal}/list/:_id/${ROUTES_SLUGS.update}`,
+      delete: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.colective}/${ROUTES_SLUGS.zeal}/list/:_id/${ROUTES_SLUGS.delete}`,
+    },
+    association: {
+      root: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.colective}/${ROUTES_SLUGS.association}`,
+      list: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.colective}/${ROUTES_SLUGS.association}/list`,
+      create: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.colective}/${ROUTES_SLUGS.association}/list/${ROUTES_SLUGS.create}`,
+      update: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.colective}/${ROUTES_SLUGS.association}/list/:_id/${ROUTES_SLUGS.update}`,
+      delete: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.colective}/${ROUTES_SLUGS.association}/list/:_id/${ROUTES_SLUGS.delete}`,
+    },
+    drying: {
+      root: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.colective}/${ROUTES_SLUGS.drying}`,
+      list: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.colective}/${ROUTES_SLUGS.drying}/list`,
+      create: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.colective}/${ROUTES_SLUGS.drying}/list/${ROUTES_SLUGS.create}`,
+      update: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.colective}/${ROUTES_SLUGS.drying}/list/:_id/${ROUTES_SLUGS.update}`,
+      delete: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.colective}/${ROUTES_SLUGS.drying}/list/:_id/${ROUTES_SLUGS.delete}`,
+    },
+    sale: {
+      root: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.colective}/${ROUTES_SLUGS.sale}`,
+      list: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.colective}/${ROUTES_SLUGS.sale}/list`,
+      create: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.colective}/${ROUTES_SLUGS.sale}/list/${ROUTES_SLUGS.create}`,
+      update: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.colective}/${ROUTES_SLUGS.sale}/list/:_id/${ROUTES_SLUGS.update}`,
+      delete: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.colective}/${ROUTES_SLUGS.sale}/list/:_id/${ROUTES_SLUGS.delete}`,
+    },
+    weight: {
+      root: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.colective}/${ROUTES_SLUGS.weight}`,
+      list: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.colective}/${ROUTES_SLUGS.weight}/list`,
+      create: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.colective}/${ROUTES_SLUGS.weight}/list/${ROUTES_SLUGS.create}`,
+      update: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.colective}/${ROUTES_SLUGS.weight}/list/:_id/${ROUTES_SLUGS.update}`,
+      delete: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.colective}/${ROUTES_SLUGS.weight}/list/:_id/${ROUTES_SLUGS.delete}`,
+    },
+  },
+  account: `/${ROUTES_SLUGS.account}/${ROUTES_SLUGS.update}`,
+  profile: `/${ROUTES_SLUGS.profile}`,
+  users: {
+    root: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.user}`,
+    list: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.user}/list`,
+    create: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.user}/list/${ROUTES_SLUGS.create}`,
+    update: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.user}/list/:_id/${ROUTES_SLUGS.update}`,
+    delete: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.user}/list/:_id/${ROUTES_SLUGS.delete}`,
+  },
+  plan: `/${ROUTES_SLUGS.plan}`,
+  hacienda: {
+    root: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.hacienda}`,
+    farm: {
+      root: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.hacienda}/${ROUTES_SLUGS.farm}`,
+      update: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.hacienda}/${ROUTES_SLUGS.farm}/:_id/${ROUTES_SLUGS.update}`,
+      image: {
+        upload: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.hacienda}/${ROUTES_SLUGS.farm}/:_id/${ROUTES_SLUGS.upload}`,
+      },
+    },
+    agribusiness: {
+      root: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.hacienda}/${ROUTES_SLUGS.agribusiness}`,
+      create: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.hacienda}/${ROUTES_SLUGS.agribusiness}/${ROUTES_SLUGS.create}`,
+      update: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.hacienda}/${ROUTES_SLUGS.agribusiness}/:_id/${ROUTES_SLUGS.update}`,
+      image: {
+        upload: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.hacienda}/${ROUTES_SLUGS.agribusiness}/:_id/${ROUTES_SLUGS.upload}`,
+      },
+    },
+    collaborator: {
+      root: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.hacienda}/${ROUTES_SLUGS.collaborator}`,
+      create: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.hacienda}/${ROUTES_SLUGS.collaborator}/${ROUTES_SLUGS.create}`,
+      update: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.hacienda}/${ROUTES_SLUGS.collaborator}/:_id/${ROUTES_SLUGS.update}`,
+      delete: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.hacienda}/${ROUTES_SLUGS.collaborator}/:_id/${ROUTES_SLUGS.delete}`,
+    },
+  },
+  emailVerified: `/${ROUTES_SLUGS.emailVerified}`,
+  pregnancies: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.pregnancies}`,
+  animalDetail: {
+    pedigree: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animalDetail}/:_id/${ROUTES_SLUGS.pedigree}`,
+    root: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animalDetail}`,
+    detail: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animalDetail}/:_id/${ROUTES_SLUGS.detail}`,
+    delete: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animalDetail}/:_id/${ROUTES_SLUGS.detail}/${ROUTES_SLUGS.delete}`,
+    general: {
+      update: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animalDetail}/:_id/${ROUTES_SLUGS.detail}/general/${ROUTES_SLUGS.update}`,
+    },
+    race: {
+      update: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animalDetail}/:_id/${ROUTES_SLUGS.detail}/race/${ROUTES_SLUGS.update}`,
+    },
+    birth: {
+      list: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animalDetail}/:_id/birth/${ROUTES_SLUGS.list}`,
+      create: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animalDetail}/:_id/${ROUTES_SLUGS.detail}/birth/${ROUTES_SLUGS.create}`,
+    },
+    calendar: {
+      update: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animalDetail}/:_id/${ROUTES_SLUGS.detail}/calendar/${ROUTES_SLUGS.update}`,
+    },
+    service: {
+      list: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animalDetail}/:_id/ia/${ROUTES_SLUGS.list}`,
+      ia: {
+        create: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animalDetail}/:_id/${ROUTES_SLUGS.detail}/ia/${ROUTES_SLUGS.create}`,
+      },
+      transfer: {
+        create: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animalDetail}/:_id/${ROUTES_SLUGS.detail}/transfer/${ROUTES_SLUGS.create}`,
+      },
+    },
+    palpation: {
+      list: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animalDetail}/:_id/${ROUTES_SLUGS.palpation}/${ROUTES_SLUGS.list}`,
+      create: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animalDetail}/:_id/${ROUTES_SLUGS.detail}/${ROUTES_SLUGS.palpation}/${ROUTES_SLUGS.create}`,
+    },
+    other: {
+      update: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animalDetail}/:_id/${ROUTES_SLUGS.detail}/other/${ROUTES_SLUGS.update}`,
+    },
+    milk: {
+      list: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animalDetail}/:_id/${ROUTES_SLUGS.milk}/${ROUTES_SLUGS.list}`,
+      create: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animalDetail}/:_id/${ROUTES_SLUGS.detail}/${ROUTES_SLUGS.milk}/${ROUTES_SLUGS.create}`,
+    },
+    weight: {
+      list: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animalDetail}/:_id/${ROUTES_SLUGS.weight}/${ROUTES_SLUGS.list}`,
+      create: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animalDetail}/:_id/${ROUTES_SLUGS.detail}/${ROUTES_SLUGS.weight}/${ROUTES_SLUGS.create}`,
+    },
+    image: {
+      upload: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animalDetail}/:_id/${ROUTES_SLUGS.detail}/image/${ROUTES_SLUGS.upload}`,
+    },
+    qr: {
+      view: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.animalDetail}/:_id/${ROUTES_SLUGS.detail}/qr/${ROUTES_SLUGS.view}`,
+    },
+  },
+  recoverPassword: `/${ROUTES_SLUGS.recoverPassword}`,
+  setup: `/${ROUTES_SLUGS.setup}`,
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AccountControlPage.html">AccountControlPage</a></li><li><a href="AddAnimals.html">AddAnimals</a></li><li><a href="AgribusinessCreatePage.html">AgribusinessCreatePage</a></li><li><a href="AnimalCharts.html">AnimalCharts</a></li><li><a href="AnimalCreateBulkPage.html">AnimalCreateBulkPage</a></li><li><a href="AnimalCreatePage.html">AnimalCreatePage</a></li><li><a href="AnimalDeletePage.html">AnimalDeletePage</a></li><li><a href="AnimalDescription.html">AnimalDescription</a></li><li><a href="AnimalDetailDeletePage.html">AnimalDetailDeletePage</a></li><li><a href="AnimalDetailPage.html">AnimalDetailPage</a></li><li><a href="AnimalImageForm.html">AnimalImageForm</a></li><li><a href="AnimalPageList.html">AnimalPageList</a></li><li><a href="AnimalUpdatePage.html">AnimalUpdatePage</a></li><li><a href="AssociationCreatePage.html">AssociationCreatePage</a></li><li><a href="AssociationDeletePage.html">AssociationDeletePage</a></li><li><a href="AssociationListPage.html">AssociationListPage</a></li><li><a href="AssociationUpdatePage.html">AssociationUpdatePage</a></li><li><a href="BirthControlCreatePage.html">BirthControlCreatePage</a></li><li><a href="BirthCreatePage.html">BirthCreatePage</a></li><li><a href="BirthForm.html">BirthForm</a></li><li><a href="BirthListPage.html">BirthListPage</a></li><li><a href="CalendarForm.html">CalendarForm</a></li><li><a href="ChipList.html">ChipList</a></li><li><a href="CommentaryData.html">CommentaryData</a></li><li><a href="defaultInitValues.html">defaultInitValues</a></li><li><a href="DeleteForm.html">DeleteForm</a></li><li><a href="DryingCreatePage.html">DryingCreatePage</a></li><li><a href="DryingDeletePage.html">DryingDeletePage</a></li><li><a href="DryingForm.html">DryingForm</a></li><li><a href="DryingListPage.html">DryingListPage</a></li><li><a href="DryingUpdatePage.html">DryingUpdatePage</a></li><li><a href="GeneralForm.html">GeneralForm</a></li><li><a href="GeneralUpdatePage.html">GeneralUpdatePage</a></li><li><a href="GeneticStckCreatePage.html">GeneticStckCreatePage</a></li><li><a href="GeneticStockDeletePage.html">GeneticStockDeletePage</a></li><li><a href="GeneticStockForm.html">GeneticStockForm</a></li><li><a href="GeneticStockList.html">GeneticStockList</a></li><li><a href="GeneticStockUpdatePage.html">GeneticStockUpdatePage</a></li><li><a href="IAServiceCreatePage.html">IAServiceCreatePage</a></li><li><a href="ImageUploadPage.html">ImageUploadPage</a></li><li><a href="LinearProgressWithLabel.html">LinearProgressWithLabel</a></li><li><a href="MilkControlCreatePage.html">MilkControlCreatePage</a></li><li><a href="MilkForm.html">MilkForm</a></li><li><a href="MovementCreatePage.html">MovementCreatePage</a></li><li><a href="MovementForm.html">MovementForm</a></li><li><a href="MovementPageList.html">MovementPageList</a></li><li><a href="OtherForm.html">OtherForm</a></li><li><a href="PalapationControlCreatePage.html">PalapationControlCreatePage</a></li><li><a href="QrViewPage.html">QrViewPage</a></li><li><a href="RaceForm.html">RaceForm</a></li><li><a href="RaceUpdatePage.html">RaceUpdatePage</a></li><li><a href="RouterList.html">RouterList</a></li><li><a href="SaleCreatePage.html">SaleCreatePage</a></li><li><a href="SaleDeletePage.html">SaleDeletePage</a></li><li><a href="SaleForm.html">SaleForm</a></li><li><a href="SaleListPage.html">SaleListPage</a></li><li><a href="SaleUpdatePage.html">SaleUpdatePage</a></li><li><a href="SearchAnimals.html">SearchAnimals</a></li><li><a href="ServiceDeletePage.html">ServiceDeletePage</a></li><li><a href="ServiceForm.html">ServiceForm</a></li><li><a href="ServicePageList.html">ServicePageList</a></li><li><a href="TransferServiceCreatePage.html">TransferServiceCreatePage</a></li><li><a href="UserDeletePage.html">UserDeletePage</a></li><li><a href="WeightControlCreatePage.html">WeightControlCreatePage</a></li><li><a href="WeightCreatePage.html">WeightCreatePage</a></li><li><a href="WeightDeletePage.html">WeightDeletePage</a></li><li><a href="WeightForm.html">WeightForm</a></li><li><a href="WeightListPage.html">WeightListPage</a></li><li><a href="WeightUpdatePage.html">WeightUpdatePage</a></li><li><a href="ZealCreatePage.html">ZealCreatePage</a></li><li><a href="ZealDeletePage.html">ZealDeletePage</a></li><li><a href="ZealForm.html">ZealForm</a></li><li><a href="ZealListPage.html">ZealListPage</a></li><li><a href="ZealUpdatePage.html">ZealUpdatePage</a></li></ul><h3>Global</h3><ul><li><a href="global.html#AuthWrapper">AuthWrapper</a></li><li><a href="global.html#CustomMaterialTable">CustomMaterialTable</a></li><li><a href="global.html#CustomMuiTable">CustomMuiTable</a></li><li><a href="global.html#getGroupedByHerdDate">getGroupedByHerdDate</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Thu Nov 18 2021 02:23:57 GMT-0500 (Peru Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

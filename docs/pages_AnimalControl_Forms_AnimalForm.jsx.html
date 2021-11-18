@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: pages/AnimalControl/Forms/AnimalForm.jsx</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: pages/AnimalControl/Forms/AnimalForm.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React, { useEffect, useState } from "react";
+import { Grid, Typography, InputAdornment } from "@material-ui/core";
+import { AddCircle } from "@material-ui/icons";
+import DeleteIcon from "@material-ui/icons/Delete";
+import { useStyles } from "../styles";
+import * as yup from "yup";
+import { Formik } from "formik";
+import TextFieldFormik from "../../../components/Inputs/TextFieldFormik";
+import ButtonFormik from "../../../components/Inputs/ButtonFormik";
+import DatePickerFieldFormik from "../../../components/Inputs/DatePickerFieldFormik";
+import SelectFieldFormik from "../../../components/Inputs/SelectFieldFormik";
+import CheckboxFormik from "../../../components/Inputs/CheckboxFormik";
+import { useDispatch, useSelector, shallowEqual } from "react-redux";
+import AnimalActions from "../../../redux/actions/animal.actions";
+import {
+  categoryOptions,
+  racialTypeOptions,
+  sexOptions,
+  stateOptions,
+  typeServicesTest,
+} from "../../../constants";
+import raceActions from "../../../redux/actions/race.actions";
+
+/**
+ * @component
+ * @description Componente, formulario para crear o editar animales
+ * @author Emerson Puma Quispe &lt;emerson.puma@ideascloud.io>
+ */
+
+const defaultInitValues = {
+  identifier: "",
+  name: "",
+  birthDate: new Date(),
+  herdDate: new Date(),
+  registerNumber: "",
+  gender: "MALE",
+  category: null,
+  father: null,
+  pregnantDate: null,
+  mother: null,
+  fatherId: "",
+  motherId: "",
+  race1Id: "",
+  percentageRace1: 0,
+  race2Id: "",
+  percentageRace2: 0,
+  race3Id: "",
+  percentageRace3: 0,
+  race4Id: "",
+  percentageRace4: 0,
+  racialType: "",
+  color: "",
+  reproductiveStatus: null,
+  bornBy: null,
+};
+
+function AnimalForm({
+  initValues = defaultInitValues,
+  type = "create",
+  onClickCancelButton,
+  onCompleteSubmit = () => {},
+}) {
+  const classes = useStyles();
+
+  const letters = ["A", "B", "C", "D"];
+  const [animalRace, setAnimalRace] = useState({
+    A: {},
+  });
+  const dispatch = useDispatch();
+  const listRaces = useSelector((state) =>
+    state.race.list.sort((a, b) =>
+      a.name > b.name ? 1 : a.name &lt; b.name ? -1 : 0
+    )
+  );
+  const currentAgribusiness = useSelector(
+    (state) => state.agribusiness.current
+  );
+  const femaleAnimals = useSelector(
+    (state) => state.animal.list.filter((e) => e.gender === "FEMALE"),
+    shallowEqual
+  );
+
+  const maleAnimals = useSelector(
+    (state) => state.animal.list.filter((e) => e.gender === "MALE"),
+    shallowEqual
+  );
+
+  const [errorPercentage, setErrorPercentage] = useState("");
+
+  const validationSchema = yup.object({
+    identifier: yup
+      .string("Ingresa la identificacion del animal.")
+      .required("Este campo es requerido."),
+    name: yup.string("Ingresa el nombre del animal."),
+    birthDate: yup
+      .date("Ingresa una fecha correcta.")
+      .max(new Date(), "No puedes poner una fecha futura")
+      .required("La fecha de nacimiento es necesaria")
+      .nullable(),
+    herdDate: yup
+      .date("Ingresa una fecha correcta.")
+      .required("Este campo es requerido.")
+      .nullable(),
+    gender: yup
+      .string("Ingresa el genero del animal")
+      .required("Este campo es requerido."),
+  });
+
+  useEffect(() => {
+    if (!listRaces || listRaces.length === 0) {
+      dispatch(raceActions.listRace());
+    }
+    if (type === "update") {
+      if (initValues) {
+        if (initValues.percentageRace2 !== 0) handleAddRace();
+        if (initValues.percentageRace3 !== 0) handleAddRace();
+        if (initValues.percentageRace4 !== 0) handleAddRace();
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const handleAddRace = () => {
+    const races = { ...animalRace };
+    if (letters[Object.keys(races).length]) {
+      races[letters[Object.keys(races).length]] = {};
+      setAnimalRace(races);
+    }
+  };
+
+  const handleCheckPercentage = (list = {}) => {
+    let total = 0;
+
+    Object.keys(list).forEach((animal) => {
+      const percentage = list[animal];
+      total = total + parseFloat(percentage);
+    });
+
+    console.log("total");
+    console.log(total);
+
+    if (total !== 100) {
+      setErrorPercentage(
+        "El porcentaje total debe ser 100%. Porfavor ajuste sus cantidades"
+      );
+      return false;
+    } else {
+      setErrorPercentage("");
+      return true;
+    }
+  };
+
+  const handleRemoveRace = (id, index, values) => {
+    const races = { ...animalRace };
+    delete races[id];
+    values[`percentageRace${index + 1}`] = 0;
+    values[`race${index + 1}Id`] = "";
+
+    setAnimalRace(races);
+  };
+
+  const calculateRacialType = (values) => {
+    const type1 =
+      values.race1Id &amp;&amp; values.race1Id !== ""
+        ? listRaces.find((e) => e._id === values.race1Id)?.racialType
+        : "";
+    const type2 =
+      values.race2Id &amp;&amp; values.race2Id !== ""
+        ? listRaces.find((e) => e._id === values.race2Id)?.racialType
+        : type1;
+    const type3 =
+      values.race3Id &amp;&amp; values.race3Id !== ""
+        ? listRaces.find((e) => e._id === values.race3Id)?.racialType
+        : type1;
+    const type4 =
+      values.race4Id &amp;&amp; values.race4Id !== ""
+        ? listRaces.find((e) => e._id === values.race4Id)?.racialType
+        : type1;
+
+    if (
+      type1 === "BOS TAURUS" &amp;&amp;
+      type2 === "BOS TAURUS" &amp;&amp;
+      type3 === "BOS TAURUS" &amp;&amp;
+      type4 === "BOS TAURUS"
+    ) {
+      return "Taurino";
+    } else if (
+      type1 === "BOS INDICUS" &amp;&amp;
+      type2 === "BOS INDICUS" &amp;&amp;
+      type3 === "BOS INDICUS" &amp;&amp;
+      type4 === "BOS INDICUS"
+    ) {
+      return "Cebuino";
+    } else {
+      return "Media Sangre";
+    }
+  };
+
+  const onSubmit = (values, actions) => {
+    // if (errorPercentage === "") {
+
+    const validPercentages = handleCheckPercentage({
+      percentageRace1: values.percentageRace1 ? values.percentageRace1 : 0,
+      percentageRace2: values.percentageRace2 ? values.percentageRace2 : 0,
+      percentageRace3: values.percentageRace3 ? values.percentageRace3 : 0,
+      percentageRace4: values.percentageRace4 ? values.percentageRace4 : 0,
+    });
+
+    if (!validPercentages) return;
+    if (values.racialType === "") values.racialType = null;
+    values.agribusinessId = currentAgribusiness._id;
+
+    if (values.gender === "MALE") {
+      if (values.isReproductive) {
+        values.category = "REPRODUCTOR";
+      } else {
+        values.category = null;
+      }
+      values.reproductiveStatus = null;
+    }
+
+    if (values.gender === "FEMALE") {
+      values.category = null;
+    }
+
+    if (values.father) {
+      values.fatherId = values.father._id;
+    } else {
+      values.fatherId = "";
+    }
+
+    if (values.mother) {
+      values.motherId = values.mother._id;
+    } else {
+      values.motherId = "";
+    }
+
+    if (type === "create") {
+      dispatch(AnimalActions.create(values));
+      onClickCancelButton();
+    }
+    if (type === "update") {
+      dispatch(AnimalActions.update(values));
+      onClickCancelButton();
+    }
+    // }
+  };
+
+  return (
+    &lt;Formik
+      initialValues={initValues}
+      onSubmit={onSubmit}
+      validationSchema={validationSchema}
+      enableReinitialize
+    >
+      {(props) => (
+        &lt;form onSubmit={props.handleSubmit} className={classes.formStyle}>
+          &lt;Grid item xs={12}>
+            &lt;Typography variant="subtitle1">
+              {type === "create" &amp;&amp; "Nuevo animal"}
+              {type === "update" &amp;&amp; "Editar animal"}
+            &lt;/Typography>
+          &lt;/Grid>
+          &lt;Grid container spacing={1} className={classes.formStyle}>
+            &lt;Grid item xs={12}>
+              &lt;Typography variant={"subtitle2"}>Datos Generales&lt;/Typography>
+            &lt;/Grid>
+          &lt;/Grid>
+          &lt;Grid container spacing={1}>
+            &lt;TextFieldFormik
+              label="Identificación del animal (Número de Arete)"
+              name="identifier"
+              type="text"
+              onChange={props.handleChange}
+              xs={12}
+            >&lt;/TextFieldFormik>
+            &lt;TextFieldFormik
+              label="Nombre"
+              name="name"
+              type="text"
+              onChange={props.handleChange}
+              xs={12}
+            >&lt;/TextFieldFormik>
+            &lt;DatePickerFieldFormik
+              label="Fecha de nacimiento"
+              name="birthDate"
+              onChange={props.handleChange}
+              lg={6}
+              sm={6}
+              xs={12}
+            >&lt;/DatePickerFieldFormik>
+            &lt;DatePickerFieldFormik
+              label="Entrada de hato"
+              name="herdDate"
+              onChange={props.handleChange}
+              lg={6}
+              sm={6}
+              xs={12}
+            >&lt;/DatePickerFieldFormik>
+            &lt;TextFieldFormik
+              label="Nro de registro"
+              name="registerNumber"
+              type="text"
+              onChange={props.handleChange}
+              xs={6}
+            >&lt;/TextFieldFormik>
+            &lt;SelectFieldFormik
+              onChange={props.handleChange}
+              options={Object.keys(typeServicesTest).map((key) => ({
+                _id: key,
+                name: typeServicesTest[key],
+              }))}
+              label="Concebido por"
+              name="bornBy"
+              xs={6}
+            >&lt;/SelectFieldFormik>
+            &lt;SelectFieldFormik
+              onChange={props.handleChange}
+              options={sexOptions.slice(1)}
+              label="Sexo"
+              name="gender"
+              lg={6}
+              sm={6}
+              xs={12}
+            >&lt;/SelectFieldFormik>
+            {props.values.gender === "MALE" ? (
+              &lt;Grid
+                lg={6}
+                sm={6}
+                xs={12}
+                item
+                container
+                alignContent="center"
+                alignItems="center"
+              >
+                &lt;CheckboxFormik
+                  label="Reproductor"
+                  name="isReproductive"
+                  options={categoryOptions}
+                  onChange={props.handleChange}
+                  checked={props.values.isReproductive}
+                >&lt;/CheckboxFormik>
+              &lt;/Grid>
+            ) : (
+              &lt;>
+                &lt;SelectFieldFormik
+                  onChange={props.handleChange}
+                  options={Object.keys(stateOptions)
+                    .filter((e) => e === "PREGNANT" || e === "EMPTY")
+                    .map((key) => ({
+                      _id: key,
+                      name: stateOptions[key],
+                    }))}
+                  label="Estado"
+                  name="reproductiveStatus"
+                  lg={6}
+                  sm={6}
+                  xs={12}
+                >&lt;/SelectFieldFormik>
+                {props.values.reproductiveStatus === "PREGNANT" &amp;&amp; (
+                  &lt;DatePickerFieldFormik
+                    label="Fecha de preñez"
+                    name="pregnantDate"
+                    onChange={props.handleChange}
+                    lg={12}
+                    sm={12}
+                    xs={12}
+                  >&lt;/DatePickerFieldFormik>
+                )}
+              &lt;/>
+            )}
+
+            {type === "create" ? (
+              &lt;TextFieldFormik
+                options={maleAnimals}
+                label="Padre"
+                type="text"
+                name="fatherRef"
+                onChange={props.handleChange}
+                lg={6}
+                sm={6}
+                xs={12}
+              >&lt;/TextFieldFormik>
+            ) : (
+              &lt;TextFieldFormik
+                options={maleAnimals}
+                label="Padre"
+                type="text"
+                name="fatherRef"
+                onChange={props.handleChange}
+                defaultValue={props.values.fatherRef || null}
+                lg={6}
+                sm={6}
+                xs={12}
+              >&lt;/TextFieldFormik>
+            )}
+
+            {type === "create" ? (
+              &lt;TextFieldFormik
+                options={femaleAnimals}
+                label="Madre"
+                type="text"
+                name="motherRef"
+                onChange={props.handleChange}
+                lg={6}
+                sm={6}
+                xs={12}
+              >&lt;/TextFieldFormik>
+            ) : (
+              &lt;TextFieldFormik
+                options={femaleAnimals}
+                label="Madre"
+                type="text"
+                name="motherRef"
+                onChange={props.handleChange}
+                defaultValue={props.values.motherRef || null}
+                lg={6}
+                sm={6}
+                xs={12}
+              >&lt;/TextFieldFormik>
+            )}
+          &lt;/Grid>
+          &lt;Grid container spacing={1} className={classes.formStyle}>
+            &lt;Grid item xs={12}>
+              &lt;Typography variant={"subtitle2"}>Raza&lt;/Typography>
+            &lt;/Grid>
+          &lt;/Grid>
+          &lt;Grid item xs={12} container className={classes.border}>
+            {Object.keys(animalRace).map((raceItem, index) => (
+              &lt;Grid
+                item
+                xs={12}
+                container
+                key={`race-option-${raceItem}`}
+                spacing={1}
+                className={classes.raceContainer}
+              >
+                &lt;Grid item xs={12}>
+                  &lt;Typography
+                    variant={"body2"}
+                    gutterBottom
+                    className={classes.subtitle}
+                  >
+                    {`Raza ${raceItem}`}
+                  &lt;/Typography>
+                &lt;/Grid>
+                &lt;Grid item container sm={8} xs={12}>
+                  &lt;SelectFieldFormik
+                    name={`race${index + 1}Id`}
+                    label="Raza"
+                    options={listRaces}
+                    onChange={props.handleChange}
+                  />
+                &lt;/Grid>
+                &lt;Grid
+                  item
+                  container
+                  sm={4}
+                  xs={12}
+                  alignItems={"center"}
+                  justifyContent={"center"}
+                >
+                  &lt;Grid item xs={11}>
+                    &lt;TextFieldFormik
+                      xs={12}
+                      name={`percentageRace${index + 1}`}
+                      endAdornment={
+                        &lt;InputAdornment position="start">%&lt;/InputAdornment>
+                      }
+                      type="number"
+                      label="Porcentaje"
+                      style={{ textAlign: "end" }}
+                      // type="number"
+                      onChange={props.handleChange}
+                    />
+                  &lt;/Grid>
+                  &lt;Grid item xs={1}>
+                    {Boolean(index) &amp;&amp; (
+                      &lt;DeleteIcon
+                        color={"secondary"}
+                        className={classes.deleteIcon}
+                        onClick={() =>
+                          handleRemoveRace(raceItem, index, props.values)
+                        }
+                      />
+                    )}
+                  &lt;/Grid>
+                &lt;/Grid>
+              &lt;/Grid>
+            ))}
+            &lt;Grid item xs={12} className={classes.errorMessage}>
+              &lt;Typography variant={"caption"} gutterBottom>
+                {errorPercentage}
+              &lt;/Typography>
+            &lt;/Grid>
+            &lt;AddCircle
+              color={"secondary"}
+              className={classes.addBtn}
+              onClick={handleAddRace}
+            />
+          &lt;/Grid>
+          &lt;Grid container spacing={1}>
+            {/* &lt;SelectFieldFormik
+              onChange={props.handleChange}
+              options={racialTypeOptions}
+              label="Tipo Racial"
+              name="racialType"
+              lg={6}
+              sm={6}
+              xs={12}
+            >&lt;/SelectFieldFormik> */}
+            &lt;TextFieldFormik
+              label="Tipo Racial"
+              name="racialType"
+              disabled
+              onChange={props.handleChange}
+              xs={12}
+              value={calculateRacialType(props.values)}
+            />
+            &lt;TextFieldFormik
+              label="Color"
+              type="text"
+              name="color"
+              onChange={props.handleChange}
+              lg={6}
+              sm={6}
+              xs={12}
+            >&lt;/TextFieldFormik>
+          &lt;/Grid>
+          &lt;Grid item container justifyContent={"flex-end"} xs={12}>
+            &lt;Grid item xs={3} className={classes.paddingButton}>
+              &lt;ButtonFormik
+                xs={3}
+                label="Cancelar"
+                type="cancel"
+                onClick={onClickCancelButton}
+              />
+            &lt;/Grid>
+            &lt;Grid item xs={3}>
+              &lt;ButtonFormik xs={3} label="Guardar" type="submit" />
+            &lt;/Grid>
+          &lt;/Grid>
+        &lt;/form>
+      )}
+    &lt;/Formik>
+  );
+}
+
+export default AnimalForm;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AccountControlPage.html">AccountControlPage</a></li><li><a href="AddAnimals.html">AddAnimals</a></li><li><a href="AgribusinessCreatePage.html">AgribusinessCreatePage</a></li><li><a href="AnimalCharts.html">AnimalCharts</a></li><li><a href="AnimalCreateBulkPage.html">AnimalCreateBulkPage</a></li><li><a href="AnimalCreatePage.html">AnimalCreatePage</a></li><li><a href="AnimalDeletePage.html">AnimalDeletePage</a></li><li><a href="AnimalDescription.html">AnimalDescription</a></li><li><a href="AnimalDetailDeletePage.html">AnimalDetailDeletePage</a></li><li><a href="AnimalDetailPage.html">AnimalDetailPage</a></li><li><a href="AnimalImageForm.html">AnimalImageForm</a></li><li><a href="AnimalPageList.html">AnimalPageList</a></li><li><a href="AnimalUpdatePage.html">AnimalUpdatePage</a></li><li><a href="AssociationCreatePage.html">AssociationCreatePage</a></li><li><a href="AssociationDeletePage.html">AssociationDeletePage</a></li><li><a href="AssociationListPage.html">AssociationListPage</a></li><li><a href="AssociationUpdatePage.html">AssociationUpdatePage</a></li><li><a href="BirthControlCreatePage.html">BirthControlCreatePage</a></li><li><a href="BirthCreatePage.html">BirthCreatePage</a></li><li><a href="BirthForm.html">BirthForm</a></li><li><a href="BirthListPage.html">BirthListPage</a></li><li><a href="CalendarForm.html">CalendarForm</a></li><li><a href="ChipList.html">ChipList</a></li><li><a href="CommentaryData.html">CommentaryData</a></li><li><a href="defaultInitValues.html">defaultInitValues</a></li><li><a href="DeleteForm.html">DeleteForm</a></li><li><a href="DryingCreatePage.html">DryingCreatePage</a></li><li><a href="DryingDeletePage.html">DryingDeletePage</a></li><li><a href="DryingForm.html">DryingForm</a></li><li><a href="DryingListPage.html">DryingListPage</a></li><li><a href="DryingUpdatePage.html">DryingUpdatePage</a></li><li><a href="GeneralForm.html">GeneralForm</a></li><li><a href="GeneralUpdatePage.html">GeneralUpdatePage</a></li><li><a href="GeneticStckCreatePage.html">GeneticStckCreatePage</a></li><li><a href="GeneticStockDeletePage.html">GeneticStockDeletePage</a></li><li><a href="GeneticStockForm.html">GeneticStockForm</a></li><li><a href="GeneticStockList.html">GeneticStockList</a></li><li><a href="GeneticStockUpdatePage.html">GeneticStockUpdatePage</a></li><li><a href="IAServiceCreatePage.html">IAServiceCreatePage</a></li><li><a href="ImageUploadPage.html">ImageUploadPage</a></li><li><a href="LinearProgressWithLabel.html">LinearProgressWithLabel</a></li><li><a href="MilkControlCreatePage.html">MilkControlCreatePage</a></li><li><a href="MilkForm.html">MilkForm</a></li><li><a href="MovementCreatePage.html">MovementCreatePage</a></li><li><a href="MovementForm.html">MovementForm</a></li><li><a href="MovementPageList.html">MovementPageList</a></li><li><a href="OtherForm.html">OtherForm</a></li><li><a href="PalapationControlCreatePage.html">PalapationControlCreatePage</a></li><li><a href="QrViewPage.html">QrViewPage</a></li><li><a href="RaceForm.html">RaceForm</a></li><li><a href="RaceUpdatePage.html">RaceUpdatePage</a></li><li><a href="RouterList.html">RouterList</a></li><li><a href="SaleCreatePage.html">SaleCreatePage</a></li><li><a href="SaleDeletePage.html">SaleDeletePage</a></li><li><a href="SaleForm.html">SaleForm</a></li><li><a href="SaleListPage.html">SaleListPage</a></li><li><a href="SaleUpdatePage.html">SaleUpdatePage</a></li><li><a href="SearchAnimals.html">SearchAnimals</a></li><li><a href="ServiceDeletePage.html">ServiceDeletePage</a></li><li><a href="ServiceForm.html">ServiceForm</a></li><li><a href="ServicePageList.html">ServicePageList</a></li><li><a href="TransferServiceCreatePage.html">TransferServiceCreatePage</a></li><li><a href="UserDeletePage.html">UserDeletePage</a></li><li><a href="WeightControlCreatePage.html">WeightControlCreatePage</a></li><li><a href="WeightCreatePage.html">WeightCreatePage</a></li><li><a href="WeightDeletePage.html">WeightDeletePage</a></li><li><a href="WeightForm.html">WeightForm</a></li><li><a href="WeightListPage.html">WeightListPage</a></li><li><a href="WeightUpdatePage.html">WeightUpdatePage</a></li><li><a href="ZealCreatePage.html">ZealCreatePage</a></li><li><a href="ZealDeletePage.html">ZealDeletePage</a></li><li><a href="ZealForm.html">ZealForm</a></li><li><a href="ZealListPage.html">ZealListPage</a></li><li><a href="ZealUpdatePage.html">ZealUpdatePage</a></li></ul><h3>Global</h3><ul><li><a href="global.html#AuthWrapper">AuthWrapper</a></li><li><a href="global.html#CustomMaterialTable">CustomMaterialTable</a></li><li><a href="global.html#CustomMuiTable">CustomMuiTable</a></li><li><a href="global.html#getGroupedByHerdDate">getGroupedByHerdDate</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Thu Nov 18 2021 02:23:57 GMT-0500 (Peru Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

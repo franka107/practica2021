@@ -1,0 +1,2372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: pages/AnimalDetail/AnimalDetailPage/index.jsx</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: pages/AnimalDetail/AnimalDetailPage/index.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { Button, Paper } from "@material-ui/core";
+import { Typography } from "@material-ui/core";
+import { Checkbox } from "@material-ui/core";
+import { Divider } from "@material-ui/core";
+import { IconButton } from "@material-ui/core";
+import { Grid } from "@material-ui/core";
+import { CameraAlt, Edit, ViewList, Add, Visibility } from "@material-ui/icons";
+import clsx from "clsx";
+import { useState, useEffect } from "react";
+import { useStyles } from "../styles";
+import Calendar from "react-calendar";
+import {
+  useParams,
+  useLocation,
+  useHistory,
+  generatePath,
+} from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import AnimalActions from "../../../redux/actions/animal.actions";
+import { getAge, formatDate } from "../../../helpers/convertDate";
+import QRCode from "qrcode.react";
+import "react-calendar/dist/Calendar.css";
+import { animalDetailChipOptions } from "../constants";
+import { ROUTES_DICT } from "../../../routes/routesDict";
+import {
+  stateOptions,
+  typeServicesTest,
+  unitWeightTestOptions,
+  unitCapacityTestOptions,
+} from "../../../constants";
+import { add, differenceInDays, differenceInMonths, format } from "date-fns";
+
+/**
+ * @component
+ * @description Componente, en esta seccion se encuentra la estrucura de toda la vista de detalle de animal
+ * @author Emerson Puma Quispe &lt;emerson.puma@ideascloud.io>
+ */
+
+const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
+  const classes = useStyles();
+  const history = useHistory();
+  const location = useLocation();
+  const [cow] = useState({
+    imageSrc:
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Cow_female_black_white.jpg/782px-Cow_female_black_white.jpg",
+  });
+  const dispatch = useDispatch();
+  const params = useParams();
+  const currentAnimal = useSelector((state) => state.animal.current);
+  const currentAgribusiness = useSelector(
+    (state) => state.agribusiness.current
+  );
+
+  const calculateLastAbortion = (values = []) => {
+    for (let index = 0; index &lt; values.length; index++) {
+      if (values[index].birthType === "ABORTION") {
+        return format(new Date(values[index].birthDate), "yyyy-MM-dd");
+      }
+    }
+    return "Sin información";
+  };
+
+  // const calculatePregnancy = (values = []) => {
+  //   for (let index = 0; index &lt; values.length; index++) {
+  //     if (values[index].state === "PREGNANT") {
+  //       return format(new Date(values[index].pregnancyDate), "yyyy-MM-dd");
+  //     }
+  //   }
+  //   return "Sin información";
+  // };
+
+  const calculateDaysPregnancy = (values) => {
+    const result = differenceInDays(new Date(), new Date(values));
+    const days = result > 1 ? " dias" : " dia";
+    return result + days;
+  };
+
+  const totalMilk = (values = []) => {
+    let total = 0;
+    for (let index = 0; index &lt; values.length; index++) {
+      total =
+        total +
+        values[index].firstSample +
+        values[index].secondSample +
+        values[index].thirdSample;
+    }
+    return total + ` ${unitCapacityTestOptions[currentAgribusiness.milkUnit]} `;
+  };
+
+  const totalDaysMilk = (values = []) => {
+    const result = differenceInDays(
+      new Date(),
+      new Date(values[values.length - 1].controlDate)
+    );
+    const days = result > 1 ? " dias" : " dia";
+    return result + days;
+  };
+
+  const kindAnimal = () => {
+    let spDay = "";
+    let iDay = 0;
+    switch (true) {
+      case currentAnimal.gender === "FEMALE" &amp;&amp;
+        differenceInMonths(new Date(), new Date(currentAnimal?.birthDate)) &lt;
+          currentAgribusiness.isBreeding:
+        return "Cria Hembra";
+      case currentAnimal.gender === "MALE" &amp;&amp;
+        differenceInMonths(new Date(), new Date(currentAnimal?.birthDate)) &lt;
+          currentAgribusiness.isBreeding:
+        return "Cria Macho";
+      case currentAnimal.gender === "FEMALE" &amp;&amp;
+        differenceInMonths(new Date(), new Date(currentAnimal?.birthDate)) >=
+          currentAgribusiness.isBreeding &amp;&amp;
+        differenceInMonths(new Date(), new Date(currentAnimal?.birthDate)) &lt;
+          currentAgribusiness.isHeifer:
+        return "Hembra Levante";
+      case currentAnimal.gender === "MALE" &amp;&amp;
+        differenceInMonths(new Date(), new Date(currentAnimal?.birthDate)) >=
+          currentAgribusiness.isBreeding &amp;&amp;
+        differenceInMonths(new Date(), new Date(currentAnimal?.birthDate)) &lt;
+          currentAgribusiness.isHeifer:
+        return "Macho Levante";
+      case currentAnimal.gender === "FEMALE" &amp;&amp;
+        differenceInMonths(new Date(), new Date(currentAnimal?.birthDate)) >=
+          currentAgribusiness.isHeifer &amp;&amp;
+        differenceInMonths(new Date(), new Date(currentAnimal?.birthDate)) &lt;
+          24 &amp;&amp;
+        currentAnimal.reproductiveStatus === "EMPTY":
+        return "Vaquillona Vacia";
+      case currentAnimal.gender === "FEMALE" &amp;&amp;
+        differenceInMonths(new Date(), new Date(currentAnimal?.birthDate)) >=
+          currentAgribusiness.isHeifer &amp;&amp;
+        differenceInMonths(new Date(), new Date(currentAnimal?.birthDate)) &lt;
+          24 &amp;&amp;
+        currentAnimal.reproductiveStatus === "PREGNANT":
+        iDay = differenceInDays(
+          new Date(),
+          new Date(currentAnimal.pregnantDate)
+        );
+        spDay =
+          iDay === 0
+            ? " dias preñez"
+            : iDay === 1
+            ? " dia de preñez"
+            : " dias de preñez";
+        return `Vaquillona Preñada, ${iDay} ${spDay}`;
+      case currentAnimal.gender === "MALE" &amp;&amp;
+        differenceInMonths(new Date(), new Date(currentAnimal?.birthDate)) >=
+          currentAgribusiness.isHeifer &amp;&amp;
+        differenceInMonths(new Date(), new Date(currentAnimal?.birthDate)) &lt;
+          24 &amp;&amp;
+        currentAnimal.category !== "REPRODUCTOR":
+        return "Novillo para Engorda";
+      case currentAnimal.gender === "MALE" &amp;&amp;
+        differenceInMonths(new Date(), new Date(currentAnimal?.birthDate)) >=
+          currentAgribusiness.isHeifer &amp;&amp;
+        differenceInMonths(new Date(), new Date(currentAnimal?.birthDate)) &lt;
+          24 &amp;&amp;
+        currentAnimal.category === "REPRODUCTOR":
+        return "Torete";
+      case currentAnimal.gender === "MALE" &amp;&amp;
+        differenceInMonths(new Date(), new Date(currentAnimal?.birthDate)) >=
+          24 &amp;&amp;
+        currentAnimal.category === "REPRODUCTOR":
+        return "Toro Reproductor";
+      // mayor que 24 meses
+      case currentAnimal.gender === "FEMALE" &amp;&amp;
+        differenceInMonths(new Date(), new Date(currentAnimal?.birthDate)) >=
+          24 &amp;&amp;
+        currentAnimal.births.length !== 0 &amp;&amp;
+        !currentAnimal.isDried &amp;&amp;
+        currentAnimal.reproductiveStatus === "EMPTY":
+        iDay = differenceInDays(
+          new Date(),
+          new Date(currentAnimal.births[0].birthDate)
+        );
+        spDay =
+          iDay === 0
+            ? " dias abiertos"
+            : iDay === 1
+            ? " dia de abierto"
+            : " dias de abiertos";
+        return `Vaca Parida, ${iDay} ${spDay}`;
+      case currentAnimal.gender === "FEMALE" &amp;&amp;
+        differenceInMonths(new Date(), new Date(currentAnimal?.birthDate)) >=
+          24 &amp;&amp;
+        currentAnimal.births.length !== 0 &amp;&amp;
+        !currentAnimal.isDried &amp;&amp;
+        currentAnimal.reproductiveStatus === "PREGNANT":
+        iDay = differenceInDays(
+          new Date(),
+          new Date(currentAnimal.pregnantDate)
+        );
+        spDay =
+          iDay === 0
+            ? " dias de preñez"
+            : iDay === 1
+            ? " dia de preñez"
+            : " dias de preñez";
+        return `Vaca Preñada, ${iDay} ${spDay}`;
+      case currentAnimal.gender === "FEMALE" &amp;&amp;
+        differenceInMonths(new Date(), new Date(currentAnimal?.birthDate)) >=
+          24 &amp;&amp;
+        currentAnimal.births.length !== 0 &amp;&amp;
+        currentAnimal.isDried &amp;&amp;
+        currentAnimal.reproductiveStatus === "EMPTY":
+        iDay = differenceInDays(
+          new Date(),
+          new Date(currentAnimal.births[0].birthDate)
+        );
+        spDay =
+          iDay === 0
+            ? " dias abiertos"
+            : iDay === 1
+            ? " dia de abierto"
+            : " dias de abiertos";
+        return `Vaca Seca, ${iDay} ${spDay}`;
+      case currentAnimal.gender === "FEMALE" &amp;&amp;
+        differenceInMonths(new Date(), new Date(currentAnimal?.birthDate)) >=
+          24 &amp;&amp;
+        currentAnimal.births.length !== 0 &amp;&amp;
+        currentAnimal.isDried &amp;&amp;
+        currentAnimal.reproductiveStatus === "PREGNANT":
+        iDay = differenceInDays(
+          new Date(),
+          new Date(currentAnimal.pregnantDate)
+        );
+        spDay =
+          iDay === 0
+            ? " dias de preñez"
+            : iDay === 1
+            ? " dia de preñez"
+            : " dias de preñez";
+        return `Vaca Seca,  ${iDay} ${spDay}`;
+      case currentAnimal.gender === "FEMALE" &amp;&amp;
+        differenceInMonths(new Date(), new Date(currentAnimal?.birthDate)) >=
+          24 &amp;&amp;
+        currentAnimal.lastBirthDate &amp;&amp;
+        !currentAnimal.isDried &amp;&amp;
+        currentAnimal.reproductiveStatus === "EMPTY":
+        iDay = differenceInDays(
+          new Date(),
+          new Date(currentAnimal.lastBirthDate)
+        );
+        spDay =
+          iDay === 0
+            ? " dias abiertos"
+            : iDay === 1
+            ? " dia de abierto"
+            : " dias de abiertos";
+        return `Vaca Parida, ${iDay} ${spDay}`;
+      case currentAnimal.gender === "FEMALE" &amp;&amp;
+        differenceInMonths(new Date(), new Date(currentAnimal?.birthDate)) >=
+          24 &amp;&amp;
+        currentAnimal.lastBirthDate &amp;&amp;
+        !currentAnimal.isDried &amp;&amp;
+        currentAnimal.reproductiveStatus === "PREGNANT":
+        iDay = differenceInDays(
+          new Date(),
+          new Date(currentAnimal.pregnantDate)
+        );
+        spDay =
+          iDay === 0
+            ? " dias de preñez"
+            : iDay === 1
+            ? " dia de preñez"
+            : " dias de preñez";
+        return `Vaca Preñada, ${iDay} ${spDay}`;
+      case currentAnimal.gender === "FEMALE" &amp;&amp;
+        differenceInMonths(new Date(), new Date(currentAnimal?.birthDate)) >=
+          24 &amp;&amp;
+        currentAnimal.lastBirthDate &amp;&amp;
+        currentAnimal.isDried &amp;&amp;
+        currentAnimal.reproductiveStatus === "EMPTY":
+        iDay = differenceInDays(
+          new Date(),
+          new Date(currentAnimal.lastBirthDate)
+        );
+        spDay =
+          iDay === 0
+            ? " dias abiertos"
+            : iDay === 1
+            ? " dia abierto"
+            : " dias abiertos";
+        return `Vaca Seca, ${iDay} ${spDay}`;
+      case currentAnimal.gender === "FEMALE" &amp;&amp;
+        differenceInMonths(new Date(), new Date(currentAnimal?.birthDate)) >=
+          24 &amp;&amp;
+        currentAnimal.lastBirthDate &amp;&amp;
+        currentAnimal.isDried &amp;&amp;
+        currentAnimal.reproductiveStatus === "PREGNANT":
+        iDay = differenceInDays(
+          new Date(),
+          new Date(currentAnimal.pregnantDate)
+        );
+        spDay =
+          iDay === 0
+            ? " dias de preñez"
+            : iDay === 1
+            ? " dia de preñez"
+            : " dias de preñez";
+        return `Vaca Seca,  ${iDay} ${spDay}`;
+      default:
+        return "Indeterminado";
+    }
+  };
+
+  const expectedBirth = (values) => {
+    const result = add(new Date(values), {
+      years: 0,
+      months: 0,
+      weeks: 0,
+      days: 285,
+      hours: 0,
+      minutes: 0,
+      seconds: 0,
+    });
+    return format(new Date(result), "yyyy-MM-dd");
+  };
+
+  const calculateIEP = (values = []) => {
+    if (values.length > 1) {
+      const result = differenceInDays(
+        new Date(values[0].birthDate),
+        new Date(values[1].birthDate)
+      );
+      return result + " dias";
+    } else {
+      return "Sin información";
+    }
+  };
+
+  // const calculateIEC = (values = []) => {
+  //   if (values.length > 1) {
+  //     const result = differenceInDays(
+  //       new Date(values[0].controlDate),
+  //       new Date(values[1].controlDate)
+  //     );
+  //     return result + " dias";
+  //   } else {
+  //     return "Sin información";
+  //   }
+  // };
+
+  useEffect(() => {
+    setChipList(animalDetailChipOptions(location, params));
+    if (!currentAnimal || currentAnimal._id !== params._id) {
+      dispatch(AnimalActions.get({ _id: params._id }));
+    } // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch, currentAnimal, params._id]);
+
+  return (
+    &lt;Grid container xs={12}>
+      {currentAnimal &amp;&amp; currentAnimal._id &amp;&amp; currentAnimal._id === params._id &amp;&amp; (
+        &lt;Grid>
+          &lt;Grid item container xs={12}>
+            &lt;Grid item xs={12} lg={9}>
+              &lt;Grid container xs={12}>
+                &lt;Grid item xs={12} lg={4}>
+                  {/* General Info Card */}
+                  &lt;Paper elevation={4} className={classes.card}>
+                    &lt;div className={classes.cardHeader}>
+                      &lt;Typography variant="body1" className={classes.cardTitle}>
+                        Datos generales
+                      &lt;/Typography>
+                      &lt;IconButton
+                        className={classes.cardEditIcon}
+                        size="small"
+                        onClick={() => {
+                          history.push(
+                            generatePath(
+                              ROUTES_DICT.animalDetail.general.update,
+                              {
+                                ...params,
+                                _id: params._id,
+                              }
+                            )
+                          );
+                        }}
+                      >
+                        &lt;Edit fontSize="small">&lt;/Edit>
+                      &lt;/IconButton>
+                    &lt;/div>
+                    &lt;Divider>&lt;/Divider>
+                    &lt;div className="">
+                      &lt;div className={classes.image}>
+                        &lt;div className={clsx(classes.cowImageEditButton)}>
+                          &lt;IconButton
+                            className={clsx(
+                              classes.cardEditIcon,
+                              classes.cardEditButtonCow
+                            )}
+                            onClick={() => {
+                              history.push(
+                                generatePath(
+                                  ROUTES_DICT.animalDetail.image.upload,
+                                  {
+                                    ...params,
+                                    _id: params._id,
+                                  }
+                                )
+                              );
+                            }}
+                            size="small"
+                          >
+                            &lt;CameraAlt fontSize="small">&lt;/CameraAlt>
+                          &lt;/IconButton>
+                        &lt;/div>
+                        &lt;img
+                          src={
+                            currentAnimal &amp;&amp; currentAnimal.imageURL
+                              ? currentAnimal.imageURL
+                              : cow.imageSrc
+                          }
+                          className={classes.cowImage}
+                          alt=""
+                          srcset=""
+                        />
+                        &lt;div className={clsx(classes.cowImageQrButton)}>
+                          &lt;QRCode
+                            renderAs="svg"
+                            value={window.location.href}
+                            className={classes.qrImage}
+                            includeMargin={true}
+                            onClick={() => {
+                              history.push(
+                                generatePath(ROUTES_DICT.animalDetail.qr.view, {
+                                  ...params,
+                                  _id: params._id,
+                                })
+                              );
+                            }}
+                          />
+                        &lt;/div>
+                      &lt;/div>
+                      &lt;Typography
+                        variant="h4"
+                        className={clsx(
+                          classes.textCenter,
+                          classes.cowCodeTitle
+                        )}
+                      >
+                        {currentAnimal &amp;&amp; currentAnimal.identifier}
+                      &lt;/Typography>
+                      &lt;Grid
+                        container
+                        className={classes.generalFeature}
+                        xs={12}
+                      >
+                        &lt;Grid item xs={4}>
+                          &lt;Typography className={classes.cardFeature}>
+                            Nombre
+                          &lt;/Typography>
+                        &lt;/Grid>
+                        &lt;Grid item xs={8}>
+                          &lt;Typography>
+                            {currentAnimal &amp;&amp; currentAnimal.name}
+                          &lt;/Typography>
+                        &lt;/Grid>
+                      &lt;/Grid>
+                      &lt;Grid
+                        container
+                        className={classes.generalFeature}
+                        xs={12}
+                      >
+                        &lt;Grid item xs={4}>
+                          &lt;Typography className={classes.cardFeature}>
+                            Sexo
+                          &lt;/Typography>
+                        &lt;/Grid>
+                        &lt;Grid item xs={8}>
+                          &lt;Typography>
+                            {currentAnimal &amp;&amp; currentAnimal.gender === "FEMALE"
+                              ? "Hembra"
+                              : "Macho"}
+                          &lt;/Typography>
+                        &lt;/Grid>
+                      &lt;/Grid>
+                      &lt;Grid
+                        container
+                        className={classes.generalFeature}
+                        xs={12}
+                      >
+                        &lt;Grid item xs={4}>
+                          &lt;Typography className={classes.cardFeature}>
+                            Edad
+                          &lt;/Typography>
+                        &lt;/Grid>
+                        &lt;Grid item xs={8}>
+                          &lt;Typography>
+                            {currentAnimal &amp;&amp;
+                              getAge(
+                                new Date(currentAnimal.birthDate),
+                                new Date()
+                              )}
+                          &lt;/Typography>
+                        &lt;/Grid>
+                      &lt;/Grid>
+                      &lt;Grid
+                        container
+                        className={classes.generalFeature}
+                        xs={12}
+                      >
+                        &lt;Grid item xs={4}>
+                          &lt;Typography className={classes.cardFeature}>
+                            Clase
+                          &lt;/Typography>
+                        &lt;/Grid>
+                        &lt;Grid item xs={8}>
+                          &lt;Typography>
+                            {currentAnimal &amp;&amp; kindAnimal()}
+                          &lt;/Typography>
+                        &lt;/Grid>
+                      &lt;/Grid>
+                      &lt;Grid
+                        container
+                        className={classes.generalFeature}
+                        xs={12}
+                      >
+                        &lt;Grid item xs={4}>
+                          &lt;Typography className={classes.cardFeature}>
+                            {currentAnimal &amp;&amp; currentAnimal.gender === "FEMALE"
+                              ? "Estado"
+                              : "Categoria"}
+                          &lt;/Typography>
+                        &lt;/Grid>
+                        &lt;Grid item xs={8}>
+                          {currentAnimal &amp;&amp; (
+                            &lt;Typography>
+                              {currentAnimal.gender === "MALE"
+                                ? currentAnimal.category
+                                : currentAnimal.gender === "FEMALE" &amp;&amp;
+                                  currentAnimal.reproductiveStatus &amp;&amp;
+                                  currentAnimal.reproductiveStatus !== ""
+                                ? stateOptions[currentAnimal.reproductiveStatus]
+                                : "Sin información"}
+                            &lt;/Typography>
+                          )}
+                          {/* &lt;Typography>Vaca seca, 276 dias de preñez&lt;/Typography> */}
+                        &lt;/Grid>
+                      &lt;/Grid>
+                      &lt;Grid
+                        container
+                        className={classes.generalFeature}
+                        xs={12}
+                      >
+                        &lt;Grid item xs={4}>
+                          &lt;Typography className={classes.cardFeature}>
+                            Concebido por
+                          &lt;/Typography>
+                        &lt;/Grid>
+                        &lt;Grid item xs={8}>
+                          {currentAnimal &amp;&amp; currentAnimal.bornBy ? (
+                            &lt;Typography>
+                              {typeServicesTest[currentAnimal.bornBy]}
+                            &lt;/Typography>
+                          ) : (
+                            &lt;Typography>Sin información&lt;/Typography>
+                          )}
+                          {/* &lt;Typography>Vaca seca, 276 dias de preñez&lt;/Typography> */}
+                        &lt;/Grid>
+                      &lt;/Grid>
+                      &lt;div className={classes.borderLinearProgress}>
+                        {/* {currentAnimal &amp;&amp; currentAnimal.gender === "FEMALE" &amp;&amp; (
+                          &lt;BorderLinearProgress
+                            variant="determinate"
+                            value="50"
+                            about="asd"
+                          >&lt;/BorderLinearProgress>
+                        )} */}
+                      &lt;/div>
+                      &lt;div className={classes.cardHeader}>
+                        &lt;Typography
+                          variant="body1"
+                          className={classes.cardTitle}
+                        >
+                          Nacimiento
+                        &lt;/Typography>
+                      &lt;/div>
+                      &lt;Divider className={classes.divider}>&lt;/Divider>
+                      &lt;Grid
+                        container
+                        className={classes.generalFeature}
+                        xs={12}
+                      >
+                        &lt;Grid item xs={4}>
+                          &lt;Typography className={classes.cardFeature}>
+                            Fecha de nacimiento
+                          &lt;/Typography>
+                        &lt;/Grid>
+                        &lt;Grid item xs={8}>
+                          &lt;Typography>
+                            {currentAnimal &amp;&amp;
+                              currentAnimal.birthDate &amp;&amp;
+                              formatDate(new Date(currentAnimal.birthDate))}
+                            {/* {animals &amp;&amp; animals.birthDate} */}
+                          &lt;/Typography>
+                        &lt;/Grid>
+                      &lt;/Grid>
+                      &lt;Grid
+                        container
+                        className={classes.generalFeature}
+                        xs={12}
+                      >
+                        &lt;Grid item xs={4}>
+                          &lt;Typography className={classes.cardFeature}>
+                            Entrada hato
+                          &lt;/Typography>
+                        &lt;/Grid>
+                        &lt;Grid item xs={8}>
+                          &lt;Typography>
+                            {currentAnimal &amp;&amp;
+                              currentAnimal.herdDate &amp;&amp;
+                              format(
+                                new Date(currentAnimal.herdDate),
+                                "yyyy-MM-dd"
+                              )}
+                            {/* {animals &amp;&amp; animals.herdDate} */}
+                          &lt;/Typography>
+                        &lt;/Grid>
+                      &lt;/Grid>
+                      &lt;Grid
+                        container
+                        className={classes.generalFeature}
+                        xs={12}
+                      >
+                        &lt;Grid item xs={4}>
+                          &lt;Typography className={classes.cardFeature}>
+                            Nro. Registro
+                          &lt;/Typography>
+                        &lt;/Grid>
+                        &lt;Grid item xs={8}>
+                          &lt;Typography>
+                            {currentAnimal &amp;&amp;
+                            currentAnimal.registerNumber &amp;&amp;
+                            currentAnimal.registerNumber !== ""
+                              ? currentAnimal.registerNumber
+                              : "Sin información"}
+                          &lt;/Typography>
+                        &lt;/Grid>
+                      &lt;/Grid>
+                    &lt;/div>
+                  &lt;/Paper>
+                &lt;/Grid>
+                &lt;Grid item xs={12} lg={8}>
+                  &lt;Grid container style={{ height: "100%" }} xs={12}>
+                    &lt;Grid
+                      item
+                      xs={12}
+                      lg={
+                        currentAnimal &amp;&amp; currentAnimal.gender === "FEMALE"
+                          ? 6
+                          : 12
+                      }
+                    >
+                      {/* Race card */}
+                      &lt;Paper
+                        style={{ height: "96%" }}
+                        elevation={4}
+                        className={classes.card}
+                      >
+                        &lt;div className={classes.cardHeader}>
+                          &lt;Typography
+                            variant="body1"
+                            className={classes.cardTitle}
+                          >
+                            Raza
+                          &lt;/Typography>
+                          &lt;IconButton
+                            className={classes.cardEditIcon}
+                            size="small"
+                            onClick={() => {
+                              history.push(
+                                generatePath(
+                                  ROUTES_DICT.animalDetail.race.update,
+                                  {
+                                    ...params,
+                                    _id: params._id,
+                                  }
+                                )
+                              );
+                            }}
+                          >
+                            &lt;Edit fontSize="small">&lt;/Edit>
+                          &lt;/IconButton>
+                        &lt;/div>
+                        &lt;Divider className={classes.divider}>&lt;/Divider>
+                        &lt;div className="">
+                          &lt;Grid
+                            container
+                            className={classes.generalFeature}
+                            xs={12}
+                          >
+                            {currentAnimal &amp;&amp;
+                              currentAnimal.fatherId !== null &amp;&amp;
+                              currentAnimal.fatherId !== "" &amp;&amp; (
+                                &lt;>
+                                  &lt;Grid item xs={5}>
+                                    &lt;Typography className={classes.cardFeature}>
+                                      Padre
+                                    &lt;/Typography>
+                                  &lt;/Grid>
+                                  &lt;Grid item xs={7}>
+                                    &lt;Typography>
+                                      {currentAnimal &amp;&amp; currentAnimal.father
+                                        ? currentAnimal.father.identifier
+                                        : "Sin información"}
+                                      &lt;IconButton
+                                        className={classes.cardEditIcon}
+                                        style={{ marginLeft: "1rem" }}
+                                        size="small"
+                                        onClick={() => {
+                                          history.push(
+                                            generatePath(
+                                              ROUTES_DICT.animalDetail.detail,
+                                              {
+                                                ...params,
+                                                _id: currentAnimal.fatherId,
+                                              }
+                                            )
+                                          );
+                                        }}
+                                      >
+                                        &lt;Visibility fontSize="small">&lt;/Visibility>
+                                      &lt;/IconButton>
+                                    &lt;/Typography>
+                                  &lt;/Grid>
+                                &lt;/>
+                              )}
+                            {currentAnimal &amp;&amp; currentAnimal.fatherId === null &amp;&amp; (
+                              &lt;>
+                                &lt;Grid item xs={5}>
+                                  &lt;Typography className={classes.cardFeature}>
+                                    {currentAnimal.fatherRef &amp;&amp;
+                                    currentAnimal.fatherRef !== ""
+                                      ? "Ref. Padre"
+                                      : "Padre"}
+                                  &lt;/Typography>
+                                &lt;/Grid>
+                                &lt;Grid item xs={7}>
+                                  &lt;Typography>
+                                    {currentAnimal.fatherRef &amp;&amp;
+                                    currentAnimal.fatherRef !== ""
+                                      ? currentAnimal.fatherRef
+                                      : "Sin información"}
+                                  &lt;/Typography>
+                                &lt;/Grid>
+                              &lt;/>
+                            )}
+                          &lt;/Grid>
+                          &lt;Grid
+                            container
+                            className={classes.generalFeature}
+                            xs={12}
+                          >
+                            {currentAnimal &amp;&amp;
+                              currentAnimal.motherId !== null &amp;&amp;
+                              currentAnimal.motherId !== "" &amp;&amp; (
+                                &lt;>
+                                  &lt;Grid item xs={5}>
+                                    &lt;Typography className={classes.cardFeature}>
+                                      Madre
+                                    &lt;/Typography>
+                                  &lt;/Grid>
+                                  &lt;Grid item xs={7}>
+                                    &lt;Typography>
+                                      {currentAnimal &amp;&amp; currentAnimal.mother
+                                        ? currentAnimal.mother.identifier
+                                        : "Sin información"}
+                                      &lt;IconButton
+                                        className={classes.cardEditIcon}
+                                        style={{ marginLeft: "1rem" }}
+                                        size="small"
+                                        onClick={() => {
+                                          history.push(
+                                            generatePath(
+                                              ROUTES_DICT.animalDetail.detail,
+                                              {
+                                                ...params,
+                                                _id: currentAnimal.motherId,
+                                              }
+                                            )
+                                          );
+                                        }}
+                                      >
+                                        &lt;Visibility fontSize="small">&lt;/Visibility>
+                                      &lt;/IconButton>
+                                    &lt;/Typography>
+                                  &lt;/Grid>
+                                &lt;/>
+                              )}
+                            {currentAnimal &amp;&amp; currentAnimal.motherId === null &amp;&amp; (
+                              &lt;>
+                                &lt;Grid item xs={5}>
+                                  &lt;Typography className={classes.cardFeature}>
+                                    {currentAnimal.motherRef &amp;&amp;
+                                    currentAnimal.motherRef !== ""
+                                      ? "Ref. Madre"
+                                      : "Madre"}
+                                  &lt;/Typography>
+                                &lt;/Grid>
+                                &lt;Grid item xs={7}>
+                                  &lt;Typography>
+                                    {currentAnimal.motherRef &amp;&amp;
+                                    currentAnimal.motherRef !== ""
+                                      ? currentAnimal.motherRef
+                                      : "Sin información"}
+                                  &lt;/Typography>
+                                &lt;/Grid>
+                              &lt;/>
+                            )}
+                          &lt;/Grid>
+                          &lt;Grid
+                            container
+                            className={classes.generalFeature}
+                            xs={12}
+                          >
+                            &lt;Grid item xs={5}>
+                              &lt;Typography className={classes.cardFeature}>
+                                Raza{" "}
+                                {currentAnimal &amp;&amp;
+                                currentAnimal.percentageRace1 !== 100
+                                  ? "1"
+                                  : ""}
+                              &lt;/Typography>
+                            &lt;/Grid>
+                            &lt;Grid item xs={7}>
+                              {currentAnimal &amp;&amp; currentAnimal.race1 ? (
+                                &lt;>
+                                  {currentAnimal &amp;&amp; currentAnimal.race1 &amp;&amp; (
+                                    &lt;Typography>
+                                      {currentAnimal &amp;&amp;
+                                        currentAnimal.race1 &amp;&amp;
+                                        currentAnimal.race1.name}{" "}
+                                      -{" "}
+                                      {currentAnimal &amp;&amp;
+                                        currentAnimal.percentageRace1 &amp;&amp;
+                                        currentAnimal.percentageRace1}
+                                      %
+                                    &lt;/Typography>
+                                  )}
+                                &lt;/>
+                              ) : (
+                                &lt;Typography>No especificado&lt;/Typography>
+                              )}
+                            &lt;/Grid>
+                          &lt;/Grid>
+                          {currentAnimal &amp;&amp;
+                            currentAnimal.race2Id &amp;&amp;
+                            currentAnimal.race2Id !== "" &amp;&amp;
+                            currentAnimal.race2 &amp;&amp;
+                            currentAnimal.percentageRace2 !== 0 &amp;&amp; (
+                              &lt;Grid
+                                container
+                                className={classes.generalFeature}
+                                xs={12}
+                              >
+                                &lt;Grid item xs={5}>
+                                  &lt;Typography className={classes.cardFeature}>
+                                    Raza2
+                                  &lt;/Typography>
+                                &lt;/Grid>
+                                &lt;Grid item xs={7}>
+                                  &lt;Typography>
+                                    {currentAnimal &amp;&amp;
+                                      currentAnimal.race2 &amp;&amp;
+                                      currentAnimal.race2.name}{" "}
+                                    -{" "}
+                                    {currentAnimal &amp;&amp;
+                                      currentAnimal.percentageRace2 &amp;&amp;
+                                      currentAnimal.percentageRace2}
+                                    %
+                                  &lt;/Typography>
+                                &lt;/Grid>
+                              &lt;/Grid>
+                            )}
+                          {currentAnimal &amp;&amp;
+                            currentAnimal.race3Id &amp;&amp;
+                            currentAnimal.race3Id !== "" &amp;&amp;
+                            currentAnimal.race3 &amp;&amp;
+                            currentAnimal.percentageRace3 !== 0 &amp;&amp; (
+                              &lt;Grid
+                                container
+                                className={classes.generalFeature}
+                                xs={12}
+                              >
+                                &lt;Grid item xs={5}>
+                                  &lt;Typography className={classes.cardFeature}>
+                                    Raza3
+                                  &lt;/Typography>
+                                &lt;/Grid>
+                                &lt;Grid item xs={7}>
+                                  &lt;Typography>
+                                    {currentAnimal &amp;&amp;
+                                      currentAnimal.race3 &amp;&amp;
+                                      currentAnimal.race3.name}{" "}
+                                    -{" "}
+                                    {currentAnimal &amp;&amp;
+                                      currentAnimal.percentageRace3 &amp;&amp;
+                                      currentAnimal.percentageRace3}
+                                    %
+                                  &lt;/Typography>
+                                &lt;/Grid>
+                              &lt;/Grid>
+                            )}
+                          {currentAnimal &amp;&amp;
+                            currentAnimal.race4Id &amp;&amp;
+                            currentAnimal.race4Id !== "" &amp;&amp;
+                            currentAnimal.race4 &amp;&amp;
+                            currentAnimal.percentageRace4 !== 0 &amp;&amp; (
+                              &lt;Grid
+                                container
+                                className={classes.generalFeature}
+                                xs={12}
+                              >
+                                &lt;Grid item xs={5}>
+                                  &lt;Typography className={classes.cardFeature}>
+                                    Raza4
+                                  &lt;/Typography>
+                                &lt;/Grid>
+                                &lt;Grid item xs={7}>
+                                  &lt;Typography>
+                                    {currentAnimal &amp;&amp;
+                                      currentAnimal.race4 &amp;&amp;
+                                      currentAnimal.race4.name}{" "}
+                                    -{" "}
+                                    {currentAnimal &amp;&amp;
+                                      currentAnimal.percentageRace4 &amp;&amp;
+                                      currentAnimal.percentageRace4}
+                                    %
+                                  &lt;/Typography>
+                                &lt;/Grid>
+                              &lt;/Grid>
+                            )}
+                          &lt;Grid
+                            container
+                            className={classes.generalFeature}
+                            xs={12}
+                          >
+                            &lt;Grid item xs={5}>
+                              &lt;Typography className={classes.cardFeature}>
+                                Color
+                              &lt;/Typography>
+                            &lt;/Grid>
+                            &lt;Grid item xs={7}>
+                              &lt;Typography>
+                                {currentAnimal &amp;&amp; currentAnimal.color !== ""
+                                  ? currentAnimal.color
+                                  : "No especificado"}
+                              &lt;/Typography>
+                            &lt;/Grid>
+                          &lt;/Grid>
+                        &lt;/div>
+                      &lt;/Paper>
+                    &lt;/Grid>
+                    {currentAnimal &amp;&amp; currentAnimal.gender === "FEMALE" &amp;&amp; (
+                      &lt;>
+                        &lt;Grid item xs={12} lg={6}>
+                          {/* Parts Card */}
+                          &lt;Paper
+                            style={{ height: "96%" }}
+                            elevation={4}
+                            className={classes.card}
+                          >
+                            &lt;div className={classes.cardHeader}>
+                              &lt;Typography
+                                variant="body1"
+                                className={classes.cardTitle}
+                              >
+                                Partos
+                              &lt;/Typography>
+                              &lt;div>
+                                {currentAnimal &amp;&amp;
+                                  currentAnimal.births &amp;&amp;
+                                  currentAnimal.births.length !== 0 &amp;&amp; (
+                                    &lt;IconButton
+                                      className={classes.cardEditIcon}
+                                      size="small"
+                                      style={{ marginRight: "0.5rem" }}
+                                      onClick={() => {
+                                        history.push(
+                                          generatePath(
+                                            ROUTES_DICT.animalDetail.birth.list,
+                                            {
+                                              ...params,
+                                              _id: params._id,
+                                            }
+                                          )
+                                        );
+                                      }}
+                                    >
+                                      &lt;ViewList fontSize="small">&lt;/ViewList>
+                                    &lt;/IconButton>
+                                  )}
+                                {currentAnimal &amp;&amp;
+                                  currentAnimal.reproductiveStatus &amp;&amp;
+                                  currentAnimal.reproductiveStatus ===
+                                    "PREGNANT" &amp;&amp; (
+                                    &lt;IconButton
+                                      className={classes.cardEditIcon}
+                                      size="small"
+                                      onClick={() => {
+                                        history.push(
+                                          generatePath(
+                                            ROUTES_DICT.animalDetail.birth
+                                              .create,
+                                            {
+                                              ...params,
+                                              _id: params._id,
+                                            }
+                                          )
+                                        );
+                                      }}
+                                    >
+                                      &lt;Add fontSize="small">&lt;/Add>
+                                    &lt;/IconButton>
+                                  )}
+                              &lt;/div>
+                            &lt;/div>
+                            &lt;Divider>&lt;/Divider>
+                            &lt;a className={clsx(classes.link)} href="/#">
+                              Grafica Reproductiva
+                            &lt;/a>
+                            &lt;div className="">
+                              &lt;Grid
+                                container
+                                className={classes.generalFeature}
+                                xs={12}
+                              >
+                                &lt;Grid item xs={5}>
+                                  &lt;Typography className={classes.cardFeature}>
+                                    Nro. de partos
+                                  &lt;/Typography>
+                                &lt;/Grid>
+                                &lt;Grid item xs={7}>
+                                  &lt;Typography>
+                                    {currentAnimal &amp;&amp;
+                                    currentAnimal.births &amp;&amp;
+                                    currentAnimal.births.length !== 0
+                                      ? currentAnimal.birthsQuantity
+                                        ? currentAnimal.births.length +
+                                          currentAnimal.birthsQuantity
+                                        : currentAnimal.births.length
+                                      : currentAnimal.birthsQuantity
+                                      ? currentAnimal.birthsQuantity
+                                      : "Sin informacíon"}
+                                  &lt;/Typography>
+                                &lt;/Grid>
+                              &lt;/Grid>
+                              &lt;Grid
+                                container
+                                className={classes.generalFeature}
+                                xs={12}
+                              >
+                                &lt;Grid item xs={5}>
+                                  &lt;Typography className={classes.cardFeature}>
+                                    Ultimo parto
+                                  &lt;/Typography>
+                                &lt;/Grid>
+                                &lt;Grid item xs={7}>
+                                  &lt;Typography>
+                                    {currentAnimal &amp;&amp;
+                                    currentAnimal.lastBirthDate
+                                      ? format(
+                                          new Date(currentAnimal.lastBirthDate),
+                                          "yyyy-MM-dd"
+                                        )
+                                      : currentAnimal.births &amp;&amp;
+                                        currentAnimal.births.length !== 0
+                                      ? format(
+                                          new Date(
+                                            currentAnimal.births[0].birthDate
+                                          ),
+                                          "yyyy-MM-dd"
+                                        )
+                                      : "Sin información"}
+                                  &lt;/Typography>
+                                &lt;/Grid>
+                              &lt;/Grid>
+                              &lt;Grid
+                                container
+                                className={classes.generalFeature}
+                                xs={12}
+                              >
+                                &lt;Grid item xs={5}>
+                                  &lt;Typography className={classes.cardFeature}>
+                                    IEP
+                                  &lt;/Typography>
+                                &lt;/Grid>
+                                &lt;Grid item xs={7}>
+                                  {currentAnimal &amp;&amp; currentAnimal.births &amp;&amp; (
+                                    &lt;Typography>
+                                      {calculateIEP(currentAnimal.births)}
+                                    &lt;/Typography>
+                                  )}
+                                &lt;/Grid>
+                              &lt;/Grid>
+                              {/* &lt;Grid
+                            container
+                            className={classes.generalFeature}
+                            xs={12}
+                          >
+                            &lt;Grid item xs={5}>
+                              &lt;Typography className={classes.cardFeature}>
+                                IEP u
+                              &lt;/Typography>
+                            &lt;/Grid>
+                            &lt;Grid item xs={7}>
+                              &lt;Typography>No especificado&lt;/Typography>
+                            &lt;/Grid>
+                          &lt;/Grid> */}
+                              &lt;Grid
+                                container
+                                className={classes.generalFeature}
+                                xs={12}
+                              >
+                                &lt;Grid item xs={5}>
+                                  &lt;Typography className={classes.cardFeature}>
+                                    Ult. aborto
+                                  &lt;/Typography>
+                                &lt;/Grid>
+                                &lt;Grid item xs={7}>
+                                  {currentAnimal &amp;&amp; currentAnimal.births &amp;&amp; (
+                                    &lt;Typography>
+                                      {calculateLastAbortion(
+                                        currentAnimal.births
+                                      )}
+                                    &lt;/Typography>
+                                  )}
+                                &lt;/Grid>
+                              &lt;/Grid>
+                            &lt;/div>
+                          &lt;/Paper>
+                        &lt;/Grid>
+                        &lt;Grid item xs={12} lg={6}>
+                          {/* Servicios*/}
+                          &lt;Paper
+                            style={{ height: "96%" }}
+                            elevation={4}
+                            className={classes.card}
+                          >
+                            &lt;div className={classes.cardHeader}>
+                              &lt;Typography
+                                variant="body1"
+                                className={classes.cardTitle}
+                              >
+                                Servicios
+                              &lt;/Typography>
+                              &lt;div>
+                                &lt;IconButton
+                                  className={classes.cardEditIcon}
+                                  size="small"
+                                  style={{ marginRight: "0.5rem" }}
+                                  onClick={() => {
+                                    history.push(
+                                      generatePath(
+                                        ROUTES_DICT.animalDetail.service.list,
+                                        {
+                                          ...params,
+                                          _id: params._id,
+                                        }
+                                      )
+                                    );
+                                  }}
+                                >
+                                  &lt;ViewList fontSize="small">&lt;/ViewList>
+                                &lt;/IconButton>
+                                {currentAgribusiness &amp;&amp;
+                                  currentAgribusiness.reproductiveManagement ===
+                                    "DM_&amp;_AI_&amp;_ET" &amp;&amp; (
+                                    &lt;Button
+                                      className={classes.cardEditIcon}
+                                      size="small"
+                                      style={{ marginRight: "0.5rem" }}
+                                      onClick={() => {
+                                        history.push(
+                                          generatePath(
+                                            ROUTES_DICT.animalDetail.service
+                                              .transfer.create,
+                                            {
+                                              ...params,
+                                              _id: params._id,
+                                            }
+                                          )
+                                        );
+                                      }}
+                                    >
+                                      &lt;Add fontSize="small">&lt;/Add>T.E
+                                      {/* &lt;Typography
+                                  variant="caption"
+                                  className={classes.cardTitle}
+                                >
+                                  Trans.E
+                                &lt;/Typography> */}
+                                    &lt;/Button>
+                                  )}
+                                &lt;Button
+                                  className={classes.cardEditIcon}
+                                  size="small"
+                                  onClick={() => {
+                                    history.push(
+                                      generatePath(
+                                        ROUTES_DICT.animalDetail.service.ia
+                                          .create,
+                                        {
+                                          ...params,
+                                          _id: params._id,
+                                        }
+                                      )
+                                    );
+                                  }}
+                                >
+                                  &lt;Add fontSize="small">&lt;/Add>I.A
+                                  {/* &lt;Typography
+                                    variant="caption"
+                                    className={classes.cardTitle}
+                                  >
+                                    I.A
+                                  &lt;/Typography> */}
+                                &lt;/Button>
+                              &lt;/div>
+                            &lt;/div>
+                            &lt;Divider className={classes.divider}>&lt;/Divider>
+                            &lt;Grid container className="">
+                              &lt;Grid item xs={12}>
+                                &lt;Grid
+                                  container
+                                  className={classes.generalFeature}
+                                  xs={12}
+                                >
+                                  &lt;Grid item xs={5}>
+                                    &lt;Typography className={classes.cardFeature}>
+                                      Últ. Servicio
+                                    &lt;/Typography>
+                                  &lt;/Grid>
+                                  &lt;Grid item xs={7}>
+                                    &lt;Typography>
+                                      {currentAnimal &amp;&amp;
+                                      currentAnimal.services &amp;&amp;
+                                      currentAnimal.services.length !== 0
+                                        ? format(
+                                            new Date(
+                                              currentAnimal.services[0].serviceDate
+                                            ),
+                                            "yyyy-MM-dd"
+                                          )
+                                        : "Sin información"}
+                                    &lt;/Typography>
+                                  &lt;/Grid>
+                                &lt;/Grid>
+                                &lt;Grid
+                                  container
+                                  className={classes.generalFeature}
+                                  xs={12}
+                                >
+                                  &lt;Grid item xs={5}>
+                                    &lt;Typography className={classes.cardFeature}>
+                                      Hora
+                                    &lt;/Typography>
+                                  &lt;/Grid>
+                                  &lt;Grid item xs={7}>
+                                    &lt;Typography>
+                                      {currentAnimal &amp;&amp;
+                                      currentAnimal.services &amp;&amp;
+                                      currentAnimal.services.length !== 0
+                                        ? currentAnimal.services[0].serviceTime
+                                          ? format(
+                                              new Date(
+                                                currentAnimal.services[0].serviceTime
+                                              ),
+                                              "ppp"
+                                            )
+                                          : "Sin información"
+                                        : "Sin información"}
+                                    &lt;/Typography>
+                                  &lt;/Grid>
+                                &lt;/Grid>
+                                &lt;Grid
+                                  container
+                                  className={classes.generalFeature}
+                                  xs={12}
+                                >
+                                  &lt;Grid item xs={5}>
+                                    &lt;Typography className={classes.cardFeature}>
+                                      Tipo de servicio
+                                    &lt;/Typography>
+                                  &lt;/Grid>
+                                  &lt;Grid item xs={7}>
+                                    &lt;Typography>
+                                      {currentAnimal &amp;&amp;
+                                      currentAnimal.services &amp;&amp;
+                                      currentAnimal.services.length !== 0
+                                        ? typeServicesTest[
+                                            currentAnimal.services[0]
+                                              .serviceType
+                                          ]
+                                        : "Sin información"}
+                                    &lt;/Typography>
+                                  &lt;/Grid>
+                                &lt;/Grid>
+                                &lt;Grid
+                                  container
+                                  className={classes.generalFeature}
+                                  xs={12}
+                                >
+                                  &lt;Grid item xs={5}>
+                                    &lt;Typography className={classes.cardFeature}>
+                                      Observaciones
+                                    &lt;/Typography>
+                                  &lt;/Grid>
+                                  &lt;Grid item xs={7}>
+                                    &lt;Typography>
+                                      {currentAnimal &amp;&amp;
+                                      currentAnimal.services &amp;&amp;
+                                      currentAnimal.services.length !== 0
+                                        ? currentAnimal.services[0].observation
+                                        : "Sin información"}
+                                    &lt;/Typography>
+                                  &lt;/Grid>
+                                &lt;/Grid>
+                              &lt;/Grid>
+                              {/* &lt;Grid item xs={6}>
+                            &lt;HighchartsReact
+                              highcharts={Highcharts}
+                              options={{
+                                chart: {
+                                  type: "scatter",
+                                  margin: [70, 50, 60, 80],
+                                  events: {
+                                    click: function (e) {
+                                      // find the clicked values and the series
+                                      var x = Math.round(e.xAxis[0].value),
+                                        y = Math.round(e.yAxis[0].value),
+                                        series = this.series[0];
+
+                                      // Add it
+                                      series.addPoint([x, y]);
+                                    },
+                                  },
+                                },
+                                title: {
+                                  text: "",
+                                },
+
+                                accessibility: {
+                                  announceNewData: {
+                                    enabled: true,
+                                  },
+                                },
+                                xAxis: {
+                                  gridLineWidth: 1,
+                                  minPadding: 0.2,
+                                  maxPadding: 0.2,
+                                  maxZoom: 20,
+                                },
+                                yAxis: {
+                                  title: {
+                                    text: "Value",
+                                  },
+                                  minPadding: 0.2,
+                                  maxPadding: 0.2,
+                                  maxZoom: 20,
+                                  plotLines: [
+                                    {
+                                      value: 0,
+                                      width: 1,
+                                      color: "#808080",
+                                    },
+                                  ],
+                                },
+                                legend: {
+                                  enabled: false,
+                                },
+                                exporting: {
+                                  enabled: false,
+                                },
+                                plotOptions: {
+                                  series: {
+                                    lineWidth: 1,
+                                    point: {
+                                      events: {
+                                        click: function () {
+                                          if (this.series.data.length > 1) {
+                                            this.remove();
+                                          }
+                                        },
+                                      },
+                                    },
+                                  },
+                                },
+                                series: [
+                                  {
+                                    data: [
+                                      [20, 20],
+                                      [105, 40],
+                                    ],
+                                  },
+                                ],
+                              }}
+                            />
+                          &lt;/Grid> */}
+                            &lt;/Grid>
+                          &lt;/Paper>
+                        &lt;/Grid>
+                        &lt;Grid item xs={12} lg={6}>
+                          {/* Palpacion*/}
+                          &lt;Paper
+                            style={{ height: "96%" }}
+                            elevation={4}
+                            className={classes.card}
+                          >
+                            &lt;div className={classes.cardHeader}>
+                              &lt;Typography
+                                variant="body1"
+                                className={classes.cardTitle}
+                              >
+                                Palpación
+                              &lt;/Typography>
+                              &lt;div>
+                                &lt;IconButton
+                                  className={classes.cardEditIcon}
+                                  size="small"
+                                  style={{ marginRight: "0.5rem" }}
+                                  onClick={() => {
+                                    history.push(
+                                      generatePath(
+                                        ROUTES_DICT.animalDetail.palpation.list,
+                                        {
+                                          ...params,
+                                          _id: params._id,
+                                        }
+                                      )
+                                    );
+                                  }}
+                                >
+                                  &lt;ViewList fontSize="small">&lt;/ViewList>
+                                &lt;/IconButton>
+                                &lt;IconButton
+                                  className={classes.cardEditIcon}
+                                  size="small"
+                                  onClick={() => {
+                                    history.push(
+                                      generatePath(
+                                        ROUTES_DICT.animalDetail.palpation
+                                          .create,
+                                        {
+                                          ...params,
+                                          _id: params._id,
+                                        }
+                                      )
+                                    );
+                                  }}
+                                >
+                                  &lt;Add fontSize="small">&lt;/Add>
+                                &lt;/IconButton>
+                              &lt;/div>
+                            &lt;/div>
+                            &lt;Divider className={classes.divider}>&lt;/Divider>
+                            &lt;Grid container className="">
+                              &lt;Grid item xs={12}>
+                                &lt;Grid
+                                  container
+                                  className={classes.generalFeature}
+                                  xs={12}
+                                >
+                                  &lt;Grid item xs={5}>
+                                    &lt;Typography className={classes.cardFeature}>
+                                      Últ. Celo
+                                    &lt;/Typography>
+                                  &lt;/Grid>
+                                  &lt;Grid item xs={7}>
+                                    &lt;Typography>
+                                      {currentAnimal &amp;&amp;
+                                      currentAnimal.zealControl &amp;&amp;
+                                      currentAnimal.zealControl.length !== 0
+                                        ? format(
+                                            new Date(
+                                              currentAnimal.zealControl[0].controlDate
+                                            ),
+                                            "yyyy-MM-dd"
+                                          )
+                                        : "Sin información"}
+                                    &lt;/Typography>
+                                  &lt;/Grid>
+                                &lt;/Grid>
+                                {/* &lt;Grid
+                                  container
+                                  className={classes.generalFeature}
+                                  xs={12}
+                                >
+                                  &lt;Grid item xs={5}>
+                                    &lt;Typography className={classes.cardFeature}>
+                                      I.E.C
+                                    &lt;/Typography>
+                                  &lt;/Grid>
+                                  &lt;Grid item xs={7}>
+                                    &lt;Typography>0&lt;/Typography>
+                                  &lt;/Grid>
+                                &lt;/Grid> */}
+                                &lt;Grid
+                                  container
+                                  className={classes.generalFeature}
+                                  xs={12}
+                                >
+                                  &lt;Grid item xs={5}>
+                                    &lt;Typography className={classes.cardFeature}>
+                                      Últ. palpación
+                                    &lt;/Typography>
+                                  &lt;/Grid>
+                                  &lt;Grid item xs={7}>
+                                    &lt;Typography>
+                                      {currentAnimal &amp;&amp;
+                                      currentAnimal.palpations &amp;&amp;
+                                      currentAnimal.palpations.length !== 0
+                                        ? format(
+                                            new Date(
+                                              currentAnimal.palpations[0].pregnancyDate
+                                            ),
+                                            "yyyy-MM-dd"
+                                          )
+                                        : "Sin información"}
+                                    &lt;/Typography>
+                                  &lt;/Grid>
+                                &lt;/Grid>
+
+                                &lt;Grid
+                                  container
+                                  className={classes.generalFeature}
+                                  xs={12}
+                                >
+                                  &lt;Grid item xs={5}>
+                                    &lt;Typography className={classes.cardFeature}>
+                                      Estado de palpación
+                                    &lt;/Typography>
+                                  &lt;/Grid>
+                                  &lt;Grid item xs={7}>
+                                    &lt;Typography>
+                                      {currentAnimal &amp;&amp;
+                                      currentAnimal.palpations &amp;&amp;
+                                      currentAnimal.palpations.length !== 0
+                                        ? stateOptions[
+                                            currentAnimal.palpations[0].state
+                                          ]
+                                        : "Sin información"}
+                                    &lt;/Typography>
+                                  &lt;/Grid>
+                                &lt;/Grid>
+                                &lt;Grid
+                                  container
+                                  className={classes.generalFeature}
+                                  xs={12}
+                                >
+                                  &lt;Grid item xs={5}>
+                                    &lt;Typography className={classes.cardFeature}>
+                                      Observaciones de palpación
+                                    &lt;/Typography>
+                                  &lt;/Grid>
+                                  &lt;Grid item xs={7}>
+                                    &lt;Typography>
+                                      {currentAnimal &amp;&amp;
+                                      currentAnimal.palpations &amp;&amp;
+                                      currentAnimal.palpations.length !== 0
+                                        ? currentAnimal.palpations[0]
+                                            .observation !== ""
+                                          ? currentAnimal.palpations[0]
+                                              .observation !== ""
+                                          : "Sin información"
+                                        : "Sin información"}
+                                    &lt;/Typography>
+                                  &lt;/Grid>
+                                &lt;/Grid>
+                                {currentAnimal &amp;&amp;
+                                  currentAnimal.reproductiveStatus ===
+                                    "PREGNANT" &amp;&amp; (
+                                    &lt;>
+                                      &lt;Grid
+                                        container
+                                        className={classes.generalFeature}
+                                        style={{ marginTop: "20px" }}
+                                        xs={12}
+                                      >
+                                        &lt;Grid item xs={5}>
+                                          &lt;Typography
+                                            className={classes.cardFeature}
+                                          >
+                                            Fecha Preñez
+                                          &lt;/Typography>
+                                        &lt;/Grid>
+                                        &lt;Grid item xs={7}>
+                                          &lt;Typography>
+                                            {currentAnimal.palpations &amp;&amp;
+                                            currentAnimal.palpations.length !==
+                                              0
+                                              ? format(
+                                                  new Date(
+                                                    currentAnimal.palpations[0].pregnancyDate
+                                                  ),
+                                                  "yyyy-MM-dd"
+                                                )
+                                              : currentAnimal.pregnantDate
+                                              ? format(
+                                                  new Date(
+                                                    currentAnimal.pregnantDate
+                                                  ),
+                                                  "yyyy-MM-dd"
+                                                )
+                                              : "Sin información"}
+                                          &lt;/Typography>
+                                        &lt;/Grid>
+                                      &lt;/Grid>
+                                      &lt;Grid
+                                        container
+                                        className={classes.generalFeature}
+                                        xs={12}
+                                      >
+                                        &lt;Grid item xs={5}>
+                                          &lt;Typography
+                                            className={classes.cardFeature}
+                                          >
+                                            Días de preñez
+                                          &lt;/Typography>
+                                        &lt;/Grid>
+                                        &lt;Grid item xs={7}>
+                                          &lt;Typography>
+                                            {calculateDaysPregnancy(
+                                              currentAnimal.pregnantDate
+                                            )}
+                                          &lt;/Typography>
+                                        &lt;/Grid>
+                                      &lt;/Grid>
+                                      &lt;Grid
+                                        container
+                                        className={classes.generalFeature}
+                                        xs={12}
+                                      >
+                                        &lt;Grid item xs={5}>
+                                          &lt;Typography
+                                            className={classes.cardFeature}
+                                          >
+                                            Parto esperado
+                                          &lt;/Typography>
+                                        &lt;/Grid>
+                                        &lt;Grid item xs={7}>
+                                          &lt;Typography>
+                                            {expectedBirth(
+                                              currentAnimal.pregnantDate
+                                            )}
+                                          &lt;/Typography>
+                                        &lt;/Grid>
+                                      &lt;/Grid>
+                                    &lt;/>
+                                  )}
+                              &lt;/Grid>
+                              {/* &lt;Grid item xs={6}>
+                            &lt;HighchartsReact
+                              highcharts={Highcharts}
+                              options={{
+                                chart: {
+                                  type: "scatter",
+                                  margin: [70, 50, 60, 80],
+                                  events: {
+                                    click: function (e) {
+                                      // find the clicked values and the series
+                                      var x = Math.round(e.xAxis[0].value),
+                                        y = Math.round(e.yAxis[0].value),
+                                        series = this.series[0];
+
+                                      // Add it
+                                      series.addPoint([x, y]);
+                                    },
+                                  },
+                                },
+                                title: {
+                                  text: "",
+                                },
+
+                                accessibility: {
+                                  announceNewData: {
+                                    enabled: true,
+                                  },
+                                },
+                                xAxis: {
+                                  gridLineWidth: 1,
+                                  minPadding: 0.2,
+                                  maxPadding: 0.2,
+                                  maxZoom: 20,
+                                },
+                                yAxis: {
+                                  title: {
+                                    text: "Value",
+                                  },
+                                  minPadding: 0.2,
+                                  maxPadding: 0.2,
+                                  maxZoom: 20,
+                                  plotLines: [
+                                    {
+                                      value: 0,
+                                      width: 1,
+                                      color: "#808080",
+                                    },
+                                  ],
+                                },
+                                legend: {
+                                  enabled: false,
+                                },
+                                exporting: {
+                                  enabled: false,
+                                },
+                                plotOptions: {
+                                  series: {
+                                    lineWidth: 1,
+                                    point: {
+                                      events: {
+                                        click: function () {
+                                          if (this.series.data.length > 1) {
+                                            this.remove();
+                                          }
+                                        },
+                                      },
+                                    },
+                                  },
+                                },
+                                series: [
+                                  {
+                                    data: [
+                                      [20, 20],
+                                      [105, 40],
+                                    ],
+                                  },
+                                ],
+                              }}
+                            />
+                          &lt;/Grid> */}
+                            &lt;/Grid>
+                          &lt;/Paper>
+                        &lt;/Grid>
+                      &lt;/>
+                    )}
+                    {currentAnimal &amp;&amp; currentAnimal.gender === "MALE" &amp;&amp; (
+                      &lt;Grid item xs={12} lg={12}>
+                        {/* Pesos */}
+                        &lt;Paper
+                          style={{ height: "94%" }}
+                          elevation={4}
+                          className={classes.card}
+                        >
+                          &lt;div className={classes.cardHeader}>
+                            &lt;Typography
+                              variant="body1"
+                              className={classes.cardTitle}
+                            >
+                              Pesos
+                            &lt;/Typography>
+                            &lt;div>
+                              &lt;IconButton
+                                className={classes.cardEditIcon}
+                                size="small"
+                                style={{ marginRight: "0.5rem" }}
+                                onClick={() => {
+                                  history.push(
+                                    generatePath(
+                                      ROUTES_DICT.animalDetail.weight.list,
+                                      {
+                                        ...params,
+                                        _id: params._id,
+                                      }
+                                    )
+                                  );
+                                }}
+                              >
+                                &lt;ViewList fontSize="small">&lt;/ViewList>
+                              &lt;/IconButton>
+                              &lt;IconButton
+                                className={classes.cardEditIcon}
+                                size="small"
+                                onClick={() => {
+                                  history.push(
+                                    generatePath(
+                                      ROUTES_DICT.animalDetail.weight.create,
+                                      {
+                                        ...params,
+                                        _id: params._id,
+                                      }
+                                    )
+                                  );
+                                }}
+                              >
+                                &lt;Add fontSize="small">&lt;/Add>
+                              &lt;/IconButton>
+                            &lt;/div>
+                          &lt;/div>
+                          &lt;Divider className={classes.divider}>&lt;/Divider>
+                          &lt;div className="">
+                            &lt;Grid
+                              container
+                              className={classes.generalFeature}
+                              xs={12}
+                            >
+                              &lt;Grid item xs={5}>
+                                &lt;Typography className={classes.cardFeature}>
+                                  Peso
+                                &lt;/Typography>
+                              &lt;/Grid>
+                              &lt;Grid item xs={7}>
+                                &lt;Typography>
+                                  {currentAnimal &amp;&amp;
+                                  currentAnimal.weightControls &amp;&amp;
+                                  currentAnimal.weightControls.length > 0
+                                    ? currentAnimal.weightControls[0].weight +
+                                      unitWeightTestOptions[
+                                        currentAgribusiness.meatUnit
+                                      ]
+                                    : "Sin información"}
+                                &lt;/Typography>
+                              &lt;/Grid>
+                            &lt;/Grid>
+                            &lt;Grid
+                              container
+                              className={classes.generalFeature}
+                              xs={12}
+                            >
+                              &lt;Grid item xs={5}>
+                                &lt;Typography className={classes.cardFeature}>
+                                  Fecha de pesaje
+                                &lt;/Typography>
+                              &lt;/Grid>
+                              &lt;Grid item xs={7}>
+                                &lt;Typography>
+                                  {currentAnimal.weightControls &amp;&amp;
+                                  currentAnimal.weightControls.length > 0
+                                    ? format(
+                                        new Date(
+                                          currentAnimal.weightControls[0].controlDate
+                                        ),
+                                        "yyyy-MM-dd"
+                                      )
+                                    : "No se han registrado pesos"}
+                                &lt;/Typography>
+                              &lt;/Grid>
+                            &lt;/Grid>
+                            {/* &lt;Grid
+                          container
+                          className={classes.generalFeature}
+                          xs={12}
+                        >
+                          &lt;Grid item xs={5}>
+                            &lt;Typography className={classes.cardFeature}>
+                              Gr./Día
+                            &lt;/Typography>
+                          &lt;/Grid>
+                          &lt;Grid item xs={7}>
+                            &lt;Typography>No especificado&lt;/Typography>
+                          &lt;/Grid>
+                        &lt;/Grid>
+                        &lt;Grid
+                          container
+                          className={classes.generalFeature}
+                          xs={12}
+                        >
+                          &lt;Grid item xs={5}>
+                            &lt;Typography className={classes.cardFeature}>
+                              C. Corp
+                            &lt;/Typography>
+                          &lt;/Grid>
+                          &lt;Grid item xs={7}>
+                            &lt;Typography>No especificado&lt;/Typography>
+                          &lt;/Grid>
+                        &lt;/Grid>
+                        &lt;Grid
+                          container
+                          className={classes.generalFeature}
+                          xs={12}
+                        >
+                          &lt;Grid item xs={5}>
+                            &lt;Typography className={classes.cardFeature}>
+                              Alzada
+                            &lt;/Typography>
+                          &lt;/Grid>
+                          &lt;Grid item xs={7}>
+                            &lt;Typography>No especificado&lt;/Typography>
+                          &lt;/Grid>
+                        &lt;/Grid> */}
+                          &lt;/div>
+                        &lt;/Paper>
+                      &lt;/Grid>
+                    )}
+                  &lt;/Grid>
+                &lt;/Grid>
+              &lt;/Grid>
+              &lt;Grid container xs={12}>
+                &lt;Grid item xs={12} lg={4}>
+                  {/*Ubicacion de corral*/}
+                  &lt;Paper elevation={4} className={classes.card}>
+                    &lt;div className={classes.cardHeader}>
+                      &lt;Typography variant="body1" className={classes.cardTitle}>
+                        Ubicación de corral
+                      &lt;/Typography>
+                      &lt;IconButton
+                        className={classes.cardEditIcon}
+                        size="small"
+                        onClick={() => {
+                          history.push(
+                            generatePath(
+                              ROUTES_DICT.animalDetail.other.update,
+                              {
+                                ...params,
+                                _id: params._id,
+                              }
+                            )
+                          );
+                        }}
+                      >
+                        &lt;Edit fontSize="small">&lt;/Edit>
+                      &lt;/IconButton>
+                    &lt;/div>
+                    &lt;Divider className={classes.divider}>&lt;/Divider>
+                    &lt;div className="">
+                      &lt;Grid
+                        container
+                        className={classes.generalFeature}
+                        xs={12}
+                      >
+                        &lt;Grid item xs={6}>
+                          &lt;Typography className={classes.cardFeature}>
+                            Potrero
+                          &lt;/Typography>
+                        &lt;/Grid>
+                        &lt;Grid item xs={6}>
+                          &lt;Typography>No especificado&lt;/Typography>
+                        &lt;/Grid>
+                      &lt;/Grid>
+                      &lt;Grid
+                        container
+                        className={classes.generalFeature}
+                        xs={12}
+                      >
+                        &lt;Grid item xs={6}>
+                          &lt;Typography className={classes.cardFeature}>
+                            Grupo
+                          &lt;/Typography>
+                        &lt;/Grid>
+                        &lt;Grid item xs={6}>
+                          &lt;Typography>No especificado&lt;/Typography>
+                        &lt;/Grid>
+                      &lt;/Grid>
+                      &lt;Grid
+                        container
+                        className={classes.generalFeature}
+                        xs={12}
+                      >
+                        &lt;Grid item xs={6}>
+                          &lt;Typography className={classes.cardFeature}>
+                            Lote
+                          &lt;/Typography>
+                        &lt;/Grid>
+                        &lt;Grid item xs={6}>
+                          &lt;Typography>No especificado&lt;/Typography>
+                        &lt;/Grid>
+                      &lt;/Grid>
+                      &lt;Grid
+                        container
+                        className={classes.generalFeature}
+                        xs={12}
+                      >
+                        &lt;Grid item xs={6}>
+                          &lt;Typography className={classes.cardFeature}>
+                            Descornado
+                          &lt;/Typography>
+                        &lt;/Grid>
+                        &lt;Grid item xs={6}>
+                          &lt;Checkbox
+                            size="small"
+                            defaultChecked
+                            color="primary"
+                            className={classes.checkboxSmall}
+                            inputProps={{
+                              "aria-label": "secondary checkbox",
+                            }}
+                          />
+                        &lt;/Grid>
+                      &lt;/Grid>
+                      &lt;Grid
+                        container
+                        className={classes.generalFeature}
+                        xs={12}
+                      >
+                        &lt;Grid item xs={6}>
+                          &lt;Typography className={classes.cardFeature}>
+                            Herrado
+                          &lt;/Typography>
+                        &lt;/Grid>
+                        &lt;Grid item xs={6}>
+                          &lt;Checkbox
+                            size="small"
+                            defaultChecked
+                            color="primary"
+                            className={classes.checkboxSmall}
+                            inputProps={{
+                              "aria-label": "secondary checkbox",
+                            }}
+                          />
+                        &lt;/Grid>
+                      &lt;/Grid>
+                      &lt;Grid
+                        container
+                        className={classes.generalFeature}
+                        xs={12}
+                      >
+                        &lt;Grid item xs={6}>
+                          &lt;Typography className={classes.cardFeature}>
+                            Pologia
+                          &lt;/Typography>
+                        &lt;/Grid>
+                        &lt;Grid item xs={6}>
+                          &lt;Checkbox
+                            size="small"
+                            defaultChecked
+                            color="primary"
+                            className={classes.checkboxSmall}
+                            inputProps={{
+                              "aria-label": "secondary checkbox",
+                            }}
+                          />
+                        &lt;/Grid>
+                      &lt;/Grid>
+                    &lt;/div>
+                  &lt;/Paper>
+                &lt;/Grid>
+                {currentAnimal &amp;&amp; currentAnimal.gender === "FEMALE" &amp;&amp; (
+                  &lt;Grid item xs={12} lg={4}>
+                    {/* Produccion lechera */}
+                    &lt;Paper
+                      style={{ height: "94%" }}
+                      elevation={4}
+                      className={classes.card}
+                    >
+                      &lt;div className={classes.cardHeader}>
+                        &lt;Typography
+                          variant="body1"
+                          className={classes.cardTitle}
+                        >
+                          Producción Lechera
+                        &lt;/Typography>
+                        &lt;div>
+                          &lt;IconButton
+                            className={classes.cardEditIcon}
+                            size="small"
+                            style={{ marginRight: "0.5rem" }}
+                            onClick={() => {
+                              history.push(
+                                generatePath(
+                                  ROUTES_DICT.animalDetail.milk.list,
+                                  {
+                                    ...params,
+                                    _id: params._id,
+                                  }
+                                )
+                              );
+                            }}
+                          >
+                            &lt;ViewList fontSize="small">&lt;/ViewList>
+                          &lt;/IconButton>
+                          &lt;IconButton
+                            className={classes.cardEditIcon}
+                            size="small"
+                            onClick={() => {
+                              history.push(
+                                generatePath(
+                                  ROUTES_DICT.animalDetail.milk.create,
+                                  {
+                                    ...params,
+                                    _id: params._id,
+                                  }
+                                )
+                              );
+                            }}
+                          >
+                            &lt;Add fontSize="small">&lt;/Add>
+                          &lt;/IconButton>
+                        &lt;/div>
+                      &lt;/div>
+                      &lt;Divider className={classes.divider}>&lt;/Divider>
+                      &lt;div className="">
+                        &lt;Grid
+                          container
+                          className={classes.generalFeature}
+                          xs={12}
+                        >
+                          &lt;Grid item xs={5}>
+                            &lt;Typography className={classes.cardFeature}>
+                              Total leche
+                            &lt;/Typography>
+                          &lt;/Grid>
+                          &lt;Grid item xs={7}>
+                            &lt;Typography>
+                              {currentAnimal &amp;&amp;
+                              currentAnimal.milkControls &amp;&amp;
+                              currentAnimal.milkControls.length > 0
+                                ? totalMilk(currentAnimal.milkControls)
+                                : `0 ${
+                                    unitCapacityTestOptions[
+                                      currentAgribusiness.milkUnit
+                                    ]
+                                  }`}
+                            &lt;/Typography>
+                          &lt;/Grid>
+                        &lt;/Grid>
+                        &lt;Grid
+                          container
+                          className={classes.generalFeature}
+                          xs={12}
+                        >
+                          &lt;Grid item xs={5}>
+                            &lt;Typography className={classes.cardFeature}>
+                              Controles Lácteos
+                            &lt;/Typography>
+                          &lt;/Grid>
+                          &lt;Grid item xs={7}>
+                            &lt;Typography>
+                              {currentAnimal &amp;&amp;
+                                currentAnimal.milkControls &amp;&amp;
+                                currentAnimal.milkControls.length >= 0 &amp;&amp;
+                                currentAnimal.milkControls.length}
+                            &lt;/Typography>
+                          &lt;/Grid>
+                        &lt;/Grid>
+                        &lt;Grid
+                          container
+                          className={classes.generalFeature}
+                          xs={12}
+                        >
+                          &lt;Grid item xs={5}>
+                            &lt;Typography className={classes.cardFeature}>
+                              Dias de lactancía
+                            &lt;/Typography>
+                          &lt;/Grid>
+                          &lt;Grid item xs={7}>
+                            &lt;Typography>
+                              {currentAnimal &amp;&amp;
+                              currentAnimal.milkControls &amp;&amp;
+                              currentAnimal.milkControls.length > 0
+                                ? totalDaysMilk(currentAnimal.milkControls)
+                                : "0 días"}
+                            &lt;/Typography>
+                          &lt;/Grid>
+                        &lt;/Grid>
+                      &lt;/div>
+                    &lt;/Paper>
+                  &lt;/Grid>
+                )}
+                {currentAnimal &amp;&amp; currentAnimal.gender === "FEMALE" &amp;&amp; (
+                  &lt;Grid item xs={12} lg={4}>
+                    {/* Pesos */}
+                    &lt;Paper
+                      style={{ height: "94%" }}
+                      elevation={4}
+                      className={classes.card}
+                    >
+                      &lt;div className={classes.cardHeader}>
+                        &lt;Typography
+                          variant="body1"
+                          className={classes.cardTitle}
+                        >
+                          Pesos
+                        &lt;/Typography>
+                        &lt;div>
+                          &lt;IconButton
+                            className={classes.cardEditIcon}
+                            size="small"
+                            style={{ marginRight: "0.5rem" }}
+                            onClick={() => {
+                              history.push(
+                                generatePath(
+                                  ROUTES_DICT.animalDetail.weight.list,
+                                  {
+                                    ...params,
+                                    _id: params._id,
+                                  }
+                                )
+                              );
+                            }}
+                          >
+                            &lt;ViewList fontSize="small">&lt;/ViewList>
+                          &lt;/IconButton>
+                          &lt;IconButton
+                            className={classes.cardEditIcon}
+                            size="small"
+                            onClick={() => {
+                              history.push(
+                                generatePath(
+                                  ROUTES_DICT.animalDetail.weight.create,
+                                  {
+                                    ...params,
+                                    _id: params._id,
+                                  }
+                                )
+                              );
+                            }}
+                          >
+                            &lt;Add fontSize="small">&lt;/Add>
+                          &lt;/IconButton>
+                        &lt;/div>
+                      &lt;/div>
+                      &lt;Divider className={classes.divider}>&lt;/Divider>
+                      &lt;div className="">
+                        &lt;Grid
+                          container
+                          className={classes.generalFeature}
+                          xs={12}
+                        >
+                          &lt;Grid item xs={5}>
+                            &lt;Typography className={classes.cardFeature}>
+                              Peso
+                            &lt;/Typography>
+                          &lt;/Grid>
+                          &lt;Grid item xs={7}>
+                            &lt;Typography>
+                              {currentAnimal &amp;&amp;
+                              currentAnimal.weightControls &amp;&amp;
+                              currentAnimal.weightControls.length > 0
+                                ? currentAnimal.weightControls[0].weight +
+                                  ` ${
+                                    unitWeightTestOptions[
+                                      currentAgribusiness.meatUnit
+                                    ]
+                                  }`
+                                : "No se han registrado pesos"}
+                            &lt;/Typography>
+                          &lt;/Grid>
+                        &lt;/Grid>
+                        &lt;Grid
+                          container
+                          className={classes.generalFeature}
+                          xs={12}
+                        >
+                          &lt;Grid item xs={5}>
+                            &lt;Typography className={classes.cardFeature}>
+                              Fecha de pesaje
+                            &lt;/Typography>
+                          &lt;/Grid>
+                          &lt;Grid item xs={7}>
+                            &lt;Typography>
+                              {currentAnimal.weightControls &amp;&amp;
+                              currentAnimal.weightControls.length > 0
+                                ? format(
+                                    new Date(
+                                      currentAnimal.weightControls[0].controlDate
+                                    ),
+                                    "yyyy-MM-dd"
+                                  )
+                                : "No se han registrado pesos"}
+                            &lt;/Typography>
+                          &lt;/Grid>
+                        &lt;/Grid>
+                      &lt;/div>
+                    &lt;/Paper>
+                  &lt;/Grid>
+                )}
+              &lt;/Grid>
+            &lt;/Grid>
+            &lt;Grid item xs={12} lg={3}>
+              &lt;Grid container>
+                &lt;Grid item xs={12}>
+                  {/* Calendario*/}
+                  &lt;Paper
+                    style={{ height: "96%" }}
+                    elevation={4}
+                    className={classes.card}
+                  >
+                    &lt;div className={classes.cardHeader}>
+                      &lt;Typography variant="body1" className={classes.cardTitle}>
+                        Calendario
+                      &lt;/Typography>
+
+                      &lt;IconButton
+                        className={classes.cardEditIcon}
+                        size="small"
+                        onClick={() => {
+                          history.push(
+                            generatePath(
+                              ROUTES_DICT.animalDetail.birth.update,
+                              {
+                                ...params,
+                                _id: params._id,
+                              }
+                            )
+                          );
+                        }}
+                      >
+                        &lt;Edit fontSize="small">&lt;/Edit>
+                      &lt;/IconButton>
+                    &lt;/div>
+                    &lt;Divider className={classes.divider}>&lt;/Divider>
+
+                    &lt;div>
+                      &lt;Typography
+                        className={classes.calendarTitle}
+                        variant="subtitle1"
+                      >
+                        4 de sep del 2020
+                      &lt;/Typography>
+                      &lt;Calendar value={new Date()}>&lt;/Calendar>
+                      &lt;Typography className={classes.generalFeature}>
+                        Vacunación
+                      &lt;/Typography>
+                      &lt;Typography className={classes.generalFeature}>
+                        Lorem Ipsum dole mer ammnet, consequertum
+                      &lt;/Typography>
+                    &lt;/div>
+                  &lt;/Paper>
+                &lt;/Grid>
+              &lt;/Grid>
+            &lt;/Grid>
+          &lt;/Grid>
+        &lt;/Grid>
+      )}
+      {children()}
+    &lt;/Grid>
+  );
+};
+export default AnimalDetailPage;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AccountControlPage.html">AccountControlPage</a></li><li><a href="AddAnimals.html">AddAnimals</a></li><li><a href="AgribusinessCreatePage.html">AgribusinessCreatePage</a></li><li><a href="AnimalCharts.html">AnimalCharts</a></li><li><a href="AnimalCreateBulkPage.html">AnimalCreateBulkPage</a></li><li><a href="AnimalCreatePage.html">AnimalCreatePage</a></li><li><a href="AnimalDeletePage.html">AnimalDeletePage</a></li><li><a href="AnimalDescription.html">AnimalDescription</a></li><li><a href="AnimalDetailDeletePage.html">AnimalDetailDeletePage</a></li><li><a href="AnimalDetailPage.html">AnimalDetailPage</a></li><li><a href="AnimalImageForm.html">AnimalImageForm</a></li><li><a href="AnimalPageList.html">AnimalPageList</a></li><li><a href="AnimalUpdatePage.html">AnimalUpdatePage</a></li><li><a href="AssociationCreatePage.html">AssociationCreatePage</a></li><li><a href="AssociationDeletePage.html">AssociationDeletePage</a></li><li><a href="AssociationListPage.html">AssociationListPage</a></li><li><a href="AssociationUpdatePage.html">AssociationUpdatePage</a></li><li><a href="BirthControlCreatePage.html">BirthControlCreatePage</a></li><li><a href="BirthCreatePage.html">BirthCreatePage</a></li><li><a href="BirthForm.html">BirthForm</a></li><li><a href="BirthListPage.html">BirthListPage</a></li><li><a href="CalendarForm.html">CalendarForm</a></li><li><a href="ChipList.html">ChipList</a></li><li><a href="CommentaryData.html">CommentaryData</a></li><li><a href="defaultInitValues.html">defaultInitValues</a></li><li><a href="DeleteForm.html">DeleteForm</a></li><li><a href="DryingCreatePage.html">DryingCreatePage</a></li><li><a href="DryingDeletePage.html">DryingDeletePage</a></li><li><a href="DryingForm.html">DryingForm</a></li><li><a href="DryingListPage.html">DryingListPage</a></li><li><a href="DryingUpdatePage.html">DryingUpdatePage</a></li><li><a href="GeneralForm.html">GeneralForm</a></li><li><a href="GeneralUpdatePage.html">GeneralUpdatePage</a></li><li><a href="GeneticStckCreatePage.html">GeneticStckCreatePage</a></li><li><a href="GeneticStockDeletePage.html">GeneticStockDeletePage</a></li><li><a href="GeneticStockForm.html">GeneticStockForm</a></li><li><a href="GeneticStockList.html">GeneticStockList</a></li><li><a href="GeneticStockUpdatePage.html">GeneticStockUpdatePage</a></li><li><a href="IAServiceCreatePage.html">IAServiceCreatePage</a></li><li><a href="ImageUploadPage.html">ImageUploadPage</a></li><li><a href="LinearProgressWithLabel.html">LinearProgressWithLabel</a></li><li><a href="MilkControlCreatePage.html">MilkControlCreatePage</a></li><li><a href="MilkForm.html">MilkForm</a></li><li><a href="MovementCreatePage.html">MovementCreatePage</a></li><li><a href="MovementForm.html">MovementForm</a></li><li><a href="MovementPageList.html">MovementPageList</a></li><li><a href="OtherForm.html">OtherForm</a></li><li><a href="PalapationControlCreatePage.html">PalapationControlCreatePage</a></li><li><a href="QrViewPage.html">QrViewPage</a></li><li><a href="RaceForm.html">RaceForm</a></li><li><a href="RaceUpdatePage.html">RaceUpdatePage</a></li><li><a href="RouterList.html">RouterList</a></li><li><a href="SaleCreatePage.html">SaleCreatePage</a></li><li><a href="SaleDeletePage.html">SaleDeletePage</a></li><li><a href="SaleForm.html">SaleForm</a></li><li><a href="SaleListPage.html">SaleListPage</a></li><li><a href="SaleUpdatePage.html">SaleUpdatePage</a></li><li><a href="SearchAnimals.html">SearchAnimals</a></li><li><a href="ServiceDeletePage.html">ServiceDeletePage</a></li><li><a href="ServiceForm.html">ServiceForm</a></li><li><a href="ServicePageList.html">ServicePageList</a></li><li><a href="TransferServiceCreatePage.html">TransferServiceCreatePage</a></li><li><a href="UserDeletePage.html">UserDeletePage</a></li><li><a href="WeightControlCreatePage.html">WeightControlCreatePage</a></li><li><a href="WeightCreatePage.html">WeightCreatePage</a></li><li><a href="WeightDeletePage.html">WeightDeletePage</a></li><li><a href="WeightForm.html">WeightForm</a></li><li><a href="WeightListPage.html">WeightListPage</a></li><li><a href="WeightUpdatePage.html">WeightUpdatePage</a></li><li><a href="ZealCreatePage.html">ZealCreatePage</a></li><li><a href="ZealDeletePage.html">ZealDeletePage</a></li><li><a href="ZealForm.html">ZealForm</a></li><li><a href="ZealListPage.html">ZealListPage</a></li><li><a href="ZealUpdatePage.html">ZealUpdatePage</a></li></ul><h3>Global</h3><ul><li><a href="global.html#AuthWrapper">AuthWrapper</a></li><li><a href="global.html#CustomMaterialTable">CustomMaterialTable</a></li><li><a href="global.html#CustomMuiTable">CustomMuiTable</a></li><li><a href="global.html#getGroupedByHerdDate">getGroupedByHerdDate</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Thu Nov 18 2021 02:23:57 GMT-0500 (Peru Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
