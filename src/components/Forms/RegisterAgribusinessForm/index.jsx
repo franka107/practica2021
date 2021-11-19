@@ -7,9 +7,9 @@ import * as yup from "yup";
 import { Typography } from "@material-ui/core";
 import { useStyles } from "./styles";
 import ButtonFormik from "../../Inputs/ButtonFormik";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { countryActions } from "../../../redux/actions/country.actions";
-import { useDispatch, useSelector } from "react-redux";
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { regionActions } from "../../../redux/actions/region.actions";
 import { districtActions } from "../../../redux/actions/district.actions";
 import { unitCapacityOptions } from "../../../constants";
@@ -55,6 +55,7 @@ const defaultInitValues = {
   reproductiveManagement: "", //*
   system: "", //*
   objectiveFarmOptions: "",
+  type: "",
 };
 
 const RegisterAgribusinessForm = ({
@@ -77,27 +78,34 @@ const RegisterAgribusinessForm = ({
 
   const classes = useStyles();
   const dispatch = useDispatch();
-  const { list: countries } = useSelector((state) => state.country);
-  const { list: regions } = useSelector((state) => state.region);
-  const { list: districts } = useSelector((state) => state.district);
-  const { current: currentFarm } = useSelector((state) => state.farm);
-  const { current: currentAgribusiness } = useSelector(
-    (state) => state.agribusiness
+  const [cont, setCont] = useState(0);
+  const countries = useSelector((state) => state.country.list);
+  const regions = useSelector((state) => state.region.list);
+  const districts = useSelector((state) => state.district.list);
+  const currentFarm = useSelector((state) => state.farm.current, shallowEqual);
+  const currentAgribusiness = useSelector(
+    (state) => state.agribusiness.current
   );
-  const { current: currentCurrency } = useSelector((state) => state.currency);
+  const currentCurrency = useSelector((state) => state.currency.current);
 
   const history = useHistory();
 
   useEffect(() => {
     dispatch(countryActions.retrieveCountries());
-    //dispatch(regionActions.retrieveRegions());
-    //dispatch(districtActions.retrieveDistricts());
-  }, [dispatch]);
+  }, []);
 
   useEffect(() => {
-    currentFarm &&
-      dispatch(currencyActions.findCurrencyById(currentFarm.currencyId));
-  }, [currentFarm, dispatch]);
+    if (currentFarm && cont === 0) {
+      currentFarm &&
+        dispatch(currencyActions.findCurrencyById(currentFarm.currencyId));
+      initValues.countryId = currentFarm.countryId;
+      initValues.districtId = currentFarm.districtId;
+      initValues.regionId = currentFarm.regionId;
+      initValues.address = currentFarm.address;
+      initValues.phoneNumber = currentFarm.phoneNumber;
+      setCont(1);
+    }
+  }, [currentFarm]);
 
   const handleSubmit = (values, actions) => {
     try {
@@ -141,6 +149,7 @@ const RegisterAgribusinessForm = ({
           initialValues={initValues}
           onSubmit={handleSubmit}
           validationSchema={validationSchema}
+          enableReinitialize
         >
           {function Form(props) {
             useEffect(() => {
@@ -363,12 +372,14 @@ const RegisterAgribusinessForm = ({
                               <TextFieldFormik
                                 name="milkCost"
                                 label="Precio de costo"
+                                type="number"
                               />
                             </div>
                             <div className={classes.input}>
                               <TextFieldFormik
                                 name="milkPrice"
                                 label="Precio de venta"
+                                type="number"
                               />
                               {/* 
                               <Controls.Input
@@ -432,12 +443,14 @@ const RegisterAgribusinessForm = ({
                               <TextFieldFormik
                                 name="meatCost"
                                 label="Precio de costo"
+                                type="number"
                               />
                             </div>
                             <div className={classes.input}>
                               <TextFieldFormik
                                 name="meatPrice"
                                 label="Precio de venta"
+                                type="number"
                               />
                             </div>
                             <Typography
@@ -500,12 +513,12 @@ const RegisterAgribusinessForm = ({
                     name="system"
                     options={targetSystemOptions}
                   ></SelectFieldFormik>
-                  <TextFieldFormik
+                  {/* <TextFieldFormik
                     label="Promedio de lluvias por año"
                     name="rainsPerYear"
                     onChange={props.handleChange}
                     xs={6}
-                  ></TextFieldFormik>
+                  ></TextFieldFormik> */}
                   <Grid xs={12}>
                     <Typography variant={"subtitle2"} sm={12} xs={12}>
                       Reproducción

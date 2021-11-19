@@ -60,6 +60,16 @@ export const useStyles = makeStyles((theme) => ({
       color: "white",
     },
   },
+  recovery: {
+    margin: "1rem 0 0",
+    backgroundColor: theme.palette.button.primary,
+    color: "white",
+    width: "100%",
+    "&:hover": {
+      backgroundColor: theme.palette.button.primary,
+      color: "white",
+    },
+  },
   reset: {
     backgroundColor: theme.palette.button.secondary,
     width: "100%",

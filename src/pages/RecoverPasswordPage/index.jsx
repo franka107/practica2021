@@ -111,7 +111,7 @@ function RecoverPasswordPage(props) {
           ></TextFieldFormik>
           <Grid item xs={12}>
             <Button
-              className={classes.loginBtn}
+              className={classes.recovery}
               disabled={isSubmitting}
               type="submit"
             >

@@ -6,7 +6,7 @@ export const milkRouteOptions = (location) => [
     path: ROUTES_DICT.milk.list,
   },
   {
-    key: "Agregar control lechero",
+    key: "Agregar registro de ordeño",
     path: {
       pathname: ROUTES_DICT.milk.create,
       state: {

@@ -99,8 +99,8 @@ const MilkForm = ({
           <Grid container spacing={1}>
             <Typography variant={"subtitle1"} gutterBottom>
               {type === "create"
-                ? "Agregar control lechero"
-                : "Editar control lechero"}
+                ? "Agregar registro de ordeño"
+                : "Editar registro de ordeño"}
             </Typography>
           </Grid>
           <Grid container spacing={1}>
