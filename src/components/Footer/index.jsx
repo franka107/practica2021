@@ -1,13 +1,16 @@
 import React from "react";
 import { useStyles } from "./styles";
-import { Grid, Typography } from "@material-ui/core";
+import { Button, Grid, Link, Typography } from "@material-ui/core";
 import { menu } from "./constants";
-import { Facebook, Instagram, Twitter } from "@material-ui/icons";
+import { Call, Check, Facebook, Instagram, Twitter } from "@material-ui/icons";
 import Logo from "../Logo";
+import { useHistory } from "react-router";
+import { ROUTES_DICT } from "../../routes/routesDict";
 
 const propTypes = {};
 
 function Footer() {
+  const history = useHistory();
   const classes = useStyles();
 
   return (
@@ -23,34 +26,94 @@ function Footer() {
       <Grid
         container
         item
-        md={5}
+        md={6}
         sm={12}
         alignContent={"center"}
         justifyContent={"space-around"}
       >
-        {menu.map((item) => (
-          <Grid
-            key={`footer-${item.key}`}
-            item
-            md={2}
-            sm={3}
-            xs={11}
-            container
-            alignContent={"space-between"}
-            className={classes.footerItem}
-          >
-            <Typography
-              color={"primary"}
-              gutterBottom
-              className={classes.footerText}
+        <Grid
+          item
+          md={3}
+          sm={3}
+          xs={11}
+          container
+          alignContent="flex-start"
+          className={classes.footerItem}
+        >
+          <Typography gutterBottom className={classes.footerText}>
+            Contáctanos
+          </Typography>
+          <Typography color={"primary"} className={classes.description}>
+            <Check /> Av El Son 849, Miraflores
+          </Typography>
+          <Typography color={"primary"} className={classes.description}>
+            <Call /> 954678123
+          </Typography>
+        </Grid>
+        <Grid
+          item
+          md={3}
+          sm={3}
+          xs={11}
+          container
+          alignContent="flex-start"
+          className={classes.footerItem}
+        >
+          <Typography gutterBottom className={classes.footerText}>
+            Información Corporativa
+          </Typography>
+
+          <Typography color={"primary"} className={classes.description}>
+            <Link href="https://contigopecuario.com/" target="_blank">
+              Nuestro propósito
+            </Link>
+          </Typography>
+          <Typography color={"primary"} className={classes.description}>
+            <Link href="https://contigopecuario.com/" target="_blank">
+              Reportes y análisis
+            </Link>
+          </Typography>
+          <Typography color={"primary"} className={classes.description}>
+            <Link href="https://contigopecuario.com/" target="_blank">
+              Tutoriales
+            </Link>
+          </Typography>
+          <Typography color={"primary"} className={classes.description}>
+            <Link href="https://contigopecuario.com/" target="_blank">
+              Contáctanos
+            </Link>
+          </Typography>
+        </Grid>
+        <Grid
+          item
+          md={3}
+          sm={3}
+          xs={11}
+          container
+          alignContent="flex-start"
+          className={classes.footerItem}
+        >
+          <Typography gutterBottom className={classes.footerText}>
+            Asistencia
+          </Typography>
+
+          <Typography color={"primary"} className={classes.description}>
+            <Button
+              color="primary"
+              onClick={() => history.push(ROUTES_DICT.register)}
+              variant="contained"
+              style={{
+                borderRadius: 25,
+                padding: "auto 1rem",
+                color: "#fff",
+                backgroundColor: "#00A796",
+              }}
             >
-              {item.title}
-            </Typography>
-            <Typography color={"primary"} className={classes.description}>
-              {item.description}
-            </Typography>
-          </Grid>
-        ))}
+              {" "}
+              Regístrate
+            </Button>
+          </Typography>
+        </Grid>
       </Grid>
       <Grid
         container
@@ -87,7 +150,7 @@ function Footer() {
           className={classes.copyright}
         >
           <Typography variant={"caption"} color={"primary"}>
-            conTigoⒸ2020 All right reserved.
+            conTigoⒸ {new Date().getFullYear()} All right reserved.
           </Typography>
         </Grid>
       </Grid>

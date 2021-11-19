@@ -879,14 +879,6 @@ export const RENDER_ROUTES = [
    * Rutas relacionadas al Módulo de gestion de haciendas y agronegocios
    */
   {
-    path: ROUTES_DICT.setup,
-    key: "Celos",
-    exact: true,
-    component: SetupControlPage,
-    layout: DashboardLayout,
-    type: ROUTE_TYPES.private,
-  },
-  {
     path: ROUTES_DICT.hacienda.root,
     key: "Hacienda",
     exact: false,
@@ -978,6 +970,15 @@ export const RENDER_ROUTES = [
     key: "Celos",
     exact: true,
     component: PregnanciesPage,
+    layout: DashboardLayout,
+    type: ROUTE_TYPES.private,
+  },
+
+  {
+    path: ROUTES_DICT.setup,
+    key: "Celos",
+    exact: true,
+    component: SetupControlPage,
     layout: DashboardLayout,
     type: ROUTE_TYPES.private,
   },
