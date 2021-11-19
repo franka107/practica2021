@@ -195,21 +195,32 @@ const AnimalBulkForm = ({ onClickCancelButton }) => {
       );
     } else {
       return (
-        <div style={{ paddingLeft: "0.5rem" }}>
-          <h4>Elija antes de presionar el botón Cargar</h4>
-        </div>
+        <>
+          {/* <div style={{ paddingLeft: "0.5rem" }}>
+            <h4>Elija antes de presionar el botón Cargar</h4>
+          </div> */}
+          <div style={{ paddingLeft: "0.5rem" }}>
+            <h4>Elija antes de presionar el botón Cargar</h4>
+          </div>
+        </>
       );
     }
   };
   return (
     <>
       <Typography variant={"subtitle1"}>Registro masivo</Typography>
-      <Typography variant={"subtitle2"}>
+      {/* <Typography variant={"subtitle2"}>
         Para registro masivo de animales,{" "}
         <a href="https://contigo-files.s3.amazonaws.com/static/ExampleData+-+Sheet1.csv">
           descargue
         </a>{" "}
         el siguiente documento.
+      </Typography> */}
+      <Typography variant={"subtitle2"}>
+        Para descargar el modelo de carga masiva presione{" "}
+        <a href="https://contigo-files.s3.amazonaws.com/static/ExampleData+-+Sheet1.csv">
+          <strong>AQUI</strong>
+        </a>
       </Typography>
 
       <Grid container spacing={1}>

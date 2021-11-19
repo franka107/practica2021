@@ -62,7 +62,7 @@ export const list = [
       },
       {
         id: "agregar",
-        title: "Agregar control lechero",
+        title: "Agregar registro de ordeño",
         link: ROUTES_DICT.milk.create,
       },
     ],

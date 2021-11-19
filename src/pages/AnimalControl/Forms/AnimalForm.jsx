@@ -514,7 +514,7 @@ function AnimalForm({
               name="racialType"
               disabled
               onChange={props.handleChange}
-              xs={12}
+              xs={6}
               value={calculateRacialType(props.values)}
             />
             <TextFieldFormik

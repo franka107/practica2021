@@ -53,6 +53,35 @@ const BirthListPage = ({ children }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch]);
 
+  const numberAbortion = () => {
+    const response = birthList.filter((e) => e.birthType === "ABORTION");
+    return response.length;
+  };
+
+  const numberMale = () => {
+    let response = 0;
+    const dataFilter = birthList.filter(
+      (e) => e.birthType === "SIMPLE" || e.birthType === "TWIN"
+    );
+    dataFilter.map((e) => {
+      const male = e.children.filter((e) => e.gender === "MALE");
+      response = response + male.length;
+    });
+    return response;
+  };
+
+  const numberFemale = () => {
+    let response = 0;
+    const dataFilter = birthList.filter(
+      (e) => e.birthType === "SIMPLE" || e.birthType === "TWIN"
+    );
+    dataFilter.map((e) => {
+      const male = e.children.filter((e) => e.gender === "FEMALE");
+      response = response + male.length;
+    });
+    return response;
+  };
+
   return (
     <Grid container spacing={2}>
       <SearchContainer searchText={searchText} setSearchText={setSearchText} />
@@ -65,10 +94,10 @@ const BirthListPage = ({ children }) => {
       </Grid>
       <Grid item xs={12} className={classes.charts}>
         <Paper className={classes.paper}>
-          <Typography variant={"subtitle1"}>Gráfica 3</Typography>
+          <Typography variant={"subtitle1"}>Gráficos</Typography>
           <Divider className={classes.divider} />
           <Grid container spacing={3}>
-            <Grid item xs={12} sm={8}>
+            <Grid item xs={12} sm={12}>
               <TableContainer component={Paper}>
                 <Table
                   className={classes.table}
@@ -81,26 +110,26 @@ const BirthListPage = ({ children }) => {
                       <TableCell align="right">Machos</TableCell>
                       <TableCell align="right">Hembras</TableCell>
                       <TableCell align="right">Abortos</TableCell>
-                      <TableCell align="right">Promedio IEP</TableCell>
+                      {/* <TableCell align="right">Promedio IEP</TableCell>
                       <TableCell align="right">
                         Promedio 1er Parto (Meses)
-                      </TableCell>
+                      </TableCell> */}
                     </TableRow>
                   </TableHead>
                   <TableBody>
                     <TableRow>
-                      <TableCell align="right">999,999</TableCell>
-                      <TableCell align="right">999,999</TableCell>
-                      <TableCell align="right">999,999</TableCell>
-                      <TableCell align="right">999,999</TableCell>
-                      <TableCell align="right">999,999</TableCell>
-                      <TableCell align="right">999,999</TableCell>
+                      <TableCell align="right">{birthList.length}</TableCell>
+                      <TableCell align="right">{numberMale()}</TableCell>
+                      <TableCell align="right">{numberFemale()}</TableCell>
+                      <TableCell align="right">{numberAbortion()}</TableCell>
+                      {/* <TableCell align="right">999,999</TableCell>
+                      <TableCell align="right">999,999</TableCell> */}
                     </TableRow>
                   </TableBody>
                 </Table>
               </TableContainer>
             </Grid>
-            <Grid item xs={12} sm={4}>
+            {/* <Grid item xs={12} sm={4}>
               <Typography variant={"subtitle1"}>Fecha</Typography>
               <Grid container>
                 <Grid item xs={6}>
@@ -112,12 +141,12 @@ const BirthListPage = ({ children }) => {
                   <Typography variant={"body1"}>1/1/2021</Typography>
                 </Grid>
               </Grid>
-            </Grid>
+            </Grid> */}
           </Grid>
           <br />
           <br />
           <Grid container>
-            <Grid item xs={12} sm={7}>
+            <Grid item xs={12} sm={12}>
               <HighchartsReact
                 highcharts={Highcharts}
                 options={{
@@ -126,7 +155,8 @@ const BirthListPage = ({ children }) => {
                     margin: [50, 50, 120, 80],
                   },
                   title: {
-                    text: "Mes Actual",
+                    text: "Total",
+                    // text: "Mes Actual",
                   },
 
                   xAxis: {
@@ -136,14 +166,14 @@ const BirthListPage = ({ children }) => {
                     {
                       type: "bar",
                       colorByPoint: true,
-                      data: [29.9, 71.5, 106.4],
+                      data: [numberAbortion(), numberFemale(), numberMale()],
                       showInLegend: false,
                     },
                   ],
                 }}
               />
             </Grid>
-            <Grid item xs={12} sm={5}>
+            {/* <Grid item xs={12} sm={5}>
               <HighchartsReact
                 highcharts={Highcharts}
                 options={{
@@ -199,7 +229,7 @@ const BirthListPage = ({ children }) => {
                   ],
                 }}
               />
-            </Grid>
+            </Grid> */}
           </Grid>
 
           <Grid
@@ -233,7 +263,7 @@ const BirthListPage = ({ children }) => {
                 /> */}
             </Grid>
           </Grid>
-          <Grid item>
+          {/* <Grid item>
             <HighchartsReact
               highcharts={Highcharts}
               options={{
@@ -272,7 +302,7 @@ const BirthListPage = ({ children }) => {
                 ],
               }}
             />
-          </Grid>
+          </Grid> */}
         </Paper>
       </Grid>
       {children()}

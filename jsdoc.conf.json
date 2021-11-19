@@ -11,7 +11,11 @@
   "plugins": ["plugins/markdown", "better-docs/component"],
   "templates": {
     "better-docs": {
+<<<<<<< HEAD
       "name": "My React component"
+=======
+      "name": "Component"
+>>>>>>> tdev/fixed-second-week
     }
   },
   "opts": {
