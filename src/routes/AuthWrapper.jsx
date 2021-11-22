@@ -29,9 +29,9 @@ const AuthWrapper = ({ children }) => {
   useEffect(() => {
     if (!currentFarm || !currentAgribusiness) {
       dispatch(farmActions.findFarmByOwnerId(user?._id)).then((e) => {
-        if (!currentFarm) {
-          history.push(ROUTES_DICT.setup);
-        }
+        //if (!currentFarm) {
+        //  history.push(ROUTES_DICT.setup);
+        //}
       });
     }
   }, [dispatch, currentFarm, currentAgribusiness, user]);
