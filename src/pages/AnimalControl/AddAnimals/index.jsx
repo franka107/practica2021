@@ -33,7 +33,7 @@ const AddAnimals = ({ searchText, setSearchText }) => {
         className={classes.registerContainer}
         justifyContent={"space-between"}
       >
-        <Grid item md={4} sm={12} xs={12} container alignItems={"center"}>
+        {/* <Grid item md={4} sm={12} xs={12} container alignItems={"center"}>
           <Button
             aria-controls="simple-menu"
             aria-haspopup="true"
@@ -76,10 +76,10 @@ const AddAnimals = ({ searchText, setSearchText }) => {
               Masivo
             </MenuItem>
           </Menu>
-        </Grid>
+        </Grid> */}
         <Grid
           item
-          md={8}
+          md={12}
           sm={12}
           xs={12}
           container

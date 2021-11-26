@@ -135,7 +135,14 @@ function Footer() {
           justifyContent={"center"}
         >
           <div className={classes.iconContainer}>
-            <Facebook color={"primary"} className={classes.icon} />
+            <Facebook
+              color={"primary"}
+              className={classes.icon}
+              onClick={() => {
+                window.location.href =
+                  "https://www.facebook.com/ContigoPecuario/";
+              }}
+            />
             <Twitter color={"primary"} className={classes.icon} />
             <Instagram color={"primary"} className={classes.icon} />
           </div>

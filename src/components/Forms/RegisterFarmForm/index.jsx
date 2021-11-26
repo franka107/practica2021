@@ -85,7 +85,11 @@ const RegisterFarmForm = ({
   const { list: regionList } = useSelector((state) => state.region);
   const { list: districtList } = useSelector((state) => state.district);
   const { user } = useSelector((state) => state.auth);
-  const { list: currencyList } = useSelector((state) => state.currency);
+  const currencyList = useSelector((state) =>
+    state.currency.list.sort((a, b) =>
+      a.name > b.name ? 1 : a.name < b.name ? -1 : 0
+    )
+  );
 
   useEffect(() => {
     const parsedList = currencyList.map((e) => ({
@@ -240,7 +244,11 @@ const RegisterFarmForm = ({
                     options={currencyListParsed}
                   />
                   {type === "create" && (
-                    <ButtonFormik type={"submit"} xs={3} label="Siguiente" />
+                    <Grid item container xs={12} justifyContent="flex-end">
+                      <Grid item xs={5}>
+                        <ButtonFormik xs={12} label="Siguiente" type="submit" />
+                      </Grid>
+                    </Grid>
                   )}
                   {type === "update" && (
                     <Grid item container xs={12} justifyContent="space-between">

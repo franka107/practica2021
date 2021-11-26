@@ -103,8 +103,8 @@ const AnimalBulkForm = ({ onClickCancelButton }) => {
           animal.childrenQuantity = Number(animal.childrenQuantity);
           animal.birthDate = animal.birthDate && getDate(animal.birthDate);
           animal.herdDate = animal.herdDate && getDate(animal.herdDate);
-          animal.category =
-            animal.category.length === 0 ? null : animal.category;
+          // animal.category =
+          //   animal.category.length === 0 ? null : animal.category;
           animal.pregnantType =
             animal.pregnantType.length === 0 ? null : animal.pregnantType;
           animal.reproductiveStatus =

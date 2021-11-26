@@ -43,6 +43,16 @@ export const list = [
         title: "Inicio",
         link: ROUTES_DICT.animal.list,
       },
+      {
+        id: "Agregar Animal",
+        title: "Agregar Animal",
+        link: ROUTES_DICT.animal.create,
+      },
+      {
+        id: "Carga Masiva",
+        title: "Carga Masiva",
+        link: ROUTES_DICT.animal.createBulk,
+      },
       // {
       //   id: "estadisticas",
       //   title: "Estadísticas",
@@ -207,34 +217,34 @@ export const list = [
           },
         ],
       },
-      {
-        id: "reportes",
-        title: "Reportes",
-        img: faArchive,
-        // link: routesDictionary.livestockControl,
-      },
-      {
-        id: "carga-masiva",
-        title: "Carga masiva",
-        img: faListAlt,
-        submenu: [
-          {
-            id: "animales",
-            title: "Masiva de animales",
-            // link: routesDictionary.livestockControl,
-          },
-          {
-            id: "embriones",
-            title: "Masiva de embroines",
-            // link: routesDictionary.livestockControl,
-          },
-          {
-            id: "inseminaciones",
-            title: "Masiva de inseminaciones",
-            // link: routesDictionary.livestockControl,
-          },
-        ],
-      },
+      // {
+      //   id: "reportes",
+      //   title: "Reportes",
+      //   img: faArchive,
+      //   // link: routesDictionary.livestockControl,
+      // },
+      // {
+      //   id: "carga-masiva",
+      //   title: "Carga masiva",
+      //   img: faListAlt,
+      //   submenu: [
+      //     {
+      //       id: "animales",
+      //       title: "Masiva de animales",
+      //       // link: routesDictionary.livestockControl,
+      //     },
+      //     {
+      //       id: "embriones",
+      //       title: "Masiva de embroines",
+      //       // link: routesDictionary.livestockControl,
+      //     },
+      //     {
+      //       id: "inseminaciones",
+      //       title: "Masiva de inseminaciones",
+      //       // link: routesDictionary.livestockControl,
+      //     },
+      //   ],
+      // },
     ],
   },
 ];
