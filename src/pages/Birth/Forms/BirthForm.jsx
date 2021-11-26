@@ -276,7 +276,7 @@ const BirthForm = ({
             await dispatch(AnimalActions.create(data2Child));
           }
         } else {
-          await dispatch(BirthActions.create(values));
+          /* dispatch(BirthActions.create(values)); */
           const cowData = await IdeasCloudApi.fetch("animalGetById", {
             _id: values.animalId,
           });
