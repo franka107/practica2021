@@ -16,6 +16,10 @@ import BirthActions from "../../../redux/actions/birth.actions";
 import { useDispatch } from "react-redux";
 import { columns } from "./constants";
 import { useParams } from "react-router";
+import DatePickerFieldFormik from "../../../components/Inputs/DatePickerFieldFormik";
+import { Formik } from "formik";
+import * as yup from "yup";
+import ButtonFormik from "../../../components/Inputs/ButtonFormik";
 
 /**
  * @component
@@ -82,6 +86,23 @@ const BirthListPage = ({ children }) => {
     return response;
   };
 
+  const initValues = {
+    initDate: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
+    finalDate: new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0),
+  };
+
+  const handleSubmit = () => {};
+
+  const validationSchema = yup.object({
+    animalId: yup
+      .string("Ingresa la identificacion del animal.")
+      .required("Este campo es requerido."),
+    controlDate: yup
+      .date("Ingresa una fecha correcta.")
+      .max(new Date(), "No puedes poner una fecha futura")
+      .nullable(),
+  });
+
   return (
     <Grid container spacing={2}>
       <SearchContainer searchText={searchText} setSearchText={setSearchText} />
@@ -93,9 +114,10 @@ const BirthListPage = ({ children }) => {
         />
       </Grid>
       <Grid item xs={12} className={classes.charts}>
-        <Paper className={classes.paper}>
-          <Typography variant={"subtitle1"}>Gráficos</Typography>
-          <Divider className={classes.divider} />
+        <Typography variant={"subtitle1"} gutterBottom>
+          Gráficos
+        </Typography>
+        <Grid className={classes.paper}>
           <Grid container spacing={3}>
             <Grid item xs={12} sm={12}>
               <TableContainer component={Paper}>
@@ -129,22 +151,97 @@ const BirthListPage = ({ children }) => {
                 </Table>
               </TableContainer>
             </Grid>
-            {/* <Grid item xs={12} sm={4}>
-              <Typography variant={"subtitle1"}>Fecha</Typography>
-              <Grid container>
-                <Grid item xs={6}>
-                  <Typography variant={"body2"}>De</Typography>
-                  <Typography variant={"body1"}>1/1/2021</Typography>
-                </Grid>
-                <Grid item xs={6}>
-                  <Typography variant={"body2"}>Hasta</Typography>
-                  <Typography variant={"body1"}>1/1/2021</Typography>
-                </Grid>
-              </Grid>
-            </Grid> */}
           </Grid>
           <br />
-          <br />
+          {/* <Grid item>
+            <HighchartsReact
+              highcharts={Highcharts}
+              options={{
+                chart: {
+                  type: "area",
+                  margin: [20, 50, 60, 80],
+                },
+                title: {
+                  text: "",
+                },
+                xAxis: {
+                  categories: [
+                    "1Jun",
+                    "1Jul",
+                    "1Agos",
+                    "1Set",
+                    "1Oct",
+                    "1Nov",
+                    "1Dic",
+                    "1Ene",
+                    "1Feb",
+                    "1Mar",
+                    "1Abr",
+                  ],
+                },
+                series: [
+                  {
+                    type: "area",
+                    colorByPoint: true,
+                    data: [
+                      29.9, 71.5, 30.4, 59.9, 11.5, 60.4, 49.9, 81.5, 70.4,
+                      70.4, 70.4,
+                    ],
+                    showInLegend: false,
+                  },
+                ],
+              }}
+            />
+          </Grid> */}
+        </Grid>
+
+        <Grid>
+          <Grid item xs={12} sm={5}>
+            <Typography variant={"subtitle1"}>Fecha</Typography>
+            <Grid container>
+              <Grid item xs={12}>
+                <Formik
+                  initialValues={initValues}
+                  onSubmit={handleSubmit}
+                  validationSchema={validationSchema}
+                  enableReinitialize
+                >
+                  {(props) => (
+                    <form onSubmit={props.handleSubmit}>
+                      <Grid container spacing={1}>
+                        <Grid item xs={4}>
+                          <DatePickerFieldFormik
+                            label="De"
+                            name="initDate"
+                            onChange={props.handleChange}
+                            xs={12}
+                          ></DatePickerFieldFormik>
+                        </Grid>
+                        <Grid item xs={4}>
+                          <DatePickerFieldFormik
+                            label="Hasta"
+                            name="finalDate"
+                            onChange={props.handleChange}
+                            xs={12}
+                          ></DatePickerFieldFormik>
+                        </Grid>
+                        <Grid container item xs={4}>
+                          <ButtonFormik
+                            xs={12}
+                            label="Filtrar"
+                            type="submit"
+                            style={{ margin: "auto" }}
+                          />
+                        </Grid>
+                      </Grid>
+                    </form>
+                  )}
+                </Formik>
+                {/* <Typography variant={"body2"}>De</Typography>
+                  <Typography variant={"body1"}>1/1/2021</Typography> */}
+              </Grid>
+            </Grid>
+          </Grid>
           <Grid container>
             <Grid item xs={12} sm={12}>
               <HighchartsReact
@@ -155,12 +252,17 @@ const BirthListPage = ({ children }) => {
                     margin: [50, 50, 120, 80],
                   },
                   title: {
-                    text: "Total",
                     // text: "Mes Actual",
                   },
 
                   xAxis: {
                     categories: ["Abortos", "Hembas", "Machos"],
+                  },
+                  yAxis: {
+                    min: 0,
+                    title: {
+                      text: "",
+                    },
                   },
                   series: [
                     {
@@ -231,79 +333,7 @@ const BirthListPage = ({ children }) => {
               />
             </Grid> */}
           </Grid>
-
-          <Grid
-            container
-            style={{ padding: "2rem 0" }}
-            spacing={3}
-            justify={"center"}
-          >
-            <Grid item xs={12} sm={3}>
-              {/* <Controls.Select
-                  name={"conditon"}
-                  label={"Eje X"}
-                  options={[
-                    { id: 1, name: "test1" },
-                    { id: 2, name: "test2" },
-                  ]}
-                  defaultValue={2}
-                  type={"select"}
-                /> */}
-            </Grid>
-            <Grid item xs={12} sm={3}>
-              {/* <Controls.Select
-                  name={"conditon"}
-                  label={"Eje Y"}
-                  defaultValue={1}
-                  options={[
-                    { id: 1, name: "test1" },
-                    { id: 2, name: "test2" },
-                  ]}
-                  type={"select"}
-                /> */}
-            </Grid>
-          </Grid>
-          {/* <Grid item>
-            <HighchartsReact
-              highcharts={Highcharts}
-              options={{
-                chart: {
-                  type: "area",
-                  margin: [20, 50, 60, 80],
-                },
-                title: {
-                  text: "",
-                },
-                xAxis: {
-                  categories: [
-                    "1Jun",
-                    "1Jul",
-                    "1Agos",
-                    "1Set",
-                    "1Oct",
-                    "1Nov",
-                    "1Dic",
-                    "1Ene",
-                    "1Feb",
-                    "1Mar",
-                    "1Abr",
-                  ],
-                },
-                series: [
-                  {
-                    type: "area",
-                    colorByPoint: true,
-                    data: [
-                      29.9, 71.5, 30.4, 59.9, 11.5, 60.4, 49.9, 81.5, 70.4,
-                      70.4, 70.4,
-                    ],
-                    showInLegend: false,
-                  },
-                ],
-              }}
-            />
-          </Grid> */}
-        </Paper>
+        </Grid>
       </Grid>
       {children()}
     </Grid>

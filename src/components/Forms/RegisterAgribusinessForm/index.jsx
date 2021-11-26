@@ -531,7 +531,11 @@ const RegisterAgribusinessForm = ({
                     options={productionOptions}
                   ></SelectFieldFormik>
                   {type === "none" && (
-                    <ButtonFormik type={"submit"} xs={3} label="Siguiente" />
+                    <Grid item container xs={12} justifyContent="flex-end">
+                      <Grid item xs={5}>
+                        <ButtonFormik xs={12} label="Siguiente" type="submit" />
+                      </Grid>
+                    </Grid>
                   )}
                   {type === "update" && (
                     <Grid item container xs={12} justifyContent="space-between">
