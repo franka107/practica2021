@@ -3,6 +3,7 @@ import clsx from "clsx";
 import { useLocation, useHistory } from "react-router";
 import { useStyles } from "../../styles";
 import PropTypes from "prop-types";
+import { Home, Add, ArtTrack, Delete } from "@material-ui/icons";
 
 /**
  * @component
@@ -14,6 +15,54 @@ const ChipList = ({ routes, options }) => {
   const classes = useStyles();
   const location = useLocation();
   const history = useHistory();
+
+  const HomeIcon = (route) => {
+    return (
+      <Home
+        className={clsx(
+          classes.iconList__chip,
+          location.pathname === route.path &&
+            `${classes.iconList__chip}--active`
+        )}
+      />
+    );
+  };
+
+  const AddIcon = (route) => {
+    return (
+      <Add
+        className={clsx(
+          classes.iconList__chip,
+          location.pathname === route.path &&
+            `${classes.iconList__chip}--active`
+        )}
+      />
+    );
+  };
+
+  const AddBulkIcon = (route) => {
+    return (
+      <ArtTrack
+        className={clsx(
+          classes.iconList__chip,
+          location.pathname === route.path &&
+            `${classes.iconList__chip}--active`
+        )}
+      />
+    );
+  };
+
+  const DeleteIcon = (route) => {
+    return (
+      <Delete
+        className={clsx(
+          classes.iconList__chip,
+          location.pathname === route.path &&
+            `${classes.iconList__chip}--active`
+        )}
+      />
+    );
+  };
 
   return (
     <Grid
@@ -28,6 +77,15 @@ const ChipList = ({ routes, options }) => {
           <Grid item key={i}>
             <Chip
               label={route.key}
+              icon={
+                route.icon === "home"
+                  ? HomeIcon(route)
+                  : route.icon === "add"
+                  ? AddIcon(route)
+                  : route.icon === "delete"
+                  ? DeleteIcon(route)
+                  : AddBulkIcon(route)
+              }
               className={clsx(
                 classes.chipList__chip,
                 location.pathname === route.path &&

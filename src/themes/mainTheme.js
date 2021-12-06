@@ -29,33 +29,33 @@ const mainTheme = createTheme({
       ","
     ),
     h1: {
-      fontSize: 57,
+      fontSize: 55,
       fontWeight: 800,
       color: "#666666",
     },
     h2: {
-      fontSize: 40,
+      fontSize: 38,
       fontWeight: 800,
     },
     h3: {
-      fontSize: 23,
+      fontSize: 21,
       fontWeight: 600,
       lineHeight: 1.5,
     },
     h4: {
-      fontSize: 27,
+      fontSize: 25,
       fontWeight: 300,
     },
     h5: {
-      fontSize: 22,
+      fontSize: 20,
       fontWeight: 300,
     },
     h6: {
-      fontSize: 20,
+      fontSize: 18,
       fontWeight: "bold",
     },
     subtitle1: {
-      fontSize: 18,
+      fontSize: 16,
       fontWeight: "bold",
       lineHeight: "normal",
       color: "#333238",
@@ -66,17 +66,17 @@ const mainTheme = createTheme({
       fontWeight: 600,
       paddingBottom: ".5rem",
       opacity: 0.5,
-      fontSize: 17,
+      fontSize: 15,
     },
     body1: {
-      fontSize: 14,
+      fontSize: 12,
     },
     body2: {
-      fontSize: 14.5,
+      fontSize: 12.5,
       fontWeight: 300,
     },
     caption: {
-      fontSize: 12.8,
+      fontSize: 10.8,
       fontWeight: "normal",
     },
   },
@@ -134,7 +134,7 @@ const mainTheme = createTheme({
     MuiTypography: {
       h1: {
         [breakpoints.down("md")]: {
-          fontSize: 50,
+          fontSize: 48,
         },
       },
       colorPrimary: {
@@ -210,7 +210,7 @@ const mainTheme = createTheme({
       root: {
         textTransform: "none",
         textAlign: "center",
-        fontSize: 15,
+        fontSize: 13,
         fontWeight: 600,
         //"&:hover": {
         //  backgroundColor: "#0075C9",
@@ -269,7 +269,7 @@ const mainTheme = createTheme({
       input: {
         borderRadius: 0,
         background: "transparent",
-        fontSize: 15,
+        fontSize: 13,
       },
       underline: {
         "&&&:before": {

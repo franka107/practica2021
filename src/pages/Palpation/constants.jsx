@@ -4,6 +4,7 @@ export const palpationRouteOptions = (location) => [
   {
     key: "Inicio",
     path: ROUTES_DICT.palpation.list,
+    icon: "home",
   },
   {
     key: "Agregar palpación",
@@ -13,5 +14,6 @@ export const palpationRouteOptions = (location) => [
         background: location,
       },
     },
+    icon: "add",
   },
 ];

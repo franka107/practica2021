@@ -218,11 +218,13 @@ const AnimalBulkForm = ({ onClickCancelButton }) => {
       </Typography> */}
       <Typography variant={"subtitle2"}>
         Para descargar el modelo de carga masiva presione{" "}
-        <a href="https://contigo-files.s3.amazonaws.com/static/ExampleData+-+Sheet1.csv">
+        <a href="https://contigo-animal-bulk.s3.us-east-2.amazonaws.com/Bulk+Upload+Example.xlsx">
           <strong>AQUI</strong>
         </a>
       </Typography>
-
+      {/* <Typography variant={"subtitle2"}>
+        Recuerda que el el formato del archivo debe de ser .CSV
+      </Typography> */}
       <Grid container spacing={1}>
         <Button
           component="label"

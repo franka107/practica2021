@@ -5,7 +5,14 @@ import Highcharts from "highcharts/highstock";
 import { Dialog, Grid, Paper, Typography } from "@material-ui/core";
 import clsx from "clsx";
 import TrendingUpIcon from "@material-ui/icons/TrendingUp";
-import { renderChartDetailOptions } from "./constants";
+import {
+  renderChartDetailOptions,
+  renderChartDetail2Options,
+  renderChartDetail3Options,
+  renderChartDetail4Options,
+  renderChartDetail5Options,
+  renderChartDetail6Options,
+} from "./constants";
 import { useSelector } from "react-redux";
 import IdeasCloudApi from "../../../helpers/ideascloudApi";
 
@@ -24,7 +31,7 @@ const AnimalCharts = () => {
   );
   const [chartsInfo, setChartsInfo] = useState({});
   const [chartsInfoBirths, setChartsInfoBirths] = useState({});
-
+  const [dlg, setDlg] = useState("0");
   useEffect(() => {
     IdeasCloudApi.fetch("animalGetCharts", {
       agribusinessId: currentAgribusiness._id,
@@ -89,7 +96,10 @@ const AnimalCharts = () => {
             <Paper
               elevation={1}
               className={classes.userItemContainer}
-              onClick={() => setOpenDetail(true)}
+              onClick={() => {
+                setOpenDetail(true);
+                setDlg("1");
+              }}
             >
               <Typography
                 color={"primary"}
@@ -134,7 +144,10 @@ const AnimalCharts = () => {
             <Paper
               elevation={1}
               className={classes.userItemContainer}
-              onClick={() => setOpenDetail(true)}
+              onClick={() => {
+                setOpenDetail(true);
+                setDlg("2");
+              }}
             >
               <Typography
                 color={"primary"}
@@ -179,7 +192,10 @@ const AnimalCharts = () => {
             <Paper
               elevation={1}
               className={classes.userItemContainer}
-              onClick={() => setOpenDetail(true)}
+              onClick={() => {
+                setOpenDetail(true);
+                setDlg("3");
+              }}
             >
               <Typography
                 color={"primary"}
@@ -224,7 +240,10 @@ const AnimalCharts = () => {
             <Paper
               elevation={1}
               className={classes.userItemContainer}
-              onClick={() => setOpenDetail(true)}
+              onClick={() => {
+                setOpenDetail(true);
+                setDlg("4");
+              }}
             >
               <Typography
                 color={"primary"}
@@ -269,7 +288,10 @@ const AnimalCharts = () => {
             <Paper
               elevation={1}
               className={classes.userItemContainer}
-              onClick={() => setOpenDetail(true)}
+              onClick={() => {
+                setOpenDetail(true);
+                setDlg("5");
+              }}
             >
               <Typography
                 color={"primary"}
@@ -314,7 +336,10 @@ const AnimalCharts = () => {
             <Paper
               elevation={1}
               className={classes.userItemContainer}
-              onClick={() => setOpenDetail(true)}
+              onClick={() => {
+                setOpenDetail(true);
+                setDlg("6");
+              }}
             >
               <Typography
                 color={"primary"}
@@ -377,10 +402,42 @@ const AnimalCharts = () => {
         aria-describedby="alert-dialog-description"
         classes={{ paperFullWidth: classes.modal }}
       >
-        <HighchartsReact
-          highcharts={Highcharts}
-          options={renderChartDetailOptions(animalList)}
-        />
+        {dlg === "1" && (
+          <HighchartsReact
+            highcharts={Highcharts}
+            options={renderChartDetailOptions(animalList)}
+          />
+        )}
+        {dlg === "2" && (
+          <HighchartsReact
+            highcharts={Highcharts}
+            options={renderChartDetail2Options()}
+          />
+        )}
+        {dlg === "3" && (
+          <HighchartsReact
+            highcharts={Highcharts}
+            options={renderChartDetail3Options()}
+          />
+        )}
+        {dlg === "4" && (
+          <HighchartsReact
+            highcharts={Highcharts}
+            options={renderChartDetail4Options()}
+          />
+        )}
+        {dlg === "5" && (
+          <HighchartsReact
+            highcharts={Highcharts}
+            options={renderChartDetail5Options()}
+          />
+        )}
+        {dlg === "6" && (
+          <HighchartsReact
+            highcharts={Highcharts}
+            options={renderChartDetail6Options()}
+          />
+        )}
       </Dialog>
     </Grid>
   );

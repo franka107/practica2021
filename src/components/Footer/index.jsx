@@ -2,7 +2,14 @@ import React from "react";
 import { useStyles } from "./styles";
 import { Button, Grid, Link, Typography } from "@material-ui/core";
 import { menu } from "./constants";
-import { Call, Check, Facebook, Instagram, Twitter } from "@material-ui/icons";
+import {
+  Call,
+  Check,
+  Facebook,
+  Instagram,
+  Twitter,
+  LinkedIn,
+} from "@material-ui/icons";
 import Logo from "../Logo";
 import { useHistory } from "react-router";
 import { ROUTES_DICT } from "../../routes/routesDict";
@@ -143,8 +150,14 @@ function Footer() {
                   "https://www.facebook.com/ContigoPecuario/";
               }}
             />
-            <Twitter color={"primary"} className={classes.icon} />
-            <Instagram color={"primary"} className={classes.icon} />
+            <LinkedIn
+              color={"primary"}
+              className={classes.icon}
+              onClick={() => {
+                window.location.href =
+                  "https://www.linkedin.com/company/contigo-pecuario/";
+              }}
+            />
           </div>
         </Grid>
         <Grid

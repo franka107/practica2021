@@ -4,6 +4,7 @@ export const milkRouteOptions = (location) => [
   {
     key: "Inicio",
     path: ROUTES_DICT.milk.list,
+    icon: "home",
   },
   {
     key: "Agregar registro de ordeño",
@@ -13,5 +14,6 @@ export const milkRouteOptions = (location) => [
         background: location,
       },
     },
+    icon: "add",
   },
 ];

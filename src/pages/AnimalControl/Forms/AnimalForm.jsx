@@ -20,6 +20,7 @@ import {
   typeServicesTest,
 } from "../../../constants";
 import raceActions from "../../../redux/actions/race.actions";
+import CustomInfoIcon from "../../../components/CustomInfoIcon";
 
 /**
  * @component
@@ -297,13 +298,17 @@ function AnimalForm({
               sm={6}
               xs={12}
             ></DatePickerFieldFormik>
-            <TextFieldFormik
-              label="Nro de registro"
-              name="registerNumber"
-              type="text"
-              onChange={props.handleChange}
-              xs={6}
-            ></TextFieldFormik>
+            <Grid item container xs={6}>
+              <TextFieldFormik
+                label="Nro de registro"
+                name="registerNumber"
+                type="text"
+                onChange={props.handleChange}
+                xs={11}
+              ></TextFieldFormik>
+              <CustomInfoIcon title={"Falta información"} />
+            </Grid>
+
             <SelectFieldFormik
               onChange={props.handleChange}
               options={Object.keys(typeServicesTest).map((key) => ({

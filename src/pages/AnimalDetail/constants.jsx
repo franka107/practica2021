@@ -8,6 +8,7 @@ export const animalDetailChipOptions = (location, params) => [
       pathname: ROUTES_DICT.animal.list,
       background: location,
     },
+    icon: "home",
   },
   {
     key: "Pedigree",
@@ -25,5 +26,6 @@ export const animalDetailChipOptions = (location, params) => [
       ...params,
       _id: params._id,
     }),
+    icon: "delete",
   },
 ];

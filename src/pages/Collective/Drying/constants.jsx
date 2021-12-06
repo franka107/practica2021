@@ -9,5 +9,6 @@ export const dryingRouteOptions = (location) => [
         background: location,
       },
     },
+    icon: "add",
   },
 ];

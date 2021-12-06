@@ -174,4 +174,16 @@ export const useStyles = makeStyles((theme) => ({
   dataContainer__text: {
     paddingBottom: theme.spacing(1),
   },
+  iconList__chip: {
+    "&:hover": {
+      color: "white",
+    },
+    "&--active": {
+      color: "white",
+      "&:focus": {
+        backgroundColor: theme.palette.button.primary,
+        color: "white",
+      },
+    },
+  },
 }));

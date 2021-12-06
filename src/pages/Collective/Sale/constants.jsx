@@ -9,5 +9,6 @@ export const saleRouteOptions = (location) => [
         background: location,
       },
     },
+    icon: "add",
   },
 ];

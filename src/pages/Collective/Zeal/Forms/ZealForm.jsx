@@ -10,6 +10,7 @@ import { shallowEqual, useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import ZealActions from "../../../../redux/actions/zeal.actions";
 import AnimalActions from "../../../../redux/actions/animal.actions";
+import CustomInfoIcon from "../../../../components/CustomInfoIcon";
 
 const defaultInitValues = {
   animalId: "",
@@ -112,12 +113,16 @@ const ZealForm = ({
               onChange={props.handleChange}
               xs={12}
             ></DatePickerFieldFormik>
-            <TextFieldFormik
-              label="I.E.C"
-              name="iecDate"
-              onChange={props.handleChange}
-              xs={12}
-            ></TextFieldFormik>
+            <Grid item container xs={12}>
+              <TextFieldFormik
+                label="I.E.C"
+                name="iecDate"
+                onChange={props.handleChange}
+                xs={11}
+              ></TextFieldFormik>
+              <CustomInfoIcon title={"Falta información"} />
+            </Grid>
+
             <TextFieldFormik
               label="Obervaciones"
               name="observation"

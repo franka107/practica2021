@@ -179,6 +179,7 @@ export const birthChipOptions = (location) => [
       pathname: ROUTES_DICT.birth.list,
       background: location,
     },
+    icon: "home",
   },
   {
     key: "Agregar nacimiento",
@@ -186,5 +187,6 @@ export const birthChipOptions = (location) => [
       pathname: ROUTES_DICT.birth.create,
       background: location,
     },
+    icon: "add",
   },
 ];

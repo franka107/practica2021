@@ -31,6 +31,7 @@ import ACTION_TYPES from "../../../redux/types";
 import IdeasCloudApi from "../../../helpers/ideascloudApi";
 import { regionConstants } from "../../../redux/types/region.constants";
 import { districtConstants } from "../../../redux/types/district.constants";
+import CustomInfoIcon from "../../CustomInfoIcon";
 
 const defaultInitValues = {
   countryId: "", // *
@@ -89,6 +90,9 @@ const RegisterAgribusinessForm = ({
   const currentCurrency = useSelector((state) => state.currency.current);
 
   const history = useHistory();
+
+  const stateTitle =
+    'Una vez que se declare el estado del animal como "Preñada" o "Vacía" ya no estará disponible en este módulo hasta que se realize un nuevo servicio del animal.';
 
   useEffect(() => {
     dispatch(countryActions.retrieveCountries());
@@ -507,12 +511,15 @@ const RegisterAgribusinessForm = ({
                       Producción
                     </Typography>
                   </Grid>
-                  <SelectFieldFormik
-                    xs={6}
-                    label="Sistema"
-                    name="system"
-                    options={targetSystemOptions}
-                  ></SelectFieldFormik>
+                  <Grid item container xs={12}>
+                    <SelectFieldFormik
+                      xs={11}
+                      label="Sistema"
+                      name="system"
+                      options={targetSystemOptions}
+                    ></SelectFieldFormik>
+                    <CustomInfoIcon title={stateTitle} />
+                  </Grid>
                   {/* <TextFieldFormik
                     label="Promedio de lluvias por año"
                     name="rainsPerYear"

@@ -9,5 +9,6 @@ export const zealRouteOptions = (location) => [
         background: location,
       },
     },
+    icon: "add",
   },
 ];

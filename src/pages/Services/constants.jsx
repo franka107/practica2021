@@ -69,14 +69,17 @@ export const list = [
   {
     key: "Inicio",
     path: ROUTES_DICT.service.list,
+    icon: "home",
   },
   {
     key: "Agregar I.A / Agregar M.N",
     path: ROUTES_DICT.service.createIAMN,
+    icon: "add",
   },
   {
     key: "Agregar Tranferencia de embriones",
     path: ROUTES_DICT.service.createET,
+    icon: "add",
   },
   // {
   //   key: "Nuevo movimiento",
