@@ -30,7 +30,11 @@ function Logo({ footer, customClasses, onClick = () => {} }) {
       {!footer ? (
         <img src={logo} alt={"Logo"} className={classes.logo} />
       ) : (
-        <img src={logoFooter} alt={"Logo"} className={classes.logo} />
+        <img
+          src={logoFooter}
+          alt={"Logo"}
+          className={`star-burst ${classes.logo}`}
+        />
       )}
     </div>
   );

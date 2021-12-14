@@ -35,22 +35,28 @@ export const menuList = () => {
 export const list = [
   {
     id: "control-ganadero",
-    title: "Control ganadero",
+    title: "Control de Ganado",
+    tour: "sidebar__control__animal",
     img: faHome,
     submenu: [
       {
-        id: "inicio",
-        title: "Inicio",
-        link: ROUTES_DICT.animal.list,
-      },
-      {
-        id: "Agregar Animal",
+        id: "Registro",
         title: "Agregar Animal",
         link: ROUTES_DICT.animal.create,
       },
       {
+        id: "Modificacion",
+        title: "Modificacion",
+        link: ROUTES_DICT.animal.list,
+      },
+      {
         id: "Carga Masiva",
         title: "Carga Masiva",
+        link: ROUTES_DICT.animal.createBulk,
+      },
+      {
+        id: "Analisis",
+        title: "Analisis",
         link: ROUTES_DICT.animal.createBulk,
       },
       // {
@@ -62,189 +68,474 @@ export const list = [
   },
   {
     id: "control-lechero",
-    title: "Control lechero",
+    title: "Control de Produccion",
+    tour: "sidebar__control__milk",
     img: Rec1,
     submenu: [
       {
         id: "inicio",
-        title: "Inicio",
-        link: ROUTES_DICT.milk.list,
+        title: "Produccion Lechera",
+        submenu: [
+          {
+            id: "agregar",
+            title: "Registro Diario",
+            // link: ROUTES_DICT.palpation.create,
+          },
+          {
+            id: "inicio",
+            title: "Modificacion",
+            // link: ROUTES_DICT.palpation.list,
+          },
+          {
+            id: "inicio",
+            title: "Analisis",
+            // link: ROUTES_DICT.palpation.list,
+          },
+        ],
       },
       {
-        id: "agregar",
-        title: "Agregar registro de ordeño",
-        link: ROUTES_DICT.milk.create,
+        id: "inicio",
+        title: "Produccion Engorde",
+        submenu: [
+          {
+            id: "agregar",
+            title: "Registro Peso",
+            // link: ROUTES_DICT.palpation.create,
+          },
+          {
+            id: "inicio",
+            title: "Modificacion",
+            // link: ROUTES_DICT.palpation.list,
+          },
+          {
+            id: "inicio",
+            title: "Analisis",
+            // link: ROUTES_DICT.palpation.list,
+          },
+        ],
       },
     ],
   },
   {
     id: "control-reproductivo",
-    title: "Control reproductivo",
+    title: "Control de Reproducción",
     img: faSyringe,
     submenu: [
       {
-        id: "preñeces",
-        title: "Preñeces",
-        img: Rec2,
-        link: ROUTES_DICT.pregnancies,
+        id: "inicio",
+        title: "Colecticva",
+        submenu: [
+          {
+            id: "agregar",
+            title: "Nuevo registro",
+            // link: ROUTES_DICT.palpation.create,
+          },
+          {
+            id: "inicio",
+            title: "Modificacion",
+            // link: ROUTES_DICT.palpation.list,
+          },
+          {
+            id: "inicio",
+            title: "Analisis",
+            // link: ROUTES_DICT.palpation.list,
+          },
+        ],
       },
       {
-        id: "palpaciones",
+        id: "inicio",
+        title: "Servicios Reproductivos",
+        submenu: [
+          {
+            id: "agregar",
+            title: "Nuevo registro",
+            // link: ROUTES_DICT.palpation.create,
+          },
+          {
+            id: "inicio",
+            title: "Modificacion",
+            // link: ROUTES_DICT.palpation.list,
+          },
+          {
+            id: "inicio",
+            title: "Analisis",
+            // link: ROUTES_DICT.palpation.list,
+          },
+        ],
+      },
+      {
+        id: "inicio",
         title: "Palpaciones",
-        img: Rec3,
         submenu: [
           {
-            id: "inicio",
-            title: "Inicio",
-            link: ROUTES_DICT.palpation.list,
+            id: "agregar",
+            title: "Nuevo registro",
+            // link: ROUTES_DICT.palpation.create,
           },
           {
-            id: "agregar",
-            title: "Agregar palpación",
-            link: ROUTES_DICT.palpation.create,
+            id: "inicio",
+            title: "Modificacion",
+            // link: ROUTES_DICT.palpation.list,
+          },
+          {
+            id: "inicio",
+            title: "Analisis",
+            // link: ROUTES_DICT.palpation.list,
           },
         ],
       },
       {
-        id: "5",
+        id: "inicio",
         title: "Nacimientos",
-        img: faCalendarAlt,
-        // link: routesDictionary.birth,
         submenu: [
-          {
-            id: "inicio",
-            title: "Inicio",
-            link: ROUTES_DICT.birth.list,
-          },
           {
             id: "agregar",
-            title: "Agregar nacimiento",
-            link: ROUTES_DICT.birth.create,
+            title: "Nuevo registro",
+            // link: ROUTES_DICT.palpation.create,
           },
-        ],
-      },
-      {
-        id: "prod-embriones",
-        title: "Prod. Embriones",
-        img: Rec5,
-        // link: routesDictionary.livestockControl,
-      },
-      {
-        id: "andrología",
-        title: "Andrología",
-        img: Rec10,
-        // link: routesDictionary.livestockControl,
-      },
-      {
-        id: "servicios",
-        title: "Servicios",
-        img: Rec11,
-        submenu: [
           {
             id: "inicio",
-            title: "Inicio",
-            link: ROUTES_DICT.service.list,
+            title: "Modificacion",
+            // link: ROUTES_DICT.palpation.list,
           },
+          {
+            id: "inicio",
+            title: "Analisis",
+            // link: ROUTES_DICT.palpation.list,
+          },
+        ],
+      },
+      {
+        id: "inicio",
+        title: "Prod. Embriones(PRO)",
+        submenu: [
           {
             id: "agregar",
-            title: "Agregar I.A / M.N.",
-            link: ROUTES_DICT.service.createIAMN,
+            title: "Nuevo registro",
+            // link: ROUTES_DICT.palpation.create,
           },
           {
-            id: "agregar-transferencias",
-            title: "Agregar transf. embriones",
-            link: ROUTES_DICT.service.createET,
+            id: "inicio",
+            title: "Modificacion",
+            // link: ROUTES_DICT.palpation.list,
+          },
+          {
+            id: "inicio",
+            title: "Analisis",
+            // link: ROUTES_DICT.palpation.list,
           },
         ],
       },
       {
-        id: "colectiva",
-        title: "Colectiva",
-        img: faSignal,
+        id: "inicio",
+        title: "Existencias Geneticas",
         submenu: [
           {
-            id: "registro-celos",
-            title: "Registro celos",
-            link: ROUTES_DICT.collective.zeal.list,
+            id: "agregar",
+            title: "Nuevo registro",
+            // link: ROUTES_DICT.palpation.create,
           },
-          // {
-          //   id: "agregar-pesos",
-          //   title: "Ingresos Pesos",
-          //   link: ROUTES_DICT.collective.weight.list,
-          // },
           {
-            id: "ventas",
-            title: "Ventas",
-            link: ROUTES_DICT.collective.sale.list,
+            id: "inicio",
+            title: "Modificacion",
+            // link: ROUTES_DICT.palpation.list,
           },
-          // {
-          //   id: "sanidad",
-          //   title: "Sanidad",
-          //   link: routesDictionary.livestockControl,
-          // },
-          // {
-          //   id: "agregar-registros",
-          //   title: "Reg. asociación",
-          //   link: ROUTES_DICT.collective.association.list,
-          // },
           {
-            id: "secados",
-            title: "Secados/Destete",
-            link: ROUTES_DICT.collective.drying.list,
+            id: "inicio",
+            title: "Analisis",
+            // link: ROUTES_DICT.palpation.list,
           },
         ],
       },
       {
-        id: "existencias",
-        title: "Existencias genéticas",
-        img: faKey,
+        id: "inicio",
+        title: "Andrologia (PRO)",
         submenu: [
           {
-            id: "semen",
-            title: "Semen",
-            link: ROUTES_DICT.geneticStock.geneticType.list.replace(
-              ":geneticType",
-              ROUTES_SLUGS.semen
-            ),
+            id: "agregar",
+            title: "Nuevo registro",
+            // link: ROUTES_DICT.palpation.create,
           },
           {
-            id: "embriones",
-            title: "Embriones",
-            link: ROUTES_DICT.geneticStock.geneticType.list.replace(
-              ":geneticType",
-              ROUTES_SLUGS.embryo
-            ),
+            id: "inicio",
+            title: "Modificacion",
+            // link: ROUTES_DICT.palpation.list,
+          },
+          {
+            id: "inicio",
+            title: "Analisis",
+            // link: ROUTES_DICT.palpation.list,
           },
         ],
       },
-      // {
-      //   id: "reportes",
-      //   title: "Reportes",
-      //   img: faArchive,
-      //   // link: routesDictionary.livestockControl,
-      // },
-      // {
-      //   id: "carga-masiva",
-      //   title: "Carga masiva",
-      //   img: faListAlt,
-      //   submenu: [
-      //     {
-      //       id: "animales",
-      //       title: "Masiva de animales",
-      //       // link: routesDictionary.livestockControl,
-      //     },
-      //     {
-      //       id: "embriones",
-      //       title: "Masiva de embroines",
-      //       // link: routesDictionary.livestockControl,
-      //     },
-      //     {
-      //       id: "inseminaciones",
-      //       title: "Masiva de inseminaciones",
-      //       // link: routesDictionary.livestockControl,
-      //     },
-      //   ],
-      // },
+      {
+        id: "inicio",
+        title: "Colecticva",
+        submenu: [
+          {
+            id: "agregar",
+            title: "Nuevo registro",
+            // link: ROUTES_DICT.palpation.create,
+          },
+          {
+            id: "inicio",
+            title: "Modificacion",
+            // link: ROUTES_DICT.palpation.list,
+          },
+          {
+            id: "inicio",
+            title: "Analisis",
+            // link: ROUTES_DICT.palpation.list,
+          },
+        ],
+      },
     ],
+
+    // {
+    //   id: "preñeces",
+    //   title: "Preñeces",
+    //   img: Rec2,
+    //   link: ROUTES_DICT.pregnancies,
+    // },
+    // {
+    //   id: "palpaciones",
+    //   title: "Palpaciones",
+    //   img: Rec3,
+    //   submenu: [
+    //     {
+    //       id: "inicio",
+    //       title: "Inicio",
+    //       link: ROUTES_DICT.palpation.list,
+    //     },
+    //     {
+    //       id: "agregar",
+    //       title: "Agregar palpación",
+    //       link: ROUTES_DICT.palpation.create,
+    //     },
+    //   ],
+    // },
+    // {
+    //   id: "5",
+    //   title: "Nacimientos",
+    //   img: faCalendarAlt,
+    //   // link: routesDictionary.birth,
+    //   submenu: [
+    //     {
+    //       id: "inicio",
+    //       title: "Inicio",
+    //       link: ROUTES_DICT.birth.list,
+    //     },
+    //     {
+    //       id: "agregar",
+    //       title: "Agregar nacimiento",
+    //       link: ROUTES_DICT.birth.create,
+    //     },
+    //   ],
+    // },
+    // {
+    //   id: "prod-embriones",
+    //   title: "Prod. Embriones",
+    //   img: Rec5,
+    //   // link: routesDictionary.livestockControl,
+    // },
+    // {
+    //   id: "andrología",
+    //   title: "Andrología",
+    //   img: Rec10,
+    //   // link: routesDictionary.livestockControl,
+    // },
+    // {
+    //   id: "servicios",
+    //   title: "Servicios",
+    //   img: Rec11,
+    //   submenu: [
+    //     {
+    //       id: "inicio",
+    //       title: "Inicio",
+    //       link: ROUTES_DICT.service.list,
+    //     },
+    //     {
+    //       id: "agregar",
+    //       title: "Agregar I.A / M.N.",
+    //       link: ROUTES_DICT.service.createIAMN,
+    //     },
+    //     {
+    //       id: "agregar-transferencias",
+    //       title: "Agregar transf. embriones",
+    //       link: ROUTES_DICT.service.createET,
+    //     },
+    //   ],
+    // },
+    // {
+    //   id: "colectiva",
+    //   title: "Colectiva",
+    //   img: faSignal,
+    //   submenu: [
+    //     {
+    //       id: "registro-celos",
+    //       title: "Registro celos",
+    //       link: ROUTES_DICT.collective.zeal.list,
+    //     },
+    //     // {
+    //     //   id: "agregar-pesos",
+    //     //   title: "Ingresos Pesos",
+    //     //   link: ROUTES_DICT.collective.weight.list,
+    //     // },
+    //     {
+    //       id: "ventas",
+    //       title: "Ventas",
+    //       link: ROUTES_DICT.collective.sale.list,
+    //     },
+    //     // {
+    //     //   id: "sanidad",
+    //     //   title: "Sanidad",
+    //     //   link: routesDictionary.livestockControl,
+    //     // },
+    //     // {
+    //     //   id: "agregar-registros",
+    //     //   title: "Reg. asociación",
+    //     //   link: ROUTES_DICT.collective.association.list,
+    //     // },
+    //     {
+    //       id: "secados",
+    //       title: "Secados/Destete",
+    //       link: ROUTES_DICT.collective.drying.list,
+    //     },
+    //   ],
+    // },
+    // {
+    //   id: "existencias",
+    //   title: "Existencias genéticas",
+    //   img: faKey,
+    //   submenu: [
+    //     {
+    //       id: "semen",
+    //       title: "Semen",
+    //       link: ROUTES_DICT.geneticStock.geneticType.list.replace(
+    //         ":geneticType",
+    //         ROUTES_SLUGS.semen
+    //       ),
+    //     },
+    //     {
+    //       id: "embriones",
+    //       title: "Embriones",
+    //       link: ROUTES_DICT.geneticStock.geneticType.list.replace(
+    //         ":geneticType",
+    //         ROUTES_SLUGS.embryo
+    //       ),
+    //     },
+    //   ],
+    // },
+    // {
+    //   id: "reportes",
+    //   title: "Reportes",
+    //   img: faArchive,
+    //   // link: routesDictionary.livestockControl,
+    // },
+    // {
+    //   id: "carga-masiva",
+    //   title: "Carga masiva",
+    //   img: faListAlt,
+    //   submenu: [
+    //     {
+    //       id: "animales",
+    //       title: "Masiva de animales",
+    //       // link: routesDictionary.livestockControl,
+    //     },
+    //     {
+    //       id: "embriones",
+    //       title: "Masiva de embroines",
+    //       // link: routesDictionary.livestockControl,
+    //     },
+    //     {
+    //       id: "inseminaciones",
+    //       title: "Masiva de inseminaciones",
+    //       // link: routesDictionary.livestockControl,
+    //     },
+    //   ],
+    // },
+    // ],
+  },
+  {
+    id: "G",
+    title: "Control de Ventas",
+    img: Rec1,
+    submenu: [
+      {
+        id: "inicio",
+        title: "Nuevo Registro",
+      },
+      {
+        id: "inicio",
+        title: "Modificación",
+      },
+      {
+        id: "inicio",
+        title: "Analisis",
+      },
+    ],
+  },
+  {
+    id: "A",
+    title: "Control de Subministros",
+    img: Rec1,
+    submenu: [
+      {
+        id: "inicio",
+        title: "Nuevo Registro",
+      },
+      {
+        id: "inicio",
+        title: "Modificación",
+      },
+      {
+        id: "inicio",
+        title: "Analisis",
+      },
+    ],
+  },
+  {
+    id: "X",
+    title: "Control de Sanidad Veterinaria",
+    img: Rec1,
+    submenu: [
+      {
+        id: "inicio",
+        title: "Nuevo Registro",
+      },
+      {
+        id: "inicio",
+        title: "Modificación",
+      },
+      {
+        id: "inicio",
+        title: "Analisis",
+      },
+    ],
+  },
+  {
+    id: "B",
+    title: "Tablero de Control de Gestión (PRO)",
+    img: Rec1,
+  },
+  {
+    id: "C",
+    title: "Gestion de Asociación (PRO)",
+    img: Rec1,
+  },
+  {
+    id: "D",
+    title: "Capacitacion y Noticias (PRO)",
+    img: Rec1,
+  },
+  {
+    id: "E",
+    title: "Gestion de Integracion de Tecnológia (PRO)",
+    img: Rec1,
+  },
+  {
+    id: "F",
+    title: "Gestion de Activos Fijos (PRO)",
+    img: Rec1,
   },
 ];

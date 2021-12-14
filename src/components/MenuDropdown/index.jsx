@@ -78,6 +78,7 @@ function MenuDropdown({ isLogin, setLoginState }) {
                 color: "#fff",
                 backgroundColor: "#00A796",
               }}
+              className="report"
               onClick={() => setOpenDialog(true)}
             >
               Reportar

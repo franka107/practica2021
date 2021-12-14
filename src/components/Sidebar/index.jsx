@@ -118,7 +118,7 @@ function Sidebar({ openDrawer, setOpenDrawer, options }) {
   const drawer = (
     <List
       component="nav"
-      className={classes.root}
+      className={`sidebar ${classes.root}`}
       style={{ position: "sticky", top: "67px" }}
       subheader={
         <ListSubheader
@@ -224,160 +224,163 @@ function Sidebar({ openDrawer, setOpenDrawer, options }) {
       }
     >
       {options.map((item) => {
+        console.log(item);
         const CustomIcon = item.img;
         return (
-          <React.Fragment key={`list-item-${item.id}`}>
-            <ListItem
-              button
-              onClick={() => {
-                handleClick(item.id);
-                if (item.link) {
-                  if (typeof item.link === "string") {
-                    history.push(item.link, { background: location });
-                  } else {
-                    history.push(item.link);
+          <div className={clsx(item.tour && item.tour)}>
+            <React.Fragment key={`list-item-${item.id}`}>
+              <ListItem
+                button
+                onClick={() => {
+                  handleClick(item.id);
+                  if (item.link) {
+                    if (typeof item.link === "string") {
+                      history.push(item.link, { background: location });
+                    } else {
+                      history.push(item.link);
+                    }
                   }
-                }
-              }}
-              className={clsx(
-                classes.itemList,
-                nestedList[item.id] && classes.activeItem
-              )}
-            >
-              <ListItemIcon>
-                {CustomIcon && CustomIcon.prefix ? (
-                  <FontAwesomeIcon icon={item.img} className={classes.icon} />
-                ) : (
-                  <CustomIcon className={classes.icon} />
+                }}
+                className={clsx(
+                  classes.itemList,
+                  nestedList[item.id] && classes.activeItem
                 )}
-              </ListItemIcon>
-              <ListItemText primary={item.title} className={classes.text} />
-              {item.submenu && (
-                <div>
-                  {nestedList[item.id] ? (
-                    <ExpandLess color={"primary"} />
+              >
+                <ListItemIcon>
+                  {CustomIcon && CustomIcon.prefix ? (
+                    <FontAwesomeIcon icon={item.img} className={classes.icon} />
                   ) : (
-                    <ExpandMore color={"primary"} />
+                    <CustomIcon className={classes.icon} />
                   )}
-                </div>
-              )}
-            </ListItem>
-            <Collapse
-              in={Boolean(nestedList[item.id])}
-              timeout="auto"
-              unmountOnExit
-            >
-              {item.submenu &&
-                item.submenu.map((subitem) => {
-                  const SubCustomIcon = subitem.img;
+                </ListItemIcon>
+                <ListItemText primary={item.title} className={classes.text} />
+                {item.submenu && (
+                  <div>
+                    {nestedList[item.id] ? (
+                      <ExpandLess color={"primary"} />
+                    ) : (
+                      <ExpandMore color={"primary"} />
+                    )}
+                  </div>
+                )}
+              </ListItem>
+              <Collapse
+                in={Boolean(nestedList[item.id])}
+                timeout="auto"
+                unmountOnExit
+              >
+                {item.submenu &&
+                  item.submenu.map((subitem) => {
+                    const SubCustomIcon = subitem.img;
 
-                  return (
-                    <List
-                      key={`list-sub-item-${subitem.id}`}
-                      component="div"
-                      disablePadding
-                      onClick={() => {
-                        if (subitem.link) {
-                          if (typeof subitem.link === "string") {
-                            history.push(subitem.link, {
-                              background: location,
-                            });
-                          } else {
-                            history.push(subitem.link);
-                          }
-                        }
-                      }}
-                    >
-                      <ListItem
-                        button
-                        className={classes.nested}
+                    return (
+                      <List
+                        key={`list-sub-item-${subitem.id}`}
+                        component="div"
+                        disablePadding
                         onClick={() => {
-                          handleSubMenuClick(subitem.id);
+                          if (subitem.link) {
+                            if (typeof subitem.link === "string") {
+                              history.push(subitem.link, {
+                                background: location,
+                              });
+                            } else {
+                              history.push(subitem.link);
+                            }
+                          }
                         }}
                       >
-                        {subitem.img && (
-                          <ListItemIcon>
-                            {SubCustomIcon && SubCustomIcon.prefix ? (
-                              <FontAwesomeIcon
-                                icon={subitem.img}
-                                className={classes.icon}
-                              />
-                            ) : (
-                              <SubCustomIcon className={classes.icon} />
-                            )}
-                          </ListItemIcon>
-                        )}
-                        <ListItemText
-                          disableTypography
-                          primary={subitem.title}
-                          className={clsx(
-                            classes.text,
-                            subNestedList[subitem.id] && !subitem.submenu
-                              ? classes.activeSubItem
-                              : classes.text
+                        <ListItem
+                          button
+                          className={classes.nested}
+                          onClick={() => {
+                            handleSubMenuClick(subitem.id);
+                          }}
+                        >
+                          {subitem.img && (
+                            <ListItemIcon>
+                              {SubCustomIcon && SubCustomIcon.prefix ? (
+                                <FontAwesomeIcon
+                                  icon={subitem.img}
+                                  className={classes.icon}
+                                />
+                              ) : (
+                                <SubCustomIcon className={classes.icon} />
+                              )}
+                            </ListItemIcon>
                           )}
-                        />
-                        {subitem.submenu && (
-                          <div>
-                            {nestedList[subitem.id] ? (
-                              <ExpandLess color={"primary"} />
-                            ) : (
-                              <ExpandMore color={"primary"} />
+                          <ListItemText
+                            disableTypography
+                            primary={subitem.title}
+                            className={clsx(
+                              classes.text,
+                              subNestedList[subitem.id] && !subitem.submenu
+                                ? classes.activeSubItem
+                                : classes.text
                             )}
-                          </div>
-                        )}
-                      </ListItem>
-                      <Collapse
-                        in={Boolean(subNestedList[subitem.id])}
-                        timeout="auto"
-                        unmountOnExit
-                      >
-                        {subitem.submenu &&
-                          subitem.submenu.map((subsubitem) => {
-                            const SubSubCustomIcon = subsubitem.img;
+                          />
+                          {subitem.submenu && (
+                            <div>
+                              {nestedList[subitem.id] ? (
+                                <ExpandLess color={"primary"} />
+                              ) : (
+                                <ExpandMore color={"primary"} />
+                              )}
+                            </div>
+                          )}
+                        </ListItem>
+                        <Collapse
+                          in={Boolean(subNestedList[subitem.id])}
+                          timeout="auto"
+                          unmountOnExit
+                        >
+                          {subitem.submenu &&
+                            subitem.submenu.map((subsubitem) => {
+                              const SubSubCustomIcon = subsubitem.img;
 
-                            return (
-                              <List
-                                key={`list-sub-sub-item-${subsubitem.id}`}
-                                component="div"
-                                disablePadding
-                              >
-                                <ListItem
-                                  button
-                                  className={classes.nestedSub}
-                                  onClick={() => {
-                                    if (subsubitem.link) {
-                                      history.push(subsubitem.link);
-                                    }
-                                    handleSubSubMenuClick(subsubitem.id);
-                                  }}
+                              return (
+                                <List
+                                  key={`list-sub-sub-item-${subsubitem.id}`}
+                                  component="div"
+                                  disablePadding
                                 >
-                                  {subsubitem.img && (
-                                    <ListItemIcon>
-                                      <SubSubCustomIcon
-                                        className={classes.icon}
-                                      />
-                                    </ListItemIcon>
-                                  )}
-                                  <ListItemText
-                                    disableTypography
-                                    primary={subsubitem.title}
-                                    className={clsx(
-                                      classes.text,
-                                      subSubNestedList[subsubitem.id] &&
-                                        classes.activeSubItem
+                                  <ListItem
+                                    button
+                                    className={classes.nestedSub}
+                                    onClick={() => {
+                                      if (subsubitem.link) {
+                                        history.push(subsubitem.link);
+                                      }
+                                      handleSubSubMenuClick(subsubitem.id);
+                                    }}
+                                  >
+                                    {subsubitem.img && (
+                                      <ListItemIcon>
+                                        <SubSubCustomIcon
+                                          className={classes.icon}
+                                        />
+                                      </ListItemIcon>
                                     )}
-                                  />
-                                </ListItem>
-                              </List>
-                            );
-                          })}
-                      </Collapse>
-                    </List>
-                  );
-                })}
-            </Collapse>
-          </React.Fragment>
+                                    <ListItemText
+                                      disableTypography
+                                      primary={subsubitem.title}
+                                      className={clsx(
+                                        classes.text,
+                                        subSubNestedList[subsubitem.id] &&
+                                          classes.activeSubItem
+                                      )}
+                                    />
+                                  </ListItem>
+                                </List>
+                              );
+                            })}
+                        </Collapse>
+                      </List>
+                    );
+                  })}
+              </Collapse>
+            </React.Fragment>
+          </div>
         );
       })}
     </List>
