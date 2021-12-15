@@ -7,6 +7,8 @@ import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 import { es } from "date-fns/esm/locale";
 import Joyride from "react-joyride";
+import { useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
 
 function App() {
   const steps = [
@@ -96,6 +98,11 @@ function App() {
       title: "Sidebar",
     },
   ];
+  const history = useHistory();
+
+  useEffect(() => {
+    console.log("hola");
+  }, []);
 
   return (
     <Provider store={store}>
@@ -103,7 +110,7 @@ function App() {
         <ThemeProvider theme={mainTheme}>
           <CssBaseline />
           <AppRouter />
-          <Joyride
+          {/* <Joyride
             continuous={true}
             run={true}
             scrollToFirstStep={true}
@@ -115,7 +122,7 @@ function App() {
                 zIndex: 10000,
               },
             }}
-          />
+          /> */}
         </ThemeProvider>
       </MuiPickersUtilsProvider>
     </Provider>

@@ -123,6 +123,7 @@ const mainTheme = createTheme({
       secondary: "#395062",
       tertiary: "#2675CA",
       quaternary: "#5D6673",
+      quintenary: "#7030A0",
       light: "#F2F9FF",
       dark: "#263947",
     },

@@ -65,7 +65,7 @@ function AnimalDescription() {
               <FontAwesomeIcon
                 icon={faFlag}
                 className={classes.icon}
-                size={"3x"}
+                size={"2x"}
               />
               <Typography
                 variant={"body2"}
@@ -89,7 +89,7 @@ function AnimalDescription() {
               <FontAwesomeIcon
                 icon={faGem}
                 className={classes.icon}
-                size={"3x"}
+                size={"2x"}
               />
               <Typography
                 color={"primary"}
@@ -112,7 +112,7 @@ function AnimalDescription() {
               <FontAwesomeIcon
                 icon={faPaperPlane}
                 className={classes.icon}
-                size={"3x"}
+                size={"2x"}
               />
               <Typography
                 color={"primary"}

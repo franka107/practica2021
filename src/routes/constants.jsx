@@ -98,6 +98,7 @@ import { milkRouteOptions } from "../pages/MilkControl/constants";
 import WeightControlCreatePage from "../pages/AnimalDetail/WeightControlCreatePage";
 import RecoverPasswordPage from "../pages/RecoverPasswordPage";
 import { weightRouteOptions } from "../pages/Collective/Weight/constants";
+import { saleRouteOptions } from "../pages/Collective/Sale/constants";
 
 export const ROUTE_TYPES = {
   public: "public",
@@ -432,6 +433,100 @@ export const RENDER_ROUTES = [
     ],
   },
   /**
+   * Rutas relacionadas al Módulo de Pesaje
+   */
+  {
+    path: ROUTES_DICT.weight.root,
+    key: "Pesaje",
+    exact: false,
+    component: ({ children }) => (
+      <DefaultPage title="Pesaje" chipList={weightRouteOptions()}>
+        {(props) => children(props)}
+      </DefaultPage>
+    ),
+    layout: DashboardLayout,
+    type: ROUTE_TYPES.private,
+    routes: [
+      {
+        path: ROUTES_DICT.weight.list,
+        key: "Lista de pesaje",
+        exact: false,
+        component: (props) => <WeightListPage {...props} />,
+        type: ROUTE_TYPES.private,
+        routes: [
+          {
+            path: ROUTES_DICT.weight.create,
+            key: "Nuevo pesaje",
+            exact: true,
+            component: (props) => <WeightCreatePage {...props} />,
+            type: ROUTE_TYPES.private,
+          },
+          {
+            path: ROUTES_DICT.weight.update,
+            key: "Editar pesaje",
+            exact: true,
+            component: (props) => <WeightUpdatePage {...props} />,
+            type: ROUTE_TYPES.private,
+          },
+          {
+            path: ROUTES_DICT.weight.delete,
+            key: "Eliminar pesaje",
+            exact: true,
+            component: (props) => <WeightDeletePage {...props} />,
+            type: ROUTE_TYPES.private,
+          },
+        ],
+      },
+    ],
+  },
+  /**
+   * Rutas relacionadas al Módulo de Ventas
+   */
+  {
+    path: ROUTES_DICT.sale.root,
+    key: "Ventas",
+    exact: false,
+    component: ({ children }) => (
+      <DefaultPage title="Venta" chipList={saleRouteOptions()}>
+        {(props) => children(props)}
+      </DefaultPage>
+    ),
+    layout: DashboardLayout,
+    type: ROUTE_TYPES.private,
+    routes: [
+      {
+        path: ROUTES_DICT.sale.list,
+        key: "Lista de Ventas",
+        exact: false,
+        component: (props) => <SaleListPage {...props} />,
+        type: ROUTE_TYPES.private,
+        routes: [
+          {
+            path: ROUTES_DICT.sale.create,
+            key: "Nuevo Venta",
+            exact: true,
+            component: (props) => <SaleCreatePage {...props} />,
+            type: ROUTE_TYPES.private,
+          },
+          {
+            path: ROUTES_DICT.sale.update,
+            key: "Editar Venta",
+            exact: true,
+            component: (props) => <SaleUpdatePage {...props} />,
+            type: ROUTE_TYPES.private,
+          },
+          {
+            path: ROUTES_DICT.sale.delete,
+            key: "Eliminar Venta",
+            exact: true,
+            component: (props) => <SaleDeletePage {...props} />,
+            type: ROUTE_TYPES.private,
+          },
+        ],
+      },
+    ],
+  },
+  /**
    * Rutas relacionadas al Módulo de colectivas
    */
   {
@@ -477,66 +572,6 @@ export const RENDER_ROUTES = [
                 key: "Eliminar celo",
                 exact: true,
                 component: (props) => <ZealDeletePage {...props} />,
-                type: ROUTE_TYPES.private,
-              },
-            ],
-          },
-          {
-            path: ROUTES_DICT.collective.weight.list,
-            key: "Lista de pesos",
-            exact: false,
-            component: (props) => <WeightListPage {...props} />,
-            type: ROUTE_TYPES.private,
-            routes: [
-              {
-                path: ROUTES_DICT.collective.weight.create,
-                key: "Nuevo peso",
-                exact: true,
-                component: (props) => <WeightCreatePage {...props} />,
-                type: ROUTE_TYPES.private,
-              },
-              {
-                path: ROUTES_DICT.collective.weight.update,
-                key: "Editar peso",
-                exact: true,
-                component: (props) => <WeightUpdatePage {...props} />,
-                type: ROUTE_TYPES.private,
-              },
-              {
-                path: ROUTES_DICT.collective.weight.delete,
-                key: "Eliminar peso",
-                exact: true,
-                component: (props) => <WeightDeletePage {...props} />,
-                type: ROUTE_TYPES.private,
-              },
-            ],
-          },
-          {
-            path: ROUTES_DICT.collective.sale.list,
-            key: "Lista de ventas",
-            exact: false,
-            component: (props) => <SaleListPage {...props} />,
-            type: ROUTE_TYPES.private,
-            routes: [
-              {
-                path: ROUTES_DICT.collective.sale.create,
-                key: "Nueva venta",
-                exact: true,
-                component: (props) => <SaleCreatePage {...props} />,
-                type: ROUTE_TYPES.private,
-              },
-              {
-                path: ROUTES_DICT.collective.sale.update,
-                key: "Editar venta",
-                exact: true,
-                component: (props) => <SaleUpdatePage {...props} />,
-                type: ROUTE_TYPES.private,
-              },
-              {
-                path: ROUTES_DICT.collective.sale.delete,
-                key: "Eliminar venta",
-                exact: true,
-                component: (props) => <SaleDeletePage {...props} />,
                 type: ROUTE_TYPES.private,
               },
             ],

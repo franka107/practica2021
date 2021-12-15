@@ -111,6 +111,20 @@ export const ROUTES_DICT = {
     update: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.palpation}/list/:_id/${ROUTES_SLUGS.update}`,
     delete: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.palpation}/list/:_id/${ROUTES_SLUGS.delete}`,
   },
+  weight: {
+    root: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.weight}`,
+    list: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.weight}/list`,
+    create: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.weight}/list/${ROUTES_SLUGS.create}`,
+    update: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.weight}/list/:_id/${ROUTES_SLUGS.update}`,
+    delete: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.weight}/list/:_id/${ROUTES_SLUGS.delete}`,
+  },
+  sale: {
+    root: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.sale}`,
+    list: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.sale}/list`,
+    create: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.sale}/list/${ROUTES_SLUGS.create}`,
+    update: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.sale}/list/:_id/${ROUTES_SLUGS.update}`,
+    delete: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.sale}/list/:_id/${ROUTES_SLUGS.delete}`,
+  },
   collective: {
     root: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.colective}`,
     zeal: {
@@ -133,20 +147,6 @@ export const ROUTES_DICT = {
       create: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.colective}/${ROUTES_SLUGS.drying}/list/${ROUTES_SLUGS.create}`,
       update: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.colective}/${ROUTES_SLUGS.drying}/list/:_id/${ROUTES_SLUGS.update}`,
       delete: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.colective}/${ROUTES_SLUGS.drying}/list/:_id/${ROUTES_SLUGS.delete}`,
-    },
-    sale: {
-      root: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.colective}/${ROUTES_SLUGS.sale}`,
-      list: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.colective}/${ROUTES_SLUGS.sale}/list`,
-      create: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.colective}/${ROUTES_SLUGS.sale}/list/${ROUTES_SLUGS.create}`,
-      update: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.colective}/${ROUTES_SLUGS.sale}/list/:_id/${ROUTES_SLUGS.update}`,
-      delete: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.colective}/${ROUTES_SLUGS.sale}/list/:_id/${ROUTES_SLUGS.delete}`,
-    },
-    weight: {
-      root: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.colective}/${ROUTES_SLUGS.weight}`,
-      list: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.colective}/${ROUTES_SLUGS.weight}/list`,
-      create: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.colective}/${ROUTES_SLUGS.weight}/list/${ROUTES_SLUGS.create}`,
-      update: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.colective}/${ROUTES_SLUGS.weight}/list/:_id/${ROUTES_SLUGS.update}`,
-      delete: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.colective}/${ROUTES_SLUGS.weight}/list/:_id/${ROUTES_SLUGS.delete}`,
     },
   },
   account: `/${ROUTES_SLUGS.account}/${ROUTES_SLUGS.update}`,

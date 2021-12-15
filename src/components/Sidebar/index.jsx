@@ -224,7 +224,6 @@ function Sidebar({ openDrawer, setOpenDrawer, options }) {
       }
     >
       {options.map((item) => {
-        console.log(item);
         const CustomIcon = item.img;
         return (
           <div className={clsx(item.tour && item.tour)}>
@@ -242,7 +241,8 @@ function Sidebar({ openDrawer, setOpenDrawer, options }) {
                   }
                 }}
                 className={clsx(
-                  classes.itemList,
+                  // classes.itemList,
+                  item.bottom ? classes.itemBottomList : classes.itemList,
                   nestedList[item.id] && classes.activeItem
                 )}
               >

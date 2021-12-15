@@ -64,6 +64,12 @@ export const useStyles = makeStyles((theme) => ({
       backgroundColor: theme.palette.sider.tertiary,
     },
   },
+  itemBottomList: {
+    backgroundColor: theme.palette.sider.quintenary,
+    "&:hover": {
+      backgroundColor: theme.palette.sider.tertiary,
+    },
+  },
   farmContainer: {
     display: "flex",
   },

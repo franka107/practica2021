@@ -33,8 +33,6 @@ const SaleListPage = ({ children, setTitle, setChipList }) => {
   const listSaleControl = useSelector((state) => state.sale.list);
 
   useEffect(() => {
-    setTitle("Colectiva / Ventas");
-    setChipList(saleRouteOptions(location));
     if (!listSaleControl || listSaleControl.length === 0) {
       dispatch(SaleActions.list());
     }

@@ -4,7 +4,7 @@ export const weightRouteOptions = (location) => [
   {
     key: "Agregar ingreso de peso",
     path: {
-      pathname: ROUTES_DICT.collective.weight.create,
+      pathname: ROUTES_DICT.weight.create,
       state: {
         background: location,
       },
