@@ -5,19 +5,19 @@ import {
   Button,
   IconButton,
 } from "@material-ui/core";
-import { Formik } from "formik";
+import { FieldArray, Formik } from "formik";
 import * as yup from "yup";
 import SelectFieldFormik from "../../../components/Inputs/SelectFieldFormik";
 import TextFieldFormik from "../../../components/Inputs/TextFieldFormik";
 import PropTypes from "prop-types";
 import ButtonFormik from "../../../components/Inputs/ButtonFormik";
 import { useDispatch } from "react-redux";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import geneticStockActions from "../../../redux/actions/geneticStock.actions";
 import raceActions from "../../../redux/actions/race.actions";
 import CheckboxFormik from "../../../components/Inputs/CheckboxFormik";
-import { useStyles } from "../../../styles";
+import { useStyles } from "../../AnimalControl/styles";
 import { AddCircle, Close } from "@material-ui/icons";
 import DeleteIcon from "@material-ui/icons/Delete";
 import IdeasCloudApi from "../../../helpers/ideascloudApi";
@@ -33,15 +33,8 @@ const defaultInitValues = {
   //geneticType: "EMBRYO",
   observation: "",
   //race1Id: racesList ? racesList[0]._id : "",
-  race1Id: "",
-  percentageRace1: 100,
-  race2Id: "",
-  percentageRace2: 0,
-  race3Id: "",
-  percentageRace3: 0,
-  race4Id: "",
-  percentageRace4: 0,
-  images: null,
+  races: [{ raceId: "", percentage: null }],
+  images: [],
 };
 
 /**
@@ -65,33 +58,47 @@ const GeneticStockForm = ({
   );
   const currentFarm = useSelector((state) => state.farm.current);
   const classes = useStyles();
-  const [animalRace, setAnimalRace] = useState({
-    A: { type: "1", percentage: "100%" },
-  });
-  const [errorPercentage, setErrorPercentage] = useState("");
   const letters = ["A", "B", "C", "D"];
 
   //const currentFarm = useSelector((state) => state.farm.current);
-  const validationSchema = () =>
-    yup.lazy((values) => {
-      return yup.object({
-        identifier: yup
-          .string("Este campo no puedo ir vacio")
-          .required("Este campo es requerido."),
-        stock: yup
-          .number("Ingrese solo números")
-          .integer("Solo números enteros"),
-        race1Id: yup
-          .string("Ingresa raza.")
-          .nullable(true)
-          .required("Esta campo es requerido."),
-      });
-    });
+  const validationSchema = yup.object().shape({
+    identifier: yup
+      .string("Ingresa la identificacion del animal.")
+      .required("Este campo es requerido."),
+    name: yup.string("Ingresa el nombre del animal."),
+    stock: yup.number("Ingrese solo números").integer("Solo números enteros"),
+    races: yup
+      .array()
+      .of(
+        yup.object().shape({
+          raceId: yup
+            .string()
+            .typeError("Selecciona una raza")
+            .required("Campo requerido"), // these constraints take precedence
+          percentage: yup
+            .number()
+            .typeError("Ingrese un porcentaje")
+            .min(0, "El mínimo número a ingresar es 0")
+            .max(100, "El máximo número a ingresar es 100")
+            .required("Campo requerido"), // these constraints take precedence
+        })
+      )
+      .test(
+        "races",
+        "La suma de las razas tiene que ser 100%",
+        (values) =>
+          values.reduce((acc, curr) => acc + curr.percentage, 0) === 100
+      ),
+  });
 
   useEffect(() => {
     (!racesList || racesList.length === 0) && dispatch(raceActions.listRace());
+
+    if (type === "update") {
+      initValues.races = initValues.entity.races;
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch]);
+  }, []);
 
   const onSubmit = async (values, actions) => {
     try {
@@ -171,47 +178,8 @@ const GeneticStockForm = ({
       }
       onCompleteSubmit();
     } catch {
-      console.log("mal");
       actions.setSubmitting(false);
     }
-  };
-
-  const verifyPercentage = (index, val, values) => {
-    let tot = 0;
-    const p1 = index === 1 ? val : values.percentageRace1;
-    const p2 = index === 2 ? val : values.percentageRace2;
-    const p3 = index === 3 ? val : values.percentageRace3;
-    const p4 = index === 4 ? val : values.percentageRace4;
-
-    tot = parseFloat(p1) + parseFloat(p2) + parseFloat(p3) + parseFloat(p4);
-
-    if (tot !== 100) {
-      setErrorPercentage(
-        "El porcentaje total debe ser 100%. Porfavor ajuste sus cantidades"
-      );
-    } else {
-      setErrorPercentage("");
-    }
-  };
-
-  const handleAddRace = () => {
-    const races = { ...animalRace };
-    if (letters[Object.keys(races).length]) {
-      races[letters[Object.keys(races).length]] = {
-        type: "1",
-        percentage: "0%",
-      };
-
-      setAnimalRace(races);
-    }
-  };
-
-  const handleRemoveRace = (id, index, values) => {
-    const races = { ...animalRace };
-    delete races[id];
-    values[`percentageRace${index + 1}`] = 0;
-    values[`race${index + 1}Id`] = "";
-    setAnimalRace(races);
   };
 
   const fileData = (values) => {
@@ -268,107 +236,105 @@ const GeneticStockForm = ({
               sm={8}
             />
           </Grid>
-          <Grid container className={classes.form__border}>
-            {Object.keys(animalRace).map((raceItem, index) => (
-              <Grid
-                item
-                xs={12}
-                container
-                key={`race-option-${raceItem}`}
-                spacing={1}
-                className={classes.form__raceContainer}
-              >
-                <Grid item xs={12}>
-                  <Typography
-                    variant={"body2"}
-                    gutterBottom
-                    className={classes.subtitle}
-                  >
-                    {`Raza ${raceItem}`}
-                  </Typography>
-                </Grid>
-                <Grid item container sm={8} xs={12}>
-                  <SelectFieldFormik
-                    name={`race${index + 1}Id`}
-                    label="Raza"
-                    options={racesList}
-                    onChange={props.handleChange}
-                  />
-                </Grid>
-                <Grid
-                  item
-                  container
-                  sm={4}
-                  xs={12}
-                  alignItems={"center"}
-                  justifyContent={"center"}
-                >
-                  <Grid item xs={11}>
-                    {/* <TextFieldFormik
-                    xs={12}
-                    name={`percentageRace${index + 1}`}
-                    endAdornment={
-                      <InputAdornment position="start">%</InputAdornment>
-                    }
-                    type="number"
-                    label="Porcentaje"
-                    style={{ textAlign: "end" }}
-                    // type="number"
-                    onChange={handleChange}
-                  /> */}
-                    <TextFieldFormik
-                      xs={12}
-                      name={`percentageRace${index + 1}`}
-                      endAdornment={
-                        <InputAdornment position="start">%</InputAdornment>
-                      }
-                      type="number"
-                      label="Porcentaje"
-                      style={{ textAlign: "end" }}
-                      // type="number"
-                      // onChange={handleChange}
-                      onChange={(e) => {
-                        const regex = /^\d+(.\d{0,2})?$/;
-                        // let newValue = ''
-                        const i = index;
-                        // setFieldValue("percentageRace1", i + 1);
-                        if (regex.test(e.target.value)) {
-                          props.setFieldValue(
-                            `percentageRace${i + 1}`,
-                            e.target.value
-                          );
-                        }
-                        verifyPercentage(i + 1, e.target.value, props.values);
-                      }}
-                    />
+          <Grid container spacing={1} className={classes.formStyle}>
+            <Grid item xs={12}>
+              <Typography variant={"subtitle2"}>Raza</Typography>
+            </Grid>
+          </Grid>
+          <Grid item xs={12} container className={classes.border}>
+            <FieldArray
+              name="races"
+              render={(arrayHelpers) => (
+                <>
+                  {props.values.races &&
+                    props.values.races.map((race, index) => (
+                      <Grid
+                        item
+                        xs={12}
+                        container
+                        key={`race-option-${index}`}
+                        spacing={1}
+                        className={classes.raceContainer}
+                      >
+                        <Grid item xs={12}>
+                          <Typography
+                            variant={"body2"}
+                            gutterBottom
+                            className={classes.subtitle}
+                          >
+                            {`Raza ${letters[index]}`}
+                          </Typography>
+                        </Grid>
+                        <Grid item container sm={8} xs={12}>
+                          <SelectFieldFormik
+                            name={`races.${index}.raceId`}
+                            label="Raza"
+                            options={racesList}
+                            disabled={type === "create" ? false : true}
+                            onChange={props.handleChange}
+                          />
+                        </Grid>
+                        <Grid
+                          item
+                          container
+                          sm={4}
+                          xs={12}
+                          alignItems={"center"}
+                          justifyContent={"center"}
+                        >
+                          <Grid item xs={11}>
+                            <TextFieldFormik
+                              xs={12}
+                              name={`races.${index}.percentage`}
+                              endAdornment={
+                                <InputAdornment position="start">
+                                  %
+                                </InputAdornment>
+                              }
+                              type="number"
+                              disabled={type === "create" ? false : true}
+                              label="Porcentaje"
+                              style={{ textAlign: "end" }}
+                              // type="number"
+                              onChange={props.handleChange}
+                            />
+                          </Grid>
+                          <Grid item xs={1}>
+                            {Boolean(index) && (
+                              <DeleteIcon
+                                color={"error"}
+                                disabled={type === "create" ? false : true}
+                                className={classes.deleteIcon}
+                                onClick={() => arrayHelpers.remove(index)}
+                              />
+                            )}
+                          </Grid>
+                        </Grid>
+                      </Grid>
+                    ))}
+                  <Grid item xs={12} className={classes.errorMessage}>
+                    <Typography variant={"caption"} gutterBottom>
+                      {props.errors.races &&
+                      typeof props.errors.races === "string"
+                        ? props.errors.races
+                        : ""}
+                    </Typography>
                   </Grid>
-                  <Grid item xs={1}>
-                    {Boolean(index) && (
-                      <DeleteIcon
+                  {type === "create" &&
+                    props.values.races &&
+                    props.values.races.length <= 3 && (
+                      <AddCircle
                         color={"secondary"}
-                        className={classes.form__raceContainer__deleteIcon}
-                        onClick={() =>
-                          handleRemoveRace(raceItem, index, props.values)
-                        }
+                        disabled={type === "create" ? false : true}
+                        className={classes.addBtn}
+                        onClick={() => {
+                          console.log(props.errors);
+                          arrayHelpers.push({ raceId: "", percentage: null });
+                        }}
                       />
                     )}
-                  </Grid>
-                </Grid>
-              </Grid>
-            ))}
-            <Grid
-              item
-              xs={12}
-              className={classes.form__raceContainer__errorMessage}
-            >
-              <Typography variant={"caption"} gutterBottom>
-                {errorPercentage}
-              </Typography>
-            </Grid>
-            <AddCircle
-              color={"secondary"}
-              className={classes.form__raceContainer__addBtn}
-              onClick={handleAddRace}
+                </>
+              )}
             />
           </Grid>
           <Grid container spacing={1}>

@@ -1,7 +1,7 @@
 const geneticStockCreate = (data) => {
   return new Promise((resolve, reject) => {
     window.icAPI.callService(
-      "geneticStockCreate",
+      "geneticStockCreateV2",
       data,
       function (error, response) {
         if (!error) {

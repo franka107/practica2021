@@ -64,7 +64,7 @@ export const formatDate = (date) => {
   var date1_UTC = new Date(
     Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate() + 1)
   );
-  let dateConvert = format(date1_UTC, "d 'de' MMMM 'del' yyyy", {
+  let dateConvert = format(date1_UTC, "yyyy-MM-dd", {
     locale: esLocale,
   });
 

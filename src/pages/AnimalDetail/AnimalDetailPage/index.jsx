@@ -4,7 +4,7 @@ import { Checkbox } from "@material-ui/core";
 import { Divider } from "@material-ui/core";
 import { IconButton } from "@material-ui/core";
 import { Grid } from "@material-ui/core";
-import { CameraAlt, Edit, ViewList, Add, Visibility } from "@material-ui/icons";
+import { CameraAlt, Edit, ViewList, Add } from "@material-ui/icons";
 import clsx from "clsx";
 import { useState, useEffect } from "react";
 import { useStyles } from "../styles";
@@ -28,7 +28,8 @@ import {
   unitWeightTestOptions,
   unitCapacityTestOptions,
 } from "../../../constants";
-import { add, differenceInDays, differenceInMonths, format } from "date-fns";
+import { add, differenceInDays, format } from "date-fns";
+import raceActions from "../../../redux/actions/race.actions";
 
 /**
  * @component
@@ -46,6 +47,12 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
   });
   const dispatch = useDispatch();
   const params = useParams();
+  const letters = ["A", "B", "C", "D"];
+  const listRaces = useSelector((state) =>
+    state.race.list.sort((a, b) =>
+      a.name > b.name ? 1 : a.name < b.name ? -1 : 0
+    )
+  );
   const currentAnimal = useSelector((state) => state.animal.current);
   const currentAgribusiness = useSelector(
     (state) => state.agribusiness.current
@@ -96,213 +103,42 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
     return result + days;
   };
 
-  const kindAnimal = () => {
-    let spDay = "";
-    let iDay = 0;
-    switch (true) {
-      case currentAnimal.gender === "FEMALE" &&
-        differenceInMonths(new Date(), new Date(currentAnimal?.birthDate)) <
-          currentAgribusiness.isBreeding:
-        return "Cria Hembra";
-      case currentAnimal.gender === "MALE" &&
-        differenceInMonths(new Date(), new Date(currentAnimal?.birthDate)) <
-          currentAgribusiness.isBreeding:
-        return "Cria Macho";
-      case currentAnimal.gender === "FEMALE" &&
-        differenceInMonths(new Date(), new Date(currentAnimal?.birthDate)) >=
-          currentAgribusiness.isBreeding &&
-        differenceInMonths(new Date(), new Date(currentAnimal?.birthDate)) <
-          currentAgribusiness.isHeifer:
-        return "Hembra Levante";
-      case currentAnimal.gender === "MALE" &&
-        differenceInMonths(new Date(), new Date(currentAnimal?.birthDate)) >=
-          currentAgribusiness.isBreeding &&
-        differenceInMonths(new Date(), new Date(currentAnimal?.birthDate)) <
-          currentAgribusiness.isHeifer:
-        return "Macho Levante";
-      case currentAnimal.gender === "FEMALE" &&
-        differenceInMonths(new Date(), new Date(currentAnimal?.birthDate)) >=
-          currentAgribusiness.isHeifer &&
-        differenceInMonths(new Date(), new Date(currentAnimal?.birthDate)) <
-          24 &&
-        currentAnimal.reproductiveStatus === "EMPTY":
-        return "Vaquillona Vacia";
-      case currentAnimal.gender === "FEMALE" &&
-        differenceInMonths(new Date(), new Date(currentAnimal?.birthDate)) >=
-          currentAgribusiness.isHeifer &&
-        differenceInMonths(new Date(), new Date(currentAnimal?.birthDate)) <
-          24 &&
-        currentAnimal.reproductiveStatus === "PREGNANT":
-        iDay = differenceInDays(
-          new Date(),
-          new Date(currentAnimal.pregnantDate)
-        );
-        spDay =
-          iDay === 0
-            ? " dias preñez"
-            : iDay === 1
-            ? " dia de preñez"
-            : " dias de preñez";
-        return `Vaquillona Preñada, ${iDay} ${spDay}`;
-      case currentAnimal.gender === "MALE" &&
-        differenceInMonths(new Date(), new Date(currentAnimal?.birthDate)) >=
-          currentAgribusiness.isHeifer &&
-        differenceInMonths(new Date(), new Date(currentAnimal?.birthDate)) <
-          24 &&
-        currentAnimal.category !== "REPRODUCTOR":
-        return "Novillo para Engorda";
-      case currentAnimal.gender === "MALE" &&
-        differenceInMonths(new Date(), new Date(currentAnimal?.birthDate)) >=
-          currentAgribusiness.isHeifer &&
-        differenceInMonths(new Date(), new Date(currentAnimal?.birthDate)) <
-          24 &&
-        currentAnimal.category === "REPRODUCTOR":
-        return "Torete";
-      case currentAnimal.gender === "MALE" &&
-        differenceInMonths(new Date(), new Date(currentAnimal?.birthDate)) >=
-          24 &&
-        currentAnimal.category === "REPRODUCTOR":
-        return "Toro Reproductor";
-      // mayor que 24 meses
-      case currentAnimal.gender === "FEMALE" &&
-        differenceInMonths(new Date(), new Date(currentAnimal?.birthDate)) >=
-          24 &&
-        currentAnimal.births.length !== 0 &&
-        !currentAnimal.isDried &&
-        currentAnimal.reproductiveStatus === "EMPTY":
-        iDay = differenceInDays(
-          new Date(),
-          new Date(currentAnimal.births[0].birthDate)
-        );
-        spDay =
-          iDay === 0
-            ? " dias abiertos"
-            : iDay === 1
-            ? " dia de abierto"
-            : " dias de abiertos";
-        return `Vaca Parida, ${iDay} ${spDay}`;
-      case currentAnimal.gender === "FEMALE" &&
-        differenceInMonths(new Date(), new Date(currentAnimal?.birthDate)) >=
-          24 &&
-        currentAnimal.births.length !== 0 &&
-        !currentAnimal.isDried &&
-        currentAnimal.reproductiveStatus === "PREGNANT":
-        iDay = differenceInDays(
-          new Date(),
-          new Date(currentAnimal.pregnantDate)
-        );
-        spDay =
-          iDay === 0
-            ? " dias de preñez"
-            : iDay === 1
-            ? " dia de preñez"
-            : " dias de preñez";
-        return `Vaca Preñada, ${iDay} ${spDay}`;
-      case currentAnimal.gender === "FEMALE" &&
-        differenceInMonths(new Date(), new Date(currentAnimal?.birthDate)) >=
-          24 &&
-        currentAnimal.births.length !== 0 &&
-        currentAnimal.isDried &&
-        currentAnimal.reproductiveStatus === "EMPTY":
-        iDay = differenceInDays(
-          new Date(),
-          new Date(currentAnimal.births[0].birthDate)
-        );
-        spDay =
-          iDay === 0
-            ? " dias abiertos"
-            : iDay === 1
-            ? " dia de abierto"
-            : " dias de abiertos";
-        return `Vaca Seca, ${iDay} ${spDay}`;
-      case currentAnimal.gender === "FEMALE" &&
-        differenceInMonths(new Date(), new Date(currentAnimal?.birthDate)) >=
-          24 &&
-        currentAnimal.births.length !== 0 &&
-        currentAnimal.isDried &&
-        currentAnimal.reproductiveStatus === "PREGNANT":
-        iDay = differenceInDays(
-          new Date(),
-          new Date(currentAnimal.pregnantDate)
-        );
-        spDay =
-          iDay === 0
-            ? " dias de preñez"
-            : iDay === 1
-            ? " dia de preñez"
-            : " dias de preñez";
-        return `Vaca Seca,  ${iDay} ${spDay}`;
-      case currentAnimal.gender === "FEMALE" &&
-        differenceInMonths(new Date(), new Date(currentAnimal?.birthDate)) >=
-          24 &&
-        currentAnimal.lastBirthDate &&
-        !currentAnimal.isDried &&
-        currentAnimal.reproductiveStatus === "EMPTY":
-        iDay = differenceInDays(
-          new Date(),
-          new Date(currentAnimal.lastBirthDate)
-        );
-        spDay =
-          iDay === 0
-            ? " dias abiertos"
-            : iDay === 1
-            ? " dia de abierto"
-            : " dias de abiertos";
-        return `Vaca Parida, ${iDay} ${spDay}`;
-      case currentAnimal.gender === "FEMALE" &&
-        differenceInMonths(new Date(), new Date(currentAnimal?.birthDate)) >=
-          24 &&
-        currentAnimal.lastBirthDate &&
-        !currentAnimal.isDried &&
-        currentAnimal.reproductiveStatus === "PREGNANT":
-        iDay = differenceInDays(
-          new Date(),
-          new Date(currentAnimal.pregnantDate)
-        );
-        spDay =
-          iDay === 0
-            ? " dias de preñez"
-            : iDay === 1
-            ? " dia de preñez"
-            : " dias de preñez";
-        return `Vaca Preñada, ${iDay} ${spDay}`;
-      case currentAnimal.gender === "FEMALE" &&
-        differenceInMonths(new Date(), new Date(currentAnimal?.birthDate)) >=
-          24 &&
-        currentAnimal.lastBirthDate &&
-        currentAnimal.isDried &&
-        currentAnimal.reproductiveStatus === "EMPTY":
-        iDay = differenceInDays(
-          new Date(),
-          new Date(currentAnimal.lastBirthDate)
-        );
-        spDay =
-          iDay === 0
-            ? " dias abiertos"
-            : iDay === 1
-            ? " dia abierto"
-            : " dias abiertos";
-        return `Vaca Seca, ${iDay} ${spDay}`;
-      case currentAnimal.gender === "FEMALE" &&
-        differenceInMonths(new Date(), new Date(currentAnimal?.birthDate)) >=
-          24 &&
-        currentAnimal.lastBirthDate &&
-        currentAnimal.isDried &&
-        currentAnimal.reproductiveStatus === "PREGNANT":
-        iDay = differenceInDays(
-          new Date(),
-          new Date(currentAnimal.pregnantDate)
-        );
-        spDay =
-          iDay === 0
-            ? " dias de preñez"
-            : iDay === 1
-            ? " dia de preñez"
-            : " dias de preñez";
-        return `Vaca Seca,  ${iDay} ${spDay}`;
-      default:
-        return "Indeterminado";
+  const getValue = (entity) => {
+    if (entity?.type === "REFERENCE") {
+      return entity?.reference?.name;
     }
+    if (entity?.type === "ANIMAL") {
+      return entity?.animal?.identifier;
+    }
+    if (entity?.type === "GENETIC_STOCK") {
+      return entity?.geneticStock?.identifier;
+    }
+
+    return "";
+  };
+
+  const getLabel = (entity) => {
+    if (entity?.type === "REFERENCE") {
+      if (entity?.reference?.gender === "FEMALE") {
+        return "Ref. Madre";
+      }
+      if (entity?.reference?.gender === "MALE") {
+        return "Ref. Padre";
+      }
+    }
+    if (entity?.type === "ANIMAL") {
+      if (entity?.animal?.gender === "FEMALE") {
+        return "Madre";
+      }
+      if (entity?.animal?.gender === "MALE") {
+        return "Padre";
+      }
+    }
+    if (entity?.type === "GENETIC_STOCK") {
+      return "Stock G";
+    }
+
+    return "";
   };
 
   const expectedBirth = (values) => {
@@ -344,6 +180,9 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
 
   useEffect(() => {
     setChipList(animalDetailChipOptions(location, params));
+    if (!listRaces || listRaces.length === 0) {
+      dispatch(raceActions.listRace());
+    }
     if (!currentAnimal || currentAnimal._id !== params._id) {
       dispatch(AnimalActions.get({ _id: params._id }));
     } // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -496,7 +335,7 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
                           </Typography>
                         </Grid>
                       </Grid>
-                      <Grid
+                      {/* <Grid
                         container
                         className={classes.generalFeature}
                         xs={12}
@@ -511,7 +350,7 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
                             {currentAnimal && kindAnimal()}
                           </Typography>
                         </Grid>
-                      </Grid>
+                      </Grid> */}
                       <Grid
                         container
                         className={classes.generalFeature}
@@ -519,27 +358,16 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
                       >
                         <Grid item xs={4}>
                           <Typography className={classes.cardFeature}>
-                            {currentAnimal && currentAnimal.gender === "FEMALE"
-                              ? "Estado"
-                              : "Categoria"}
+                            Estado
                           </Typography>
                         </Grid>
                         <Grid item xs={8}>
-                          {currentAnimal && (
-                            <Typography>
-                              {currentAnimal.gender === "MALE"
-                                ? currentAnimal.category
-                                : currentAnimal.gender === "FEMALE" &&
-                                  currentAnimal.reproductiveStatus &&
-                                  currentAnimal.reproductiveStatus !== ""
-                                ? stateOptions[currentAnimal.reproductiveStatus]
-                                : "Sin información"}
-                            </Typography>
-                          )}
-                          {/* <Typography>Vaca seca, 276 dias de preñez</Typography> */}
+                          <Typography>
+                            {currentAnimal.status.esLabel}
+                          </Typography>
                         </Grid>
                       </Grid>
-                      <Grid
+                      {/* <Grid
                         container
                         className={classes.generalFeature}
                         xs={12}
@@ -557,9 +385,8 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
                           ) : (
                             <Typography>Sin información</Typography>
                           )}
-                          {/* <Typography>Vaca seca, 276 dias de preñez</Typography> */}
                         </Grid>
-                      </Grid>
+                      </Grid> */}
                       <div className={classes.borderLinearProgress}>
                         {/* {currentAnimal && currentAnimal.gender === "FEMALE" && (
                           <BorderLinearProgress
@@ -686,252 +513,49 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
                         </div>
                         <Divider className={classes.divider}></Divider>
                         <div className="">
+                          {currentAnimal.entity.parents.map((e) => (
+                            <Grid
+                              container
+                              className={classes.generalFeature}
+                              xs={12}
+                            >
+                              <Grid item xs={5}>
+                                <Typography className={classes.cardFeature}>
+                                  {getLabel(e)}
+                                </Typography>
+                              </Grid>
+                              <Grid item xs={7}>
+                                <Typography>{getValue(e)}</Typography>
+                              </Grid>
+                            </Grid>
+                          ))}
                           <Grid
                             container
                             className={classes.generalFeature}
                             xs={12}
                           >
                             {currentAnimal &&
-                              currentAnimal.fatherId !== null &&
-                              currentAnimal.fatherId !== "" && (
+                              currentAnimal.entity &&
+                              currentAnimal.entity.races.map((r, index) => (
                                 <>
                                   <Grid item xs={5}>
                                     <Typography className={classes.cardFeature}>
-                                      Padre
+                                      Raza {letters[index]}
                                     </Typography>
                                   </Grid>
                                   <Grid item xs={7}>
                                     <Typography>
-                                      {currentAnimal && currentAnimal.father
-                                        ? currentAnimal.father.identifier
-                                        : "Sin información"}
-                                      <IconButton
-                                        className={classes.cardEditIcon}
-                                        style={{ marginLeft: "1rem" }}
-                                        size="small"
-                                        onClick={() => {
-                                          history.push(
-                                            generatePath(
-                                              ROUTES_DICT.animalDetail.detail,
-                                              {
-                                                ...params,
-                                                _id: currentAnimal.fatherId,
-                                              }
-                                            )
-                                          );
-                                        }}
-                                      >
-                                        <Visibility fontSize="small"></Visibility>
-                                      </IconButton>
+                                      {
+                                        listRaces.find(
+                                          (e) => e._id === r.raceId
+                                        ).name
+                                      }
+                                      - {r.percentage}%
                                     </Typography>
                                   </Grid>
                                 </>
-                              )}
-                            {currentAnimal && currentAnimal.fatherId === null && (
-                              <>
-                                <Grid item xs={5}>
-                                  <Typography className={classes.cardFeature}>
-                                    {currentAnimal.fatherRef &&
-                                    currentAnimal.fatherRef !== ""
-                                      ? "Ref. Padre"
-                                      : "Padre"}
-                                  </Typography>
-                                </Grid>
-                                <Grid item xs={7}>
-                                  <Typography>
-                                    {currentAnimal.fatherRef &&
-                                    currentAnimal.fatherRef !== ""
-                                      ? currentAnimal.fatherRef
-                                      : "Sin información"}
-                                  </Typography>
-                                </Grid>
-                              </>
-                            )}
+                              ))}
                           </Grid>
-                          <Grid
-                            container
-                            className={classes.generalFeature}
-                            xs={12}
-                          >
-                            {currentAnimal &&
-                              currentAnimal.motherId !== null &&
-                              currentAnimal.motherId !== "" && (
-                                <>
-                                  <Grid item xs={5}>
-                                    <Typography className={classes.cardFeature}>
-                                      Madre
-                                    </Typography>
-                                  </Grid>
-                                  <Grid item xs={7}>
-                                    <Typography>
-                                      {currentAnimal && currentAnimal.mother
-                                        ? currentAnimal.mother.identifier
-                                        : "Sin información"}
-                                      <IconButton
-                                        className={classes.cardEditIcon}
-                                        style={{ marginLeft: "1rem" }}
-                                        size="small"
-                                        onClick={() => {
-                                          history.push(
-                                            generatePath(
-                                              ROUTES_DICT.animalDetail.detail,
-                                              {
-                                                ...params,
-                                                _id: currentAnimal.motherId,
-                                              }
-                                            )
-                                          );
-                                        }}
-                                      >
-                                        <Visibility fontSize="small"></Visibility>
-                                      </IconButton>
-                                    </Typography>
-                                  </Grid>
-                                </>
-                              )}
-                            {currentAnimal && currentAnimal.motherId === null && (
-                              <>
-                                <Grid item xs={5}>
-                                  <Typography className={classes.cardFeature}>
-                                    {currentAnimal.motherRef &&
-                                    currentAnimal.motherRef !== ""
-                                      ? "Ref. Madre"
-                                      : "Madre"}
-                                  </Typography>
-                                </Grid>
-                                <Grid item xs={7}>
-                                  <Typography>
-                                    {currentAnimal.motherRef &&
-                                    currentAnimal.motherRef !== ""
-                                      ? currentAnimal.motherRef
-                                      : "Sin información"}
-                                  </Typography>
-                                </Grid>
-                              </>
-                            )}
-                          </Grid>
-                          <Grid
-                            container
-                            className={classes.generalFeature}
-                            xs={12}
-                          >
-                            <Grid item xs={5}>
-                              <Typography className={classes.cardFeature}>
-                                Raza{" "}
-                                {currentAnimal &&
-                                currentAnimal.percentageRace1 !== 100
-                                  ? "1"
-                                  : ""}
-                              </Typography>
-                            </Grid>
-                            <Grid item xs={7}>
-                              {currentAnimal && currentAnimal.race1 ? (
-                                <>
-                                  {currentAnimal && currentAnimal.race1 && (
-                                    <Typography>
-                                      {currentAnimal &&
-                                        currentAnimal.race1 &&
-                                        currentAnimal.race1.name}{" "}
-                                      -{" "}
-                                      {currentAnimal &&
-                                        currentAnimal.percentageRace1 &&
-                                        currentAnimal.percentageRace1}
-                                      %
-                                    </Typography>
-                                  )}
-                                </>
-                              ) : (
-                                <Typography>No especificado</Typography>
-                              )}
-                            </Grid>
-                          </Grid>
-                          {currentAnimal &&
-                            currentAnimal.race2Id &&
-                            currentAnimal.race2Id !== "" &&
-                            currentAnimal.race2 &&
-                            currentAnimal.percentageRace2 !== 0 && (
-                              <Grid
-                                container
-                                className={classes.generalFeature}
-                                xs={12}
-                              >
-                                <Grid item xs={5}>
-                                  <Typography className={classes.cardFeature}>
-                                    Raza2
-                                  </Typography>
-                                </Grid>
-                                <Grid item xs={7}>
-                                  <Typography>
-                                    {currentAnimal &&
-                                      currentAnimal.race2 &&
-                                      currentAnimal.race2.name}{" "}
-                                    -{" "}
-                                    {currentAnimal &&
-                                      currentAnimal.percentageRace2 &&
-                                      currentAnimal.percentageRace2}
-                                    %
-                                  </Typography>
-                                </Grid>
-                              </Grid>
-                            )}
-                          {currentAnimal &&
-                            currentAnimal.race3Id &&
-                            currentAnimal.race3Id !== "" &&
-                            currentAnimal.race3 &&
-                            currentAnimal.percentageRace3 !== 0 && (
-                              <Grid
-                                container
-                                className={classes.generalFeature}
-                                xs={12}
-                              >
-                                <Grid item xs={5}>
-                                  <Typography className={classes.cardFeature}>
-                                    Raza3
-                                  </Typography>
-                                </Grid>
-                                <Grid item xs={7}>
-                                  <Typography>
-                                    {currentAnimal &&
-                                      currentAnimal.race3 &&
-                                      currentAnimal.race3.name}{" "}
-                                    -{" "}
-                                    {currentAnimal &&
-                                      currentAnimal.percentageRace3 &&
-                                      currentAnimal.percentageRace3}
-                                    %
-                                  </Typography>
-                                </Grid>
-                              </Grid>
-                            )}
-                          {currentAnimal &&
-                            currentAnimal.race4Id &&
-                            currentAnimal.race4Id !== "" &&
-                            currentAnimal.race4 &&
-                            currentAnimal.percentageRace4 !== 0 && (
-                              <Grid
-                                container
-                                className={classes.generalFeature}
-                                xs={12}
-                              >
-                                <Grid item xs={5}>
-                                  <Typography className={classes.cardFeature}>
-                                    Raza4
-                                  </Typography>
-                                </Grid>
-                                <Grid item xs={7}>
-                                  <Typography>
-                                    {currentAnimal &&
-                                      currentAnimal.race4 &&
-                                      currentAnimal.race4.name}{" "}
-                                    -{" "}
-                                    {currentAnimal &&
-                                      currentAnimal.percentageRace4 &&
-                                      currentAnimal.percentageRace4}
-                                    %
-                                  </Typography>
-                                </Grid>
-                              </Grid>
-                            )}
                           <Grid
                             container
                             className={classes.generalFeature}

@@ -47,13 +47,9 @@ export const columns = [
   },
   {
     label: "Estado",
-    name: "reproductiveStatus",
+    name: "status",
     options: {
-      filterOptions: {
-        names: ["Preñada", "Vacía"],
-      },
-      searchable: false,
-      customBodyRender: (value) => stateOptions[value],
+      customBodyRender: (value) => value.esLabel,
     },
   },
   // {

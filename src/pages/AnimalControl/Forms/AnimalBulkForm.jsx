@@ -18,6 +18,7 @@ import raceActions from "../../../redux/actions/race.actions";
 import uiActions from "../../../redux/actions/ui.actions";
 import WeightActions from "../../../redux/actions/weight.actions";
 import { useStyles } from "../../../styles";
+import * as XLSX from "xlsx";
 
 /**
  * @component
@@ -57,102 +58,96 @@ const AnimalBulkForm = ({ onClickCancelButton }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const getDate = (dateString) => {
+    const dateParts = dateString.split("/");
+    const dateObject = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]);
+    return dateObject;
+  };
+
+  const getRaceId = (raceName) => {
+    const raceFinded = raceList.find(
+      (raceObject) => raceObject.name === raceName
+    );
+    if (raceFinded) {
+      return raceFinded._id;
+    } else {
+      return null;
+    }
+  };
+
   const handleSubmit = () => {
     if (csvFile) {
-      console.log(csvFile);
       setAnimalListUploadInfo([]);
       setIsUploading(true);
       setAnimalSucess(0);
       setAnimalError(0);
       const reader = new FileReader();
+      const rABS = !!reader.readAsBinaryString;
       reader.onload = (e) => {
-        const text = e.target.result;
-        const data = csvToArray(text);
-        setCsvListLength(data.length);
-
-        const getRaceId = (raceName) => {
-          const raceFinded = raceList.find(
-            (raceObject) => raceObject.name === raceName
+        const bstr = e.target.result;
+        const wb = XLSX.read(bstr, { type: rABS ? "binary" : "array" });
+        let worksheets = {};
+        for (const sheetName of wb.SheetNames) {
+          worksheets[sheetName] = XLSX.utils.sheet_to_json(
+            wb.Sheets[sheetName]
           );
-          if (raceFinded) {
-            return raceFinded._id;
-          } else {
-            return null;
-          }
-        };
-        const getDate = (dateString) => {
-          const dateParts = dateString.split("/");
-          const dateObject = new Date(
-            +dateParts[2],
-            dateParts[1] - 1,
-            +dateParts[0]
-          );
-          return dateObject;
-        };
+        }
+        setCsvListLength(worksheets["Worksheet"].length);
+        // console.log("porfin", worksheets["Worksheet"].length);
+        let count = 1;
         let errorUpload = 0;
         let successUpload = 0;
-        data.forEach(async (animal) => {
-          /**
-           * Validacion dinamíca de razas
-           */
-          animal.percentageRace1 = Number(animal.percentageRace1);
-          animal.percentageRace2 = Number(animal.percentageRace2);
-          animal.percentageRace3 = Number(animal.percentageRace3);
-          animal.percentageRace4 = Number(animal.percentageRace4);
-          animal.birthsQuantity = Number(animal.birthsQuantity);
-          animal.childrenQuantity = Number(animal.childrenQuantity);
-          animal.birthDate = animal.birthDate && getDate(animal.birthDate);
-          animal.herdDate = animal.herdDate && getDate(animal.herdDate);
-          // animal.category =
-          //   animal.category.length === 0 ? null : animal.category;
-          animal.pregnantType =
-            animal.pregnantType.length === 0 ? null : animal.pregnantType;
-          animal.reproductiveStatus =
-            animal.reproductiveStatus.length === 0
-              ? null
-              : animal.reproductiveStatus;
-          animal.bornBy = animal.bornBy.length === 0 ? null : animal.bornBy;
-          if (animal.race1) {
-            animal.race1Id = getRaceId(animal.race1);
+        worksheets["Worksheet"].map(async (e) => {
+          let raceArray = [];
+          for (let index = 1; index <= 4; index++) {
+            const race =
+              e[`race/${index}/name`] && e[`race/${index}/percentage`]
+                ? {
+                    raceId: getRaceId(e[`race/${index}/name`]),
+                    percentage: e[`race/${index}/percentage`],
+                  }
+                : "";
+            if (typeof race === "object") {
+              raceArray.push(race);
+            }
           }
-          if (animal.race2) {
-            animal.race2Id = getRaceId(animal.race2);
-          }
-          if (animal.race3) {
-            animal.race3Id = getRaceId(animal.race3);
-          }
-          if (animal.race4) {
-            animal.race4Id = getRaceId(animal.race4);
-          }
+
+          const animal = {
+            ...e,
+            identifier: `${e.identifier}`,
+            fatherRef: e.fatherRef ? e.fatherRef : "",
+            birthDate: getDate(e.birthDate),
+            herdDate: getDate(e.herdDate),
+            motherRef: e.motherRef ? e.motherRef : "",
+            registerNumber: e.registerNumber
+              ? e.ButtonFormikregisterNumber
+              : "",
+            pregnantDate: null,
+            color: e.color ? e.color : "",
+            images: [],
+            races: raceArray,
+          };
+
           try {
             const animalCreated = await dispatch(AnimalActions.create(animal));
-            console.log(animalCreated);
+            console.log(count, "animalCreated", animalCreated);
             setAnimalListUploadInfo((oldArray) => [...oldArray, animalCreated]);
             /**
              * Creacion de registro de pesos si hay informacion
              */
-            if (animal.lastWeight && animal.lastWeightDate) {
-              const weightData = {
-                animalId: animalCreated._id,
-                controlDate: getDate(animal.lastWeightDate),
-                controlType: "BALANCE",
-                weight: Number(animal.lastWeight),
-                observation: "",
-              };
-              dispatch(WeightActions.create(weightData));
-            }
             successUpload = successUpload + 1;
             setAnimalSucess(successUpload);
           } catch (e) {
             setAnimalListUploadInfo((oldArray) => [...oldArray, animal]);
             errorUpload = errorUpload + 1;
             setAnimalError(errorUpload);
-            console.log("error", animalListUploadInfo, errorUpload);
+            console.log("error", animalListUploadInfo, errorUpload, e);
           }
         });
       };
 
-      reader.readAsText(csvFile);
+      if (rABS) reader.readAsBinaryString(csvFile);
+      else reader.readAsArrayBuffer(csvFile);
     } else {
       dispatch(
         uiActions.showSnackbar("No has subido ningun archivo", "warning")
@@ -242,7 +237,9 @@ const AnimalBulkForm = ({ onClickCancelButton }) => {
               console.log(e.currentTarget.files[0]);
               if (
                 e.currentTarget.files[0]?.type === "text/csv" ||
-                e.currentTarget.files[0]?.type === ""
+                e.currentTarget.files[0]?.type === "application/vnd.ms-excel" ||
+                e.currentTarget.files[0]?.type ===
+                  "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
               ) {
                 setCsvFile(e.currentTarget.files[0]);
               } else {

@@ -20,10 +20,7 @@ export function animalReducer(state = initialState, action) {
         current: action.payload,
       };
     case ACTION_TYPES.ANIMAL.CREATE:
-      return {
-        ...state,
-        list: [action.payload, ...state.list],
-      };
+      return state;
     case ACTION_TYPES.ANIMAL.UPDATE_CURRENT:
       return {
         ...state,

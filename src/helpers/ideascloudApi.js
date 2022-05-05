@@ -20,12 +20,7 @@ const IdeasCloudApi = {
               "Error desconocido",
           };
           dispatch &&
-            dispatch(
-              uiActions.showSnackbar(
-                errorMessage || rejectBody.message,
-                "error"
-              )
-            );
+            dispatch(uiActions.showSnackbar(rejectBody.message, "error"));
           reject(rejectBody);
         }
       });

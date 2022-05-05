@@ -4,23 +4,18 @@ import { AddCircle } from "@material-ui/icons";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { useStyles } from "../styles";
 import * as yup from "yup";
-import { Formik } from "formik";
+import { FieldArray, Formik } from "formik";
 import TextFieldFormik from "../../../components/Inputs/TextFieldFormik";
 import ButtonFormik from "../../../components/Inputs/ButtonFormik";
 import DatePickerFieldFormik from "../../../components/Inputs/DatePickerFieldFormik";
 import SelectFieldFormik from "../../../components/Inputs/SelectFieldFormik";
 import CheckboxFormik from "../../../components/Inputs/CheckboxFormik";
-import { useDispatch, useSelector, shallowEqual } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import AnimalActions from "../../../redux/actions/animal.actions";
-import {
-  categoryOptions,
-  racialTypeOptions,
-  sexOptions,
-  stateOptions,
-  typeServicesTest,
-} from "../../../constants";
+import { categoryOptions, sexOptions } from "../../../constants";
 import raceActions from "../../../redux/actions/race.actions";
-import CustomInfoIcon from "../../../components/CustomInfoIcon";
+import { values } from "lodash";
+// import CustomInfoIcon from "../../../components/CustomInfoIcon";
 
 /**
  * @component
@@ -36,23 +31,14 @@ const defaultInitValues = {
   registerNumber: "",
   gender: "MALE",
   category: null,
-  father: null,
+  motherRef: "",
+  fatherRef: "",
   pregnantDate: null,
-  mother: null,
-  fatherId: "",
-  motherId: "",
-  race1Id: "",
-  percentageRace1: 0,
-  race2Id: "",
-  percentageRace2: 0,
-  race3Id: "",
-  percentageRace3: 0,
-  race4Id: "",
-  percentageRace4: 0,
   racialType: "",
+  images: [],
+  races: [{ raceId: "", percentage: null }],
   color: "",
   reproductiveStatus: null,
-  bornBy: null,
 };
 
 function AnimalForm({
@@ -76,19 +62,8 @@ function AnimalForm({
   const currentAgribusiness = useSelector(
     (state) => state.agribusiness.current
   );
-  const femaleAnimals = useSelector(
-    (state) => state.animal.list.filter((e) => e.gender === "FEMALE"),
-    shallowEqual
-  );
 
-  const maleAnimals = useSelector(
-    (state) => state.animal.list.filter((e) => e.gender === "MALE"),
-    shallowEqual
-  );
-
-  const [errorPercentage, setErrorPercentage] = useState("");
-
-  const validationSchema = yup.object({
+  const validationSchema = yup.object().shape({
     identifier: yup
       .string("Ingresa la identificacion del animal.")
       .required("Este campo es requerido."),
@@ -105,6 +80,28 @@ function AnimalForm({
     gender: yup
       .string("Ingresa el genero del animal")
       .required("Este campo es requerido."),
+    races: yup
+      .array()
+      .of(
+        yup.object().shape({
+          raceId: yup
+            .string()
+            .typeError("Selecciona una raza")
+            .required("Campo requerido"), // these constraints take precedence
+          percentage: yup
+            .number()
+            .typeError("Ingrese un porcentaje")
+            .min(0, "El mínimo número a ingresar es 0")
+            .max(100, "El máximo número a ingresar es 100")
+            .required("Campo requerido"), // these constraints take precedence
+        })
+      )
+      .test(
+        "races",
+        "La suma de las razas tiene que ser 100%",
+        (values) =>
+          values.reduce((acc, curr) => acc + curr.percentage, 0) === 100
+      ),
   });
 
   useEffect(() => {
@@ -112,139 +109,41 @@ function AnimalForm({
       dispatch(raceActions.listRace());
     }
     if (type === "update") {
-      if (initValues) {
-        if (initValues.percentageRace2 !== 0) handleAddRace();
-        if (initValues.percentageRace3 !== 0) handleAddRace();
-        if (initValues.percentageRace4 !== 0) handleAddRace();
-      }
+      initValues.races = initValues.entity.races;
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handleAddRace = () => {
-    const races = { ...animalRace };
-    if (letters[Object.keys(races).length]) {
-      races[letters[Object.keys(races).length]] = {};
-      setAnimalRace(races);
-    }
-  };
-
-  const handleCheckPercentage = (list = {}) => {
-    let total = 0;
-
-    Object.keys(list).forEach((animal) => {
-      const percentage = list[animal];
-      total = total + parseFloat(percentage);
-    });
-
-    console.log("total");
-    console.log(total);
-
-    if (total !== 100) {
-      setErrorPercentage(
-        "El porcentaje total debe ser 100%. Porfavor ajuste sus cantidades"
-      );
-      return false;
+  const calculateRacialType = (races) => {
+    const types = races.map(
+      (race) => listRaces.find((e) => e._id === race.raceId)?.racialType
+    );
+    if (types.every((type) => type === "BOS TAURUS")) {
+      return "TAURINO";
+    } else if (types.every((type) => type === "BOS INDICUS")) {
+      return "CEUBINO";
     } else {
-      setErrorPercentage("");
-      return true;
-    }
-  };
-
-  const handleRemoveRace = (id, index, values) => {
-    const races = { ...animalRace };
-    delete races[id];
-    values[`percentageRace${index + 1}`] = 0;
-    values[`race${index + 1}Id`] = "";
-
-    setAnimalRace(races);
-  };
-
-  const calculateRacialType = (values) => {
-    const type1 =
-      values.race1Id && values.race1Id !== ""
-        ? listRaces.find((e) => e._id === values.race1Id)?.racialType
-        : "";
-    const type2 =
-      values.race2Id && values.race2Id !== ""
-        ? listRaces.find((e) => e._id === values.race2Id)?.racialType
-        : type1;
-    const type3 =
-      values.race3Id && values.race3Id !== ""
-        ? listRaces.find((e) => e._id === values.race3Id)?.racialType
-        : type1;
-    const type4 =
-      values.race4Id && values.race4Id !== ""
-        ? listRaces.find((e) => e._id === values.race4Id)?.racialType
-        : type1;
-
-    if (
-      type1 === "BOS TAURUS" &&
-      type2 === "BOS TAURUS" &&
-      type3 === "BOS TAURUS" &&
-      type4 === "BOS TAURUS"
-    ) {
-      return "Taurino";
-    } else if (
-      type1 === "BOS INDICUS" &&
-      type2 === "BOS INDICUS" &&
-      type3 === "BOS INDICUS" &&
-      type4 === "BOS INDICUS"
-    ) {
-      return "Cebuino";
-    } else {
-      return "Media Sangre";
+      return "MEDIA SANGRE";
     }
   };
 
   const onSubmit = (values, actions) => {
-    // if (errorPercentage === "") {
-
-    const validPercentages = handleCheckPercentage({
-      percentageRace1: values.percentageRace1 ? values.percentageRace1 : 0,
-      percentageRace2: values.percentageRace2 ? values.percentageRace2 : 0,
-      percentageRace3: values.percentageRace3 ? values.percentageRace3 : 0,
-      percentageRace4: values.percentageRace4 ? values.percentageRace4 : 0,
-    });
-
-    if (!validPercentages) return;
-    if (values.racialType === "") values.racialType = null;
     values.agribusinessId = currentAgribusiness._id;
 
-    if (values.gender === "MALE") {
-      if (values.isReproductive) {
-        values.category = "REPRODUCTOR";
-      } else {
-        values.category = null;
-      }
-      values.reproductiveStatus = null;
-    }
-
-    if (values.gender === "FEMALE") {
-      values.category = null;
-    }
-
-    if (values.father) {
-      values.fatherId = values.father._id;
-    } else {
-      values.fatherId = "";
-    }
-
-    if (values.mother) {
-      values.motherId = values.mother._id;
-    } else {
-      values.motherId = "";
-    }
-
     if (type === "create") {
-      dispatch(AnimalActions.create(values));
-      onClickCancelButton();
+      dispatch(AnimalActions.create(values))
+        .then((r) => {
+          onClickCancelButton();
+        })
+        .catch((e) => {});
     }
     if (type === "update") {
-      dispatch(AnimalActions.update(values));
-      onClickCancelButton();
+      dispatch(AnimalActions.update(values))
+        .then((r) => {
+          onClickCancelButton();
+        })
+        .catch((e) => {});
     }
-    // }
   };
 
   return (
@@ -298,27 +197,16 @@ function AnimalForm({
               sm={6}
               xs={12}
             ></DatePickerFieldFormik>
-            <Grid item container xs={6}>
+            <Grid item container xs={12} lg={6} sm={6}>
               <TextFieldFormik
                 label="Nro de registro"
                 name="registerNumber"
                 type="text"
                 onChange={props.handleChange}
-                xs={11}
+                xs={12}
               ></TextFieldFormik>
-              <CustomInfoIcon title={"Falta información"} />
+              {/* <CustomInfoIcon title={"Falta información"} /> */}
             </Grid>
-
-            <SelectFieldFormik
-              onChange={props.handleChange}
-              options={Object.keys(typeServicesTest).map((key) => ({
-                _id: key,
-                name: typeServicesTest[key],
-              }))}
-              label="Concebido por"
-              name="bornBy"
-              xs={6}
-            ></SelectFieldFormik>
             <SelectFieldFormik
               onChange={props.handleChange}
               options={sexOptions.slice(1)}
@@ -328,102 +216,55 @@ function AnimalForm({
               sm={6}
               xs={12}
             ></SelectFieldFormik>
-            {props.values.gender === "MALE" ? (
-              <Grid
-                lg={6}
-                sm={6}
-                xs={12}
-                item
-                container
-                alignContent="center"
-                alignItems="center"
-              >
-                <CheckboxFormik
-                  label="Reproductor"
-                  name="isReproductive"
-                  options={categoryOptions}
-                  onChange={props.handleChange}
-                  checked={props.values.isReproductive}
-                ></CheckboxFormik>
-              </Grid>
-            ) : (
+            {props.values.gender === "MALE" && (
               <>
-                <SelectFieldFormik
-                  onChange={props.handleChange}
-                  options={Object.keys(stateOptions)
-                    .filter((e) => e === "PREGNANT" || e === "EMPTY")
-                    .map((key) => ({
-                      _id: key,
-                      name: stateOptions[key],
-                    }))}
-                  label="Estado"
-                  name="reproductiveStatus"
+                <Grid
                   lg={6}
                   sm={6}
                   xs={12}
-                ></SelectFieldFormik>
-                {props.values.reproductiveStatus === "PREGNANT" && (
-                  <DatePickerFieldFormik
-                    label="Fecha de preñez"
-                    name="pregnantDate"
+                  item
+                  container
+                  alignContent="center"
+                  alignItems="center"
+                ></Grid>
+                <Grid
+                  lg={6}
+                  sm={6}
+                  xs={12}
+                  item
+                  container
+                  alignContent="center"
+                  alignItems="center"
+                >
+                  <CheckboxFormik
+                    label="Reproductor"
+                    name="isReproductive"
+                    options={categoryOptions}
                     onChange={props.handleChange}
-                    lg={12}
-                    sm={12}
-                    xs={12}
-                  ></DatePickerFieldFormik>
-                )}
+                    checked={props.values.isReproductive}
+                  ></CheckboxFormik>
+                </Grid>
               </>
             )}
+            <TextFieldFormik
+              label="Padre"
+              type="text"
+              name="fatherRef"
+              onChange={props.handleChange}
+              lg={6}
+              sm={6}
+              xs={12}
+            ></TextFieldFormik>
 
-            {type === "create" ? (
-              <TextFieldFormik
-                options={maleAnimals}
-                label="Padre"
-                type="text"
-                name="fatherRef"
-                onChange={props.handleChange}
-                lg={6}
-                sm={6}
-                xs={12}
-              ></TextFieldFormik>
-            ) : (
-              <TextFieldFormik
-                options={maleAnimals}
-                label="Padre"
-                type="text"
-                name="fatherRef"
-                onChange={props.handleChange}
-                defaultValue={props.values.fatherRef || null}
-                lg={6}
-                sm={6}
-                xs={12}
-              ></TextFieldFormik>
-            )}
-
-            {type === "create" ? (
-              <TextFieldFormik
-                options={femaleAnimals}
-                label="Madre"
-                type="text"
-                name="motherRef"
-                onChange={props.handleChange}
-                lg={6}
-                sm={6}
-                xs={12}
-              ></TextFieldFormik>
-            ) : (
-              <TextFieldFormik
-                options={femaleAnimals}
-                label="Madre"
-                type="text"
-                name="motherRef"
-                onChange={props.handleChange}
-                defaultValue={props.values.motherRef || null}
-                lg={6}
-                sm={6}
-                xs={12}
-              ></TextFieldFormik>
-            )}
+            <TextFieldFormik
+              label="Madre"
+              type="text"
+              name="motherRef"
+              onChange={props.handleChange}
+              lg={6}
+              sm={6}
+              xs={12}
+            ></TextFieldFormik>
           </Grid>
           <Grid container spacing={1} className={classes.formStyle}>
             <Grid item xs={12}>
@@ -431,96 +272,111 @@ function AnimalForm({
             </Grid>
           </Grid>
           <Grid item xs={12} container className={classes.border}>
-            {Object.keys(animalRace).map((raceItem, index) => (
-              <Grid
-                item
-                xs={12}
-                container
-                key={`race-option-${raceItem}`}
-                spacing={1}
-                className={classes.raceContainer}
-              >
-                <Grid item xs={12}>
-                  <Typography
-                    variant={"body2"}
-                    gutterBottom
-                    className={classes.subtitle}
-                  >
-                    {`Raza ${raceItem}`}
-                  </Typography>
-                </Grid>
-                <Grid item container sm={8} xs={12}>
-                  <SelectFieldFormik
-                    name={`race${index + 1}Id`}
-                    label="Raza"
-                    options={listRaces}
-                    onChange={props.handleChange}
-                  />
-                </Grid>
-                <Grid
-                  item
-                  container
-                  sm={4}
-                  xs={12}
-                  alignItems={"center"}
-                  justifyContent={"center"}
-                >
-                  <Grid item xs={11}>
-                    <TextFieldFormik
-                      xs={12}
-                      name={`percentageRace${index + 1}`}
-                      endAdornment={
-                        <InputAdornment position="start">%</InputAdornment>
-                      }
-                      type="number"
-                      label="Porcentaje"
-                      style={{ textAlign: "end" }}
-                      // type="number"
-                      onChange={props.handleChange}
-                    />
+            <FieldArray
+              name="races"
+              render={(arrayHelpers) => (
+                <>
+                  {props.values.races &&
+                    props.values.races.map((race, index) => (
+                      <Grid
+                        item
+                        xs={12}
+                        container
+                        key={`race-option-${index}`}
+                        spacing={1}
+                        className={classes.raceContainer}
+                      >
+                        <Grid item xs={12}>
+                          <Typography
+                            variant={"body2"}
+                            gutterBottom
+                            className={classes.subtitle}
+                          >
+                            {`Raza ${letters[index]}`}
+                          </Typography>
+                        </Grid>
+                        <Grid item container sm={8} xs={12}>
+                          <SelectFieldFormik
+                            name={`races.${index}.raceId`}
+                            label="Raza"
+                            options={listRaces}
+                            disabled={type === "create" ? false : true}
+                            onChange={props.handleChange}
+                          />
+                        </Grid>
+                        <Grid
+                          item
+                          container
+                          sm={4}
+                          xs={12}
+                          alignItems={"center"}
+                          justifyContent={"center"}
+                        >
+                          <Grid item xs={11}>
+                            <TextFieldFormik
+                              xs={12}
+                              name={`races.${index}.percentage`}
+                              endAdornment={
+                                <InputAdornment position="start">
+                                  %
+                                </InputAdornment>
+                              }
+                              type="number"
+                              disabled={type === "create" ? false : true}
+                              label="Porcentaje"
+                              style={{ textAlign: "end" }}
+                              // type="number"
+                              onChange={props.handleChange}
+                            />
+                          </Grid>
+                          <Grid item xs={1}>
+                            {Boolean(index) && (
+                              <DeleteIcon
+                                color={"error"}
+                                disabled={type === "create" ? false : true}
+                                className={classes.deleteIcon}
+                                onClick={() => arrayHelpers.remove(index)}
+                              />
+                            )}
+                          </Grid>
+                        </Grid>
+                      </Grid>
+                    ))}
+                  <Grid item xs={12} className={classes.errorMessage}>
+                    <Typography variant={"caption"} gutterBottom>
+                      {props.errors.races &&
+                      typeof props.errors.races === "string"
+                        ? props.errors.races
+                        : ""}
+                    </Typography>
                   </Grid>
-                  <Grid item xs={1}>
-                    {Boolean(index) && (
-                      <DeleteIcon
+                  {type === "create" &&
+                    props.values.races &&
+                    props.values.races.length <= 3 && (
+                      <AddCircle
                         color={"secondary"}
-                        className={classes.deleteIcon}
-                        onClick={() =>
-                          handleRemoveRace(raceItem, index, props.values)
-                        }
+                        disabled={type === "create" ? false : true}
+                        className={classes.addBtn}
+                        onClick={() => {
+                          console.log(props.errors);
+                          arrayHelpers.push({ raceId: "", percentage: null });
+                        }}
                       />
                     )}
-                  </Grid>
-                </Grid>
-              </Grid>
-            ))}
-            <Grid item xs={12} className={classes.errorMessage}>
-              <Typography variant={"caption"} gutterBottom>
-                {errorPercentage}
-              </Typography>
-            </Grid>
-            <AddCircle
-              color={"secondary"}
-              className={classes.addBtn}
-              onClick={handleAddRace}
+                </>
+              )}
             />
           </Grid>
           <Grid container spacing={1}>
-            {/* <SelectFieldFormik
-              onChange={props.handleChange}
-              options={racialTypeOptions}
-              label="Tipo Racial"
-              name="racialType"
-              lg={6}
-              sm={6}
-              xs={12}
-            ></SelectFieldFormik> */}
             <TextFieldFormik
               label="Tipo Racial"
               name="racialType"
               disabled
               onChange={props.handleChange}
               xs={6}
-              value={calculateRacialType(props.values)}
+              value={
+                props.values.races && calculateRacialType(props.values.races)
+              }
             />
             <TextFieldFormik
               label="Color"

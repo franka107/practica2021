@@ -3,7 +3,7 @@ import IdeasCloudApi from "../../helpers/ideascloudApi";
 
 const list = () => async (dispatch, getState) => {
   const agribusiness = getState().agribusiness.current;
-  const response = await IdeasCloudApi.fetch("animalListByAgribusiness", {
+  const response = await IdeasCloudApi.fetch("animalListByAgribusinessV2", {
     agribusinessId: agribusiness?._id,
   });
 
@@ -12,15 +12,18 @@ const list = () => async (dispatch, getState) => {
 
 const listDeads = () => async (dispatch, getState) => {
   const agribusiness = getState().agribusiness.current;
-  const response = await IdeasCloudApi.fetch("animalListDeadsByAgribusiness", {
-    agribusinessId: agribusiness?._id,
-  });
+  const response = await IdeasCloudApi.fetch(
+    "animalListDeadsByAgribusinessV2",
+    {
+      agribusinessId: agribusiness?._id,
+    }
+  );
 
   dispatch({ type: ACTION_TYPES.ANIMAL.RETRIEVE_DEADS, payload: response });
 };
 
 const get = (data) => async (dispatch) => {
-  const response = await IdeasCloudApi.fetch("animalGetById", data);
+  const response = await IdeasCloudApi.fetch("animalGetByIdV2", data);
   dispatch({ type: ACTION_TYPES.ANIMAL.UPDATE_CURRENT, payload: response });
   return response;
 };
@@ -32,7 +35,7 @@ const clearCurrent = (data) => async (dispatch) => {
 const create = (data) => async (dispatch, getState) => {
   const agribusiness = getState().agribusiness.current;
   const response = await IdeasCloudApi.fetch(
-    "animalCreate",
+    "animalCreateV3",
     {
       ...data,
       agribusinessId: agribusiness._id,
@@ -45,6 +48,7 @@ const create = (data) => async (dispatch, getState) => {
     type: ACTION_TYPES.ANIMAL.CREATE,
     payload: response,
   });
+  dispatch(list());
   return response;
 };
 const update = (data) => async (dispatch) => {
