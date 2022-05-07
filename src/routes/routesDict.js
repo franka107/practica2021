@@ -47,6 +47,7 @@ export const ROUTES_SLUGS = {
   farm: "farm",
   agribusiness: "agribusiness",
   collaborator: "collaborator",
+  graphics: "graphics",
 };
 
 export const ROUTES_DICT = {
@@ -54,6 +55,7 @@ export const ROUTES_DICT = {
   register: `/${ROUTES_SLUGS.register}`,
   login: `/${ROUTES_SLUGS.login}`,
   dashboard: `/${ROUTES_SLUGS.dashboard}`,
+  graphics: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.graphics}`,
   geneticStock: {
     root: `/${ROUTES_SLUGS.dashboard}/${ROUTES_SLUGS.geneticStock}`,
     geneticType: {

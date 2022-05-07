@@ -99,6 +99,7 @@ import WeightControlCreatePage from "../pages/AnimalDetail/WeightControlCreatePa
 import RecoverPasswordPage from "../pages/RecoverPasswordPage";
 import { weightRouteOptions } from "../pages/Collective/Weight/constants";
 import { saleRouteOptions } from "../pages/Collective/Sale/constants";
+import MainPage from "../pages/GraphicsPage/MainPage";
 
 export const ROUTE_TYPES = {
   public: "public",
@@ -106,6 +107,17 @@ export const ROUTE_TYPES = {
 };
 
 export const RENDER_ROUTES = [
+  /**
+   * Rutas relacionadas al Módulo de gráficos
+   */
+  {
+    path: ROUTES_DICT.graphics,
+    key: "Graphics",
+    exact: true,
+    component: (props) => <MainPage />,
+    layout: DashboardLayout,
+    type: ROUTE_TYPES.private,
+  },
   /**
    * Rutas relacionadas al Módulo de nacimientos
    */

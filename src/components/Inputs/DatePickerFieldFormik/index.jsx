@@ -22,9 +22,7 @@ export default function DatePickerFieldFormik({ xs = 12, ...props }) {
         {...props}
         onChange={(date) => setValue(date)}
         error={meta.touched && Boolean(meta.error)}
-        helperText={
-          meta.touched && meta.error ? meta.touched && meta.error : "AAAA/MM/DD"
-        }
+        helperText={meta.touched && meta.error && meta.touched && meta.error}
       />
       {/*
 

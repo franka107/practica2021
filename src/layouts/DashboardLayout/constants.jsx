@@ -23,13 +23,14 @@ import {
   faListAlt,
   // faShoppingCart,
   faSyringe,
+  faChartPie,
 } from "@fortawesome/free-solid-svg-icons";
 import { ROUTES_DICT, ROUTES_SLUGS } from "../../routes/routesDict";
 
 export const menuList = () => {
   const validator = localStorage.getItem("reproductiveManagement");
   if (validator !== "DM_&_AI_&_ET") {
-    list[2].submenu[2].submenu.splice(2, 1);
+    list[3].submenu[2].submenu.splice(2, 1);
     return list;
   } else {
     const newObject = {
@@ -43,6 +44,13 @@ export const menuList = () => {
 };
 
 export const list = [
+  {
+    id: "graficos",
+    title: "Gráficos",
+    // tour: "sidebar__control__animal",
+    img: faChartPie,
+    link: ROUTES_DICT.graphics,
+  },
   {
     id: "control-ganadero",
     title: "Control de Ganado",

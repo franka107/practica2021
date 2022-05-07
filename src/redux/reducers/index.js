@@ -23,6 +23,8 @@ import { dryingReducer } from "./drying.reducer";
 import { collaboratorReducer } from "./collaborator.reducer";
 import { userReducer } from "./user.reducer";
 import { commentReducer } from "./comment.reducer";
+import { graphicReducer } from "./graphic.reducer";
+import { milkGraphicReducer } from "./milkGraphic.reducer";
 
 const rootReducer = combineReducers({
   auth: authReducer,
@@ -49,6 +51,8 @@ const rootReducer = combineReducers({
   collaborator: collaboratorReducer,
   user: userReducer,
   comment: commentReducer,
+  graphic: graphicReducer,
+  milkGraphic: milkGraphicReducer,
 });
 
 //const rootReducer = (state, action) => {

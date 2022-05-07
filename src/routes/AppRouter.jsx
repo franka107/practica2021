@@ -21,7 +21,7 @@ export const AppRouter = () => {
             <Route
               path={ROUTES_DICT.root}
               exact
-              render={() => <Redirect to={ROUTES_DICT.animal.list} />}
+              render={() => <Redirect to={ROUTES_DICT.graphics} />}
             ></Route>
             <RouterList routes={RENDER_ROUTES} outside={false} />
           </Switch>

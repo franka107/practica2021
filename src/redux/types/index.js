@@ -167,6 +167,12 @@ const ACTION_TYPES = {
     DELETE: "user/DELETE",
     CREATE: "user/CREATE",
   },
+  GRAPHIC: {
+    RETRIEVE: "graphic/RETRIEVE",
+  },
+  MILKGRAPHIC: {
+    RETRIEVE: "milkGraphic/RETRIEVE",
+  },
 };
 
 export default ACTION_TYPES;

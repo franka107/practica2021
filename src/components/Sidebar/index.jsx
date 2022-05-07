@@ -78,6 +78,10 @@ function Sidebar({ openDrawer, setOpenDrawer, options }) {
             }
           }
         });
+      } else {
+        if (option.link === location.pathname) {
+          handleClick(option.id);
+        }
       }
     });
   };

@@ -212,3 +212,29 @@ export const planOptions = {
   INTERMEDIATE: "Intermedio",
   PREMIUM: "Premium",
 };
+
+export const statusOptions = {
+  /** Crías */
+  FEMALE_BREEDING: "Cría hembra",
+  MALE_BREEDING: "Cría macho",
+  /** De levante */
+  FEMALE_UPPED: "Hembra levante",
+  MALE_UPPED: "Macho levante",
+  /** Novillas/os */
+  FEMALE_HEIFER: "Vaquillona Vacia",
+  FEMALE_HEIFER_PREGNANT: "Vaquillona preñada",
+  MALE_HEIFER_NR: "Novillo para engorde",
+  MALE_HEIFER_R: "Torete",
+  //FEMALE_HEIFER_PREGNANT_DRIED: "Novilla de vientre preñada y seca",
+  //FEMALE_HEIFER_DRIED: "Novilla de vientre seca",
+  //FEMALE_HEIFER_BIRTHED: "Novilla de vientre seca",
+
+  /** Adultos */
+  MALE_ANIMAL_R: "Toro reproductor",
+  FEMALE_ANIMAL_BIRTHED: "Vaca parida",
+  FEMALE_ANIMAL_PREGNANT: "Vaca preñada",
+  FEMALE_ANIMAL_DRIED: "Vaca seca",
+  FEMALE_ANIMAL_PREGNANT_DRIED: "Vaca preñada y seca",
+  //FEMALE_ANIMAL_BIRTHED_DRIED: "Vaca parida y seca",
+  /** Sin manejar */
+};

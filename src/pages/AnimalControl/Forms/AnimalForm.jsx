@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Grid, Typography, InputAdornment } from "@material-ui/core";
 import { AddCircle } from "@material-ui/icons";
 import DeleteIcon from "@material-ui/icons/Delete";
@@ -14,7 +14,6 @@ import { useDispatch, useSelector } from "react-redux";
 import AnimalActions from "../../../redux/actions/animal.actions";
 import { categoryOptions, sexOptions } from "../../../constants";
 import raceActions from "../../../redux/actions/race.actions";
-import { values } from "lodash";
 // import CustomInfoIcon from "../../../components/CustomInfoIcon";
 
 /**
@@ -50,9 +49,6 @@ function AnimalForm({
   const classes = useStyles();
 
   const letters = ["A", "B", "C", "D"];
-  const [animalRace, setAnimalRace] = useState({
-    A: {},
-  });
   const dispatch = useDispatch();
   const listRaces = useSelector((state) =>
     state.race.list.sort((a, b) =>

@@ -17,7 +17,6 @@ import { animalRouteOptions } from "../constants";
 import { columns } from "./constants";
 import { ROUTES_DICT } from "../../../routes/routesDict";
 import AnimalActions from "../../../redux/actions/animal.actions";
-import { differenceInDays, differenceInMonths } from "date-fns";
 
 /**
  * @component
@@ -33,9 +32,7 @@ const AnimalPageList = ({ children, setTitle, setChipList }) => {
   const dispatch = useDispatch();
   const listAnimal = useSelector((state) => state.animal.list);
   const listAnimalDeads = useSelector((state) => state.animal.listDeads);
-  const currentAgribusiness = useSelector(
-    (state) => state.agribusiness.current
-  );
+
   const [searchText, setSearchText] = useState();
   const [listType, setListType] = useState(true);
 

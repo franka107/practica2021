@@ -138,7 +138,7 @@ const MemoizedRoute = React.memo(
             </>
           );
         } else if (type === ROUTE_TYPES.public && isLoggedIn) {
-          return <Redirect to={ROUTES_DICT.animal.list} />;
+          return <Redirect to={ROUTES_DICT.graphics} />;
         } else if (type === ROUTE_TYPES.private && !isLoggedIn) {
           return <Redirect to={ROUTES_DICT.login} />;
         }
