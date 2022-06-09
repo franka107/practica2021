@@ -196,7 +196,7 @@ const BirthListPage = ({ children }) => {
         </Grid>
 
         <Grid>
-          <Grid item xs={12} sm={5}>
+          {/* <Grid item xs={12} sm={5}>
             <Typography variant={"subtitle1"}>Fecha</Typography>
             <Grid container>
               <Grid item xs={12}>
@@ -237,11 +237,9 @@ const BirthListPage = ({ children }) => {
                     </form>
                   )}
                 </Formik>
-                {/* <Typography variant={"body2"}>De</Typography>
-                  <Typography variant={"body1"}>1/1/2021</Typography> */}
               </Grid>
             </Grid>
-          </Grid>
+          </Grid> */}
           <Grid container>
             <Grid item xs={12} sm={12}>
               <HighchartsReact
@@ -252,7 +250,7 @@ const BirthListPage = ({ children }) => {
                     margin: [50, 50, 120, 80],
                   },
                   title: {
-                    // text: "Mes Actual",
+                    text: "",
                   },
 
                   xAxis: {

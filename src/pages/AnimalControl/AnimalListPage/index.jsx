@@ -6,8 +6,8 @@ import {
   generatePath,
 } from "react-router-dom";
 import { Grid, Switch, Typography } from "@material-ui/core";
-import AnimalDescription from "../AnimalDescription";
-import AnimalCharts from "../AnimalCharts";
+// import AnimalDescription from "../AnimalDescription";
+// import AnimalCharts from "../AnimalCharts";
 import AddAnimals from "../AddAnimals";
 import { useStyles } from "../styles";
 import { useDispatch, useSelector } from "react-redux";
@@ -105,8 +105,8 @@ const AnimalPageList = ({ children, setTitle, setChipList }) => {
 
   return (
     <Grid item container xs={12}>
-      <AnimalDescription />
-      <AnimalCharts />
+      {/* <AnimalDescription /> */}
+      {/* <AnimalCharts /> */}
       <AddAnimals searchText={searchText} setSearchText={setSearchText} />
       <Typography component="div">
         <Grid component="label" container alignItems="center" spacing={1}>

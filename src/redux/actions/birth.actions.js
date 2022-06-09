@@ -16,7 +16,7 @@ const create = (data) => async (dispatch, getState) => {
   const animal = getState().animal.list.find((e) => e._id === data.animalId);
 
   const response = await IdeasCloudApi.fetch(
-    "birthControlCreate",
+    "birthControlCreateV2",
     {
       ...data,
       agribusinessId: agribusiness._id,

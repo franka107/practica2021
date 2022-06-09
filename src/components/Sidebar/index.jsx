@@ -19,6 +19,14 @@ import { useDispatch, useSelector } from "react-redux";
 import agribusinessActions from "../../redux/actions/agribusiness.actions";
 import { ROUTES_DICT } from "../../routes/routesDict";
 import AnimalActions from "../../redux/actions/animal.actions";
+import GraphicActions from "../../redux/actions/graphic.actions";
+import MilkGraphicActions from "../../redux/actions/milkGraphic.actions";
+import { sub } from "date-fns";
+
+const defaultInitValues = {
+  initDate: sub(new Date(), { months: 1 }),
+  endDate: new Date(),
+};
 
 function Sidebar({ openDrawer, setOpenDrawer, options }) {
   const history = useHistory();
@@ -211,7 +219,9 @@ function Sidebar({ openDrawer, setOpenDrawer, options }) {
                         agribusinessActions.setCurrentAgribusiness(agribusiness)
                       );
                       dispatch(AnimalActions.list());
-                      history.push(ROUTES_DICT.animal.list);
+                      dispatch(GraphicActions.get());
+                      dispatch(MilkGraphicActions.get(defaultInitValues));
+                      history.push(ROUTES_DICT.graphics);
                     }}
                   >
                     <ListItem button className={classes.nested}>

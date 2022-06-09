@@ -38,13 +38,14 @@ const Production = ({ children }) => {
   };
   console.log(byRace());
 
-  const firstSampleAvg = milkControlCharts.averages.firstSampleAvgRounded || 0;
+  const firstSampleAvg =
+    milkControlCharts?.averages?.firstSampleAvgRounded || 0;
   const secondSampleAvg =
-    milkControlCharts.averages.secondSampleAvgRounded || 0;
+    milkControlCharts?.averages?.secondSampleAvgRounded || 0;
 
-  const totalAvg = milkControlCharts.averages.totalAvgRounded || 0;
+  const totalAvg = milkControlCharts?.averages?.totalAvgRounded || 0;
 
-  const totalMilk = milkControlCharts.averages.totalMilk || 0;
+  const totalMilk = milkControlCharts?.averages?.totalMilk || 0;
 
   const byRacesx = () => {
     const r = byRace();
@@ -93,6 +94,7 @@ const Production = ({ children }) => {
   console.log(byRacesy());
 
   const ProductionForRace = {
+    noData: {},
     chart: {
       type: "spline",
     },
@@ -100,7 +102,12 @@ const Production = ({ children }) => {
       text: "",
     },
     legend: {
-      enabled: false,
+      layout: "vertical",
+      align: "right",
+      verticalAlign: "middle",
+      // labelFormatter: function () {
+      //   return this.point.name;
+      // },
     },
     xAxis: {
       categories: byRacesx(),
@@ -212,6 +219,7 @@ const Production = ({ children }) => {
           </Typography>
           {children}
           <HighchartsReact
+            // noData="No data to display"
             highcharts={Highcharts}
             options={ProductionForRace}
           />

@@ -78,12 +78,12 @@ const AnimalBulkForm = ({ onClickCancelButton }) => {
   const handleSubmit = () => {
     if (csvFile) {
       setAnimalListUploadInfo([]);
-      setIsUploading(true);
       setAnimalSucess(0);
       setAnimalError(0);
+      setIsUploading(true);
       const reader = new FileReader();
       const rABS = !!reader.readAsBinaryString;
-      reader.onload = (e) => {
+      reader.onload = async (e) => {
         const bstr = e.target.result;
         const wb = XLSX.read(bstr, { type: rABS ? "binary" : "array" });
         let worksheets = {};
@@ -92,12 +92,14 @@ const AnimalBulkForm = ({ onClickCancelButton }) => {
             wb.Sheets[sheetName]
           );
         }
+
+        const data = worksheets["Worksheet"];
         setCsvListLength(worksheets["Worksheet"].length);
-        // console.log("porfin", worksheets["Worksheet"].length);
-        let count = 1;
+        console.log("porfin", worksheets["Worksheet"].length);
         let errorUpload = 0;
         let successUpload = 0;
-        worksheets["Worksheet"].map(async (e) => {
+
+        data.forEach(async (e) => {
           let raceArray = [];
           for (let index = 1; index <= 4; index++) {
             const race =
@@ -111,7 +113,6 @@ const AnimalBulkForm = ({ onClickCancelButton }) => {
               raceArray.push(race);
             }
           }
-
           const animal = {
             ...e,
             identifier: `${e.identifier}`,
@@ -130,29 +131,33 @@ const AnimalBulkForm = ({ onClickCancelButton }) => {
 
           try {
             const animalCreated = await dispatch(AnimalActions.create(animal));
-            console.log(count, "animalCreated", animalCreated);
-            setAnimalListUploadInfo((oldArray) => [...oldArray, animalCreated]);
-            /**
-             * Creacion de registro de pesos si hay informacion
-             */
+            // console.log("animalCreated", animalCreated[0]);
+            setAnimalListUploadInfo((oldArray) => [
+              ...oldArray,
+              animalCreated[0],
+            ]);
             successUpload = successUpload + 1;
             setAnimalSucess(successUpload);
           } catch (e) {
-            setAnimalListUploadInfo((oldArray) => [...oldArray, animal]);
+            // console.log("error", e);
+            setAnimalListUploadInfo((oldArray) => [
+              ...oldArray,
+              { ...animal, error: e.message ? e.message : "Error desconocido" },
+            ]);
             errorUpload = errorUpload + 1;
             setAnimalError(errorUpload);
-            console.log("error", animalListUploadInfo, errorUpload, e);
           }
         });
       };
-
       if (rABS) reader.readAsBinaryString(csvFile);
       else reader.readAsArrayBuffer(csvFile);
+      console.log(animalListUploadInfo);
     } else {
       dispatch(
         uiActions.showSnackbar("No has subido ningun archivo", "warning")
       );
     }
+    dispatch(AnimalActions.list());
   };
   const csvToArray = (str, delimiter = ",") => {
     // slice from start of text to the first \n index
@@ -227,16 +232,15 @@ const AnimalBulkForm = ({ onClickCancelButton }) => {
           endIcon={false && <CircularProgress size={20} />}
           variant="contained"
         >
-          Subir CSV
+          Subir XLSX
           <input
-            accept=".csv"
+            accept=".xlsx"
             hidden
             name="csvFile"
             className={classes.fileInput}
             onChange={(e) => {
               console.log(e.currentTarget.files[0]);
               if (
-                e.currentTarget.files[0]?.type === "text/csv" ||
                 e.currentTarget.files[0]?.type === "application/vnd.ms-excel" ||
                 e.currentTarget.files[0]?.type ===
                   "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
@@ -304,7 +308,11 @@ const AnimalBulkForm = ({ onClickCancelButton }) => {
                         label={
                           animal?._id
                             ? `${animal.identifier}: Exitoso`
-                            : `${animal.identifier}: Error al momento de subir`
+                            : `${animal.identifier}: ${
+                                animal?.error
+                                  ? animal?.error
+                                  : "Error desconocido"
+                              }`
                         }
                       />
                     )}

@@ -40,11 +40,8 @@ const PalpationForm = ({
   const femaleAnimals = useSelector(
     (state) =>
       state.animal.list.filter(
-        (e) =>
-          e.gender === "FEMALE" &&
-          e.reproductiveStatus !== "PREGNANT" &&
-          e.isServed &&
-          e.activeServiceId
+        (e) => e.gender === "FEMALE" && e.isServed === true
+        // e.ageInMonths > agribusiness!.isHeifer!
       ),
     shallowEqual
   );
@@ -167,14 +164,14 @@ const PalpationForm = ({
               />
               <CustomInfoIcon title={stateTitle} />
             </Grid>
-            {stateOptions[props.values.state] === stateOptions.PREGNANT && (
+            {/* {stateOptions[props.values.state] === stateOptions.PREGNANT && (
               <DatePickerFieldFormik
                 label="Fecha preñez"
                 name="pregnancyDate"
                 onChange={props.handleChange}
                 xs={12}
               />
-            )}
+            )} */}
             <SelectFieldFormik
               onChange={props.handleChange}
               xs={12}

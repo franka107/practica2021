@@ -48,7 +48,7 @@ const create = (data) => async (dispatch, getState) => {
     type: ACTION_TYPES.ANIMAL.CREATE,
     payload: response,
   });
-  dispatch(list());
+  // dispatch(list());
   return response;
 };
 const update = (data) => async (dispatch) => {

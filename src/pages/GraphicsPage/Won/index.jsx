@@ -52,10 +52,10 @@ const Won = () => {
   const WonforGender = {
     chart: {
       type: "pie",
-      options3d: {
-        enabled: true,
-        alpha: 45,
-      },
+      // options3d: {
+      //   enabled: true,
+      //   alpha: 45,
+      // },
     },
     title: {
       text: "#Por Sexo",
@@ -250,6 +250,9 @@ const Won = () => {
     },
     legend: {
       enabled: false,
+      layout: "vertical",
+      align: "right",
+      verticalAlign: "middle",
     },
     plotOptions: {
       series: {
@@ -258,6 +261,17 @@ const Won = () => {
           enabled: true,
           format: "{point.y}",
         },
+      },
+    },
+
+    lang: {
+      noData: "Nichts zu anzeigen",
+    },
+    noData: {
+      style: {
+        fontWeight: "bold",
+        fontSize: "15px",
+        color: "#303030",
       },
     },
 
@@ -305,30 +319,37 @@ const Won = () => {
         Cantidad de Animales
       </Typography>
       <Grid item xs={12}>
-        <Grid
-          item
-          container
-          sm={12}
-          xs={12}
-          justifyContent={"center"}
-          className={classes.highchartContainer}
-        >
-          <Paper className={classes.highchart}>
-            <HighchartsReact highcharts={Highcharts} options={WonforGender} />
-          </Paper>
-        </Grid>
-        <br />
-        <Grid
-          item
-          container
-          sm={12}
-          xs={12}
-          justifyContent={"center"}
-          className={classes.highchartContainer}
-        >
-          <Paper className={classes.highchart}>
-            <HighchartsReact highcharts={Highcharts} options={WonforPregnat} />
-          </Paper>
+        <Grid container item xs={12}>
+          <Grid
+            item
+            container
+            md={6}
+            sm={12}
+            xs={12}
+            justifyContent={"center"}
+            className={classes.highchartContainer}
+          >
+            <Paper className={classes.highchart}>
+              <HighchartsReact highcharts={Highcharts} options={WonforGender} />
+            </Paper>
+          </Grid>
+          <br />
+          <Grid
+            item
+            container
+            md={6}
+            sm={12}
+            xs={12}
+            justifyContent={"center"}
+            className={classes.highchartContainer}
+          >
+            <Paper className={classes.highchart}>
+              <HighchartsReact
+                highcharts={Highcharts}
+                options={WonforPregnat}
+              />
+            </Paper>
+          </Grid>
         </Grid>
         <br />
         <Grid

@@ -129,6 +129,7 @@ function AnimalForm({
     if (type === "create") {
       dispatch(AnimalActions.create(values))
         .then((r) => {
+          dispatch(AnimalActions.list());
           onClickCancelButton();
         })
         .catch((e) => {});

@@ -1,6 +1,6 @@
 import { Divider, Grid, Typography } from "@material-ui/core";
 import { differenceInDays } from "date-fns";
-import { Formik } from "formik";
+import { FieldArray, Formik } from "formik";
 import PropTypes from "prop-types";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
@@ -25,11 +25,18 @@ import geneticStockActions from "../../../redux/actions/geneticStock.actions";
 import uiActions from "../../../redux/actions/ui.actions";
 import { useStyles } from "../../../styles";
 const defaultInitValues = {
-  children: [],
+  children: [
+    {
+      identifier: "",
+      color: "",
+      weight: null,
+      gender: "",
+    },
+  ],
   birthDate: new Date(),
   animalId: "",
   birthType: "SIMPLE",
-  difficulty: "CEASAREAN",
+  difficulty: "EUTOCICUS",
   retainedPlacenta: false,
   lastFemaleBirth: "",
   lastMaleBirth: "",
@@ -67,7 +74,8 @@ const BirthForm = ({
   const femaleAnimals = useSelector(
     (state) =>
       state.animal.list.filter(
-        (e) => e.gender === "FEMALE" && e.reproductiveStatus === "PREGNANT"
+        (animal) => animal.gender === "FEMALE" && animal.isPregnant === true
+        // animal.ageInMonths > agribusiness!.isHeifer!
       ),
     shallowEqual
   );
@@ -205,89 +213,89 @@ const BirthForm = ({
       if (type === "create") {
         const birth = await dispatch(BirthActions.create(values));
 
-        if (
-          birthTypeOptions[values.birthType] === birthTypeOptions.SIMPLE ||
-          birthTypeOptions[values.birthType] === birthTypeOptions.TWIN
-        ) {
-          let races = {};
-          if (currentAnimal.activeService) {
-            switch (currentAnimal.activeService.serviceType) {
-              //Artificial Insemination
-              case "AR_IN":
-                races = calculateRaces(
-                  currentAnimal,
-                  currentAnimal.activeService.geneticStock
-                );
-                break;
-              //Natural Mount
-              case "NA_MO":
-                races = calculateRaces(
-                  currentAnimal,
-                  currentAnimal.activeService.reproductorAnimal
-                );
-                break;
-              //Embryo transfer
-              case "EM_TR":
-                races = calculateRaces(
-                  currentAnimal,
-                  currentAnimal.activeService.geneticStock
-                );
-                break;
-              default:
-            }
-          }
+        // if (
+        //   birthTypeOptions[values.birthType] === birthTypeOptions.SIMPLE ||
+        //   birthTypeOptions[values.birthType] === birthTypeOptions.TWIN
+        // ) {
+        //   let races = {};
+        //   if (currentAnimal.activeService) {
+        //     switch (currentAnimal.activeService.serviceType) {
+        //       //Artificial Insemination
+        //       case "AR_IN":
+        //         races = calculateRaces(
+        //           currentAnimal,
+        //           currentAnimal.activeService.geneticStock
+        //         );
+        //         break;
+        //       //Natural Mount
+        //       case "NA_MO":
+        //         races = calculateRaces(
+        //           currentAnimal,
+        //           currentAnimal.activeService.reproductorAnimal
+        //         );
+        //         break;
+        //       //Embryo transfer
+        //       case "EM_TR":
+        //         races = calculateRaces(
+        //           currentAnimal,
+        //           currentAnimal.activeService.geneticStock
+        //         );
+        //         break;
+        //       default:
+        //     }
+        //   }
 
-          let dataChild = {
-            identifier: values.firstChildIdentifier,
-            name: values.firstChildName,
-            gender: values.firstChildGender,
-            color: values.firstChildColor,
-            reproductiveStatus:
-              values.firstChildGender === "MALE" ? null : "EMPTY",
-            birthDate: new Date(),
-            herdDate: new Date(),
-            birthId: birth._id,
-            motherId: values.animalId,
-            fatherId: currentAnimal.activeService?.reproductorAnimalId,
-            bornBy: currentAnimal.activeService?.serviceType,
-            ...races,
-          };
+        //   let dataChild = {
+        //     identifier: values.firstChildIdentifier,
+        //     name: values.firstChildName,
+        //     gender: values.firstChildGender,
+        //     color: values.firstChildColor,
+        //     reproductiveStatus:
+        //       values.firstChildGender === "MALE" ? null : "EMPTY",
+        //     birthDate: new Date(),
+        //     herdDate: new Date(),
+        //     birthId: birth._id,
+        //     motherId: values.animalId,
+        //     fatherId: currentAnimal.activeService?.reproductorAnimalId,
+        //     bornBy: currentAnimal.activeService?.serviceType,
+        //     ...races,
+        //   };
 
-          await dispatch(AnimalActions.create(dataChild));
+        //   await dispatch(AnimalActions.create(dataChild));
 
-          if (birthTypeOptions[values.birthType] === birthTypeOptions.TWIN) {
-            let data2Child = {
-              identifier: values.secondChildIdentifier,
-              name: values.secondChildName,
-              gender: values.secondChildGender,
-              reproductiveStatus:
-                values.secondChildGender === "MALE" ? null : "EMPTY",
-              color: values.secondChildColor,
-              birthId: birth._id,
-              birthDate: new Date(),
-              herdDate: new Date(),
-              motherId: values.animalId,
+        //   if (birthTypeOptions[values.birthType] === birthTypeOptions.TWIN) {
+        //     let data2Child = {
+        //       identifier: values.secondChildIdentifier,
+        //       name: values.secondChildName,
+        //       gender: values.secondChildGender,
+        //       reproductiveStatus:
+        //         values.secondChildGender === "MALE" ? null : "EMPTY",
+        //       color: values.secondChildColor,
+        //       birthId: birth._id,
+        //       birthDate: new Date(),
+        //       herdDate: new Date(),
+        //       motherId: values.animalId,
 
-              fatherId: currentAnimal.activeService?.reproductorAnimalId,
-              bornBy: currentAnimal.activeService?.serviceType,
-              ...races,
-            };
+        //       fatherId: currentAnimal.activeService?.reproductorAnimalId,
+        //       bornBy: currentAnimal.activeService?.serviceType,
+        //       ...races,
+        //     };
 
-            await dispatch(AnimalActions.create(data2Child));
-          }
-        } else {
-          /* dispatch(BirthActions.create(values)); */
-          const cowData = await IdeasCloudApi.fetch("animalGetById", {
-            _id: values.animalId,
-          });
-          await dispatch(
-            AnimalActions.update({
-              ...cowData,
-              agribusinessId: currentAgribusiness._id,
-              reproductiveStatus: "EMPTY",
-            })
-          );
-        }
+        //     await dispatch(AnimalActions.create(data2Child));
+        //   }
+        // } else {
+        //   /* dispatch(BirthActions.create(values)); */
+        //   const cowData = await IdeasCloudApi.fetch("animalGetById", {
+        //     _id: values.animalId,
+        //   });
+        //   await dispatch(
+        //     AnimalActions.update({
+        //       ...cowData,
+        //       agribusinessId: currentAgribusiness._id,
+        //       reproductiveStatus: "EMPTY",
+        //     })
+        //   );
+        // }
       }
       if (type === "update") {
         await dispatch(BirthActions.update(values));
@@ -371,33 +379,6 @@ const BirthForm = ({
             // eslint-disable-next-line react-hooks/exhaustive-deps
           }, [props.values.animalId]);
 
-          /*
-          useEffect(() => {
-            if (currentAnimal && currentAnimal._id === props.values.animalId) {
-              const days = differenceInDays(
-                new Date(),
-                new Date(currentAnimal.pregnantDate)
-              );
-              if (days < 283) {
-                dispatch(
-                  uiActions.showSnackbar(
-                    `El parto se esta dando con ${days} días, es prematuro.`,
-                    "warning"
-                  )
-                );
-              }
-              if (!currentAnimal.pregnantDate) {
-                dispatch(
-                  uiActions.showSnackbar(
-                    "No hay informacion de la fecha de preñez",
-                    "warning"
-                  )
-                );
-              }
-            }
-          }, [currentAnimal]);
-
-          */
           useEffect(() => {
             props.setFieldValue("firstChildGender", "");
             props.setFieldValue("secondChildGender", "");
@@ -451,6 +432,57 @@ const BirthForm = ({
 
             // eslint-disable-next-line react-hooks/exhaustive-deps
           }, [props.values.animalId]);
+
+          useEffect(() => {
+            if (props.values.birthType === "SIMPLE") {
+              if (props.values.children.length !== 1) {
+                props.setFieldValue("children", [
+                  {
+                    identifier: "",
+                    color: "",
+                    weight: null,
+                    gender: "",
+                  },
+                ]);
+              }
+              if (props.values.children.length === 0) {
+                props.setFieldValue("children", [
+                  {
+                    identifier: "",
+                    color: "",
+                    weight: null,
+                    gender: "",
+                  },
+                ]);
+              }
+            }
+            if (props.values.birthType === "TWIN") {
+              if (props.values.children.length === 1) {
+                props.setFieldValue("children", [
+                  {
+                    identifier: "",
+                    color: "",
+                    weight: null,
+                    gender: "",
+                  },
+                  {
+                    identifier: "",
+                    color: "",
+                    weight: null,
+                    gender: "",
+                  },
+                ]);
+              }
+            }
+            if (props.values.birthType === "ABORTION") {
+              if (props.values.children.length === 1) {
+                props.setFieldValue("children", []);
+              }
+            }
+            // arrayHelpers.
+            // eslint-disable-next-line react-hooks/exhaustive-deps
+          }, [props.values.birthType]);
+
           return (
             <form onSubmit={props.handleSubmit} className={classes.formStyle}>
               <Grid container spacing={1}>
@@ -664,75 +696,92 @@ const BirthForm = ({
                     spacing={1}
                     className={classes.form__subBorder}
                   >
-                    <TextFieldFormik
-                      label="Identificación"
-                      name="firstChildIdentifier"
-                      onChange={props.handleChange}
-                      lg={3}
-                      sm={3}
-                      xs={12}
-                    ></TextFieldFormik>
-                    <TextFieldFormik
-                      label="Nombre"
-                      name="firstChildName"
-                      onChange={props.handleChange}
-                      lg={3}
-                      sm={3}
-                      xs={12}
-                    ></TextFieldFormik>
-                    <SelectFieldFormik
-                      onChange={props.handleChange}
-                      options={sexOptions.slice(1)}
-                      label="Sexo"
-                      name="firstChildGender"
-                      sm={3}
-                      xs={12}
-                    ></SelectFieldFormik>
-                    <TextFieldFormik
-                      label="Color"
-                      name="firstChildColor"
-                      onChange={props.handleChange}
-                      lg={3}
-                      sm={3}
-                      xs={12}
-                    ></TextFieldFormik>
-                    {birthTypeOptions[props.values.birthType] ===
-                      birthTypeOptions.TWIN && (
-                      <>
-                        <TextFieldFormik
-                          label="Identificación"
-                          name="secondChildIdentifier"
-                          onChange={props.handleChange}
-                          lg={3}
-                          sm={3}
-                          xs={12}
-                        ></TextFieldFormik>
-                        <TextFieldFormik
-                          label="Nombre"
-                          name="secondChildName"
-                          onChange={props.handleChange}
-                          lg={3}
-                          sm={3}
-                          xs={12}
-                        ></TextFieldFormik>
-                        <SelectFieldFormik
-                          onChange={props.handleChange}
-                          options={sexOptions.slice(1)}
-                          label="Sexo"
-                          name="secondChildGender"
-                          sm={3}
-                          xs={12}
-                        ></SelectFieldFormik>
-                        <TextFieldFormik
-                          label="Color"
-                          name="secondChildColor"
-                          onChange={props.handleChange}
-                          lg={3}
-                          sm={3}
-                          xs={12}
-                        ></TextFieldFormik>
-                      </>
-                    )}
+                    <FieldArray
+                      name="races"
+                      render={function Children(arrayHelpers) {
+                        // useEffect(() => {
+                        //   if (props.values.birthType === "SIMPLE") {
+                        //     if (props.values.children.length !== 1) {
+                        //       arrayHelpers.replace([
+                        //         {
+                        //           identifier: "",
+                        //           color: "",
+                        //           weight: null,
+                        //           gender: "",
+                        //         },
+                        //       ]);
+                        //     }
+                        //     if (props.values.children.length === 0) {
+                        //       arrayHelpers.push({
+                        //         identifier: "",
+                        //         color: "",
+                        //         weight: null,
+                        //         gender: "",
+                        //       });
+                        //     }
+                        //   }
+                        //   if (props.values.birthType === "TWIN") {
+                        //     if (props.values.children.length === 1) {
+                        //       arrayHelpers.push({
+                        //         identifier: "",
+                        //         color: "",
+                        //         weight: null,
+                        //         gender: "",
+                        //       });
+                        //     }
+                        //   }
+                        //   // arrayHelpers.
+                        //   // eslint-disable-next-line react-hooks/exhaustive-deps
+                        // }, [props.values.birthType]);
+
+                        return (
+                          <>
+                            {props.values.children.map((c, i) => (
+                              <Grid
+                                item
+                                xs={12}
+                                container
+                                spacing={1}
+                                key={`chil-${i}`}
+                              >
+                                <TextFieldFormik
+                                  label="Identificación"
+                                  name={`children.${i}.identifier`}
+                                  onChange={props.handleChange}
+                                  lg={3}
+                                  sm={3}
+                                  xs={12}
+                                ></TextFieldFormik>
+                                <TextFieldFormik
+                                  label="Nombre"
+                                  name={`children.${i}.name`}
+                                  onChange={props.handleChange}
+                                  lg={3}
+                                  sm={3}
+                                  xs={12}
+                                ></TextFieldFormik>
+                                <SelectFieldFormik
+                                  onChange={props.handleChange}
+                                  options={sexOptions.slice(1)}
+                                  label="Sexo"
+                                  name={`children.${i}.gender`}
+                                  sm={3}
+                                  xs={12}
+                                ></SelectFieldFormik>
+                                <TextFieldFormik
+                                  label="Color"
+                                  name={`children.${i}.color`}
+                                  onChange={props.handleChange}
+                                  lg={3}
+                                  sm={3}
+                                  xs={12}
+                                ></TextFieldFormik>
+                              </Grid>
+                            ))}
+                          </>
+                        );
+                      }}
+                    />
                   </Grid>
                 </>
               )}

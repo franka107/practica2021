@@ -38,7 +38,7 @@ export const menuList = () => {
       title: "Nuevo Registro Tranferencia de Embriones",
       link: ROUTES_DICT.service.createET,
     };
-    list[2].submenu[2].submenu.splice(2, 1, newObject);
+    list[3].submenu[2].submenu.splice(2, 1, newObject);
     return list;
   }
 };
@@ -70,7 +70,7 @@ export const list = [
       {
         id: "Analisis",
         title: "Analisis",
-        link: ROUTES_DICT.animal.createBulk,
+        // link: ROUTES_DICT.animal.createBulk,
       },
     ],
   },
@@ -96,9 +96,9 @@ export const list = [
             link: ROUTES_DICT.milk.create,
           },
           {
-            id: "inicio",
+            id: "Analisis",
             title: "Analisis",
-            link: ROUTES_DICT.milk.list,
+            // link: ROUTES_DICT.milk.list,
           },
         ],
       },
@@ -118,9 +118,9 @@ export const list = [
             link: ROUTES_DICT.weight.create,
           },
           {
-            id: "inicio",
+            id: "Analisis",
             title: "Analisis",
-            link: ROUTES_DICT.weight.list,
+            // link: ROUTES_DICT.weight.list,
           },
         ],
       },
@@ -147,9 +147,9 @@ export const list = [
             link: ROUTES_DICT.collective.drying.create,
           },
           {
-            id: "inicio",
+            id: "Analisis",
             title: "Analisis",
-            link: ROUTES_DICT.collective.drying.list,
+            // link: ROUTES_DICT.collective.drying.list,
           },
         ],
       },
@@ -169,9 +169,9 @@ export const list = [
             link: ROUTES_DICT.collective.zeal.create,
           },
           {
-            id: "inicio",
+            id: "Analisis",
             title: "Analisis",
-            link: ROUTES_DICT.collective.zeal.list,
+            // link: ROUTES_DICT.collective.zeal.list,
           },
         ],
       },
@@ -196,9 +196,9 @@ export const list = [
             link: ROUTES_DICT.service.createET,
           },
           {
-            id: "inicio",
+            id: "Analisis",
             title: "Analisis",
-            link: ROUTES_DICT.palpation.list,
+            // link: ROUTES_DICT.palpation.list,
           },
         ],
       },
@@ -218,9 +218,9 @@ export const list = [
             link: ROUTES_DICT.palpation.create,
           },
           {
-            id: "inicio",
+            id: "Analisis",
             title: "Analisis",
-            link: ROUTES_DICT.palpation.list,
+            // link: ROUTES_DICT.palpation.list,
           },
         ],
       },
@@ -240,9 +240,9 @@ export const list = [
             link: ROUTES_DICT.birth.create,
           },
           {
-            id: "inicio",
+            id: "Analisis",
             title: "Analisis",
-            link: ROUTES_DICT.birth.list,
+            // link: ROUTES_DICT.birth.list,
           },
         ],
       },
@@ -290,7 +290,7 @@ export const list = [
             // link: ROUTES_DICT.palpation.list,
           },
           {
-            id: "inicio",
+            id: "Analisis",
             title: "Analisis",
             // link: ROUTES_DICT.palpation.list,
           },
@@ -312,7 +312,7 @@ export const list = [
             // link: ROUTES_DICT.palpation.create,
           },
           {
-            id: "inicio",
+            id: "Analisis",
             title: "Analisis",
             // link: ROUTES_DICT.palpation.list,
           },
@@ -336,9 +336,9 @@ export const list = [
         link: ROUTES_DICT.sale.create,
       },
       {
-        id: "analisis",
+        id: "Analisis",
         title: "Analisis",
-        link: ROUTES_DICT.sale.list,
+        // link: ROUTES_DICT.sale.list,
       },
     ],
   },
@@ -356,7 +356,7 @@ export const list = [
         title: "Modificación",
       },
       {
-        id: "inicio",
+        id: "Analisis",
         title: "Analisis",
       },
     ],
@@ -375,7 +375,7 @@ export const list = [
         title: "Modificación",
       },
       {
-        id: "inicio",
+        id: "Analisis",
         title: "Analisis",
       },
     ],

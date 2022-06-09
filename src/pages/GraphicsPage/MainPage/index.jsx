@@ -8,6 +8,7 @@ import GraphicActions from "../../../redux/actions/graphic.actions";
 import MilkGraphicActions from "../../../redux/actions/milkGraphic.actions";
 import { sub } from "date-fns";
 import AnimalActions from "../../../redux/actions/animal.actions";
+import AnimalDescription from "../../AnimalControl/AnimalDescription";
 // import { Formik } from "formik";
 // import DatePickerFieldFormik from "../../../components/Inputs/DatePickerFieldFormik";
 // import ButtonFormik from "../../../components/Inputs/ButtonFormik";
@@ -42,6 +43,9 @@ const MainPage = () => {
 
   return (
     <Grid item xs={12} justifyContent={"center"}>
+      <AnimalDescription />
+      <br />
+      <br />
       {data && <Won />}
       <br />
       <br />
