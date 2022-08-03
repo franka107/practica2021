@@ -82,7 +82,7 @@ const PalpationListPage = ({ children, setTitle, setChipList }) => {
 
       <Grid item xs={12} className={classes.registerContainer}>
         <CustomMuiTable
-          data={listPalpationControl}
+          data={listPalpationControl.slice(1, 11)}
           columns={[...columns, actionColumn]}
           options={options}
         />

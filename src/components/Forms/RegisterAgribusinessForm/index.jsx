@@ -10,17 +10,17 @@ import ButtonFormik from "../../Inputs/ButtonFormik";
 import { useEffect, useState } from "react";
 import { countryActions } from "../../../redux/actions/country.actions";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
-import { regionActions } from "../../../redux/actions/region.actions";
-import { districtActions } from "../../../redux/actions/district.actions";
+// import { regionActions } from "../../../redux/actions/region.actions";
+// import { districtActions } from "../../../redux/actions/district.actions";
 import { unitCapacityOptions } from "../../../constants";
 
-import MultipleCheckboxFormik from "../../Inputs/MultipleCheckboxFormik";
+// import MultipleCheckboxFormik from "../../Inputs/MultipleCheckboxFormik";
 import { useHistory } from "react-router-dom";
 import { ROUTES_DICT } from "../../../routes/routesDict";
 import {
   milkingOptions,
   numberOptions,
-  objectiveFarmOptions,
+  // objectiveFarmOptions,
   productionOptions,
   targetSystemOptions,
 } from "../../../constants";
@@ -68,11 +68,11 @@ const RegisterAgribusinessForm = ({
   const validationSchema = yup.object({
     countryId: yup.string("Ingrese el país").required("El país es requerido"),
     regionId: yup
-      .string("Ingrese la región")
-      .required("La región es requerida"),
+      .string("Ingrese un estado")
+      .required("El estado es requeride"),
     districtId: yup
-      .string("Ingrese el distrito")
-      .required("La distrito es requerido"),
+      .string("Ingrese una cuidad")
+      .required("La cuidad es requerido"),
     phoneNumber: yup.string("Ingrese el número"),
     address: yup.string("Ingrese la dirección"),
   });
@@ -96,6 +96,7 @@ const RegisterAgribusinessForm = ({
 
   useEffect(() => {
     dispatch(countryActions.retrieveCountries());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -109,13 +110,14 @@ const RegisterAgribusinessForm = ({
       initValues.phoneNumber = currentFarm.phoneNumber;
       setCont(1);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentFarm]);
 
   const handleSubmit = (values, actions) => {
     try {
       if (type === "none") {
         dispatch(AgribusinessActions.create(values)).then(() => {
-          history.push(ROUTES_DICT.animal.list);
+          history.push(ROUTES_DICT.graphics);
         });
       }
       if (type === "create") {
@@ -193,13 +195,13 @@ const RegisterAgribusinessForm = ({
                   ></SelectFieldFormik>
                   <SelectFieldFormik
                     xs={4}
-                    label="Región"
+                    label="Estado"
                     name="regionId"
                     options={regions}
                   ></SelectFieldFormik>
                   <SelectFieldFormik
                     xs={4}
-                    label="Distrito"
+                    label="Cuidad"
                     name="districtId"
                     options={districts}
                   ></SelectFieldFormik>
@@ -385,7 +387,7 @@ const RegisterAgribusinessForm = ({
                                 label="Precio de venta"
                                 type="number"
                               />
-                              {/* 
+                              {/*
                               <Controls.Input
                                 name={"costEstimed"}
                                 label={"Costo estimado"}

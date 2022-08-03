@@ -51,6 +51,7 @@ const RouterList = ({ routes, outside, parentPathname, ...parentProps }) => {
                 />
               );
             }
+            return null;
           }
         )}
     </>

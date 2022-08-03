@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Grid, Typography } from "@material-ui/core";
+import { Grid, InputAdornment, Typography } from "@material-ui/core";
 import * as yup from "yup";
 import { Formik } from "formik";
 import TextFieldFormik from "../../../../components/Inputs/TextFieldFormik";
@@ -11,6 +11,7 @@ import { useDispatch } from "react-redux";
 import ZealActions from "../../../../redux/actions/zeal.actions";
 import AnimalActions from "../../../../redux/actions/animal.actions";
 import CustomInfoIcon from "../../../../components/CustomInfoIcon";
+import { format } from "date-fns";
 
 const defaultInitValues = {
   animalId: "",
@@ -19,6 +20,33 @@ const defaultInitValues = {
   iecDate: "",
   observation: "",
 };
+
+const validationSchema = (animalL) =>
+  yup.lazy((values) =>
+    yup.object({
+      animalId: yup
+        .string()
+        .typeError("Este campo es requerido.")
+        .required("Este campo es requerido."),
+      controlDate: yup
+        .date()
+        .typeError("Este campo es requerido")
+        .max(new Date(), "No puedes ingresar una fecha futura")
+        .when("animalId", {
+          is: (value) => animalL.some((e) => e._id === value),
+          then: (rule) =>
+            rule.min(
+              format(
+                new Date(
+                  animalL.find((e) => e._id === values.animalId).herdDate
+                ),
+                "yyyy-MM-dd"
+              ),
+              "La fecha de control debe ser mayor a la fecha de entrada de hato."
+            ),
+        }),
+    })
+  );
 
 /**
  * @component
@@ -33,8 +61,16 @@ const ZealForm = ({
   onCompleteSubmit = () => {},
 }) => {
   const dispatch = useDispatch();
+  const currentAgribusiness = useSelector(
+    (state) => state.agribusiness.current
+  );
   const femaleAnimals = useSelector(
-    (state) => state.animal.list.filter((e) => e.gender === "FEMALE"),
+    (state) =>
+      state.animal.list.filter(
+        (e) =>
+          e.gender === "FEMALE" &&
+          e.ageInMonths > currentAgribusiness?.isBreeding
+      ),
     shallowEqual
   );
 
@@ -44,16 +80,6 @@ const ZealForm = ({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  const validationSchema = yup.object({
-    animalId: yup
-      .string("Ingresa la identificacion del animal.")
-      .required("Este campo es requerido."),
-    controlDate: yup
-      .date("Ingresa una fecha correcta.")
-      .max(new Date(), "No puedes poner una fecha futura")
-      .nullable(),
-  });
 
   const handleSubmit = async (values, actions) => {
     try {
@@ -75,7 +101,7 @@ const ZealForm = ({
     <Formik
       initialValues={initValues}
       onSubmit={handleSubmit}
-      validationSchema={validationSchema}
+      validationSchema={validationSchema(femaleAnimals)}
       enableReinitialize
     >
       {(props) => (
@@ -87,6 +113,20 @@ const ZealForm = ({
           </Grid>
           <Grid container spacing={1}>
             <AutocompleteFieldFormik
+              startAdornment={
+                <InputAdornment position="start" style={{ margin: 0 }}>
+                  <CustomInfoIcon
+                    title={
+                      <>
+                        Genero = Hembra <br />
+                        Meses de edad {">"} {currentAgribusiness?.isBreeding}
+                      </>
+                    }
+                    placement="bottom"
+                  />
+                </InputAdornment>
+              }
+              required
               options={femaleAnimals}
               name="animalId"
               label="Identificacíon del animal"
@@ -108,20 +148,22 @@ const ZealForm = ({
               }
             />
             <DatePickerFieldFormik
+              required
               label="Fecha"
               name="controlDate"
               onChange={props.handleChange}
               xs={12}
-            ></DatePickerFieldFormik>
-            <Grid item container xs={12}>
+            />
+            {/* <Grid item container xs={12}>
               <TextFieldFormik
+                required
                 label="I.E.C"
                 name="iecDate"
                 onChange={props.handleChange}
                 xs={11}
-              ></TextFieldFormik>
+              />
               <CustomInfoIcon title={"Falta información"} />
-            </Grid>
+            </Grid> */}
 
             <TextFieldFormik
               label="Obervaciones"

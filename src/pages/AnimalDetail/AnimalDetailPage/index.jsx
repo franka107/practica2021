@@ -30,6 +30,8 @@ import {
 } from "../../../constants";
 import { add, differenceInDays, format } from "date-fns";
 import raceActions from "../../../redux/actions/race.actions";
+import moment from "moment";
+import geneticStockActions from "../../../redux/actions/geneticStock.actions";
 
 /**
  * @component
@@ -57,6 +59,10 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
   const currentAgribusiness = useSelector(
     (state) => state.agribusiness.current
   );
+
+  const listAnimal = useSelector((state) => state.animal.list);
+  const listAnimalDeads = useSelector((state) => state.animal.listDeads);
+  const geneticStockList = useSelector((state) => state.geneticStock.list);
 
   const calculateLastAbortion = (values = []) => {
     for (let index = 0; index < values.length; index++) {
@@ -160,7 +166,7 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
         new Date(values[0].birthDate),
         new Date(values[1].birthDate)
       );
-      return result + " dias";
+      return result + " día(s)";
     } else {
       return "Sin información";
     }
@@ -183,10 +189,20 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
     if (!listRaces || listRaces.length === 0) {
       dispatch(raceActions.listRace());
     }
-    if (!currentAnimal || currentAnimal._id !== params._id) {
-      dispatch(AnimalActions.get({ _id: params._id }));
-    } // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch, currentAnimal, params._id]);
+    // if (!currentAnimal || currentAnimal._id !== params._id) {
+    dispatch(AnimalActions.get({ _id: params._id }));
+    if (!listAnimal || listAnimal.length === 0) {
+      dispatch(AnimalActions.list());
+    }
+    if (!listAnimalDeads || listAnimalDeads.length === 0) {
+      dispatch(AnimalActions.listDeads());
+    }
+    if (!geneticStockList || geneticStockList.length === 0) {
+      dispatch(geneticStockActions.listGeneticStockByAgribusiness());
+    }
+    // }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [params._id]);
 
   return (
     <Grid container xs={12}>
@@ -419,7 +435,10 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
                           <Typography>
                             {currentAnimal &&
                               currentAnimal.birthDate &&
-                              formatDate(new Date(currentAnimal.birthDate))}
+                              format(
+                                new Date(currentAnimal.birthDate),
+                                "yyyy-MM-dd"
+                              )}
                             {/* {animals && animals.birthDate} */}
                           </Typography>
                         </Grid>
@@ -544,14 +563,16 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
                                     </Typography>
                                   </Grid>
                                   <Grid item xs={7}>
-                                    <Typography>
-                                      {
-                                        listRaces.find(
-                                          (e) => e._id === r.raceId
-                                        ).name
-                                      }
-                                      - {r.percentage}%
-                                    </Typography>
+                                    {listRaces && listRaces.length !== 0 && (
+                                      <Typography>
+                                        {
+                                          listRaces.find(
+                                            (e) => e._id === r.raceId
+                                          ).name
+                                        }
+                                        - {r.percentage}%
+                                      </Typography>
+                                    )}
                                   </Grid>
                                 </>
                               ))}
@@ -809,13 +830,8 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
                                         );
                                       }}
                                     >
-                                      <Add fontSize="small"></Add>T.E
-                                      {/* <Typography
-                                  variant="caption"
-                                  className={classes.cardTitle}
-                                >
-                                  Trans.E
-                                </Typography> */}
+                                      <Add fontSize="small" />
+                                      T.E
                                     </Button>
                                   )}
                                 <Button
@@ -834,13 +850,8 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
                                     );
                                   }}
                                 >
-                                  <Add fontSize="small"></Add>I.A
-                                  {/* <Typography
-                                    variant="caption"
-                                    className={classes.cardTitle}
-                                  >
-                                    I.A
-                                  </Typography> */}
+                                  <Add fontSize="small" />
+                                  I.A/M.N
                                 </Button>
                               </div>
                             </div>
@@ -892,7 +903,7 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
                                               new Date(
                                                 currentAnimal.services[0].serviceTime
                                               ),
-                                              "ppp"
+                                              "pp"
                                             )
                                           : "Sin información"
                                         : "Sin información"}
@@ -922,6 +933,63 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
                                     </Typography>
                                   </Grid>
                                 </Grid>
+                                {currentAnimal.services &&
+                                  currentAnimal.services.length !== 0 && (
+                                    <Grid
+                                      container
+                                      className={classes.generalFeature}
+                                      xs={12}
+                                    >
+                                      <Grid item xs={5}>
+                                        <Typography
+                                          className={classes.cardFeature}
+                                        >
+                                          {currentAnimal.services[0]
+                                            .serviceType === "AR_IN" && "Semen"}
+                                          {currentAnimal.services[0]
+                                            .serviceType === "NA_MO" && "Macho"}
+                                          {currentAnimal.services[0]
+                                            .serviceType === "EM_TR" &&
+                                            "Embrión"}
+                                        </Typography>
+                                      </Grid>
+                                      <Grid item xs={7}>
+                                        <Typography>
+                                          {currentAnimal.services[0]
+                                            .serviceType === "AR_IN" &&
+                                            geneticStockList &&
+                                            geneticStockList.find(
+                                              (e) =>
+                                                e._id ===
+                                                currentAnimal.services[0]
+                                                  .geneticStockId
+                                            ).identifier}
+                                          {currentAnimal.services[0]
+                                            .serviceType === "NA_MO" &&
+                                            geneticStockList &&
+                                            geneticStockList.find(
+                                              (e) =>
+                                                e._id ===
+                                                currentAnimal.services[0]
+                                                  .geneticStockId
+                                            ).identifier}
+                                          {currentAnimal.services[0]
+                                            .serviceType === "EM_TR" &&
+                                            listAnimal &&
+                                            listAnimalDeads &&
+                                            [
+                                              ...listAnimal,
+                                              ...listAnimalDeads,
+                                            ].find(
+                                              (e) =>
+                                                e._id ===
+                                                currentAnimal.services[0]
+                                                  .reproductorAnimalId
+                                            ).identifier}
+                                        </Typography>
+                                      </Grid>
+                                    </Grid>
+                                  )}
                                 <Grid
                                   container
                                   className={classes.generalFeature}
@@ -1135,10 +1203,11 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
                                     <Typography>
                                       {currentAnimal &&
                                       currentAnimal.palpations &&
-                                      currentAnimal.palpations.length !== 0
+                                      currentAnimal.palpations.length !== 0 &&
+                                      currentAnimal.palpations[0].touchDate
                                         ? format(
                                             new Date(
-                                              currentAnimal.palpations[0].pregnancyDate
+                                              currentAnimal.palpations[0].touchDate
                                             ),
                                             "yyyy-MM-dd"
                                           )
@@ -1169,6 +1238,35 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
                                     </Typography>
                                   </Grid>
                                 </Grid>
+
+                                {currentAnimal && currentAnimal.isPregnant && (
+                                  <Grid
+                                    container
+                                    className={classes.generalFeature}
+                                    xs={12}
+                                  >
+                                    <Grid item xs={5}>
+                                      <Typography
+                                        className={classes.cardFeature}
+                                      >
+                                        Dias de Preñez
+                                      </Typography>
+                                    </Grid>
+                                    <Grid item xs={7}>
+                                      <Typography>
+                                        {currentAnimal &&
+                                        currentAnimal.pregnantDate
+                                          ? `${differenceInDays(
+                                              new Date(),
+                                              new Date(
+                                                currentAnimal.pregnantDate
+                                              )
+                                            )} día/s`
+                                          : "Sin información"}
+                                      </Typography>
+                                    </Grid>
+                                  </Grid>
+                                )}
                                 <Grid
                                   container
                                   className={classes.generalFeature}
@@ -1755,7 +1853,7 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
                         >
                           <Grid item xs={5}>
                             <Typography className={classes.cardFeature}>
-                              Dias de lactancía
+                              Últ. control
                             </Typography>
                           </Grid>
                           <Grid item xs={7}>
@@ -1763,7 +1861,36 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
                               {currentAnimal &&
                               currentAnimal.milkControls &&
                               currentAnimal.milkControls.length > 0
-                                ? totalDaysMilk(currentAnimal.milkControls)
+                                ? moment(
+                                    currentAnimal.milkControls[0].controlDate
+                                  ).format("YYYY-MM-DD")
+                                : "Sin informacíon"}
+                            </Typography>
+                          </Grid>
+                        </Grid>
+                        <Grid
+                          container
+                          className={classes.generalFeature}
+                          xs={12}
+                        >
+                          <Grid item xs={5}>
+                            <Typography className={classes.cardFeature}>
+                              Dias de lactancía
+                            </Typography>
+                          </Grid>
+                          <Grid item xs={7}>
+                            <Typography>
+                              {currentAnimal &&
+                              currentAnimal.births &&
+                              currentAnimal.births.length &&
+                              currentAnimal.births[0].birthDate &&
+                              !currentAnimal.isDried &&
+                              currentAnimal.milkControls &&
+                              currentAnimal.milkControls.length > 0
+                                ? differenceInDays(
+                                    new Date(),
+                                    new Date(currentAnimal.births[0].birthDate)
+                                  ) + " día(s)"
                                 : "0 días"}
                             </Typography>
                           </Grid>

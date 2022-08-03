@@ -12,14 +12,18 @@ import { useEffect } from "react";
 import SaleActions from "../../../../redux/actions/sale.actions";
 import SelectFieldFormik from "../../../../components/Inputs/SelectFieldFormik";
 import { saleTranferOptions } from "../../../../constants";
+import { format } from "date-fns";
+import _ from "lodash";
 
 const defaultInitValues = {
+  typeAction: "SALE",
   animalId: "",
   controlDate: new Date(),
   weight: "",
   valueForUnitWeight: "",
   observation: "",
-  typeAction: "SALE",
+  agribusinessIdTransfer: "",
+  who: "",
 };
 
 /**
@@ -28,6 +32,58 @@ const defaultInitValues = {
  * @author Emerson Puma Quispe <emerson.puma@ideascloud.io>
  */
 
+const validationSchema = (animalList) =>
+  yup.lazy((values) =>
+    yup.object({
+      animalId: yup
+        .string()
+        .typeError("Ingrese un animal")
+        .required("Este campo es requerido."),
+      weight: yup
+        .number()
+        .typeError("Ingresa solo numeros")
+        .required("Este campo es requerido."),
+      valueForUnitWeight: yup
+        .number()
+        .typeError("Ingresa solo numeros")
+        .required("Este campo es requerido."),
+      controlDate: yup
+        .date()
+        .max(new Date(), "No puedes ingresar una fecha futura")
+        .when("animalId", {
+          is: (value) => animalList.some((e) => e._id === value),
+          then: (rule) =>
+            rule.min(
+              format(
+                new Date(
+                  animalList.find((e) => e._id === values.animalId).herdDate
+                ),
+                "yyyy-MM-dd"
+              ),
+              "La fecha de control peso debe ser mayor a la fecha de entrada de hato."
+            ),
+        }),
+      who: yup
+        .string()
+        .typeError("Este campo es requerido")
+        .nullable(true)
+        .when("typeAction", {
+          is: (value) => value === "SALE",
+          then: (rule) =>
+            rule.nullable(false).required("Este campo es requerido"),
+        }),
+      agribusinessIdTransfer: yup
+        .string()
+        .typeError("Debes ingresar un agronegocio")
+        .nullable(true)
+        .when("typeAction", {
+          is: (value) => value === "TRANSFER",
+          then: (rule) =>
+            rule.nullable(false).required("Este campo es requerido"),
+        }),
+    })
+  );
+
 const SaleForm = ({
   initValues = defaultInitValues,
   type = "create",
@@ -35,56 +91,27 @@ const SaleForm = ({
   onCompleteSubmit = () => {},
 }) => {
   const dispatch = useDispatch();
-  // const result = differenceInMonths(new Date(2014, 8, 1), new Date(2014, 0, 31))
 
-  const currentAgribusiness = useSelector(
-    (state) => state.agribusiness.current
-  );
-  // const femaleAnimals = useSelector(
-  //   (state) =>
-  //     state.animal.list.filter(
-  //       (e) => e.gender === "FEMALE"
-  //     ),
-  //   shallowEqual
-  // );
+  const listAgribusiness = useSelector((state) => state.agribusiness.list);
+
   const listAnimal = useSelector((state) => state.animal.list);
-  //   .filter(
-  //     (e) =>
-  //       differenceInMonths(new Date(), new Date(e?.birthDate)) >=
-  //       currentAgribusiness.isHeifer
-  //   ),
-  // shallowEqual
 
   useEffect(() => {
     if (!listAnimal || listAnimal.length === 0) {
       dispatch(AnimalActions.list());
-      // console.log(differenceInMonths(new Date(), new Date(2021, 3, 1)) === 6);`
-      console.log(currentAgribusiness);
-      //   .filter(
-      //     (e) =>
-      //       differenceInMonths(new Date(), new Date(e.birthDate)) ===
-      //       currentAgribusiness.isHeifer
-      //   ),
-      // shallowEqual
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const validationSchema = yup.object({
-    animalId: yup
-      .string("Ingresa la identificacion del animal.")
-      .required("Este campo es requerido."),
-    controlDate: yup
-      .date("Ingresa una fecha correcta.")
-      .max(new Date(), "No puedes poner una fecha futura")
-      .nullable(),
-  });
+  const onSubmit = async (values, actions) => {
+    const dataValidation =
+      values.typeAction === "SALE"
+        ? _.omit(values, "agribusinessIdTransfer")
+        : _.omit(values, "who");
 
-  const handleSubmit = async (values, actions) => {
     try {
       if (type === "create") {
-        const animal = listAnimal.find((e) => e._id === values.animalId);
-        await dispatch(SaleActions.create(values, animal));
+        await dispatch(SaleActions.create(dataValidation));
       }
       if (type === "update") {
         await dispatch(SaleActions.update(values));
@@ -99,8 +126,8 @@ const SaleForm = ({
   return (
     <Formik
       initialValues={initValues}
-      onSubmit={handleSubmit}
-      validationSchema={validationSchema}
+      onSubmit={onSubmit}
+      validationSchema={validationSchema(listAnimal)}
       enableReinitialize
     >
       {(props) => (
@@ -112,6 +139,7 @@ const SaleForm = ({
           </Grid>
           <Grid container spacing={1}>
             <SelectFieldFormik
+              required
               onChange={props.handleChange}
               options={Object.keys(saleTranferOptions).map((key) => ({
                 _id: key,
@@ -120,14 +148,17 @@ const SaleForm = ({
               label="Tipo de Acción"
               name="typeAction"
               xs={12}
-            ></SelectFieldFormik>
+              disabled={type === "create" ? false : true}
+            />
             <AutocompleteFieldFormik
+              required
               options={listAnimal}
               name="animalId"
               label="Identificación del animal"
               onChange={props.handleChange}
               defaultValue={type === "create" ? null : props.values.animal}
               xs={12}
+              disabled={type === "create" ? false : true}
             />
             <TextFieldFormik
               label="Nombre"
@@ -136,13 +167,16 @@ const SaleForm = ({
               onChange={props.handleChange}
               xs={12}
               value={
-                props.values.animalId
-                  ? listAnimal.find((e) => e._id === props.values.animalId)
-                      ?.name
-                  : ""
+                type === "create"
+                  ? props.values.animalId
+                    ? listAnimal.find((e) => e._id === props.values.animalId)
+                        ?.name
+                    : " "
+                  : initValues.animal.name
               }
             />
             <DatePickerFieldFormik
+              required
               label="Fecha"
               name="date"
               onChange={props.handleChange}
@@ -150,22 +184,35 @@ const SaleForm = ({
             />
             {props.values.typeAction === "SALE" && (
               <TextFieldFormik
+                required
                 label="A quien"
-                name="client"
+                name="who"
                 onChange={props.handleChange}
                 xs={12}
               />
             )}
             {props.values.typeAction === "TRANSFER" && (
               <AutocompleteFieldFormik
-                options={[]}
-                name="agribussinesId"
-                label="Agronegocio"
+                required
+                displayName={false}
+                showName="name"
+                options={listAgribusiness}
+                name="agribusinessIdTransfer"
+                label="Agronegocio de Traslado"
                 onChange={props.handleChange}
                 xs={12}
+                defaultValue={
+                  type === "create"
+                    ? null
+                    : listAgribusiness.find(
+                        (e) => e._id === props.values.agribusinessIdTransfer
+                      )
+                }
+                disabled={type === "create" ? false : true}
               />
             )}
             <TextFieldFormik
+              required
               label="Peso"
               name="weight"
               type="number"
@@ -173,6 +220,7 @@ const SaleForm = ({
               xs={12}
             />
             <TextFieldFormik
+              required
               label="Valor por Lb./Kg"
               name="valueForUnitWeight"
               type="number"

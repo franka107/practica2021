@@ -21,7 +21,7 @@ const get = (data) => async (dispatch) => {
 
 const create = (data, animal) => async (dispatch, getState) => {
   const agribusiness = getState().agribusiness.current;
-  const response = await IdeasCloudApi.fetch(
+  await IdeasCloudApi.fetch(
     "saleControlCreate",
     {
       ...data,
@@ -31,11 +31,8 @@ const create = (data, animal) => async (dispatch, getState) => {
     "Colectiva venta registrado satisfactoriamente.",
     "Error desconocido, intente nuavamente."
   );
+  dispatch(list());
   dispatch(AnimalActions.list());
-  dispatch({
-    type: ACTION_TYPES.SALE.CREATE,
-    payload: { ...response, animal: animal },
-  });
 };
 const update = (data) => async (dispatch) => {
   const response = await IdeasCloudApi.fetch(

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Grid, Typography, Paper, Divider } from "@material-ui/core";
+import { Grid, Typography, Paper } from "@material-ui/core";
 import HighchartsReact from "highcharts-react-official";
 import Highcharts from "highcharts";
 import Table from "@material-ui/core/Table";
@@ -16,10 +16,7 @@ import BirthActions from "../../../redux/actions/birth.actions";
 import { useDispatch } from "react-redux";
 import { columns } from "./constants";
 import { useParams } from "react-router";
-import DatePickerFieldFormik from "../../../components/Inputs/DatePickerFieldFormik";
-import { Formik } from "formik";
-import * as yup from "yup";
-import ButtonFormik from "../../../components/Inputs/ButtonFormik";
+// import * as yup from "yup";
 
 /**
  * @component
@@ -67,7 +64,7 @@ const BirthListPage = ({ children }) => {
     const dataFilter = birthList.filter(
       (e) => e.birthType === "SIMPLE" || e.birthType === "TWIN"
     );
-    dataFilter.map((e) => {
+    dataFilter.forEach((e) => {
       const male = e.children.filter((e) => e.gender === "MALE");
       response = response + male.length;
     });
@@ -79,36 +76,36 @@ const BirthListPage = ({ children }) => {
     const dataFilter = birthList.filter(
       (e) => e.birthType === "SIMPLE" || e.birthType === "TWIN"
     );
-    dataFilter.map((e) => {
+    dataFilter.forEach((e) => {
       const male = e.children.filter((e) => e.gender === "FEMALE");
       response = response + male.length;
     });
     return response;
   };
 
-  const initValues = {
-    initDate: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
-    finalDate: new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0),
-  };
+  // const initValues = {
+  //   initDate: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
+  //   finalDate: new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0),
+  // };
 
-  const handleSubmit = () => {};
+  // const handleSubmit = () => {};
 
-  const validationSchema = yup.object({
-    animalId: yup
-      .string("Ingresa la identificacion del animal.")
-      .required("Este campo es requerido."),
-    controlDate: yup
-      .date("Ingresa una fecha correcta.")
-      .max(new Date(), "No puedes poner una fecha futura")
-      .nullable(),
-  });
+  // const validationSchema = yup.object({
+  //   animalId: yup
+  //     .string("Ingresa la identificacion del animal.")
+  //     .required("Este campo es requerido."),
+  //   controlDate: yup
+  //     .date("Ingresa una fecha correcta.")
+  //     .max(new Date(), "No puedes poner una fecha futura")
+  //     .nullable(),
+  // });
 
   return (
     <Grid container spacing={2}>
       <SearchContainer searchText={searchText} setSearchText={setSearchText} />
       <Grid item xs={12}>
         <CustomMuiTable
-          data={birthList}
+          data={birthList.slice(1, 11)}
           columns={columns()}
           options={options}
         />

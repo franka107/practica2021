@@ -3,7 +3,15 @@ import { useField } from "formik";
 import PropTypes from "prop-types";
 import { Grid, TextField } from "@material-ui/core";
 
-function TextFieldFormik({ xs = 12, endAdornment, style, ...props }) {
+function TextFieldFormik({
+  xs = 12,
+  endAdornment,
+  style,
+  startAdornment = null,
+  label = "",
+  required = false,
+  ...props
+}) {
   const [field, meta] = useField(props);
 
   return (
@@ -14,8 +22,15 @@ function TextFieldFormik({ xs = 12, endAdornment, style, ...props }) {
         inputProps={{ style: style }}
         InputProps={{
           endAdornment: endAdornment,
+          startAdornment: startAdornment ? startAdornment : null,
         }}
         variant="filled"
+        label={
+          <>
+            {label}
+            {required && <strong style={{ color: "red" }}> ✱ </strong>}
+          </>
+        }
         {...field}
         {...props}
       />

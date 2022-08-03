@@ -9,13 +9,23 @@ export const farmActions = { create, findFarmByOwnerId, clearAll, update };
 
 function findFarmByOwnerId(ownerId) {
   return (dispatch) => {
+    dispatch({
+      type: ACTION_TYPES.FARM.UPDATE_LOADING,
+      payload: true,
+    });
     return FarmService.findByOwnerId(ownerId).then((response) => {
       let localAgribusiness = JSON.parse(localStorage.getItem("agribusiness"));
+
+      dispatch({
+        type: ACTION_TYPES.FARM.UPDATE_LOADING,
+        payload: false,
+      });
 
       dispatch({
         type: ACTION_TYPES.FARM.RETRIEVE_BY_OWNER_ID,
         payload: response,
       });
+
       dispatch({
         type: ACTION_TYPES.AGRIBUSINESS.RETRIEVE,
         payload: response && response.agribusiness,

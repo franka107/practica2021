@@ -1,7 +1,7 @@
 import { CircularProgress } from "@material-ui/core";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useHistory, useLocation } from "react-router";
+import { useLocation } from "react-router";
 import { farmActions } from "../redux/actions/farm.actions";
 import { useStyles } from "../styles";
 import { ROUTES_DICT } from "./routesDict";
@@ -17,7 +17,7 @@ const AuthWrapper = ({ children }) => {
   const currentFarm = useSelector((state) => state.farm.current);
   const classes = useStyles();
   const location = useLocation();
-  const history = useHistory();
+  // const history = useHistory();
 
   const { current: currentAgribusiness } = useSelector(
     (state) => state.agribusiness

@@ -40,6 +40,27 @@ const create = (data, geneticType) => async (dispatch, getState) => {
     })
   );
 };
+
+const transfer = (data, geneticType) => async (dispatch, getState) => {
+  const agribusiness = getState().agribusiness.current;
+  await IdeasCloudApi.fetch(
+    "geneticStockTransfer",
+    {
+      ...data,
+      agribusinessId: agribusiness._id,
+    },
+    dispatch,
+    "Movimiento registrado satisfactoriamente.",
+    "Error desconocido, intente nuavamente."
+  );
+  dispatch(list());
+  dispatch(
+    geneticStockActions.listGeneticStockByAgribusiness({
+      geneticType,
+    })
+  );
+};
+
 const update = (data, geneticType) => async (dispatch, getState) => {
   const response = await IdeasCloudApi.fetch(
     "movementUpdate",
@@ -69,6 +90,7 @@ const MovementActions = {
   list,
   update,
   get,
+  transfer,
 };
 
 export default MovementActions;

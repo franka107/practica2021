@@ -107,6 +107,7 @@ export const movementOptions = {
   PURCHASE: "Compra",
   SERVICE: "Servicio",
   OTHER: "Otros",
+  MOVING: "Traslado",
 };
 
 export const operationOptions = {
@@ -163,8 +164,6 @@ export const estadiosOptions = [
 export const qualityEmbryoOptions = [
   { _id: 1, name: "1" },
   { _id: 2, name: "2" },
-  { _id: 3, name: "3" },
-  { _id: 4, name: "4" },
 ];
 
 export const conditionOptions = [
@@ -194,7 +193,7 @@ export const reasonOptions = {
   PREGNANCY: "Preñez",
   HEALTH: " Sanidad",
   ABORTION: "Aborto",
-  POOR_PRODUCTION: "Pobre producción",
+  POOR_PRODUCTION: "Producción probre",
 };
 
 export const saleTranferOptions = {

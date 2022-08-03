@@ -11,6 +11,9 @@ function SearchContainer({ title, setSearchText, searchText }) {
       <Grid
         item
         xs={12}
+        sm={6}
+        md={6}
+        lg={4}
         container
         alignItems="flex-end"
         justifyContent="flex-end"
@@ -36,7 +39,7 @@ function SearchContainer({ title, setSearchText, searchText }) {
             }}
           />
         </Grid>
-        {/* 
+        {/*
         <Grid
           item
           md={3}

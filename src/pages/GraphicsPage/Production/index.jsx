@@ -2,15 +2,16 @@ import { Grid, Paper, Typography } from "@material-ui/core";
 import HighchartsReact from "highcharts-react-official";
 import Highcharts from "highcharts/highstock";
 import React from "react";
-import { useSelector } from "react-redux";
+import { shallowEqual, useSelector } from "react-redux";
 import { useStyles } from "../styles";
 
 const Production = ({ children }) => {
   const classes = useStyles();
   const milkControlCharts = useSelector((state) => state.milkGraphic.current);
-  const data = useSelector((state) => state.graphic.current);
+  // const data = useSelector((state) => state.graphic.current);
 
   const animalList = useSelector((state) => state.animal.list);
+  const listAnimalDeads = useSelector((state) => state.animal.listDeads);
 
   // const isInProductionCount = data.isInProductionCount.count || 0;
   // const isDriedCount = data.isDriedCount.count || 0;
@@ -20,6 +21,34 @@ const Production = ({ children }) => {
   ).length;
 
   const byDried = animalList.filter((e) => e.isDried).length;
+
+  const listWeightControl = useSelector(
+    (state) => state.weight.list,
+    shallowEqual
+  );
+
+  const totalWeith = () => {
+    const data = listWeightControl.reduce((weight, animal) => {
+      const { animalId } = animal;
+      weight[animalId] = weight[animalId] ?? [];
+      weight[animalId].push(animal);
+      return weight;
+    }, {});
+
+    return Object.keys(data).length;
+  };
+
+  const totalWeithMale = () => {
+    const data = listWeightControl
+      .filter((e) => e.animal.gender === "MALE")
+      .reduce((weight, animal) => {
+        const { animalId } = animal;
+        weight[animalId] = weight[animalId] ?? [];
+        weight[animalId].push(animal);
+        return weight;
+      }, {});
+    return Object.keys(data).length;
+  };
 
   const byRace = () => {
     const rsl = milkControlCharts.byRaces.map((e) =>
@@ -77,6 +106,7 @@ const Production = ({ children }) => {
           }
           return false;
         });
+        return null;
       });
 
       return rsl.push({
@@ -362,7 +392,7 @@ const Production = ({ children }) => {
               align={"center"}
               className={classes.userItemNumber}
             >
-              0
+              {totalWeith()}
             </Typography>
             <Typography
               variant={"body2"}
@@ -387,7 +417,7 @@ const Production = ({ children }) => {
               align={"center"}
               className={classes.userItemNumber}
             >
-              0
+              {totalWeithMale()}
             </Typography>
             <Typography
               variant={"body2"}

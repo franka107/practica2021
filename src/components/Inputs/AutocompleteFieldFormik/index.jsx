@@ -11,9 +11,13 @@ function AutocompleteFieldFormik({
   onChange,
   disabled = false,
   displayName = true,
-  label,
+  showName = "identifier",
+  label = "",
+  startAdornment = null,
+  required = false,
   ...props
 }) {
+  // eslint-disable-next-line no-unused-vars
   const [field, meta, helpers] = useField(props);
   const { setValue } = helpers;
 
@@ -25,32 +29,42 @@ function AutocompleteFieldFormik({
   return (
     <Grid item xs={xs} {...props}>
       <Autocomplete
-        // onChange={(event, value) => console.log(props)}
         onChange={(e, value) => {
           setValue(value && value._id);
         }}
-        // {...props}
         disabled={disabled}
         defaultValue={defaultValue}
         options={options || []}
         getOptionLabel={(option) =>
           option
             ? displayName
-              ? option.identifier + "-" + option?.name
-              : option.identifier
+              ? option.identifier + (option?.name ? `- ${option?.name}` : "")
+              : option[showName]
             : ""
         }
         {...props}
         getOptionSelected={(option, value) => option._id === value._id}
         // filterOptions={filterOptions}
         renderInput={(params) => (
-          <TextField
-            {...params}
-            label={label}
-            variant="filled"
-            error={meta.touched && Boolean(meta.error)}
-            helperText={meta.touched && meta.error}
-          />
+          <div>
+            <TextField
+              {...params}
+              InputProps={{
+                ...params.InputProps,
+                startAdornment: startAdornment || null,
+              }}
+              label={
+                <>
+                  {label}
+                  {required && <strong style={{ color: "red" }}> ✱ </strong>}
+                </>
+              }
+              variant="filled"
+              error={meta.touched && Boolean(meta.error)}
+              helperText={meta.touched && meta.error}
+              fullWidth
+            />
+          </div>
         )}
       />
     </Grid>

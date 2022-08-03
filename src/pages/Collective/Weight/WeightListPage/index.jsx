@@ -1,10 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  useHistory,
-  useParams,
-  generatePath,
-  useLocation,
-} from "react-router-dom";
+import { useHistory, useParams, generatePath } from "react-router-dom";
 import { Grid } from "@material-ui/core";
 import { columns } from "./constants";
 import { useStyles } from "../styles";
@@ -14,7 +9,6 @@ import { ROUTES_DICT } from "../../../../routes/routesDict";
 import WeightActions from "../../../../redux/actions/weight.actions";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import SearchContainer from "../../../../components/SearchContainer";
-import { weightRouteOptions } from "../constants";
 
 /**
  * @component
@@ -87,7 +81,7 @@ function WeightListPage({ children }) {
 
       <Grid item xs={12} className={classes.registerContainer}>
         <CustomMuiTable
-          data={listWeightControl}
+          data={listWeightControl.slice(1, 11)}
           columns={[...columns, actionColumn]}
           options={options}
         />

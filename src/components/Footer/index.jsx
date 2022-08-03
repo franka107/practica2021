@@ -1,13 +1,13 @@
 import React from "react";
 import { useStyles } from "./styles";
 import { Button, Grid, Link, Typography } from "@material-ui/core";
-import { menu } from "./constants";
+// import { menu } from "./constants";
 import {
   Call,
   Check,
   Facebook,
-  Instagram,
-  Twitter,
+  // Instagram,
+  // Twitter,
   LinkedIn,
 } from "@material-ui/icons";
 import Logo from "../Logo";

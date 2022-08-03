@@ -12,16 +12,51 @@ import AnimalActions from "../../../redux/actions/animal.actions";
 import MilkActions from "../../../redux/actions/milkControl.actions";
 import { useParams } from "react-router";
 import BirthActions from "../../../redux/actions/birth.actions";
+import { format } from "date-fns";
+import CustomInfoIcon from "../../../components/CustomInfoIcon";
 
 const defaultInitValues = {
   animalId: "",
   name: "",
   controlDate: new Date(),
-  firstSample: 0,
-  secondSample: 0,
-  thirdSample: 0,
+  firstSample: null,
+  secondSample: null,
+  thirdSample: null,
   observation: "",
 };
+
+const validationSchema = (femaleAnimals) =>
+  yup.lazy((values) =>
+    yup.object({
+      animalId: yup.string().required("Este campo es requerido."),
+      controlDate: yup
+        .date()
+        .max(new Date(), "No puedes ingresar una fecha futura")
+        .when("animalId", {
+          is: (value) => femaleAnimals.some((e) => e._id === value),
+          then: (rule) =>
+            rule.min(
+              format(
+                new Date(
+                  femaleAnimals.find((e) => e._id === values.animalId).herdDate
+                ),
+                "yyyy-MM-dd"
+              ),
+              "La fecha del control lechero debe ser mayor a la fecha de entrada de hato."
+            ),
+        }),
+      firstSample: yup
+        .number()
+        .typeError("Este campo es requerido.")
+        .min(1, "Ingrese un valor mayor a 1")
+        .required("Este campo es requerido."),
+      secondSample: yup
+        .number()
+        .typeError("Este campo es requerido.")
+        .min(1, "Ingrese un valor mayor a 1")
+        .required("Este campo es requerido."),
+    })
+  );
 
 const MilkForm = ({
   initValues = defaultInitValues,
@@ -33,17 +68,19 @@ const MilkForm = ({
   const dispatch = useDispatch();
   const params = useParams();
   const births = useSelector((state) => state.birth.list);
+  const currentAgribusiness = useSelector(
+    (state) => state.agribusiness.current
+  );
   const femaleAnimals = useSelector(
     (state) =>
       state.animal.list.filter(
         (e) =>
           e.gender === "FEMALE" &&
-          births.find((birth) => birth.animalId === e._id)
+          e.birthsLength > 0 &&
+          e.isDried === false &&
+          e.ageInMonths > currentAgribusiness?.isHeifer
       ),
     shallowEqual
-  );
-  const currentAgribusiness = useSelector(
-    (state) => state.agribusiness.current
   );
 
   useEffect(() => {
@@ -59,21 +96,19 @@ const MilkForm = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const validationSchema = yup.object({
-    animalId: yup
-      .string("Ingresa la identificacion del animal.")
-      .required("Este campo es requerido."),
-    controlDate: yup
-      .date("Ingresa una fecha correcta.")
-      .max(new Date(), "No puedes poner una fecha futura")
-      .nullable(),
-  });
-
   const handleSubmit = async (values, actions) => {
     try {
       if (type === "create") {
         const animal = femaleAnimals.find((e) => e._id === values.animalId);
-        await dispatch(MilkActions.create(values, animal));
+        await dispatch(
+          MilkActions.create(
+            {
+              ...values,
+              thirdSample: values.thirdSample ? values.thirdSample : 0,
+            },
+            animal
+          )
+        );
       }
       if (type === "update") {
         await dispatch(MilkActions.update(values));
@@ -91,7 +126,7 @@ const MilkForm = ({
     <Formik
       initialValues={initValues}
       onSubmit={handleSubmit}
-      validationSchema={validationSchema}
+      validationSchema={validationSchema(femaleAnimals)}
       enableReinitialize
     >
       {(props) => (
@@ -107,6 +142,22 @@ const MilkForm = ({
             {!hideAnimal && (
               <>
                 <AutocompleteFieldFormik
+                  startAdornment={
+                    <InputAdornment position="start" style={{ margin: 0 }}>
+                      <CustomInfoIcon
+                        title={
+                          <>
+                            Genero = Hembra <br />
+                            Secada = No <br />
+                            Nacimientos {">"} 0 <br />
+                            Meses de edad {">"} {currentAgribusiness?.isHeifer}
+                          </>
+                        }
+                        placement="bottom"
+                      />
+                    </InputAdornment>
+                  }
+                  required
                   options={femaleAnimals}
                   name="animalId"
                   label="Identificacíon del animal"
@@ -131,14 +182,17 @@ const MilkForm = ({
               </>
             )}
             <DatePickerFieldFormik
+              required
               label="Fecha"
               name="controlDate"
               onChange={props.handleChange}
               xs={12}
             />
             <TextFieldFormik
+              required
               label="Muestra A.M"
               name="firstSample"
+              placeholder="0"
               onChange={props.handleChange}
               endAdornment={
                 <InputAdornment position="start">
@@ -153,8 +207,10 @@ const MilkForm = ({
               sm={4}
             />
             <TextFieldFormik
+              required
               label="Muestra P.M"
               name="secondSample"
+              placeholder="0"
               onChange={props.handleChange}
               endAdornment={
                 <InputAdornment position="start">
@@ -172,6 +228,7 @@ const MilkForm = ({
               label="3ra Muestra"
               name="thirdSample"
               type="number"
+              placeholder="0"
               onChange={props.handleChange}
               endAdornment={
                 <InputAdornment position="start">

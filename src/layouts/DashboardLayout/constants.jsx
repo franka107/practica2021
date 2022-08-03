@@ -20,7 +20,7 @@ import {
   faSignal,
   faKey,
   faArchive,
-  faListAlt,
+  // faListAlt,
   // faShoppingCart,
   faSyringe,
   faChartPie,

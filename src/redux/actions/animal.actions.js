@@ -32,6 +32,25 @@ const clearCurrent = (data) => async (dispatch) => {
   dispatch({ type: ACTION_TYPES.ANIMAL.UPDATE_CURRENT, payload: null });
 };
 
+const bulk = (data, end) => async (dispatch, getState) => {
+  const agribusiness = getState().agribusiness.current;
+  const response = await IdeasCloudApi.fetchBulk(
+    "animalCreateV3",
+    {
+      ...data,
+      agribusinessId: agribusiness._id,
+    },
+    end ? dispatch : null,
+    "Carga masiva completada satisfactoriamente."
+  );
+  dispatch({
+    type: ACTION_TYPES.ANIMAL.CREATE,
+    payload: response,
+  });
+  // dispatch(list());
+  return response;
+};
+
 const create = (data) => async (dispatch, getState) => {
   const agribusiness = getState().agribusiness.current;
   const response = await IdeasCloudApi.fetch(
@@ -48,7 +67,7 @@ const create = (data) => async (dispatch, getState) => {
     type: ACTION_TYPES.ANIMAL.CREATE,
     payload: response,
   });
-  // dispatch(list());
+  dispatch(list());
   return response;
 };
 const update = (data) => async (dispatch) => {
@@ -78,6 +97,7 @@ const deleteAnimal = (data) => async (dispatch) => {
 };
 
 const AnimalActions = {
+  bulk,
   list,
   listDeads,
   get,

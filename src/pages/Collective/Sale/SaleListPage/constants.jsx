@@ -1,4 +1,3 @@
-import { stateOptions } from "../../../../constants";
 import { getAgeInYears } from "../../../../helpers/convertDate";
 
 export const columns = [
@@ -32,16 +31,7 @@ export const columns = [
       searchable: false,
     },
   },
-  {
-    label: "Estado",
-    name: "animal",
-    options: {
-      filter: false,
-      customBodyRender: (value) =>
-        value ? stateOptions[value.reproductiveStatus] : "",
-      searchable: false,
-    },
-  },
+
   {
     label: "Peso",
     name: "weight",

@@ -29,19 +29,24 @@ const GeneticStockUpdatePage = ({ parentPathname }) => {
 
   return (
     <>
-      <CustomDialog parentPathname={parentPathname}>
-        {(props) =>
-          currentGeneticStock && (
-            <GeneticStockForm
-              type="update"
-              initValues={currentGeneticStock}
-              onClickCancelButton={props.handleClose}
-              onCompleteSubmit={props.handleClose}
-              geneticType={params.geneticType.toUpperCase()}
-            />
-          )
-        }
-      </CustomDialog>
+      {currentGeneticStock && currentGeneticStock._id === params._id && (
+        <CustomDialog parentPathname={parentPathname}>
+          {(props) =>
+            currentGeneticStock && (
+              <GeneticStockForm
+                type="update"
+                initValues={{
+                  ...currentGeneticStock,
+                  races: currentGeneticStock.entity.races,
+                }}
+                onClickCancelButton={props.handleClose}
+                onCompleteSubmit={props.handleClose}
+                geneticType={params.geneticType.toUpperCase()}
+              />
+            )
+          }
+        </CustomDialog>
+      )}
     </>
   );
 };

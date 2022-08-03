@@ -99,7 +99,7 @@ function GeneticStockList({ children, setTitle, setChipList }) {
           <TableButtons
             {
               ...{
-                /* 
+                /*
             onClickDeleteButton={() => {
               history.push(
                 generatePath(ROUTES_DICT.geneticStock.geneticType.delete, {

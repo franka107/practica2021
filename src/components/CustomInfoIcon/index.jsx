@@ -7,9 +7,9 @@ const CustomInfoIcon = ({ title, placement = "right", xs = 1 }) => {
   return (
     <>
       <Grid item xs={xs} className={classes.grid__center}>
-        <Tooltip title={title} placement={placement}>
+        <Tooltip title={title} placement={placement} arrow>
           <IconButton size="small">
-            <Info></Info>
+            <Info style={{ color: "#0075C9" }}></Info>
           </IconButton>
         </Tooltip>
       </Grid>

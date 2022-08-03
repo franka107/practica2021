@@ -11,7 +11,13 @@ import { useStyles } from "../styles";
 import clsx from "clsx";
 import { useField } from "formik";
 
-export default function SelectFieldFormik({ xs = 12, options, ...props }) {
+export default function SelectFieldFormik({
+  xs = 12,
+  options,
+  label = "",
+  required = false,
+  ...props
+}) {
   const classes = useStyles();
   const [field, meta] = useField(props);
 
@@ -22,7 +28,10 @@ export default function SelectFieldFormik({ xs = 12, options, ...props }) {
         className={clsx(classes.textField)}
         error={meta.touched && Boolean(meta.error)}
       >
-        <InputLabel>{props.label}</InputLabel>
+        <InputLabel>
+          {label}
+          {required && <strong style={{ color: "red" }}> ✱ </strong>}
+        </InputLabel>
         <MuiSelect {...field} {...props}>
           {Boolean(options) &&
             options.map((item) => {

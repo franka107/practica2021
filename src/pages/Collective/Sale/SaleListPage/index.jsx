@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
 import {
   useHistory,
@@ -7,7 +8,6 @@ import {
 } from "react-router-dom";
 import { Grid } from "@material-ui/core";
 import { columns } from "./constants";
-import { saleRouteOptions } from "../constants";
 import { useStyles } from "../styles";
 import CustomMuiTable from "../../../../components/CustomMuiTable";
 import { ROUTES_DICT } from "../../../../routes/routesDict";
@@ -56,7 +56,7 @@ const SaleListPage = ({ children, setTitle, setChipList }) => {
           <TableButtons
             onClickDeleteButton={() => {
               history.push(
-                generatePath(ROUTES_DICT.collective.sale.delete, {
+                generatePath(ROUTES_DICT.sale.delete, {
                   ...params,
                   _id: listSaleControl[dataIndex]._id,
                 })
@@ -64,7 +64,7 @@ const SaleListPage = ({ children, setTitle, setChipList }) => {
             }}
             onClickEditButton={() => {
               history.push(
-                generatePath(ROUTES_DICT.collective.sale.update, {
+                generatePath(ROUTES_DICT.sale.update, {
                   ...params,
                   _id: listSaleControl[dataIndex]._id,
                 })
@@ -81,7 +81,7 @@ const SaleListPage = ({ children, setTitle, setChipList }) => {
 
       <Grid item xs={12} className={classes.registerContainer}>
         <CustomMuiTable
-          data={listSaleControl}
+          data={listSaleControl.slice(1, 11)}
           columns={[...columns, actionColumn]}
           options={options}
         />

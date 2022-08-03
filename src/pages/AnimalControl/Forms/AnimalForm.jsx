@@ -14,6 +14,8 @@ import { useDispatch, useSelector } from "react-redux";
 import AnimalActions from "../../../redux/actions/animal.actions";
 import { categoryOptions, sexOptions } from "../../../constants";
 import raceActions from "../../../redux/actions/race.actions";
+import CustomModal, { customModal } from "../../../components/Modal";
+import CustomInfoIcon from "../../../components/CustomInfoIcon";
 // import CustomInfoIcon from "../../../components/CustomInfoIcon";
 
 /**
@@ -55,6 +57,10 @@ function AnimalForm({
       a.name > b.name ? 1 : a.name < b.name ? -1 : 0
     )
   );
+
+  const listAnimal = useSelector((state) => state.animal.list);
+  const listAnimalDeads = useSelector((state) => state.animal.listDeads);
+
   const currentAgribusiness = useSelector(
     (state) => state.agribusiness.current
   );
@@ -101,6 +107,12 @@ function AnimalForm({
   });
 
   useEffect(() => {
+    if (!listAnimal || listAnimal.length === 0) {
+      dispatch(AnimalActions.list());
+    }
+    if (!listAnimalDeads || listAnimalDeads.length === 0) {
+      dispatch(AnimalActions.listDeads());
+    }
     if (!listRaces || listRaces.length === 0) {
       dispatch(raceActions.listRace());
     }
@@ -123,13 +135,33 @@ function AnimalForm({
     }
   };
 
-  const onSubmit = (values, actions) => {
+  const preSubmit = (values, actions) => {
+    if (type === "create") {
+      if (
+        listAnimal.some((e) => e.identifier === values.identifier) ||
+        listAnimalDeads.some((e) => e.identifier === values.identifier)
+      ) {
+        customModal({
+          title: "Advertencia",
+          message:
+            "Número de identificación existente, por favor ingresar otro número.",
+          textOk: null,
+          textCancel: "OK",
+          onSubmit: () => {},
+        });
+        return;
+      }
+    }
+    onSubmit(values);
+  };
+
+  const onSubmit = (values) => {
     values.agribusinessId = currentAgribusiness._id;
 
     if (type === "create") {
       dispatch(AnimalActions.create(values))
         .then((r) => {
-          dispatch(AnimalActions.list());
+          // dispatch(AnimalActions.list());
           onClickCancelButton();
         })
         .catch((e) => {});
@@ -144,263 +176,278 @@ function AnimalForm({
   };
 
   return (
-    <Formik
-      initialValues={initValues}
-      onSubmit={onSubmit}
-      validationSchema={validationSchema}
-      enableReinitialize
-    >
-      {(props) => (
-        <form onSubmit={props.handleSubmit} className={classes.formStyle}>
-          <Grid item xs={12}>
-            <Typography variant="subtitle1">
-              {type === "create" && "Nuevo animal"}
-              {type === "update" && "Editar animal"}
-            </Typography>
-          </Grid>
-          <Grid container spacing={1} className={classes.formStyle}>
+    <>
+      <Formik
+        initialValues={initValues}
+        onSubmit={preSubmit}
+        validationSchema={validationSchema}
+        enableReinitialize
+      >
+        {(props) => (
+          <form onSubmit={props.handleSubmit} className={classes.formStyle}>
             <Grid item xs={12}>
-              <Typography variant={"subtitle2"}>Datos Generales</Typography>
+              <Typography variant="subtitle1">
+                {type === "create" && "Nuevo animal"}
+                {type === "update" && "Editar animal"}
+              </Typography>
             </Grid>
-          </Grid>
-          <Grid container spacing={1}>
-            <TextFieldFormik
-              label="Identificación del animal (Número de Arete)"
-              name="identifier"
-              type="text"
-              onChange={props.handleChange}
-              xs={12}
-            ></TextFieldFormik>
-            <TextFieldFormik
-              label="Nombre"
-              name="name"
-              type="text"
-              onChange={props.handleChange}
-              xs={12}
-            ></TextFieldFormik>
-            <DatePickerFieldFormik
-              label="Fecha de nacimiento"
-              name="birthDate"
-              onChange={props.handleChange}
-              lg={6}
-              sm={6}
-              xs={12}
-            ></DatePickerFieldFormik>
-            <DatePickerFieldFormik
-              label="Entrada de hato"
-              name="herdDate"
-              onChange={props.handleChange}
-              lg={6}
-              sm={6}
-              xs={12}
-            ></DatePickerFieldFormik>
-            <Grid item container xs={12} lg={6} sm={6}>
+            <Grid container spacing={1} className={classes.formStyle}>
+              <Grid item xs={12}>
+                <Typography variant={"subtitle2"}>Datos Generales</Typography>
+              </Grid>
+            </Grid>
+            <Grid container spacing={1}>
               <TextFieldFormik
-                label="Nro de registro"
-                name="registerNumber"
+                startAdornment={
+                  <InputAdornment position="start">
+                    <CustomInfoIcon
+                      title={
+                        listAnimal && listAnimal.length !== 0
+                          ? `Últ. id: ${listAnimal[0].identifier}`
+                          : "No hay animales"
+                      }
+                      placement="bottom"
+                    />
+                  </InputAdornment>
+                }
+                label="Identificación del animal (Número de Arete)"
+                name="identifier"
                 type="text"
                 onChange={props.handleChange}
                 xs={12}
               ></TextFieldFormik>
-              {/* <CustomInfoIcon title={"Falta información"} /> */}
-            </Grid>
-            <SelectFieldFormik
-              onChange={props.handleChange}
-              options={sexOptions.slice(1)}
-              label="Sexo"
-              name="gender"
-              lg={6}
-              sm={6}
-              xs={12}
-            ></SelectFieldFormik>
-            {props.values.gender === "MALE" && (
-              <>
-                <Grid
-                  lg={6}
-                  sm={6}
+              <TextFieldFormik
+                label="Nombre"
+                name="name"
+                type="text"
+                onChange={props.handleChange}
+                xs={12}
+              ></TextFieldFormik>
+              <DatePickerFieldFormik
+                label="Fecha de nacimiento"
+                name="birthDate"
+                onChange={props.handleChange}
+                lg={6}
+                sm={6}
+                xs={12}
+              ></DatePickerFieldFormik>
+              <DatePickerFieldFormik
+                label="Entrada de hato"
+                name="herdDate"
+                onChange={props.handleChange}
+                lg={6}
+                sm={6}
+                xs={12}
+              ></DatePickerFieldFormik>
+              <Grid item container xs={12} lg={6} sm={6}>
+                <TextFieldFormik
+                  label="Nro de registro"
+                  name="registerNumber"
+                  type="text"
+                  onChange={props.handleChange}
                   xs={12}
-                  item
-                  container
-                  alignContent="center"
-                  alignItems="center"
-                ></Grid>
-                <Grid
-                  lg={6}
-                  sm={6}
-                  xs={12}
-                  item
-                  container
-                  alignContent="center"
-                  alignItems="center"
-                >
-                  <CheckboxFormik
-                    label="Reproductor"
-                    name="isReproductive"
-                    options={categoryOptions}
-                    onChange={props.handleChange}
-                    checked={props.values.isReproductive}
-                  ></CheckboxFormik>
-                </Grid>
-              </>
-            )}
-            <TextFieldFormik
-              label="Padre"
-              type="text"
-              name="fatherRef"
-              onChange={props.handleChange}
-              lg={6}
-              sm={6}
-              xs={12}
-            ></TextFieldFormik>
-
-            <TextFieldFormik
-              label="Madre"
-              type="text"
-              name="motherRef"
-              onChange={props.handleChange}
-              lg={6}
-              sm={6}
-              xs={12}
-            ></TextFieldFormik>
-          </Grid>
-          <Grid container spacing={1} className={classes.formStyle}>
-            <Grid item xs={12}>
-              <Typography variant={"subtitle2"}>Raza</Typography>
-            </Grid>
-          </Grid>
-          <Grid item xs={12} container className={classes.border}>
-            <FieldArray
-              name="races"
-              render={(arrayHelpers) => (
+                ></TextFieldFormik>
+                {/* <CustomInfoIcon title={"Falta información"} /> */}
+              </Grid>
+              <SelectFieldFormik
+                onChange={props.handleChange}
+                options={sexOptions.slice(1)}
+                label="Sexo"
+                name="gender"
+                lg={6}
+                sm={6}
+                xs={12}
+              ></SelectFieldFormik>
+              {props.values.gender === "MALE" && (
                 <>
-                  {props.values.races &&
-                    props.values.races.map((race, index) => (
-                      <Grid
-                        item
-                        xs={12}
-                        container
-                        key={`race-option-${index}`}
-                        spacing={1}
-                        className={classes.raceContainer}
-                      >
-                        <Grid item xs={12}>
-                          <Typography
-                            variant={"body2"}
-                            gutterBottom
-                            className={classes.subtitle}
-                          >
-                            {`Raza ${letters[index]}`}
-                          </Typography>
-                        </Grid>
-                        <Grid item container sm={8} xs={12}>
-                          <SelectFieldFormik
-                            name={`races.${index}.raceId`}
-                            label="Raza"
-                            options={listRaces}
-                            disabled={type === "create" ? false : true}
-                            onChange={props.handleChange}
-                          />
-                        </Grid>
+                  <Grid
+                    lg={6}
+                    sm={6}
+                    xs={12}
+                    item
+                    container
+                    alignContent="center"
+                    alignItems="center"
+                  ></Grid>
+                  <Grid
+                    lg={6}
+                    sm={6}
+                    xs={12}
+                    item
+                    container
+                    alignContent="center"
+                    alignItems="center"
+                  >
+                    <CheckboxFormik
+                      label="Reproductor"
+                      name="isReproductor"
+                      options={categoryOptions}
+                      onChange={props.handleChange}
+                      checked={props.values.isReproductor}
+                    ></CheckboxFormik>
+                  </Grid>
+                </>
+              )}
+              <TextFieldFormik
+                label="Padre"
+                type="text"
+                name="fatherRef"
+                onChange={props.handleChange}
+                lg={6}
+                sm={6}
+                xs={12}
+              ></TextFieldFormik>
+
+              <TextFieldFormik
+                label="Madre"
+                type="text"
+                name="motherRef"
+                onChange={props.handleChange}
+                lg={6}
+                sm={6}
+                xs={12}
+              ></TextFieldFormik>
+            </Grid>
+            <Grid container spacing={1} className={classes.formStyle}>
+              <Grid item xs={12}>
+                <Typography variant={"subtitle2"}>Raza</Typography>
+              </Grid>
+            </Grid>
+            <Grid item xs={12} container className={classes.border}>
+              <FieldArray
+                name="races"
+                render={(arrayHelpers) => (
+                  <>
+                    {props.values.races &&
+                      props.values.races.map((race, index) => (
                         <Grid
                           item
-                          container
-                          sm={4}
                           xs={12}
-                          alignItems={"center"}
-                          justifyContent={"center"}
+                          container
+                          key={`race-option-${index}`}
+                          spacing={1}
+                          className={classes.raceContainer}
                         >
-                          <Grid item xs={11}>
-                            <TextFieldFormik
-                              xs={12}
-                              name={`races.${index}.percentage`}
-                              endAdornment={
-                                <InputAdornment position="start">
-                                  %
-                                </InputAdornment>
-                              }
-                              type="number"
+                          <Grid item xs={12}>
+                            <Typography
+                              variant={"body2"}
+                              gutterBottom
+                              className={classes.subtitle}
+                            >
+                              {`Raza ${letters[index]}`}
+                            </Typography>
+                          </Grid>
+                          <Grid item container sm={8} xs={12}>
+                            <SelectFieldFormik
+                              name={`races.${index}.raceId`}
+                              label="Raza"
+                              options={listRaces}
                               disabled={type === "create" ? false : true}
-                              label="Porcentaje"
-                              style={{ textAlign: "end" }}
-                              // type="number"
                               onChange={props.handleChange}
                             />
                           </Grid>
-                          <Grid item xs={1}>
-                            {Boolean(index) && (
-                              <DeleteIcon
-                                color={"error"}
+                          <Grid
+                            item
+                            container
+                            sm={4}
+                            xs={12}
+                            alignItems={"center"}
+                            justifyContent={"center"}
+                          >
+                            <Grid item xs={11}>
+                              <TextFieldFormik
+                                xs={12}
+                                name={`races.${index}.percentage`}
+                                endAdornment={
+                                  <InputAdornment position="start">
+                                    %
+                                  </InputAdornment>
+                                }
+                                type="number"
                                 disabled={type === "create" ? false : true}
-                                className={classes.deleteIcon}
-                                onClick={() => arrayHelpers.remove(index)}
+                                label="Porcentaje"
+                                style={{ textAlign: "end" }}
+                                // type="number"
+                                onChange={props.handleChange}
                               />
-                            )}
+                            </Grid>
+                            <Grid item xs={1}>
+                              {Boolean(index) && (
+                                <DeleteIcon
+                                  color={"error"}
+                                  disabled={type === "create" ? false : true}
+                                  className={classes.deleteIcon}
+                                  onClick={() => arrayHelpers.remove(index)}
+                                />
+                              )}
+                            </Grid>
                           </Grid>
                         </Grid>
-                      </Grid>
-                    ))}
-                  <Grid item xs={12} className={classes.errorMessage}>
-                    <Typography variant={"caption"} gutterBottom>
-                      {props.errors.races &&
-                      typeof props.errors.races === "string"
-                        ? props.errors.races
-                        : ""}
-                    </Typography>
-                  </Grid>
-                  {type === "create" &&
-                    props.values.races &&
-                    props.values.races.length <= 3 && (
-                      <AddCircle
-                        color={"secondary"}
-                        disabled={type === "create" ? false : true}
-                        className={classes.addBtn}
-                        onClick={() => {
-                          console.log(props.errors);
-                          arrayHelpers.push({ raceId: "", percentage: null });
-                        }}
-                      />
-                    )}
-                </>
-              )}
-            />
-          </Grid>
-          <Grid container spacing={1}>
-            <TextFieldFormik
-              label="Tipo Racial"
-              name="racialType"
-              disabled
-              onChange={props.handleChange}
-              xs={6}
-              value={
-                props.values.races && calculateRacialType(props.values.races)
-              }
-            />
-            <TextFieldFormik
-              label="Color"
-              type="text"
-              name="color"
-              onChange={props.handleChange}
-              lg={6}
-              sm={6}
-              xs={12}
-            ></TextFieldFormik>
-          </Grid>
-          <Grid item container justifyContent={"flex-end"} xs={12}>
-            <Grid item xs={3} className={classes.paddingButton}>
-              <ButtonFormik
-                xs={3}
-                label="Cancelar"
-                type="cancel"
-                onClick={onClickCancelButton}
+                      ))}
+                    <Grid item xs={12} className={classes.errorMessage}>
+                      <Typography variant={"caption"} gutterBottom>
+                        {props.errors.races &&
+                        typeof props.errors.races === "string"
+                          ? props.errors.races
+                          : ""}
+                      </Typography>
+                    </Grid>
+                    {type === "create" &&
+                      props.values.races &&
+                      props.values.races.length <= 3 && (
+                        <AddCircle
+                          color={"secondary"}
+                          disabled={type === "create" ? false : true}
+                          className={classes.addBtn}
+                          onClick={() => {
+                            console.log(props.errors);
+                            arrayHelpers.push({ raceId: "", percentage: null });
+                          }}
+                        />
+                      )}
+                  </>
+                )}
               />
             </Grid>
-            <Grid item xs={3}>
-              <ButtonFormik xs={3} label="Guardar" type="submit" />
+            <Grid container spacing={1}>
+              <TextFieldFormik
+                label="Tipo Racial"
+                name="racialType"
+                disabled
+                onChange={props.handleChange}
+                xs={6}
+                value={
+                  props.values.races && calculateRacialType(props.values.races)
+                }
+              />
+              <TextFieldFormik
+                label="Color"
+                type="text"
+                name="color"
+                onChange={props.handleChange}
+                lg={6}
+                sm={6}
+                xs={12}
+              ></TextFieldFormik>
             </Grid>
-          </Grid>
-        </form>
-      )}
-    </Formik>
+            <Grid item container justifyContent={"flex-end"} xs={12}>
+              <Grid item xs={3} className={classes.paddingButton}>
+                <ButtonFormik
+                  xs={3}
+                  label="Cancelar"
+                  type="cancel"
+                  onClick={onClickCancelButton}
+                />
+              </Grid>
+              <Grid item xs={3}>
+                <ButtonFormik xs={3} label="Guardar" type="submit" />
+              </Grid>
+            </Grid>
+          </form>
+        )}
+      </Formik>
+      <CustomModal />
+    </>
   );
 }
 

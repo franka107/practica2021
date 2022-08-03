@@ -1,19 +1,12 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Grid, Typography } from "@material-ui/core";
 import * as yup from "yup";
 import { Formik } from "formik";
 import TextFieldFormik from "../../../components/Inputs/TextFieldFormik";
 import ButtonFormik from "../../../components/Inputs/ButtonFormik";
-import DatePickerFieldFormik from "../../../components/Inputs/DatePickerFieldFormik";
-import AutocompleteFieldFormik from "../../../components/Inputs/AutocompleteFieldFormik";
 import SelectFieldFormik from "../../../components/Inputs/SelectFieldFormik";
-import { commentTypeOptions, stateOptions } from "../../../constants";
-import { shallowEqual, useDispatch, useSelector } from "react-redux";
-import AnimalActions from "../../../redux/actions/animal.actions";
-import PalpationActions from "../../../redux/actions/palpation.actions";
-import CustomInfoIcon from "../../../components/CustomInfoIcon";
-import CollaboratorActions from "../../../redux/actions/collaborator.actions";
-import { useParams } from "react-router";
+import { commentTypeOptions } from "../../../constants";
+import { useDispatch } from "react-redux";
 import CommentActions from "../../../redux/actions/comment.actions";
 
 const defaultInitValues = {

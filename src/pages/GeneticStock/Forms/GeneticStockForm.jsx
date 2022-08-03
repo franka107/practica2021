@@ -23,11 +23,13 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import IdeasCloudApi from "../../../helpers/ideascloudApi";
 import CustomPaper from "../../../components/CustomPaper";
 import _ from "lodash";
+import DatePickerFieldFormik from "../../../components/Inputs/DatePickerFieldFormik";
 
 const defaultInitValues = {
   identifier: "",
   name: "",
   active: true,
+  date: new Date(),
   value: 0,
   stock: 0,
   //geneticType: "EMBRYO",
@@ -60,13 +62,24 @@ const GeneticStockForm = ({
   const classes = useStyles();
   const letters = ["A", "B", "C", "D"];
 
-  //const currentFarm = useSelector((state) => state.farm.current);
   const validationSchema = yup.object().shape({
     identifier: yup
       .string("Ingresa la identificacion del animal.")
       .required("Este campo es requerido."),
     name: yup.string("Ingresa el nombre del animal."),
-    stock: yup.number("Ingrese solo números").integer("Solo números enteros"),
+    date: yup
+      .date()
+      .typeError("Ingresar una fecha")
+      .max(new Date(), "No puedes ingresar una fecha futura")
+      .required("Este campo es requerido."),
+    stock: yup
+      .number("Ingrese solo números")
+      .integer("Solo números enteros")
+      .required("Este campo es requerido."),
+    value: yup
+      .number("Ingrese solo números")
+      .integer("Solo números enteros")
+      .required("Este campo es requerido."),
     races: yup
       .array()
       .of(
@@ -87,16 +100,13 @@ const GeneticStockForm = ({
         "races",
         "La suma de las razas tiene que ser 100%",
         (values) =>
+          values &&
           values.reduce((acc, curr) => acc + curr.percentage, 0) === 100
       ),
   });
 
   useEffect(() => {
     (!racesList || racesList.length === 0) && dispatch(raceActions.listRace());
-
-    if (type === "update") {
-      initValues.races = initValues.entity.races;
-    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -216,11 +226,18 @@ const GeneticStockForm = ({
           <Grid container spacing={1}>
             <Grid item xs={12}>
               <Typography variant="subtitle1">
-                {type === "create" && "Nuevo stock genético"}
-                {type === "update" && "Editar stock genético"}
+                {type === "create" &&
+                  `Nuevo stock genético - ${
+                    geneticType === "EMBRYO" ? "EMBRIÓN" : "SEMEN"
+                  }`}
+                {type === "update" &&
+                  `Editar stock genético - ${
+                    geneticType === "EMBRYO" ? "EMBRIÓN" : "SEMEN"
+                  }`}
               </Typography>
             </Grid>
             <TextFieldFormik
+              required
               label="Cod. animal"
               name="identifier"
               disabled={type === "update"}
@@ -234,6 +251,13 @@ const GeneticStockForm = ({
               onChange={props.handleChange}
               xs={12}
               sm={8}
+            />
+            <DatePickerFieldFormik
+              required
+              label="Fecha"
+              onChange={props.handleChange}
+              name="date"
+              xs={12}
             />
           </Grid>
           <Grid container spacing={1} className={classes.formStyle}>
@@ -267,6 +291,7 @@ const GeneticStockForm = ({
                         </Grid>
                         <Grid item container sm={8} xs={12}>
                           <SelectFieldFormik
+                            required
                             name={`races.${index}.raceId`}
                             label="Raza"
                             options={racesList}
@@ -284,6 +309,7 @@ const GeneticStockForm = ({
                         >
                           <Grid item xs={11}>
                             <TextFieldFormik
+                              required
                               xs={12}
                               name={`races.${index}.percentage`}
                               endAdornment={
@@ -339,7 +365,8 @@ const GeneticStockForm = ({
           </Grid>
           <Grid container spacing={1}>
             <TextFieldFormik
-              label="Existencia"
+              required
+              label="Stock"
               type="number"
               name="stock"
               disabled={type === "update"}
@@ -349,6 +376,7 @@ const GeneticStockForm = ({
               xs={12}
             ></TextFieldFormik>
             <TextFieldFormik
+              required
               label="Costo unidad"
               type="number"
               disabled={type === "update"}

@@ -16,7 +16,6 @@ import ButtonFormik from "../../../components/Inputs/ButtonFormik";
 import AnimalActions from "../../../redux/actions/animal.actions";
 import raceActions from "../../../redux/actions/race.actions";
 import uiActions from "../../../redux/actions/ui.actions";
-import WeightActions from "../../../redux/actions/weight.actions";
 import { useStyles } from "../../../styles";
 import * as XLSX from "xlsx";
 
@@ -99,7 +98,7 @@ const AnimalBulkForm = ({ onClickCancelButton }) => {
         let errorUpload = 0;
         let successUpload = 0;
 
-        data.forEach(async (e) => {
+        data.forEach(async (e, index) => {
           let raceArray = [];
           for (let index = 1; index <= 4; index++) {
             const race =
@@ -130,7 +129,12 @@ const AnimalBulkForm = ({ onClickCancelButton }) => {
           };
 
           try {
-            const animalCreated = await dispatch(AnimalActions.create(animal));
+            const animalCreated = await dispatch(
+              AnimalActions.bulk(
+                animal,
+                index === data.length - 1 ? true : false
+              )
+            );
             // console.log("animalCreated", animalCreated[0]);
             setAnimalListUploadInfo((oldArray) => [
               ...oldArray,
@@ -159,6 +163,8 @@ const AnimalBulkForm = ({ onClickCancelButton }) => {
     }
     dispatch(AnimalActions.list());
   };
+
+  // eslint-disable-next-line no-unused-vars
   const csvToArray = (str, delimiter = ",") => {
     // slice from start of text to the first \n index
     // use split to create an array from string by delimiter
@@ -209,22 +215,12 @@ const AnimalBulkForm = ({ onClickCancelButton }) => {
   return (
     <>
       <Typography variant={"subtitle1"}>Registro masivo</Typography>
-      {/* <Typography variant={"subtitle2"}>
-        Para registro masivo de animales,{" "}
-        <a href="https://contigo-files.s3.amazonaws.com/static/ExampleData+-+Sheet1.csv">
-          descargue
-        </a>{" "}
-        el siguiente documento.
-      </Typography> */}
       <Typography variant={"subtitle2"}>
         Para descargar el modelo de carga masiva presione{" "}
         <a href="https://contigo-animal-bulk.s3.us-east-2.amazonaws.com/Bulk+Upload+Example.xlsx">
           <strong>AQUI</strong>
         </a>
       </Typography>
-      {/* <Typography variant={"subtitle2"}>
-        Recuerda que el el formato del archivo debe de ser .CSV
-      </Typography> */}
       <Grid container spacing={1}>
         <Button
           component="label"
@@ -289,34 +285,36 @@ const AnimalBulkForm = ({ onClickCancelButton }) => {
                 className={classes.chipContainer}
               >
                 {animalListUploadInfo.map((animal, index) => (
-                  <Grid item xs={12} key={index}>
+                  <>
                     {!animal?._id && (
-                      <Chip
-                        icon={
-                          animal?._id ? (
-                            <Check className={`${classes.largeChip}__icon`} />
-                          ) : (
-                            <Error className={`${classes.largeChip}__icon`} />
-                          )
-                        }
-                        className={clsx(
-                          classes.largeChip,
-                          animal?._id
-                            ? `${classes.largeChip}--success`
-                            : `${classes.largeChip}--danger`
-                        )}
-                        label={
-                          animal?._id
-                            ? `${animal.identifier}: Exitoso`
-                            : `${animal.identifier}: ${
-                                animal?.error
-                                  ? animal?.error
-                                  : "Error desconocido"
-                              }`
-                        }
-                      />
+                      <Grid item xs={12} key={index}>
+                        <Chip
+                          icon={
+                            animal?._id ? (
+                              <Check className={`${classes.largeChip}__icon`} />
+                            ) : (
+                              <Error className={`${classes.largeChip}__icon`} />
+                            )
+                          }
+                          className={clsx(
+                            classes.largeChip,
+                            animal?._id
+                              ? `${classes.largeChip}--success`
+                              : `${classes.largeChip}--danger`
+                          )}
+                          label={
+                            animal?._id
+                              ? `${animal.identifier}: Exitoso`
+                              : `${animal.identifier}: ${
+                                  animal?.error
+                                    ? animal?.error
+                                    : "Error desconocido"
+                                }`
+                          }
+                        />
+                      </Grid>
                     )}
-                  </Grid>
+                  </>
                 ))}
               </Grid>
             </Grid>

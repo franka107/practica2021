@@ -162,6 +162,7 @@ const RaceForm = ({
       while (cont <= 4) {
         if (values[`race${cont}Id`] || values[`race${cont}Id`] !== "") {
           values[`race${cont}`] = listRaces.find(
+            // eslint-disable-next-line no-loop-func
             (e) => e._id === values[`race${cont}Id`]
           );
         }

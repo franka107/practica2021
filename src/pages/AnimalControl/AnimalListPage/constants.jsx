@@ -1,9 +1,5 @@
 import { format, isAfter, isBefore } from "date-fns";
-import {
-  categoryOptionsTest,
-  sexDictionary,
-  stateOptions,
-} from "../../../constants";
+import { sexDictionary } from "../../../constants";
 import { getAgeInYears } from "../../../helpers/convertDate";
 import { DatePicker } from "@material-ui/pickers";
 import { Grid } from "@material-ui/core";

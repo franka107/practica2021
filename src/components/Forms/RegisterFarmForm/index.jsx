@@ -10,8 +10,8 @@ import ButtonFormik from "../../Inputs/ButtonFormik";
 import { useEffect } from "react";
 import { countryActions } from "../../../redux/actions/country.actions";
 import { useDispatch, useSelector } from "react-redux";
-import { regionActions } from "../../../redux/actions/region.actions";
-import { districtActions } from "../../../redux/actions/district.actions";
+// import { regionActions } from "../../../redux/actions/region.actions";
+// import { districtActions } from "../../../redux/actions/district.actions";
 import {
   unitAreaOptions,
   unitCapacityOptions,
@@ -81,20 +81,57 @@ const RegisterFarmForm = ({
 
   const classes = useStyles();
   const dispatch = useDispatch();
-  const { list: countries } = useSelector((state) => state.country);
-  const { list: regionList } = useSelector((state) => state.region);
-  const { list: districtList } = useSelector((state) => state.district);
+  const countries = useSelector((state) =>
+    state.country.list.sort(function (a, b) {
+      if (a.name > b.name) {
+        return 1;
+      }
+      if (a.name < b.name) {
+        return -1;
+      }
+      // a must be equal to b
+      return 0;
+    })
+  );
+  const regionList = useSelector((state) =>
+    state.region.list.sort(function (a, b) {
+      if (a.name > b.name) {
+        return 1;
+      }
+      if (a.name < b.name) {
+        return -1;
+      }
+      // a must be equal to b
+      return 0;
+    })
+  );
+  const districtList = useSelector((state) =>
+    state.district.list.sort(function (a, b) {
+      if (a.name > b.name) {
+        return 1;
+      }
+      if (a.name < b.name) {
+        return -1;
+      }
+      // a must be equal to b
+      return 0;
+    })
+  );
   const { user } = useSelector((state) => state.auth);
   const currencyList = useSelector((state) =>
     state.currency.list.sort((a, b) =>
-      a.name > b.name ? 1 : a.name < b.name ? -1 : 0
+      a.currencyAbbreviation > b.currencyAbbreviation
+        ? 1
+        : a.currencyAbbreviation < b.currencyAbbreviation
+        ? -1
+        : 0
     )
   );
 
   useEffect(() => {
     const parsedList = currencyList.map((e) => ({
       _id: e._id,
-      name: e.currencyAbbreviation,
+      name: `${e.currencyAbbreviation} - ${e.name} `,
       icon: e.icon || "",
     }));
     setCurrencyListParsed(parsedList);
@@ -190,13 +227,13 @@ const RegisterFarmForm = ({
                   />
                   <SelectFieldFormik
                     xs={4}
-                    label="Región"
+                    label="Estado"
                     name="regionId"
                     options={regionList}
                   />
                   <SelectFieldFormik
                     xs={4}
-                    label="Distrito"
+                    label="Cuidad"
                     name="districtId"
                     options={districtList}
                   />

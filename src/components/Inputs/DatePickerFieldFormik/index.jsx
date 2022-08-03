@@ -3,7 +3,13 @@ import { Grid } from "@material-ui/core";
 import { useField } from "formik";
 import { DatePicker } from "@material-ui/pickers";
 
-export default function DatePickerFieldFormik({ xs = 12, ...props }) {
+export default function DatePickerFieldFormik({
+  xs = 12,
+  label = "",
+  required = false,
+  validate = true,
+  ...props
+}) {
   const [field, meta, helpers] = useField(props);
   const { setValue } = helpers;
 
@@ -12,6 +18,12 @@ export default function DatePickerFieldFormik({ xs = 12, ...props }) {
   return (
     <Grid item xs={xs} {...props}>
       <DatePicker
+        label={
+          <>
+            {label}
+            {required && <strong style={{ color: "red" }}> ✱ </strong>}
+          </>
+        }
         inputVariant="filled"
         clearLabel="Limpiar"
         cancelLabel="Cancelar"
@@ -21,30 +33,11 @@ export default function DatePickerFieldFormik({ xs = 12, ...props }) {
         {...field}
         {...props}
         onChange={(date) => setValue(date)}
-        error={meta.touched && Boolean(meta.error)}
-        helperText={meta.touched && meta.error && meta.touched && meta.error}
+        error={validate && meta.touched && Boolean(meta.error)}
+        helperText={
+          validate && meta.touched && meta.error && meta.touched && meta.error
+        }
       />
-      {/*
-
-      <TextField
-        variant="filled"
-        type="date"
-        InputLabelProps={{
-          shrink: true,
-          // classes: {
-          //   input: classes.dateField,
-          // },
-        }}
-        InputProps={{
-          disableUnderline: true,
-        }}
-        className={classes.dateField}
-        error={meta.touched && Boolean(meta.error)}
-        helperText={meta.touched && meta.error}
-        {...field}
-        {...props}
-      />
-      */}
     </Grid>
   );
 }
