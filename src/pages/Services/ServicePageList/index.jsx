@@ -106,7 +106,7 @@ const ServicePageList = (props) => {
       <Grid item xs={12}>
         <CustomMuiTable
           columns={[...columnsToMuiTable, actionColumn]}
-          data={serviceList.slice(1, 11)}
+          data={serviceList.slice(0, 10)}
           options={options}
         />
       </Grid>

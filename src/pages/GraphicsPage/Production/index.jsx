@@ -1,6 +1,7 @@
 import { Grid, Paper, Typography } from "@material-ui/core";
 import HighchartsReact from "highcharts-react-official";
 import Highcharts from "highcharts/highstock";
+import { sum } from "lodash";
 import React from "react";
 import { shallowEqual, useSelector } from "react-redux";
 import { useStyles } from "../styles";
@@ -11,7 +12,7 @@ const Production = ({ children }) => {
   // const data = useSelector((state) => state.graphic.current);
 
   const animalList = useSelector((state) => state.animal.list);
-  const listAnimalDeads = useSelector((state) => state.animal.listDeads);
+  // const listAnimalDeads = useSelector((state) => state.animal.listDeads);
 
   // const isInProductionCount = data.isInProductionCount.count || 0;
   // const isDriedCount = data.isDriedCount.count || 0;
@@ -27,7 +28,40 @@ const Production = ({ children }) => {
     shallowEqual
   );
 
-  const totalWeith = () => {
+  const gainWeigth = () => {
+    const arrayD = [];
+    listWeightControl.reduce(
+      function (acumulador, siguienteValor) {
+        const ant = acumulador.weight ? acumulador.weight : 0;
+        const dsp = siguienteValor.weight ? siguienteValor.weight : 0;
+        arrayD.push(dsp - ant);
+
+        return {
+          weight: dsp,
+        };
+      },
+      { weight: 0 }
+    );
+    console.log(arrayD);
+
+    return sum(arrayD).toFixed(1);
+  };
+
+  const averageWeigth = () => {
+    const data = listWeightControl.reduce(
+      function (acumulador, siguienteValor) {
+        const ant = acumulador.weight ? acumulador.weight : 0;
+        const dsp = siguienteValor.weight ? siguienteValor.weight : 0;
+        return {
+          weight: ant + dsp,
+        };
+      },
+      { weight: 0 }
+    );
+    return (data.weight / listWeightControl.length).toFixed(1);
+  };
+
+  const totalWeigth = () => {
     const data = listWeightControl.reduce((weight, animal) => {
       const { animalId } = animal;
       weight[animalId] = weight[animalId] ?? [];
@@ -38,7 +72,7 @@ const Production = ({ children }) => {
     return Object.keys(data).length;
   };
 
-  const totalWeithMale = () => {
+  const totalWeigthMale = () => {
     const data = listWeightControl
       .filter((e) => e.animal.gender === "MALE")
       .reduce((weight, animal) => {
@@ -65,7 +99,6 @@ const Production = ({ children }) => {
     );
     return rsl;
   };
-  console.log(byRace());
 
   const firstSampleAvg =
     milkControlCharts?.averages?.firstSampleAvgRounded || 0;
@@ -120,8 +153,6 @@ const Production = ({ children }) => {
     });
     return rsl;
   };
-
-  console.log(byRacesy());
 
   const ProductionForRace = {
     noData: {},
@@ -392,7 +423,7 @@ const Production = ({ children }) => {
               align={"center"}
               className={classes.userItemNumber}
             >
-              {totalWeith()}
+              {totalWeigth()}
             </Typography>
             <Typography
               variant={"body2"}
@@ -417,7 +448,7 @@ const Production = ({ children }) => {
               align={"center"}
               className={classes.userItemNumber}
             >
-              {totalWeithMale()}
+              {totalWeigthMale()}
             </Typography>
             <Typography
               variant={"body2"}
@@ -442,7 +473,7 @@ const Production = ({ children }) => {
               align={"center"}
               className={classes.userItemNumber}
             >
-              0
+              {averageWeigth()}
             </Typography>
             <Typography
               variant={"body2"}
@@ -467,7 +498,7 @@ const Production = ({ children }) => {
               align={"center"}
               className={classes.userItemNumber}
             >
-              0
+              {gainWeigth()}
             </Typography>
             <Typography
               variant={"body2"}

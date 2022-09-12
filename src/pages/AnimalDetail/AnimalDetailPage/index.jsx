@@ -206,7 +206,7 @@ const AnimalDetailPage = ({ children, setTitle, setChipList }) => {
 
   return (
     <Grid container xs={12}>
-      {currentAnimal && currentAnimal._id && currentAnimal._id === params._id && (
+      {listRaces && currentAnimal && currentAnimal._id && currentAnimal._id === params._id && (
         <Grid>
           <Grid item container xs={12}>
             <Grid item xs={12} lg={9}>

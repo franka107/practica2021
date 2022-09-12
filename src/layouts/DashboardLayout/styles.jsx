@@ -28,12 +28,12 @@ export const useStyles = makeStyles((theme) => ({
   },
   content: {
     flex: 1,
-    padding: "6.5rem 2.5rem 2.5rem",
+    // marginBottom: "4.2rem",
+    // padding: "6.5rem 2.5rem 2.5rem",
     backgroundColor: theme.palette.sider.light,
     [theme.breakpoints.down("xs")]: {
-      padding: "6.5rem 1.5rem 2.5rem",
+      // padding: "6.5rem 1.5rem 2.5rem",
     },
-    minHeight: "100vh",
   },
   containerResponsive: {
     [theme.breakpoints.down("xs")]: {

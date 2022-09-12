@@ -15,7 +15,7 @@ export const ConfigLayout = ({ children }) => {
   const [openDrawer, setOpenDrawer] = useState(false);
   const history = useHistory();
   return (
-    <div>
+    <div style={{ overflow: "hidden", height: "100vh" }}>
       <Grid
         item
         container

@@ -19,7 +19,7 @@ export const DashboardLayout = ({ children }) => {
   // );
   const history = useHistory();
   return (
-    <div>
+    <div style={{ overflow: "hidden", height: "100vh" }}>
       <Grid
         item
         container

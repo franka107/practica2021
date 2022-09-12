@@ -4,16 +4,17 @@ import { alpha } from "@material-ui/core/styles";
 export const useStyles = makeStyles((theme) => ({
   siderContainer: {
     width: "100%",
-    height: "100%",
-    paddingTop: "4.2rem",
+    height: "calc(100vh - 4.2rem)",
+    overflowY: "hidden",
+    marginTop: "4.2rem",
     [theme.breakpoints.down("xs")]: {
       display: "none",
     },
   },
   siderMenu: {
-    margin: "auto",
     width: "100%",
     height: "100%",
+    overflowY: "scroll",
     backgroundColor: theme.palette.sider.dark,
   },
   siderMenuDrawer: {
@@ -43,7 +44,7 @@ export const useStyles = makeStyles((theme) => ({
   },
   homeText: {
     fontWeight: "bold",
-    paddingBottom: ".3rem",
+    // paddingBottom: ".3rem",
   },
   nested: {
     paddingLeft: "1.5rem",

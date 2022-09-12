@@ -105,7 +105,7 @@ const BirthListPage = ({ children }) => {
       <SearchContainer searchText={searchText} setSearchText={setSearchText} />
       <Grid item xs={12}>
         <CustomMuiTable
-          data={birthList.slice(1, 11)}
+          data={birthList.slice(0, 10)}
           columns={columns()}
           options={options}
         />
@@ -150,93 +150,9 @@ const BirthListPage = ({ children }) => {
             </Grid>
           </Grid>
           <br />
-          {/* <Grid item>
-            <HighchartsReact
-              highcharts={Highcharts}
-              options={{
-                chart: {
-                  type: "area",
-                  margin: [20, 50, 60, 80],
-                },
-                title: {
-                  text: "",
-                },
-                xAxis: {
-                  categories: [
-                    "1Jun",
-                    "1Jul",
-                    "1Agos",
-                    "1Set",
-                    "1Oct",
-                    "1Nov",
-                    "1Dic",
-                    "1Ene",
-                    "1Feb",
-                    "1Mar",
-                    "1Abr",
-                  ],
-                },
-                series: [
-                  {
-                    type: "area",
-                    colorByPoint: true,
-                    data: [
-                      29.9, 71.5, 30.4, 59.9, 11.5, 60.4, 49.9, 81.5, 70.4,
-                      70.4, 70.4,
-                    ],
-                    showInLegend: false,
-                  },
-                ],
-              }}
-            />
-          </Grid> */}
         </Grid>
 
         <Grid>
-          {/* <Grid item xs={12} sm={5}>
-            <Typography variant={"subtitle1"}>Fecha</Typography>
-            <Grid container>
-              <Grid item xs={12}>
-                <Formik
-                  initialValues={initValues}
-                  onSubmit={handleSubmit}
-                  validationSchema={validationSchema}
-                  enableReinitialize
-                >
-                  {(props) => (
-                    <form onSubmit={props.handleSubmit}>
-                      <Grid container spacing={1}>
-                        <Grid item xs={4}>
-                          <DatePickerFieldFormik
-                            label="De"
-                            name="initDate"
-                            onChange={props.handleChange}
-                            xs={12}
-                          ></DatePickerFieldFormik>
-                        </Grid>
-                        <Grid item xs={4}>
-                          <DatePickerFieldFormik
-                            label="Hasta"
-                            name="finalDate"
-                            onChange={props.handleChange}
-                            xs={12}
-                          ></DatePickerFieldFormik>
-                        </Grid>
-                        <Grid container item xs={4}>
-                          <ButtonFormik
-                            xs={12}
-                            label="Filtrar"
-                            type="submit"
-                            style={{ margin: "auto" }}
-                          />
-                        </Grid>
-                      </Grid>
-                    </form>
-                  )}
-                </Formik>
-              </Grid>
-            </Grid>
-          </Grid> */}
           <Grid container>
             <Grid item xs={12} sm={12}>
               <HighchartsReact
@@ -270,63 +186,6 @@ const BirthListPage = ({ children }) => {
                 }}
               />
             </Grid>
-            {/* <Grid item xs={12} sm={5}>
-              <HighchartsReact
-                highcharts={Highcharts}
-                options={{
-                  chart: {
-                    plotBackgroundColor: null,
-                    plotBorderWidth: null,
-                    plotShadow: false,
-                    type: "pie",
-                    margin: [50, 50, 120, 80],
-                  },
-                  title: {
-                    text: "Crecimiento",
-                  },
-                  accessibility: {
-                    point: {
-                      valueSuffix: "%",
-                    },
-                  },
-                  plotOptions: {
-                    pie: {
-                      allowPointSelect: true,
-                      cursor: "pointer",
-                      dataLabels: {
-                        enabled: false,
-                      },
-                      showInLegend: false,
-                    },
-                  },
-                  xAxis: {
-                    categories: ["Abortos", "Hembas", "Machos"],
-                  },
-                  tooltip: {
-                    pointFormat:
-                      "{series.name}: <b>{point.percentage:.1f}%</b>",
-                  },
-                  series: [
-                    {
-                      name: "Brands",
-                      colorByPoint: true,
-                      data: [
-                        {
-                          name: "Chrome",
-                          y: 97,
-                          sliced: true,
-                          selected: true,
-                        },
-                        {
-                          name: "Internet Explorer",
-                          y: 3,
-                        },
-                      ],
-                    },
-                  ],
-                }}
-              />
-            </Grid> */}
           </Grid>
         </Grid>
       </Grid>

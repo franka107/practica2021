@@ -19,7 +19,7 @@ function TextFieldFormik({
       <TextField
         error={meta.touched && Boolean(meta.error)}
         helperText={meta.touched && meta.error}
-        inputProps={{ style: style }}
+        inputProps={{ style: { ...style, textTransform: "uppercase" } }}
         InputProps={{
           endAdornment: endAdornment,
           startAdornment: startAdornment ? startAdornment : null,

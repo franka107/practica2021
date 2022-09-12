@@ -58,9 +58,33 @@ const AnimalBulkForm = ({ onClickCancelButton }) => {
   }, []);
 
   const getDate = (dateString) => {
-    const dateParts = dateString.split("/");
-    const dateObject = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]);
-    return dateObject;
+    if (dateString.toString().indexOf("/") !== -1) {
+      const dateParts = dateString.toString().split("/");
+      const dateObject = new Date(
+        +dateParts[2],
+        dateParts[1] - 1,
+        +dateParts[0]
+      );
+      return dateObject;
+    }
+    const utc_days = Math.floor(dateString - 25569);
+    const utc_value = utc_days * 86400;
+    const date_info = new Date(utc_value * 1000);
+
+    console.log(
+      Date(date_info.getFullYear(), date_info.getMonth(), date_info.getDate())
+    );
+    return new Date(
+      date_info.getFullYear(),
+      date_info.getMonth(),
+      date_info.getDate()
+    );
+    // const nDate = new Date(
+    //   moment("1900/01/01")
+    //     .add(dateString - 2, "days")
+    //     .format("DD/MM/YYYY")
+    // );
+    // return nDate;
   };
 
   const getRaceId = (raceName) => {
@@ -74,6 +98,15 @@ const AnimalBulkForm = ({ onClickCancelButton }) => {
     }
   };
 
+  const verGender = (val) => {
+    if (val === "MACHO") {
+      return "MALE";
+    }
+    if (val === "HEMBRA") {
+      return "FEMALE";
+    }
+  };
+
   const handleSubmit = () => {
     if (csvFile) {
       setAnimalListUploadInfo([]);
@@ -82,19 +115,25 @@ const AnimalBulkForm = ({ onClickCancelButton }) => {
       setIsUploading(true);
       const reader = new FileReader();
       const rABS = !!reader.readAsBinaryString;
+      let sheet = "";
+      let count = 0;
       reader.onload = async (e) => {
         const bstr = e.target.result;
         const wb = XLSX.read(bstr, { type: rABS ? "binary" : "array" });
         let worksheets = {};
         for (const sheetName of wb.SheetNames) {
+          if (count === 0) {
+            sheet = sheetName;
+          }
+          count = count + 1;
+          console.log(sheetName);
           worksheets[sheetName] = XLSX.utils.sheet_to_json(
             wb.Sheets[sheetName]
           );
         }
 
-        const data = worksheets["Worksheet"];
-        setCsvListLength(worksheets["Worksheet"].length);
-        console.log("porfin", worksheets["Worksheet"].length);
+        const data = worksheets[sheet];
+        setCsvListLength(worksheets[sheet].length);
         let errorUpload = 0;
         let successUpload = 0;
 
@@ -102,10 +141,10 @@ const AnimalBulkForm = ({ onClickCancelButton }) => {
           let raceArray = [];
           for (let index = 1; index <= 4; index++) {
             const race =
-              e[`race/${index}/name`] && e[`race/${index}/percentage`]
+              e[`raza_${index}`] && e[`porcentaje_raza_${index}`]
                 ? {
-                    raceId: getRaceId(e[`race/${index}/name`]),
-                    percentage: e[`race/${index}/percentage`],
+                    raceId: getRaceId(e[`raza_${index}`]),
+                    percentage: e[`porcentaje_raza_${index}`],
                   }
                 : "";
             if (typeof race === "object") {
@@ -113,21 +152,25 @@ const AnimalBulkForm = ({ onClickCancelButton }) => {
             }
           }
           const animal = {
-            ...e,
-            identifier: `${e.identifier}`,
-            fatherRef: e.fatherRef ? e.fatherRef : "",
-            birthDate: getDate(e.birthDate),
-            herdDate: getDate(e.herdDate),
-            motherRef: e.motherRef ? e.motherRef : "",
-            registerNumber: e.registerNumber
-              ? e.ButtonFormikregisterNumber
-              : "",
+            identifier: `${e.arete}`,
+            name: e.nombre ? e.nombre : "",
+            birthDate: getDate(e["f_nacimiento"]),
+            herdDate: getDate(e["f_ingreso"]),
+            gender: verGender(e.sexo),
+            fatherRef: e["arete_padre"] ? e["arete_padre"] : "",
+            motherRef: e["arete_madre"] ? e["arete_madre"] : "",
+            registerNumber: e["numero_registro"] ? e["numero_registro"] : "",
             pregnantDate: null,
             color: e.color ? e.color : "",
             images: [],
             races: raceArray,
+            racialType: "",
+            reproductiveStatus: null,
+            isReproductor: false,
+            category: null,
           };
 
+          console.log("porfin", animal);
           try {
             const animalCreated = await dispatch(
               AnimalActions.bulk(
@@ -161,7 +204,6 @@ const AnimalBulkForm = ({ onClickCancelButton }) => {
         uiActions.showSnackbar("No has subido ningun archivo", "warning")
       );
     }
-    dispatch(AnimalActions.list());
   };
 
   // eslint-disable-next-line no-unused-vars
@@ -329,7 +371,9 @@ const AnimalBulkForm = ({ onClickCancelButton }) => {
       >
         <Grid item xs={2}>
           <ButtonFormik
-            onClick={onClickCancelButton}
+            onClick={() => {
+              onClickCancelButton();
+            }}
             xs={2}
             label={!isUploading ? "Cancelar" : "Cerrar"}
             type="button"

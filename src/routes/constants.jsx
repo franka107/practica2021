@@ -129,7 +129,7 @@ export const RENDER_ROUTES = [
     layout: DashboardLayout,
     type: ROUTE_TYPES.private,
     component: ({ children }) => (
-      <DefaultPage title="Nacimientos" chipList={birthChipOptions()}>
+      <DefaultPage title="NACIMIENTOS" chipList={birthChipOptions()}>
         {(props) => children(props)}
       </DefaultPage>
     ),

@@ -1,4 +1,6 @@
+import { useDispatch } from "react-redux";
 import CustomDialog from "../../../components/CustomDialog";
+import AnimalActions from "../../../redux/actions/animal.actions";
 import AnimalBulkForm from "../Forms/AnimalBulkForm";
 
 /**
@@ -8,9 +10,16 @@ import AnimalBulkForm from "../Forms/AnimalBulkForm";
  */
 
 const AnimalCreateBulkPage = ({ parentPathname }) => {
+  const dispatch = useDispatch();
+
   return (
     <>
-      <CustomDialog parentPathname={parentPathname}>
+      <CustomDialog
+        parentPathname={parentPathname}
+        action={() => {
+          dispatch(AnimalActions.list());
+        }}
+      >
         {(props) => (
           <AnimalBulkForm
             onClickCancelButton={props.handleClose}

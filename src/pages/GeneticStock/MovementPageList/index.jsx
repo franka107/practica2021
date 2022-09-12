@@ -64,7 +64,7 @@ const MovementPageList = ({ children, setTitle, setChipList }) => {
       />
       <Grid item xs={12}>
         <CustomMuiTable
-          data={movementList.slice(1, 11)}
+          data={movementList}
           columns={columns(location, history, params.geneticType, movementList)}
           options={options}
         />

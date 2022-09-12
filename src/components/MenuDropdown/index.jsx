@@ -65,6 +65,7 @@ function MenuDropdown({ isLogin, setLoginState }) {
       container
       justifyContent={"flex-end"}
       className={classes.menuContainer}
+      style={{ alignItems: "center" }}
     >
       {isLogin && (
         <React.Fragment>
@@ -104,7 +105,13 @@ function MenuDropdown({ isLogin, setLoginState }) {
               />
             </Dialog>
           </Grid>
-          <Grid item>
+          <Grid
+            item
+            style={{
+              alignItems: "center",
+              display: "flex",
+            }}
+          >
             <AccountCircleIcon
               className={classes.iconColor}
               onClick={() => {
@@ -112,10 +119,22 @@ function MenuDropdown({ isLogin, setLoginState }) {
               }}
             />
           </Grid>
-          <Grid item>
+          <Grid
+            item
+            style={{
+              alignItems: "center",
+              display: "flex",
+            }}
+          >
             <Search className={classes.iconColor} />
           </Grid>
-          <Grid item>
+          <Grid
+            item
+            style={{
+              alignItems: "center",
+              display: "flex",
+            }}
+          >
             <NotificationsNoneOutlinedIcon className={classes.iconColor} />
           </Grid>
         </React.Fragment>

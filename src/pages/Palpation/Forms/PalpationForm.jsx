@@ -197,10 +197,14 @@ const PalpationForm = ({
                 currentAnimal &&
                 currentAnimal._id === props.values.animalId
               ) {
-                props.setFieldValue(
-                  "pregnantDate",
-                  currentAnimal.activeService.serviceDate
-                );
+                dispatch(
+                  AnimalActions.get({ _id: props.values.animalId })
+                ).then((rsp) => {
+                  props.setFieldValue(
+                    "pregnantDate",
+                    rsp.activeService.serviceDate
+                  );
+                });
               }
             }
             // eslint-disable-next-line react-hooks/exhaustive-deps

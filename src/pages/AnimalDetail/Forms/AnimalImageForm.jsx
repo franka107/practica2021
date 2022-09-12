@@ -35,8 +35,9 @@ const AnimalImageForm = ({
 
     if (values.imageUrl && values.imageUrl.length !== 0) {
       for (let index = 0; index <= values.imageUrl.length - 1; index++) {
-        const response = await IdeasCloudApi.fetch("uploadImage", {
-          farmId: currentFarm._id,
+        const extension = values.imageUrl[`${index}`]?.name.split(".").pop();
+        const response = await IdeasCloudApi.fetch("uploadImageV2", {
+          extension: extension,
         });
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", values.imageUrl[`${index}`].type);
@@ -46,10 +47,8 @@ const AnimalImageForm = ({
           body: values.imageUrl[`${index}`],
           redirect: "follow",
         };
-
         const iO = response.url.indexOf("?X");
         const newURL = response.url.substring(0, iO);
-
         await fetch(response.url, requestOptions).then((response) => {
           arrayImages.push(newURL);
         });

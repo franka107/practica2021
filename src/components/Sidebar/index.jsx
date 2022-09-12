@@ -129,9 +129,6 @@ function Sidebar({ openDrawer, setOpenDrawer, options }) {
 
   const drawer = (
     <List
-      component="nav"
-      className={`sidebar ${classes.root}`}
-      style={{ position: "sticky", top: "67px" }}
       subheader={
         <ListSubheader
           disableSticky

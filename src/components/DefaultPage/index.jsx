@@ -8,7 +8,15 @@ const DefaultPage = ({ children, ...props }) => {
   const [chipList, setChipList] = useState(props.chipList || []);
 
   return (
-    <>
+    <div
+      style={{
+        overflowY: "scroll",
+        height: "calc(100vh - 4.2rem)",
+        marginTop: "4.2rem",
+        padding: "2rem 2.5rem 2.5rem",
+        position: "relative",
+      }}
+    >
       <Grid container>
         <Grid item xs={12}>
           <Typography variant="h6">{title}</Typography>
@@ -16,7 +24,7 @@ const DefaultPage = ({ children, ...props }) => {
         <ChipList routes={chipList}></ChipList>
       </Grid>
       {children({ setTitle, setChipList })}
-    </>
+    </div>
   );
 };
 

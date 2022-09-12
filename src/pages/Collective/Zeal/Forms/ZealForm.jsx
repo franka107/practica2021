@@ -67,9 +67,8 @@ const ZealForm = ({
   const femaleAnimals = useSelector(
     (state) =>
       state.animal.list.filter(
-        (e) =>
-          e.gender === "FEMALE" &&
-          e.ageInMonths > currentAgribusiness?.isBreeding
+        (e) => e.gender === "FEMALE"
+        // e.ageInMonths > currentAgribusiness?.isBreeding
       ),
     shallowEqual
   );

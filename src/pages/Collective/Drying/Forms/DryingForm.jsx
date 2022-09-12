@@ -73,7 +73,7 @@ const DryingForm = ({
       state.animal.list.filter(
         (e) =>
           e.gender === "FEMALE" &&
-          e.ageInMonths > currentAgribusiness?.isBreeding &&
+          // e.ageInMonths > currentAgribusiness?.isBreeding &&
           (e.isDried === false || e.isDried === null)
       ),
     shallowEqual

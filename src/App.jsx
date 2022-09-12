@@ -100,10 +100,6 @@ function App() {
   // ];
   // const history = useHistory();
 
-  useEffect(() => {
-    console.log("hola");
-  }, []);
-
   return (
     <Provider store={store}>
       <MuiPickersUtilsProvider utils={DateFnsUtils} locale={es}>
